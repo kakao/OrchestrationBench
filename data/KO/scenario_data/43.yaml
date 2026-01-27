@@ -1,0 +1,88 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-07-04 14:10'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 올데프 베일리 인스타에 올린 신발 사고 싶은데, 가까운 관련 매장 가는 길안내 시작해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"올데프 베일리\
+      \ 인스타그램에 나온 신발\"\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"올데프 베일리 인스타그램에 나온 신발을 판매하는 가장 가까운 매장\"\n    - status: pending\n      name:\
+      \ transport_agent\n      refined_query: \"올데프 베일리 인스타그램에 나온 신발을 판매하는 가장 가까운\
+      \ 매장까지 길안내 시작\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"올데프 베일리 인스타그램에 나온\
+      \ 신발\"\n  source: \"올데프 베일리 인스타그램\"\n  productCategory: \"신발\"\n  sortBy: \"\
+      latest\"\ntool_call_result:\n  data:\n    productName: \"나이키 조던 1 미드 SE ASW\
+      \ 블랙 범고래\""
+- workflow_id: null
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 현재 사용자 위치'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 가장 가까운 매장을 찾기 위해 현재 사용자의 위치가 필요합니다. 현재 어디에서 저와 대화 하시고 계신가요?
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 지금 압구정역 근처야.
+- workflow_id: null
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"나이키 조던 1 미드 SE ASW\
+      \ 블랙 범고래 판매하는 압구정 근처 가장 가까운 매장\"\n  placeCategory: \"신발 매장\"\n  location: \"\
+      압구정\"\n  sortBy: \"distance\"\ntool_call_result:\n  data:\n    placeName: \"\
+      나이키 압구정\"\n    address: \"서울시 강남구 선릉로 831\""
+- workflow_id: null
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"압구정역에서 나이키 압구정까지\
+      \ 가는 길\"\n  origin: \"압구정역\"\n  destination: \"서울시 강남구 선릉로 831\"\n  departureTime:\
+      \ \"14:10\"\n  optimizeBy: \"fastest\"\n  navigationMode: true\n  transportModes:\
+      \ \"car\"\ntool_call_result:\n  routeSummary: \"압구정역에서 나이키 압구정점(서울시 강남구 선릉로\
+      \ 831)까지 최단 시간 경로\"\n  estimatedTime: \"약 5분\"\n  distance: \"약 1.2km\"\n  departureTime:\
+      \ \"14:00\"\n  transportModes: \"car\"\n  steps:\n    - step: \"압구정역 5번 출구로\
+      \ 나옵니다.\"\n    - step: \"도산대로를 따라 직진합니다.\"\n    - step: \"도산사거리에서 좌회전하여 선릉로로\
+      \ 진입합니다.\"\n    - step: \"약 300m 직진 후, 나이키 압구정점(선릉로 831)이 오른쪽에 위치해 있습니다.\"\n\
+      \  navigationMode: true\n  optimizeBy: \"fastest\"\n  notes: \"교통 상황에 따라 소요\
+      \ 시간은 달라질 수 있습니다.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "올데프 베일리 인스타그램에 나온 신발은 \"나이키 조던 1 미드 SE ASW 블랙 범고래\" 입니다. \n\n압구정 역에서\
+      \ 가장 가까운 나이키 매장은 서울시 강남구 선릉로 831에 위치한 \"나이키 압구정\" 입니다.\n\n해당 위치까지 네이게이션을 통해\
+      \ 안내 드리겠습니다."

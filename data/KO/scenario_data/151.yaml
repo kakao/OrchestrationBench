@@ -1,0 +1,169 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 7월 20일
+
+      - 사용자 이름: 이해솔
+
+      - 사용자 연락처: 010-1234-5678'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 내일도 비가 많이 온대. 내일 저녁 6시에 이태원 야외 루프탑 카페 예약했는데 취소해줘. 대신 근처에 4인이 1박 2일 숙박할
+      수 있는 호텔 찾아보고 예약해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"내일 저녁 6시\
+      \ 이태원 야외 루프탑 카페 예약 내역 조회\"\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"내일 저녁 6시 이태원 야외 루프탑 카페 예약 취소\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ travel_agent\n      refined_query: \"내일 1박 2일 4인이 숙박 가능한 이태원 근처 호텔 조회\"\n\n\
+      workflow_3:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\
+      \n  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"내일 1박 2일 4인이 숙박 가능한 이태원 근처 호텔 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"2025년 7월\
+      \ 21일 저녁 6시 이태원 야외 루프탑 카페 예약 내역 조회\"\n  contactInfo: \"010-1234-5678\"\n  date:\
+      \ \"2025-07-21\"\n  placeCategory: \"루프탑 카페\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"2025년 7월 21일 저녁 6시 이태원 야외 루프탑 카페 예약 내역 조회\"\n    contactInfo:\
+      \ \"010-1234-5678\"\n    date: \"2025-07-21\"\n    placeCategory: \"루프탑 카페\"\
+      \n    reservationDetails:\n      reservationID: \"reservation-20250721-456\"\
+      \n      time: \"6:00 PM\"\n      location: \"이태원 야외 루프탑 카페\"\n      tableFor:\
+      \ 4\n    status: \"조회 완료\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"2025년 7월 21일에\
+      \ 4인이 1박 2일 숙박 가능한 이태원 근처 호텔 조회\"\n  location: \"이태원\"\n  checkInDate: \"2025-07-21\"\
+      \n  checkOutDate: \"2025-07-22\"\n  sortBy: \"highest_rating\"\n  accommodationType:\
+      \ \"hotel\"\n  guestCount: 4\n  roomCount: 1\ntool_call_result:\n  data:\n \
+      \   refinedQuery: \"2025년 7월 21일에 4인이 1박 2일 숙박 가능한 이태원 근처 호텔 조회\"\n    location:\
+      \ \"이태원\"\n    checkInDate: \"2025-07-21\"\n    checkOutDate: \"2025-07-22\"\
+      \n    sortBy: \"highest_rating\"\n    accommodationType: \"hotel\"\n    guestCount:\
+      \ 4\n    roomCount: 1\n    hotelDetails:\n      - hotelName: \"이태원 스카이 호텔\"\n\
+      \        rating: 4.8\n        pricePerNight: \"150,000원\"\n        amenities:\
+      \ [\"무료 조식\", \"수영장\", \"와이파이\"]\n        address: \"서울특별시 용산구 이태원로 123\"\n\
+      \        roomTypeId: \"FAMILY_SUITE_VIEW\"\n        maxOccupancy: 4\n      -\
+      \ hotelName: \"이태원 블루힐 호텔\"\n        rating: 4.7\n        pricePerNight: \"\
+      130,000원\"\n        amenities: [\"무료 주차\", \"피트니스 센터\", \"와이파이\"]\n        address:\
+      \ \"서울특별시 용산구 이태원로 456\"\n        roomTypeId: \"DELUXE_DOUBLE\"\n        maxOccupancy:\
+      \ 3\n      - hotelName: \"이태원 그린 라이트 호텔\"\n        rating: 4.6\n        pricePerNight:\
+      \ \"140,000원\"\n        amenities: [\"루프탑 바\", \"스파\", \"와이파이\"]\n        address:\
+      \ \"서울특별시 용산구 이태원로 789\"\n        roomTypeId: \"STANDARD_FAMILY\"\n        maxOccupancy:\
+      \ 4\n    status: \"조회 완료\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelPlaceReservation\narguments:\n  refinedQuery: \"2025년 7월\
+      \ 21일 저녁 6시 이태원 야외 루프탑 카페 예약 취소\"\n  reservationId: \"reservation-20250721-456\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"2025년 7월 21일 저녁 6시 이태원 야외\
+      \ 루프탑 카페 예약 취소\"\n    reservationId: \"reservation-20250721-456\"\n    status:\
+      \ \"취소 완료\""
+- workflow_id: workflow_3
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약할 호텔명, 예약자 이메일'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "<숙박 정보 조회 결과>\n\n2025년 7월 21일부터 1박 2일 동안 4인이 숙박 가능한 이태원 근처 호텔을 아래와 같이\
+      \ 추천드립니다:\n\n1. 이태원 스카이 호텔\n   - 평점: 4.8\n   - 1박 가격: 150,000원\n   - 편의시설: 무료\
+      \ 조식, 수영장, 와이파이\n   - 주소: 서울특별시 용산구 이태원로 123\n\n2. 이태원 블루힐 호텔\n   - 평점: 4.7\n\
+      \   - 1박 가격: 130,000원\n   - 편의시설: 무료 주차, 피트니스 센터, 와이파이\n   - 주소: 서울특별시 용산구 이태원로\
+      \ 456\n\n3. 이태원 그린 라이트 호텔\n   - 평점: 4.6\n   - 1박 가격: 140,000원\n   - 편의시설: 루프탑\
+      \ 바, 스파, 와이파이\n   - 주소: 서울특별시 용산구 이태원로 789\n\n어떤 호텔을 예약하시겠어요? 원활한 예약을 위해서는 예약하시는\
+      \ 분의 이메일 주소도 함께 알려주시기 바랍니다."
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 스카이 호텔이 평점이 제일 높으니까 저기로 예약할게! abcde@example.com 이거야.
+- workflow_id: null
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: bookAccommodation\narguments:\n  refinedQuery: \"2025년 7월 21일부터\
+      \ 22일까지 1박 2일 간 이태원 스카이 호텔 4인 예약\"\n  accommodationName: \"이태원 스카이 호텔\"\n  roomTypeId:\
+      \ \"FAMILY_SUITE_VIEW\"\n  checkInDate: \"2025-07-21\"\n  checkOutDate: \"2025-07-22\"\
+      \n  guestCount: 4\n  roomCount: 1\n  location: \"이태원\"\n  userInfo:\n    name:\
+      \ \"이해솔\"\n    contactNumber: \"010-1234-5678\"\n    email: \"abcde@example.com\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"2025년 7월 21일부터 22일까지 1박 2일\
+      \ 간 이태원 스카이 호텔 4인 예약\"\n    accommodationName: \"이태원 스카이 호텔\"\n    roomTypeId:\
+      \ \"FAMILY_SUITE_VIEW\"\n    checkInDate: \"2025-07-21\"\n    checkOutDate:\
+      \ \"2025-07-22\"\n    guestCount: 4\n    roomCount: 1\n    location: \"이태원\"\
+      \n    userInfo:\n      name: \"이해솔\"\n      contactNumber: \"010-1234-5678\"\
+      \n      email: \"abcde@example.com\"\n    reservationID: \"reservation-20250721-123\"\
+      \n    status: \"예약 완료\"\n    confirmationMessage: \"이해솔님, 2025년 7월 21일부터 22일까지\
+      \ 이태원 스카이 호텔 FAMILY_SUITE_VIEW 객실 1개가 예약되었습니다. 예약 ID는 reservation-20250721-123입니다.\
+      \ 감사합니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '<루프탑 카페 예약 취소 안내>
+
+
+      - 예약 장소: 이태원 야외 루프탑 카페
+
+      - 예약 날짜 및 시간: 2025년 7월 21일 저녁 6시
+
+      - 예약 ID: reservation-20250721-456
+
+      - 취소 상태: 완료
+
+
+      귀하의 예약이 성공적으로 취소되었습니다. 다른 일정이나 예약이 필요하시면 언제든지 말씀해 주세요. 추가적인 도움이 필요하시면 알려주시기
+      바랍니다!
+
+
+
+      <호텔 예약 내역 안내>
+
+
+      이해솔님, 안녕하세요!
+
+      이태원 스카이 호텔 예약이 완료되었습니다. 예약 세부사항은 아래와 같습니다:
+
+
+      - 호텔 이름: 이태원 스카이 호텔
+
+      - 객실 타입: FAMILY_SUITE_VIEW
+
+      - 체크인 날짜: 2025년 7월 21일
+
+      - 체크아웃 날짜: 2025년 7월 22일
+
+      - 인원 수: 4명
+
+      - 객실 수: 1개
+
+      - 예약 ID: reservation-20250721-123'

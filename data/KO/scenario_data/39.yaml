@@ -1,0 +1,192 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2027-08-02
+
+      - 시간: 23:56
+
+      - 연락처: 010-1313-3132
+
+      - 집: 경기 수원시 영통구 도청로 103'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 나 9월 7일에 울산으로 혼자 여행 갈건데 이날부터 3일간 사용할 렌터카 예약해줘 그리고 이제 집 가게 대리운전 좀 불러줘
+      1시간 30분 후에 오시면 될 거 같아. 여기 신흥역 3번 출구로. 아 그리고 8월 15일 광복 모임 장소가 하남 종합운동장으로 바꼈어.
+      내 스케줄에 반영해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"9월 7일부터\
+      \ 울산에서 3일간 사용할 렌터카 예약\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"1시간 30분 후 신흥역 3번 출구에서 집까지 대리운전 예약\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"8월 15일 광복 모임 일정 조회\"\n    - status: pending\n      name:\
+      \ calendar_agent\n      refined_query: \"8월 15일 광복 모임 장소를 하남 종합운동장으로 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 차량 픽업 위치, 차량 픽업 일시, 차량 반납 일시, 원하는 차량 유형 또는 모델명, 운전자 나이, 보험 옵션
+      (자차 제외, 자차 포함, 완전 면책)'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 운행 예정 차량의 상세 정보(차종, 색상, 번호판 등. 예: ''쏘나타 흰색 32가1234)'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"8월 15일 광복 모임 일정 조회\"\
+      \n  startDate: \"2027-08-15\"\n  endDate: \"2027-08-15\"\n  keyword: \"광복 모임\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"8월 15일 광복 모임 일정 조회\"\n   \
+      \ startDate: \"2027-08-15\"\n    endDate: \"2027-08-15\"\n    keyword: \"광복\
+      \ 모임\"\n    status: \"조회 완료\"\n    message: \"2027년 8월 15일에 해당하는 '광복 모임' 일정이\
+      \ 성공적으로 조회되었습니다.\"\n    schedules:\n      - scheduleID: \"sch20270815_001\"\n\
+      \        title: \"광복절 기념 모임\"\n        date: \"2027-08-15\"\n        time: \"\
+      18:00\"\n        location: \"서울 광화문 광장\"\n        description: \"광복절을 기념하는 가족\
+      \ 및 친구 모임\"\n  source: \"캘린더 시스템\""
+- workflow_id: null
+  step_id: 7
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: modifySchedule\narguments:\n  refinedQuery: \"sch20270815_001\
+      \ 장소를 하남 종합운동장으로 변경\"\n  scheduleID: \"sch20270815_001\"\n  newLocation: \"\
+      하남 종합운동장\"\ntool_call_result:\n  data:\n    refinedQuery: \"sch20270815_001\
+      \ 장소를 하남 종합운동장으로 변경\"\n    scheduleID: \"sch20270815_001\"\n    newLocation:\
+      \ \"하남 종합운동장\"\n    status: \"변경 완료\"\n    message: \"8월 15일 광복 모임 일정의 장소가 하남\
+      \ 종합운동장으로 성공적으로 변경되었습니다.\"\n  source: \"캘린더 시스템\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '렌터카 예약과 대리운전 호출을 위해 아래 정보가 필요합니다.
+
+
+      ■ 렌터카
+
+      • 차량 픽업 위치
+
+      • 차량 픽업 일시
+
+      • 차량 반납 일시
+
+      • 원하는 차량 유형 또는 모델명
+
+      • 운전자 나이
+
+      • 보험 옵션 (자차 제외 / 자차 포함 / 완전 면책 중 선택)
+
+
+      ■ 대리운전
+
+      • 운행 예정 차량의 상세 정보
+
+      (차종, 색상, 번호판 예: 쏘나타 흰색 32가1234)'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: '차량 픽업: 울산역(반납 장소도 울산역 동일해), 픽업 일시: 9월 7일 오후 2시, 반납 일시: 9월 9일 오후 5시,
+      원하는 차량: 테슬라 모델3, 나이: 35, 보험: 자차 포함. 그리고 내 차 정보는 파란색 닛산 파오 16바7777'
+- workflow_id: workflow_1
+  step_id: 10
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookRentalCar\narguments:\n  refinedQuery: \"9월 7일 울산역 오후 2시 픽업\
+      \ 9월 9일 울산역 오후 5시 반납으로 35세 자차 포함 테슬라 모델3 렌터카 예약\"\n  pickupLocation: \"울산역\"\
+      \n  dropoffLocation: \"울산역\"\n  pickupDateTime: \"2027-09-07T14:00\"\n  returnDateTime:\
+      \ \"2027-09-09T17:00\"\n  carType: \"테슬라 모델3\"\n  driverAge: 35\n  insuranceOption:\
+      \ \"partial\"\n  contactInfo: \"010-1313-3132\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"9월 7일 울산역 오후 2시 픽업 9월 9일 울산역 오후 5시 반납으로 35세 자차 포함 테슬라 모델3\
+      \ 렌터카 예약\"\n    pickupLocation: \"울산역\"\n    dropoffLocation: \"울산역\"\n    pickupDateTime:\
+      \ \"2027-09-07T14:00\"\n    returnDateTime: \"2027-09-09T17:00\"\n    carType:\
+      \ \"테슬라 모델3\"\n    driverAge: 35\n    insuranceOption: \"partial\"\n    contactInfo:\
+      \ \"010-1313-3132\"\n    status: \"예약 완료\"\n    reservationID: \"RC20270907ULSAN001\"\
+      \n    message: \"테슬라 모델3 렌터카가 2027년 9월 7일 오후 2시부터 9월 9일 오후 5시까지 울산역에서 픽업 및 반납으로\
+      \ 성공적으로 예약되었습니다.\"\n  source: \"렌터카 예약 시스템\""
+- workflow_id: workflow_2
+  step_id: 11
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callDesignatedDriver\narguments:\n  refinedQuery: \"1시간 30분 후\
+      \ 신흥역 3번 출구에서 집까지 파란색 닛산 파오 16바7777 차량 대리운전 예약\"\n  pickupLocation: \"신흥역 3번\
+      \ 출구\"\n  dropoffLocation: \"경기 수원시 영통구 도청로 103\"\n  pickupTime: \"2027-08-03T01:26\"\
+      \n  contactInfo: \"010-1313-3132\"\n  vehicleInfo: \"파란색 닛산 파오 16바7777\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"1시간 30분 후 신흥역 3번 출구에서 집까지 파란색 닛산 파오 16바7777 차량\
+      \ 대리운전 예약\"\n    pickupLocation: \"신흥역 3번 출구\"\n    dropoffLocation: \"경기 수원시\
+      \ 영통구 도청로 103\"\n    pickupTime: \"2027-08-03T01:26\"\n    contactInfo: \"010-1313-3132\"\
+      \n    vehicleInfo: \"파란색 닛산 파오 16바7777\"\n    status: \"예약 완료\"\n    reservationID:\
+      \ \"DD20270803SHINHEUNG001\"\n    message: \"2027년 8월 3일 01시 26분에 신흥역 3번 출구에서\
+      \ 출발하는 파란색 닛산 파오 16바7777 차량 대리운전 예약이 성공적으로 완료되었습니다.\"\n  source: \"대리운전 예약 시스템\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '아래 내용으로 요청하신 일정 변경, 렌터카 예약, 대리운전 호출이 모두 완료되었습니다.
+
+
+      1. 광복 모임 일정 변경
+
+
+      • 날짜: 2027년 8월 15일
+
+      • 시간: 18:00
+
+      • 변경된 장소: 하남 종합운동장
+
+      • 설명: 광복절을 기념하는 가족 및 친구 모임
+
+
+      2. 렌터카 예약
+
+
+      • 차량: 테슬라 모델3
+
+      • 기간: 2027년 9월 7일 14:00 ~ 9월 9일 17:00
+
+      • 픽업/반납 위치: 울산역
+
+      • 운전자 나이: 35세
+
+      • 보험: 자차 포함
+
+      • 예약번호: RC20270907ULSAN001
+
+
+      3. 대리운전 예약
+
+
+      • 차량: 파란색 닛산 파오 (16바7777)
+
+      • 출발: 2027년 8월 3일 01:26, 신흥역 3번 출구
+
+      • 도착: 경기 수원시 영통구 도청로 103
+
+      • 예약번호: DD20270803SHINHEUNG001'

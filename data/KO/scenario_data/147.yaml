@@ -1,0 +1,138 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '-현재 날짜 및 시각: 2025-10-02T13:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 친구네 집 가서 놀기로 했어. 당장 카카오T로 택시 불러줘. 그리고 내일 클린 피부과 진료 예약 시간 몇시였더라? 확인해서
+      오후 4시로 변경해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"카카오T로\
+      \ 친구네 집으로 가는 택시 호출\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"내일 클린 피부과 예약 시간 조회\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"내일 클린 피부과 예약 시간을 오후 4시로 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 승차 위치, 목적지, 예약자 연락처'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약자 연락처'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 피부과 예약 내역 조회와 택시 호출을 위해서는 예약자 연락처가 필요합니다. 또한 원활한 택시 호출을 위해 승차하실 위치와 목적지도
+      함께 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1234-5678이야. 래미안 공덕 3차 101동에서 탈거고 망원동 삼성아파트까지 갈거야.
+- workflow_id: workflow_1
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callTaxi\narguments:\n  refinedQuery: \"래미안 공덕 3차 101동에서 망원동 삼성아파트까지\
+      \ 가는 카카오T 택시 호출\"\n  passengerCount: 1\n  taxiType: \"general\"\n  pickupLocation:\
+      \ \"래미안 공덕 3차 101동\"\n  dropoffLocation: \"망원동 삼성아파트\"\n  contactInfo: \"010-1234-5678\"\
+      \n  source: \"카카오T\"\n  pickupTime: \"2025-10-02T13:00\"\ntool_call_result:\n\
+      \  taxiCallDetails:\n    bookingId: \"TAXI-456789\"\n    source: \"카카오T\"\n\
+      \    status: \"예약 완료\"\n    passengerCount: 1\n    taxiType: \"general\"\n \
+      \   pickupLocation: \"래미안 공덕 3차 101동\"\n    dropoffLocation: \"망원동 삼성아파트\"\n\
+      \    pickupTime: \"2025-10-02T13:00\"\n    contactInfo: \"010-1234-5678\"\n\
+      \    estimatedFare: 15000\n    currency: \"KRW\"\n    driverInfo:\n      name:\
+      \ \"이석원\"\n      vehicle: \"Hyundai Sonata\"\n      licensePlate: \"12가 3456\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"2025년 10월\
+      \ 3일 클린 피부과 예약 시간 조회\"\n  contactInfo: \"010-1234-5678\"\n  date: \"2025-10-03\"\
+      \n  placeName: \"클린 피부과\"\n  placeCategory: \"피부과\"\ntool_call_result:\n  reservationInfo:\n\
+      \    reservationId: \"RESV-20251003-002\"\n    placeName: \"클린 피부과\"\n    placeCategory:\
+      \ \"피부과\"\n    date: \"2025-10-03\"\n    time: \"10:00\"\n    contactInfo: \"\
+      010-1234-5678\"\n    customerName: \"박온유\"\n    serviceType: \"피부 관리\"\n   \
+      \ status: \"예약 확정\"\n    message: \"예약하신 내역이 조회되었습니다. 예약 일자는 2025년 10월 3일 오전\
+      \ 10시입니다.\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyPlaceReservation\narguments:\n  refinedQuery: \"2025년 10월\
+      \ 3일 클린 피부과 예약 시간을 오후 4시로 변경\"\n  reservationId: \"RESV-20251003-002\"\n  newTime:\
+      \ \"16:00\"\n  placeName: \"클린 피부과\"\ntool_call_result:\n  modificationDetails:\n\
+      \    reservationId: \"RESV-20251003-002\"\n    placeName: \"클린 피부과\"\n    originalTime:\
+      \ \"10:00\"\n    newTime: \"16:00\"\n    status: \"변경 완료\"\n    message: \"\
+      예약 시간이 성공적으로 변경되었습니다. 예약은 2025년 10월 3일 오후 4시로 변경되었습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '◾택시 호출 완료
+
+      택시 호출이 완료되었습니다!
+
+
+      - 예약 번호: TAXI-456789
+
+      - 택시 종류: 일반 택시
+
+      - 출발지: 래미안 공덕 3차 101동
+
+      - 도착지: 망원동 삼성아파트
+
+      - 출발 시간: 2025년 10월 2일 오후 1시
+
+      - 예상 요금: 15,000원
+
+      - 기사님: 이석원 (차량: Hyundai Sonata, 번호판: 12가 3456)
+
+
+
+      ◾피부과 예약 시간 조회 및 변경 완료
+
+
+      - 클린 피부과의 예약 시간이 성공적으로 변경되었습니다. 2025년 10월 3일 오전 10시로 예약하신 내역을 확인하였으며, 요청하신 오후
+      4시로 예약 변경 완료하였습니다.
+
+
+      - 예약 번호: RESV-20251003-002
+
+      - 기존 시간: 오전 10시
+
+      - 새로운 시간: 오후 4시
+
+
+      변경된 예약 시간을 확인하시고 방문해 주시기 바랍니다.'

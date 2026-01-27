@@ -1,0 +1,146 @@
+{
+  "_description": "OrchestrationBench Evaluation Results Format",
+  "_field_descriptions": {
+    "key_metrics": {
+      "Average": "Average of the three main scores: (Call Rejection Classification Accuracy + FC + Plan) / 3",
+      "Call Rejection Classification Accuracy": "(reject_f1 + fc_f1) / 2 - Average F1 score for rejection and FC classification",
+      "FC": "(function_name_f1 + arguments_key_f1 + arguments_value_f1) / 3 - Function call quality score",
+      "Plan": "Overall workflow score including failures - workflow_evaluation_with_failure"
+    },
+    "score_details": {
+      "workflow_scores": {
+        "workflow_evaluation_with_failure": "Overall workflow score including failures",
+        "workflow_evaluation_without_failure": "Overall workflow score excluding workflow generation failures",
+        "average_structural_GED": "Workflow structure GED score (1-GED, higher is better)",
+        "average_component_GED": "Workflow component GED score (1-GED, higher is better)"
+      },
+      "function_call_scores": {
+        "function_name_accuracy": "FC function name F1 score",
+        "arguments_key_score": "FC parameter key F1 score",
+        "arguments_value_score_not_count_rejection": "FC parameter value F1 score",
+        "overall_function_call_failed_rate": "(total_function_call_cases - total_fc_successful_calls) / total_function_call_cases",
+        "total_fc_successful_calls": "Number of successful function calls",
+        "total_function_call_cases": "Total number of function call cases"
+      },
+      "call_rejection_scores": {
+        "total_rejection_cases": "Total number of rejection cases",
+        "reject_decision_performance": {
+          "precision": "True_rejection / (True_rejection + False_rejection)",
+          "recall": "True_rejection / (True_rejection + False_acceptance)",
+          "f1": "F1 score for rejection decision performance",
+          "accuracy": "(TP_reject + TN_reject) / (TP + TN + FP + FN) - Rejection decision accuracy"
+        },
+        "fc_decision_performance": {
+          "precision": "FC_TP / (FC_TP + FC_FP) - Function call decision precision",
+          "recall": "FC_TP / (FC_TP + FC_FN) - Function call decision recall",
+          "f1": "F1 score for function call decision performance",
+          "accuracy": "(FC_TP + FC_TN) / (FC_TP + FC_FP + FC_FN + FC_TN) - FC decision accuracy"
+        },
+        "error_patterns": {
+          "overaction_rate": "Rate of unnecessary actions (FN_reject / total_errors)",
+          "underaction_rate": "Rate of missed necessary actions (FP_reject / total_errors)"
+        },
+        "rejection_type_accuracy": "(TP_reject - type_mismatch) / TP_reject - How often rejection type was correct",
+        "total_rejection_type_mismatch": "Count of cases where model correctly rejected but with wrong type",
+        "total_failed_generation": "Count of cases where model failed to generate valid prediction"
+      },
+      "raw_confusion_matrix": {
+        "total_true_positive_reject": "Correct rejection predictions",
+        "total_true_negative_reject": "Correct FC predictions",
+        "total_false_positive_reject": "Incorrect rejection predictions (should be FC)",
+        "total_false_negative_reject": "Incorrect FC predictions (should be reject)",
+        "total_true_positive_fc": "FC True Positive - Actual FC, Predicted FC",
+        "total_false_positive_fc": "FC False Positive - Actual reject, Predicted FC",
+        "total_false_negative_fc": "FC False Negative - Actual FC, Predicted reject",
+        "total_true_negative_fc": "FC True Negative - Actual reject, Predicted reject"
+      }
+    }
+  }, 
+  "Examples below": "// Example Output with made-up numbers",
+  "overall_statistics": {
+    "total_files": 219,
+    "successful_evaluations": 219,
+    "failed_evaluations": 0,
+    "total_failed_workflow_generation": 58,
+    "total_comparison_steps_evaluated": 893,
+    "key_metrics": {
+      "Average": 0.8127,
+      "Call Rejection Classification Accuracy": 0.85,
+      "FC": 0.87,
+      "Plan": 0.718
+    },
+    "score_details": {
+      "workflow_scores": {
+        "workflow_evaluation_with_failure": 0.718,
+        "workflow_evaluation_without_failure": 0.745,
+        "average_structural_GED": 0.72,
+        "average_component_GED": 0.74
+      },
+      "function_call_scores": {
+        "function_name_accuracy": 0.91,
+        "arguments_key_score": 0.88,
+        "arguments_value_score_not_count_rejection": 0.82,
+        "overall_function_call_failed_rate": 0.15,
+        "total_fc_successful_calls": 1420,
+        "total_function_call_cases": 1670
+      },
+      "call_rejection_scores": {
+        "total_rejection_cases": 145,
+        "reject_decision_performance": {
+          "precision": 0.92,
+          "recall": 0.78,
+          "f1": 0.84,
+          "accuracy": 0.87
+        },
+        "fc_decision_performance": {
+          "precision": 0.88,
+          "recall": 0.91,
+          "f1": 0.89,
+          "accuracy": 0.85
+        },
+        "error_patterns": {
+          "overaction_rate": 0.12,
+          "underaction_rate": 0.08
+        },
+        "rejection_type_accuracy": 0.95,
+        "total_rejection_type_mismatch": 6,
+        "total_failed_generation": 3
+      },
+      "raw_confusion_matrix": {
+        "total_true_positive_reject": 113,
+        "total_true_negative_reject": 1420,
+        "total_false_positive_reject": 10,
+        "total_false_negative_reject": 32,
+        "total_true_positive_fc": 1420,
+        "total_false_positive_fc": 32,
+        "total_false_negative_fc": 10,
+        "total_true_negative_fc": 113
+      }
+    }
+  },
+  "detailed_results": [
+    {
+      "file_path": "indivisual_case_1.json",
+      "workflow_evaluation_with_failure": 1.0,
+      "workflow_evaluation_without_failure": 1.0,
+      "average_structural_GED": 1.0,
+      "average_component_GED": 1.0,
+      "failed_workflow_generation": 0,
+      "total_comparison_steps_evaluated": 1,
+      "arguments_key_score": 1.0,
+      "arguments_value_score_not_count_rejection": 0.7143,
+      "total_fc_successful_calls": 1.0,
+      "total_rejection_cases": 1.0,
+      "total_true_positive_reject": 0,
+      "total_true_negative_reject": 1,
+      "total_false_positive_reject": 0,
+      "total_false_negative_reject": 1,
+      "total_true_positive_fc": 1,
+      "total_false_positive_fc": 1,
+      "total_false_negative_fc": 0,
+      "total_true_negative_fc": 0,
+      "total_function_call_cases": 1.0,
+      "function_name_accuracy": 1.0
+    }
+  ]
+}

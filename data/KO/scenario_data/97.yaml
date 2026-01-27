@@ -1,0 +1,169 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2026-03-20T14:20
+
+      where: 아이파크 정자'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '이효리가 유기견 보호하는걸로 유명하다던데 관련 뉴스좀 찾아줘
+
+      그리고 분당 정자동 근처 봉사 갈수있는 유기견 보호소 있나좀 알아봐줘'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"이효리 유기견\
+      \ 보호 관련 뉴스 검색\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"분당 정자동\
+      \ 근처 봉사활동 가능한 유기견 보호소 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"이효리 유기견 보호 관련 뉴스\
+      \ 검색\"\ntool_call_result:\n  personNews:\n    - title: \"이효리, 유기견 보호소 찾아 자원봉사…입양\
+      \ 캠페인 동참\"\n      source: \"연합뉴스\"\n      date: \"2025-07-15\"\n      summary:\
+      \ \"가수 이효리가 제주도의 한 유기견 보호소를 방문해 자원봉사 활동을 펼쳤다. 그녀는 SNS를 통해 유기동물 입양의 중요성을 강조하며,\
+      \ 팬들에게도 따뜻한 관심을 당부했다.\"\n      link: \"https://www.yna.co.kr/view/AKR20250715012300005\"\
+      \n\n    - title: \"이효리, 유기견 입양 인증…‘반려는 책임입니다’ 메시지 전해\"\n      source: \"조선일보\"\
+      \n      date: \"2025-06-28\"\n      summary: \"이효리가 최근 유기견 한 마리를 직접 입양한 사실이\
+      \ 알려졌다. 입양 인증 사진과 함께 '반려는 끝까지 책임지는 것'이라는 메시지를 남기며 화제를 모았다.\"\n      link: \"\
+      https://www.chosun.com/culture-life/pet/2025/06/28/ABC123\"\n\n    - title:\
+      \ \"이효리의 유기동물 사랑…'사지 말고 입양하세요' 캠페인 참여\"\n      source: \"서울신문\"\n      date:\
+      \ \"2025-05-30\"\n      summary: \"이효리는 최근 동물자유연대가 주최한 ‘사지 말고 입양하세요’ 캠페인에 모델로\
+      \ 참여해 유기동물 문제 해결을 위한 목소리를 높였다.\"\n      link: \"https://www.seoul.co.kr/news/newsView.php?id=20250530015001\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"분당 정자동 근처 봉사활동 가능한\
+      \ 유기견 보호소 검색\"\n  sortBy: \"distance\"\n  placeCategory: \"유기견 보호소\"\n  location:\
+      \ \"분당구 정자동\"\ntool_call_result:\n  data:\n    places:\n      - name: \"성남시\
+      \ 반려동물 보호센터\"\n        address: \"경기 성남시 수정구 대왕판교로 815\"\n        phone: \"\
+      031-123-4567\"\n        website: \"https://www.seongnam.go.kr/petcenter\"\n\
+      \        distance: \"5.2km\"\n        openingHours: \"10:00~17:00\"\n      \
+      \  volunteerInfo: \"사전 신청 후 가능 / 주말 봉사 운영\"\n\n      - name: \"한국동물보호협회 경기지부\"\
+      \n        address: \"경기도 성남시 분당구 정자동 312\"\n        phone: \"031-234-5678\"\n\
+      \        website: \"http://www.koreananimals.or.kr\"\n        distance: \"9.8km\"\
+      \n        openingHours: \"09:30~18:00\"\n        volunteerInfo: \"1일 체험형 자원봉사\
+      \ 가능 / 입소동물 돌봄 중심\"\n\n      - name: \"유기견 사랑 쉼터\"\n        address: \"경기 성남시\
+      \ 분당구 동판교로 160\"\n        phone: \"031-345-6789\"\n        website: \"https://lovepaws.or.kr\"\
+      \n        distance: \"3.6km\"\n        openingHours: \"10:00~16:00\"\n     \
+      \   volunteerInfo: \"사전 전화 예약 필수 / 소형견 중심 보호소\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 이효리 님의 유기견 보호 활동과 관련된 최근 뉴스입니다.\n\n1. 이효리, 유기견 보호소 찾아 자원봉사…입양 캠페인\
+      \ 동참\n\n   * 연합뉴스 | 2025-07-15\n   * 제주도의 유기견 보호소에서 자원봉사 활동을 진행하며, 유기동물 입양의\
+      \ 중요성을 강조했습니다.\n    [기사 보기] (https://www.yna.co.kr/view/AKR20250715012300005)\n\
+      \n2. 이효리, 유기견 입양 인증…‘반려는 책임입니다’ 메시지 전해\n\n   * 조선일보 | 2025-06-28\n   * 유기견을\
+      \ 직접 입양한 뒤, ‘끝까지 책임지는 반려’를 강조하는 메시지를 남겼습니다.\n    [기사 보기] (https://www.chosun.com/culture-life/pet/2025/06/28/ABC123)\n\
+      \n3. 이효리의 유기동물 사랑…'사지 말고 입양하세요' 캠페인 참여\n\n   * 서울신문 | 2025-05-30\n   * 동물자유연대가\
+      \ 주최한 입양 캠페인에 참여하며 유기동물 문제 해결을 위한 목소리를 냈습니다.\n    [기사 보기] (https://www.seoul.co.kr/news/newsView.php?id=20250530015001)\n\
+      \n▶ 분당구 정자동 기준으로 봉사활동이 가능한 유기견 보호소를 안내드립니다.\n\n1. 성남시 반려동물 보호센터\n\n   * 주소:\
+      \ 경기 성남시 수정구 대왕판교로 815\n   * 연락처: 031-123-4567\n   * 운영시간: 10:00 \\~ 17:00\n\
+      \   * 봉사안내: 사전 신청 후 가능하며 주말에도 봉사 프로그램 운영\n   * 홈페이지: [https://www.seongnam.go.kr/petcenter](https://www.seongnam.go.kr/petcenter)\n\
+      \n2. 한국동물보호협회 경기지부\n\n   * 주소: 경기도 성남시 분당구 정자동 312\n   * 연락처: 031-234-5678\n\
+      \   * 운영시간: 09:30 \\~ 18:00\n   * 봉사안내: 1일 체험형 자원봉사 가능하며, 입소 동물 돌봄 중심\n   *\
+      \ 홈페이지: [http://www.koreananimals.or.kr](http://www.koreananimals.or.kr)\n\n\
+      3. 유기견 사랑 쉼터\n\n   * 주소: 경기 성남시 분당구 동판교로 160\n   * 연락처: 031-345-6789\n   * 운영시간:\
+      \ 10:00 \\~ 16:00\n   * 봉사안내: 사전 전화 예약 필수, 소형견 중심 보호소\n   * 홈페이지: [https://lovepaws.or.kr](https://lovepaws.or.kr)\n\
+      \n더 자세한 정보를 원하시면 각 보호소의 공식 홈페이지를 방문해 주세요."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: '봉사 준비물 사러 다이소 가야할거같은데,
+
+      정자 아이파크에서 정자역과 가장 가까운 다이소까지 걸어가는 길 안내좀 해줘 카카오맵으로'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: competed\n  type: independent\n  steps:\n   \
+      \ - status: competed\n      name: person_agent\n      refined_query: \"이효리 유기견\
+      \ 보호 관련 뉴스 검색\"\n\nworkflow_2:\n  status: competed\n  type: independent\n  steps:\n\
+      \    - status: competed\n      name: place_agent\n      refined_query: \"분당\
+      \ 정자동 근처 봉사활동 가능한 유기견 보호소 검색\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"봉사 준비물을 구매할 정자역에서 가장 가까운 다이소 검색\"\n\nworkflow_4:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"정자 아이파크에서 정자역과 가장 가까운 다이소까지\
+      \ 걸어가는 길 카카오맵으로 안내\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"봉사 준비물을 구매할 정자역에서\
+      \ 가장 가까운 다이소\"\n  location: \"정자역\"\n  placeName: \"다이소\"\n  sortBy: \"distance\"\
+      \ntool_call_result:\n  data:\n    places:\n      - name: \"다이소 정자역점\"\n    \
+      \    address: \"경기 성남시 분당구 정자일로 186 1층\"\n        phone: \"031-789-1234\"\n\
+      \        distance: \"120m\"\n        openingHours: \"10:00~22:00\"\n       \
+      \ features:\n          - \"생활용품 다양\"\n          - \"봉사활동 준비물 다수 보유\"\n     \
+      \     - \"정자역 4번 출구 도보 2분\"\n\n      - name: \"다이소 수내점\"\n        address: \"\
+      경기 성남시 분당구 황새울로200번길 36 2층\"\n        phone: \"031-222-4567\"\n        distance:\
+      \ \"1.4km\"\n        openingHours: \"10:00~22:00\"\n        features:\n    \
+      \      - \"넓은 매장 규모\"\n          - \"문구류와 포장재 구비\"\n          - \"수내역 3번 출구\
+      \ 도보 3분\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"아이파크 정자에서부터 정자역과\
+      \ 가장 가까운 다이소까지 걸어가는 길 카카오맵 안내\"\n  departureTime: \"2026-03-20T14:20\"\n  origin:\
+      \ \"아이파크 정자\"\n  transportModes: \"walk\"\n  optimizeBy: \"fastest\"\n  destination:\
+      \ \"다이소 정자역점\"\n  source: \"카카오맵\"\ntool_call_result:\n  route:\n    origin:\
+      \ \"아이파크 정자\"\n    destination: \"다이소 정자역점\"\n    distance: \"210m\"\n    duration:\
+      \ \"도보 약 3분\"\n    steps:\n      - step: \"아이파크 정자 정문에서 정자역 방향으로 직진\"\n    \
+      \  - step: \"정자역 4번 출구 방향으로 우회전\"\n      - step: \"100m 직진 후 다이소 정자역점 도착 (1층)\"\
+      \n    mapLink: \"https://map.kakao.com/link/to/다이소정자역점,37.366123,127.108456\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '아이파크 정자에서 다이소 정자역점 까지 걷는 경로는 아래와 같습니다.
+
+
+      * 출발 위치: 아이파크 정자
+
+      * 도착 위치: 다이소 정자역점
+
+      * 거리: 약 210m
+
+      * 예상 소요 시간: 도보 약 3분
+
+
+      이동 경로
+
+
+      1. 아이파크 정자 정문에서 정자역 방향으로 직진
+
+      2. 정자역 4번 출구 방향으로 우회전
+
+      3. 100m 직진 후 다이소 정자역점 1층 도착
+
+
+      더 자세한 경로는 아래 링크에서 확인해 주세요.
+
+      [카카오맵에서 경로 보기](https://map.kakao.com/link/to/다이소정자역점,37.366123,127.108456)'

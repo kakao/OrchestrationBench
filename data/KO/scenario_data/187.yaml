@@ -1,0 +1,156 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜 : 2025-07-16
+
+      - 현재 위치: 홍대입구역'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 근처에 24시간 공부할 수 있는 스터디 카페 찾아보고 공부할 때 들을 만한 집중력 높여주는 음악 플레이리스트 좀 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"근처 24시간 공부\
+      \ 할 수 있는 스터디 카페\"\n\nworkflow_2:\n  status: pending\n  type: independent\n \
+      \ steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"공부할때 들을 수 있는 집중력 높여주는 음악 플레이리스트\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"근처 24시간 공부 할 수 있는\
+      \ 스터디 카페\"\n  location: \"홍대입구역\"\n  placeCategory: \"스터디카페\"\n  sortBy: \"\
+      distance\"\n  specialCondition: \"24시간\"\ntool_call_result:\n  data:\n    places:\n\
+      \      - name: \"작심스터디카페 홍대점\"\n        address: \"서울 마포구 동교로25길 10\"\n    \
+      \    openHours: \"24시간 운영\"\n        features:\n          - \"개별 집중석\"\n   \
+      \       - \"프라이빗룸\"\n          - \"조용한 분위기\"\n          - \"콘센트 구비\"\n     \
+      \   tag:\n          - \"24시\"\n          - \"스터디\"\n          - \"무소음\"\n  \
+      \    - name: \"공부하는 밤 홍대점\"\n        address: \"서울 마포구 와우산로 121 B1\"\n     \
+      \   openHours: \"연중무휴, 24시간\"\n        features:\n          - \"집중존\"\n    \
+      \      - \"넓은 책상\"\n          - \"무제한 음료\"\n          - \"출입통제 시스템\"\n     \
+      \   tag:\n          - \"집중\"\n          - \"24시간 운영\"\n          - \"스터디카페\"\
+      \n      - name: \"콰이엇스터디카페 홍대입구역점\"\n        address: \"서울 마포구 양화로 161 3층\"\n\
+      \        openHours: \"24시간\"\n        features:\n          - \"개인 좌석\"\n   \
+      \       - \"와이파이\"\n          - \"조용한 음악\"\n          - \"예약 가능\"\n        tag:\n\
+      \          - \"스터디\"\n          - \"24시\"\n          - \"조용한 공간\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMusicInfo\narguments:\n  refinedQuery: \"공부할때 들을 수 있는 집중력 높혀주는\
+      \ 음악 플레이리스트\"\n  moodTag: \"공부할때 들으면 집중력 높혀주는 음악\"\n  chartType: \"melon\"\n\
+      tool_call_result:\n  data:\n    playlists:\n      - title: \"멜론 집중력 향상 BGM\"\
+      \n        description: \"공부에 몰입할 수 있는 잔잔한 인스트루멘털과 로파이 사운드 중심의 플레이리스트\"\n   \
+      \     platform: \"Melon\"\n        url: \"https://www.melon.com/mymusic/playlist/melonfocus\"\
+      \n        tags:\n          - \"공부\"\n          - \"집중력\"\n          - \"로파이\"\
+      \n          - \"인스트루멘탈\"\n      - title: \"조용한 밤, 공부할 때 듣기 좋은 음악\"\n       \
+      \ description: \"밤늦은 시간, 조용한 분위기에서 집중할 수 있도록 구성된 감성적 BGM\"\n        platform:\
+      \ \"Melon\"\n        url: \"https://www.melon.com/mymusic/playlist/quietstudy\"\
+      \n        tags:\n          - \"야간 공부\"\n          - \"피아노\"\n          - \"\
+      집중\"\n          - \"잔잔함\"\n      - title: \"Deep Focus with Melon\"\n      \
+      \  description: \"미니멀하고 반복적인 비트로 뇌의 집중력을 높이는 멜론 추천곡 모음\"\n        platform:\
+      \ \"Melon\"\n        url: \"https://www.melon.com/mymusic/playlist/deepfocus\"\
+      \n        tags:\n          - \"미니멀\"\n          - \"딥워크\"\n          - \"집중\
+      \ 향상\"\n          - \"스마트러닝\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '홍대입구역 근처에서 24시간 운영하며 공부하기 좋은 스터디카페를 찾고 계신다면, 아래 세 곳을 추천드립니다:
+
+
+      - 작심스터디카페 홍대점
+
+
+      주소: 서울 마포구 동교로25길 10
+
+
+      운영시간: 24시간
+
+
+      주요 특징: 개별 집중석, 프라이빗룸, 조용한 분위기, 콘센트 완비
+
+
+      분위기: 무소음 존이 잘 마련되어 있어 시험 공부나 논문 작성 등 고도의 집중이 필요한 작업에 적합합니다.
+
+
+      - 공부하는 밤 홍대점
+
+
+      주소: 서울 마포구 와우산로 121 B1
+
+
+      운영시간: 연중무휴, 24시간
+
+
+      주요 특징: 집중존, 넓은 책상, 무제한 음료, 출입통제 시스템
+
+
+      분위기: 정숙한 환경과 체계적인 출입 시스템 덕분에 야간 학습이나 장시간 공부에 유리합니다.
+
+
+      - 콰이엇스터디카페 홍대입구역점
+
+
+      주소: 서울 마포구 양화로 161 3층
+
+
+      운영시간: 24시간
+
+
+      주요 특징: 개인 좌석, 와이파이, 잔잔한 음악, 예약 가능
+
+
+      분위기: 부드러운 배경음과 프라이빗한 좌석 구성으로 혼자 집중하기에 최적화된 환경입니다.
+
+
+      이 세 곳 모두 시간에 구애받지 않고 공부할 수 있는 24시간 운영 공간이며, 좌석 구성과 분위기가 각기 달라 공부 목적에 맞게 선택하실
+      수 있습니다.
+
+      가격, 좌석 사진, 예약 방법이 필요하시면 언제든지 도와드릴게요.
+
+
+      --------------------
+
+
+      공부할 때 집중력을 높여주는 음악을 찾고 계시군요.  멜론에서 추천하는 집중용 플레이리스트 세 가지를 소개해 드릴게요:
+
+
+      멜론 집중력 향상 BGM
+
+      로파이 사운드와 잔잔한 인스트루멘털 위주의 곡들로 구성되어 있어, 장시간 공부나 업무 시 배경음으로 딱 좋습니다.
+
+      https://www.melon.com/mymusic/playlist/melonfocus
+
+
+      조용한 밤, 공부할 때 듣기 좋은 음악
+
+      늦은 밤 집중할 수 있는 감성적인 피아노 중심의 선곡으로, 야간 공부에 특히 어울리는 플레이리스트입니다.
+
+      https://www.melon.com/mymusic/playlist/quietstudy
+
+
+      Deep Focus with Melon
+
+      반복적인 미니멀 비트로 몰입도를 끌어올리는 데 초점을 맞춘 구성으로, ''딥워크''나 스마트러닝 환경에 잘 어울립니다.
+
+      https://www.melon.com/mymusic/playlist/deepfocus
+
+
+      편안하고 효과적인 공부 시간이 되시길 바랍니다!  필요하시면 다른 플랫폼(예: Spotify, YouTube Music)도 추천해드릴 수
+      있어요.'

@@ -1,0 +1,90 @@
+{
+  "agent_card": {
+    "name": "Message",
+    "agent_id": "message_agent",
+    "description": "A communication agent that sends messages instantly or on a schedule via email, SMS, or messenger apps (e.g., WhatsApp, Slack). Supports various purposes such as alerts, announcements, and notifications, as well as recurring schedules and priority settings.",
+    "url": "http://localhost:10003/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": true
+    },
+    "skills": [
+      {
+        "id": "sendMessage",
+        "name": "Send Message",
+        "description": "Sends a message to the recipient's email or phone number. Supports immediate sending, scheduled sending at a specific time, and recurring settings.",
+        "examples": [
+          "Send the quarterly report to John via email now",
+          "Send a reminder text to (202) 555-0198 about today's team meeting",
+          "Schedule a client meeting reminder for 9:00 am tomorrow"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "sendMessage",
+      "description": "Based on the entered recipient (email or mobile phone number), channel (SMS, email, etc.), and message content, sends the message immediately or schedules it for later. Supports recurring schedules and priority settings. When sending to multiple recipients repeatedly, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "Refined message request sentence (e.g., 'Send a notification text to the client at 9:00 am tomorrow')"
+          },
+          "email": {
+            "type": "string",
+            "description": "Recipient's email address (required when channel is 'email')"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Recipient's phone number (required when channel is 'sms' or 'whatsapp')"
+          },
+          "channel": {
+            "type": "string",
+            "enum": [
+              "email",
+              "sms",
+              "whatsapp"
+            ],
+            "description": "Message delivery method (e.g., 'email', 'sms')"
+          },
+          "message": {
+            "type": "string",
+            "description": "The body content of the message to be sent"
+          },
+          "sendTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Scheduled send time (ISO 8601 format YYYY-MM-DDTHH:mm; if omitted, sends immediately)"
+          },
+          "repeatRule": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "description": "'none' (default): no repeat; select when scheduling recurring messages"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "high"
+            ],
+            "description": "Message priority (default is 'normal')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "channel",
+          "message",
+          "repeatRule",
+          "priority"
+        ]
+      }
+    }
+  ]
+}

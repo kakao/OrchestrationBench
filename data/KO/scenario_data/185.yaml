@@ -1,0 +1,327 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜 : 2025-07-16'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 12월 15일부터 20일까지 중국 상해 여행 갈건데 왕복 비행기표도 예약해주고, 비행기 시간 맞춰서 여행 일정 좀 짜봐
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"12월 15일부터\
+      \ 20일까지 중국 상해 왕복 비행기표 정보 조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"12월 15일부터 20일까지 중국 상해 왕복 비행기표 예약\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: pending\n      name: travel_agent\n      refined_query: \"12월\
+      \ 15일부터 20일까지 비행기 시간을 고려한 중국 상해 여행 일정 계획\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"12월 15일부터 20일까지\
+      \ 중국 상해 왕복 비행기표 조회\"\n  departure: \"ICN\"\n  destination: \"상해\"\n  departureDate:\
+      \ \"2025-12-15\"\n  returnDate: \"2025-12-20\"\ntool_call_result:  \n  status:\
+      \ success  \n  data:\n    search_summary:\n      departure_city: \"서울 (ICN)\"\
+      \n      destination_city: \"상해 (PVG)\"\n      departure_date: \"2025-12-15\"\
+      \n      return_date: \"2025-12-20\"\n      total_found: 12\n    flights:\n \
+      \     - tripID: \"FL20251215A\"\n        airline: \"아시아나항공 (Asiana Airlines)\"\
+      \n        price: \"425,000원\"\n        outbound_flight:\n          flight_number:\
+      \ \"OZ361\"\n          departure_airport: \"ICN\"\n          departure_time:\
+      \ \"09:00\"\n          arrival_airport: \"PVG\"\n          arrival_time: \"\
+      10:10\"\n          duration: \"2시간 10분\"\n        inbound_flight:\n        \
+      \  flight_number: \"OZ362\"\n          departure_airport: \"PVG\"\n        \
+      \  departure_time: \"11:10\"\n          arrival_airport: \"ICN\"\n         \
+      \ arrival_time: \"14:20\"\n          duration: \"2시간 10분\"\n        stops: \"\
+      직항\"\n        remaining_seats: 8\n      - tripID: \"FL20251215B\"\n        airline:\
+      \ \"중국동방항공 (China Eastern Airlines)\"\n        price: \"380,000원\"\n       \
+      \ outbound_flight:\n          flight_number: \"MU5052\"\n          departure_airport:\
+      \ \"ICN\"\n          departure_time: \"13:20\"\n          arrival_airport: \"\
+      PVG\"\n          arrival_time: \"14:45\"\n          duration: \"2시간 25분\"\n\
+      \        inbound_flight:\n          flight_number: \"MU5051\"\n          departure_airport:\
+      \ \"PVG\"\n          departure_time: \"18:05\"\n          arrival_airport: \"\
+      ICN\"\n          arrival_time: \"21:15\"\n          duration: \"2시간 10분\"\n\
+      \        stops: \"직항\"\n        remaining_seats: 5\n      - tripID: \"FL20251215C\"\
+      \n        airline: \"대한항공 (Korean Air)\"\n        price: \"450,000원\"\n    \
+      \    outbound_flight:\n          flight_number: \"KE895\"\n          departure_airport:\
+      \ \"ICN\"\n          departure_time: \"11:05\"\n          arrival_airport: \"\
+      PVG\"\n          arrival_time: \"12:25\"\n          duration: \"2시간 20분\"\n\
+      \        inbound_flight:\n          flight_number: \"KE896\"\n          departure_airport:\
+      \ \"PVG\"\n          departure_time: \"14:05\"\n          arrival_airport: \"\
+      ICN\"\n          arrival_time: \"17:15\"\n          duration: \"2시간 10분\"\n\
+      \        stops: \"직항\"\n        remaining_seats: 9\n      - tripID: \"FL20251215D\"\
+      \n        airline: \"중국남방항공 (China Southern Airlines)\"\n        price: \"355,000원\"\
+      \n        outbound_flight:\n          flight_number: \"CZ370\"\n          departure_airport:\
+      \ \"ICN\"\n          departure_time: \"16:15\"\n          arrival_airport: \"\
+      PVG\"\n          arrival_time: \"17:30\"\n          duration: \"2시간 15분\"\n\
+      \        inbound_flight:\n          flight_number: \"CZ369\"\n          departure_airport:\
+      \ \"PVG\"\n          departure_time: \"12:00\"\n          arrival_airport: \"\
+      ICN\"\n          arrival_time: \"15:15\"\n          duration: \"2시간 15분\"\n\
+      \        stops: \"직항\"\n        remaining_seats: 3"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 탑승자 인원, 탑승자 이름, 생일, 성별, 연락처, 여권번호, 좌석등급, 수화물 옵션, 마일리지 사용 여부'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '12월 15일(월)에 인천을 출발해서 12월 20일(토)에 상해에서 돌아오는 왕복 항공편의 상세 정보입니다.
+
+
+      1. 중국남방항공 (China Southern Airlines) - 최저가
+
+      가격: 355,000원
+
+
+      - 가는 편 (12/15, 월):
+
+
+      CZ370: 16:15 인천(ICN) 출발 → 17:30 상해(PVG) 도착
+
+      (소요 시간: 2시간 15분)
+
+
+      - 오는 편 (12/20, 토):
+
+
+      CZ369: 12:00 상해(PVG) 출발 → 15:15 인천(ICN) 도착
+
+      (소요 시간: 2시간 15분)
+
+
+      한 줄 평: 가격이 가장 저렴하지만, 잔여 좌석이 3석뿐이라 빠른 결정이 필요해요!
+
+
+      2. 중국동방항공 (China Eastern Airlines) - 실속파
+
+      가격: 380,000원
+
+
+      - 가는 편 (12/15, 월):
+
+
+      MU5052: 13:20 인천(ICN) 출발 → 14:45 상해(PVG) 도착
+
+      (소요 시간: 2시간 25분)
+
+
+      - 오는 편 (12/20, 토):
+
+
+      MU5051: 18:05 상해(PVG) 출발 → 21:15 인천(ICN) 도착
+
+      (소요 시간: 2시간 10분)
+
+
+      한 줄 평: 너무 이르거나 늦지 않은, 가격과 시간대가 적절히 균형 잡힌 선택지입니다.
+
+
+      3. 아시아나항공 (Asiana Airlines) - 황금 시간대
+
+      가격: 425,000원
+
+
+      - 가는 편 (12/15, 월):
+
+
+      OZ361: 09:00 인천(ICN) 출발 → 10:10 상해(PVG) 도착
+
+      (소요 시간: 2시간 10분)
+
+
+      - 오는 편 (12/20, 토):
+
+
+      OZ362: 11:10 상해(PVG) 출발 → 14:20 인천(ICN) 도착
+
+      (소요 시간: 2시간 10분)
+
+
+      한 줄 평: 아침 일찍 출발해서 여행 첫날을 온전히 활용할 수 있는 가장 효율적인 스케줄입니다.
+
+
+      4. 대한항공 (Korean Air) - 국적기 선호
+
+      가격: 450,000원
+
+
+      - 가는 편 (12/15, 월):
+
+
+      KE895: 11:05 인천(ICN) 출발 → 12:25 상해(PVG) 도착
+
+      (소요 시간: 2시간 20분)
+
+
+      -오는 편 (12/20, 토):
+
+
+      KE896: 14:05 상해(PVG) 출발 → 17:15 인천(ICN) 도착
+
+      (소요 시간: 2시간 10분)
+
+
+      한 줄 평: 국적기를 선호하시고, 오전 출발을 원하신다면 가장 안정적인 선택입니다.
+
+
+      ----------
+
+
+      안녕하세요! 항공권 예매를 위해 아래 정보를 알려주세요.
+
+      정확한 예매를 위해 필요한 정보이오니, 꼼꼼하게 확인 후 입력해 주시기 바랍니다.
+
+
+      [ 1. 탑승자 정보 (필수) ]
+
+
+      - 총 탑승 인원: [ 총 O명 ]
+
+
+      [ 첫 번째 탑승자 ]
+
+
+      - 이름 (국문):
+
+
+      - 이름 (영문): ※ 국제선일 경우, 여권과 철자가 반드시 일치해야 합니다.
+
+
+      - 생년월일: (예: 1990-01-01)
+
+
+      - 성별: (남/여)
+
+
+      - 연락처: (예: 010-1234-5678)
+
+
+      - 여권번호: ※ 국제선일 경우 필수 기재
+
+
+      (두 번째 탑승자부터는 위 양식을 복사하여 사용해 주세요.)
+
+
+
+
+      [ 2. 항공편 추가 정보 ]
+
+
+      -  좌석 등급: (예: 이코노미, 비즈니스, 일등석)
+
+      -  수하물 옵션: (예: 기본, 위탁수하물 1개 추가, 특수 수하물 등)
+
+      -  마일리지 사용 여부: (예: 대한항공 마일리지 사용, 미사용)
+
+
+
+
+      위 정보를 모두 알려주시면 다음 단계를 진행하겠습니다.
+
+      특히 영문 이름과 여권 정보는 오탈자가 없는지 다시 한번 확인 부탁드립니다. 감사합니다'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: "4번 항공권으로 예매할게\n\n필수 정보\n탑승자 인원 수: 1\n\n탑승자1 \n이름: 박준\n이름: PARK JUN\n\
+      생년월일: 1990-05-20\n성별: 남\n연락처: 010-1234-5678\n여권번호: M12345678\n\n선택 정보 (있을 경우)\n\
+      좌석 등급: 일반석\n수하물 옵션: 무료 수화물\n마일리지 사용 여부: 없음"
+- workflow_id: null
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: bookFlight\narguments:\n  refinedQuery: \"2025년 12월 15일 중국 상해\
+      \ 왕복 항공권 예약\"\n  tripID: \"FL20251215C\"\n  passengerInfoList:\n    - name:\
+      \ \"PARK JUN\"\n      birthDate: \"1990-05-20\"\n      gender: \"male\"\n  \
+      \    passportNumber: \"M12345678\"\n      nationality: \"KR\"\n      contactNumber:\
+      \ \"010-1234-5678\"\n  seatClass: \"economy\"\n  baggageOption: \"basic\"\n\
+      \  useMileage: false\ntool_call_result:\n  status: success\n  data:\n    booking_id:\
+      \ \"BK20250721G6H7I\"\n    booking_status: \"confirmed\"\n    flight_details:\n\
+      \      tripID: \"FL20251215C\"\n      airline: \"대한항공 (Korean Air)\"\n     \
+      \ total_price: \"450,000원\"\n      outbound_flight:\n        flight_number:\
+      \ \"KE895\"\n        departure_airport: \"ICN\"\n        departure_time: \"\
+      2025-12-15 11:05\"\n        arrival_airport: \"PVG\"\n        arrival_time:\
+      \ \"2025-12-15 12:25\"\n      inbound_flight:\n        flight_number: \"KE896\"\
+      \n        departure_airport: \"PVG\"\n        departure_time: \"2025-12-20 14:05\"\
+      \n        arrival_airport: \"ICN\"\n        arrival_time: \"2025-12-20 17:15\"\
+      \n    passenger_details:\n      - name: \"박준\"\n        birthDate: \"1990-05-20\"\
+      \n        gender: \"male\"\n        passportNumber: \"M12345678\"\n        nationality:\
+      \ \"KR\"\n        contactNumber: \"010-1234-5678\"\n    summary: \"박준님의 대한항공\
+      \ 상해 왕복 항공권 예약이 성공적으로 완료되었습니다. 예약번호는 BK20250721G6H7I 입니다.\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"12월 15일부터 20일 까지 비행기\
+      \ 시간을 고려한 중국 상해 여행 일정 계획\"\n  destination: \"상해\"\n  duration: \"5박6일\"\n  startDate:\
+      \ \"2025-12-15\"\n  endDate: \"2025-12-20\"\ntool_call_result:\n  status: success\n\
+      \  data:\n    trip_summary:\n      destination: \"중국 상해 (Shanghai, China)\"\n\
+      \      period: \"2025-12-15 ~ 2025-12-20 (5박 6일)\"\n      theme: \"역사와 미래의 공존,\
+      \ 상해 핵심 일정\"\n      notes: \"항공 도착/출발 시간을 고려하여 여유롭게 구성한 일정입니다.\"\n    daily_plan:\n\
+      \      - day: 1\n        date: \"2025-12-15 (월)\"\n        theme_of_the_day:\
+      \ \"상해 도착 및 푸동 야경 감상\"\n        highlights:\n          - \"오후: 푸동 공항 도착(12:25)\
+      \ 후 호텔 체크인 및 휴식\"\n          - \"저녁: 상하이 타워 또는 동방명주에서 상해의 화려한 스카이라인 감상\"\n \
+      \         - \"밤: 와이탄(The Bund) 강변을 걸으며 야경 즐기기\"\n\n      - day: 2\n        date:\
+      \ \"2025-12-16 (화)\"\n        theme_of_the_day: \"클래식 상해: 예원과 난징동루\"\n     \
+      \   highlights:\n          - \"오전: 명나라 시대의 아름다운 정원, 예원(Yuyuan Garden) 산책\"\n\
+      \          - \"점심: 예원 근처 맛집에서 샤오롱바오(소룡포) 맛보기\"\n          - \"오후/저녁: 상해 최대 번화가인\
+      \ 난징동루(Nanjing Road)에서 쇼핑과 길거리 음식 탐방\"\n\n      - day: 3\n        date: \"2025-12-17\
+      \ (수)\"\n        theme_of_the_day: \"예술과 낭만의 프랑스 조계지\"\n        highlights:\n\
+      \          - \"오전: 구석구석 볼거리가 많은 예술가 거리, 톈즈팡(Tianzifang) 탐방\"\n          - \"\
+      점심/오후: 세련된 카페와 상점이 즐비한 신톈디(Xintiandi)에서 브런치와 여유로운 시간\"\n          - \"저녁: 세계적인\
+      \ 수준의 상해 서커스 관람 또는 와이탄 근처 루프탑 바에서 칵테일\"\n\n      - day: 4\n        date: \"\
+      2025-12-18 (목)\"\n        theme_of_the_day: \"선택의 날: 근교 여행 또는 시내 탐방\"\n    \
+      \    highlights:\n          - \"옵션 A: 상해 근교의 물의 도시 '주자자오(Zhujiajiao)' 당일치기 여행\"\
+      \n          - \"옵션 B: 상해 시내에 머무르며 '상하이 박물관' 관람 및 '우캉루' 산책\"\n          - \"\
+      저녁: 하이디라오 등 유명 체인점에서 즐기는 훠궈 디너\"\n      \n      - day: 5\n        date: \"2025-12-19\
+      \ (금)\"\n        theme_of_the_day: \"마지막 쇼핑과 여유\"\n        highlights:\n   \
+      \       - \"오전: 인민광장(People's Square) 주변을 둘러보거나, 미처 방문하지 못했던 곳 방문\"\n      \
+      \    - \"오후: 마지막 기념품 쇼핑 또는 관심 있는 테마의 카페에서 휴식\"\n          - \"저녁: 여행의 마지막 밤을\
+      \ 장식할 특별한 저녁 식사\"\n\n      - day: 6\n        date: \"2025-12-20 (토)\"\n    \
+      \    theme_of_the_day: \"귀국 준비\"\n        highlights:\n          - \"오전: 호텔\
+      \ 체크아웃 및 공항으로 이동 준비\"\n          - \"점심: 공항으로 이동하기 전, 가벼운 점심 식사\"\n        \
+      \  - \"14:05: 푸동 공항(PVG)에서 인천으로 출발\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "네, 박준님. 상해 여행 준비가 성공적으로 완료되었습니다!\n\n요청하신 대로 대한항공 항공권 예약과 예약된 비행 스케줄에\
+      \ 맞춘 5박 6일 맞춤 여행 계획 초안이 모두 준비되었어요. \n\n✅ 항공권 예약 확정 정보\n먼저, 가장 중요한 항공권 예약 내용부터\
+      \ 확인해 드릴게요.\n\n항공사: 대한항공 (Korean Air)\n\n예약번호: BK20250721G6H7I\n\n승객: 박준 (PARK,\
+      \ JUN)\n\n총 결제 금액: 450,000원\n\n상세 스케줄\n\n가는 편 (KE895): 12월 15일 (월) 11:05 인천(ICN)\
+      \ 출발 → 12:25 상해(PVG) 도착\n\n오는 편 (KE896): 12월 20일 (토) 14:05 상해(PVG) 출발 → 17:15\
+      \ 인천(ICN) 도착\n\n예약 확인증을 보내드렸으니 확인해주세요.\n\n----------\n\n- 추천 여행 계획\n이제 이 항공\
+      \ 스케줄에 맞춰, 상해에서의 5박 6일을 알차게 보낼 수 있는 추천 여행 계획 초안을 안내해 드릴게요. 이 계획은 제안이며, 언제든지\
+      \ 취향에 맞게 변경할 수 있어요.\n\nDay 1 (월): 도착 및 푸동 야경 감상\n\n오후: 상해 도착(12:25) 후 호텔 체크인\
+      \ 및 휴식\n\n저녁: 상하이 타워에서 화려한 스카이라인 감상 후, 와이탄 강변에서 야경 즐기기\n\nDay 2 (화): 클래식 상해\n\
+      \n오전: 명나라 시대의 아름다운 정원, 예원(Yuyuan Garden) 산책\n\n오후: 상해 최대 번화가인 난징동루(Nanjing Road)에서\
+      \ 쇼핑과 길거리 음식 탐방\n\nDay 3 (수): 예술과 낭만의 거리\n\n오전/오후: 톈즈팡(Tianzifang)과 신톈디(Xintiandi)의\
+      \ 예술적인 골목과 세련된 카페에서 여유로운 시간 보내기\n\n저녁: 세계적인 수준의 상해 서커스 관람 추천\n\nDay 4 (목): 선택의\
+      \ 날\n\n옵션 A: 상해 근교 물의 도시 '주자자오' 당일치기\n\n옵션 B: '상하이 박물관' 등 시내 문화 탐방\n\nDay 5\
+      \ (금): 마지막 쇼핑과 여유\n\n오전: 인민광장 주변 둘러보기\n\n오후: 여행 중 아쉬웠던 곳을 다시 방문하거나, 마지막 기념품\
+      \ 쇼핑 즐기기\n\nDay 6 (토): 귀국 준비\n\n오전: 호텔 체크아웃 후 공항으로 이동 (14:05 출발)\n\n이 일정 전체를\
+      \ 사용자님의 캘린더에 등록해 드릴까요?\n\n또한, 여행 계획을 보시고 특정 레스토랑이나 공연 등 미리 예약하고 싶은 곳이 있다면 바로\
+      \ 말씀해주세요. 상해에서 잊지 못할 추억을 만드실 수 있도록 계속해서 도와드리겠습니다!"

@@ -1,0 +1,126 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- current time: 2025-10-16T13:44
+
+      - nationality: American
+
+      - name: Charles Parker'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Every Monday at 11 AM, schedule a one-hour meeting called "Weekly Team
+      Meeting" and send a calendar invite email to all participants. The meeting will
+      take place at conference room A9-JW2.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Create\
+      \ a recurring event every Monday at 11:00 AM titled 'Weekly Team Meeting' (Conference\
+      \ Room A9-JW2)\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"Send a notification email to all meeting participants\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Create a recurring\
+      \ event every Monday at 11 AM titled 'Weekly Team Meeting' (Room A9-JW2)\"\n\
+      \  title: \"Weekly Team Meeting\"\n  startDateTime: \"2025-10-20T11:00\"\n \
+      \ endDateTime: \"2025-10-20T12:00\"\n  location: \"Room A9-JW2\"\n  repeatRule:\
+      \ \"weekly\"\ntool_call_result:\n  status: success\n  data:\n    scheduleId:\
+      \ \"S20251016_R1\"\n    location: \"A9-JW2\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Email addresses of meeting participants required'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: Please provide the email addresses of the participants attending the
+      weekly team meeting.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 'AustinButler
+
+      SophiaMartinez
+
+      EthanJohnson
+
+      OliviaDavis
+
+      HannahThompson
+
+
+      The email addresses follow the format: Name@goodcompany.com'
+- workflow_id: null
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: sendMessage\n    arguments:\n      refinedQuery:\
+      \ \"Send a notification email for the 'Weekly Team Meeting' to AustinButler@goodcompany.com\"\
+      \n      email: \"AustinButler@goodcompany.com\"\n      channel: \"email\"\n\
+      \      message: |\n        Hello, Austin,\n\n        The \"Weekly Team Meeting\"\
+      \ will be held on Monday, 11:00 AM at Conference Room A9-JW2.\n        Please\
+      \ be sure to attend.\n\n        Thank you,\n        Charles Parker\n      repeatRule:\
+      \ \"none\"\n      priority: \"normal\"\n\n  - tool: sendMessage\n    arguments:\n\
+      \      refinedQuery: \"Send a notification email for the 'Weekly Team Meeting'\
+      \ to SophiaMartinez@goodcompany.com\"\n      email: \"SophiaMartinez@goodcompany.com\"\
+      \n      channel: \"email\"\n      message: |\n        Hello, Sophia,\n\n   \
+      \     The \"Weekly Team Meeting\" will be held on Monday, 11:00 AM at Conference\
+      \ Room A9-JW2.\n        Please be sure to attend.\n\n        Thank you,\n  \
+      \      Charles Parker\n      repeatRule: \"none\"\n      priority: \"normal\"\
+      \n\n  - tool: sendMessage\n    arguments:\n      refinedQuery: \"Send a notification\
+      \ email for the 'Weekly Team Meeting' to EthanJohnson@goodcompany.com\"\n  \
+      \    email: \"EthanJohnson@goodcompany.com\"\n      channel: \"email\"\n   \
+      \   message: |\n        Hello, Ethan,\n\n        The \"Weekly Team Meeting\"\
+      \ will be held on Monday, 11:00 AM at Conference Room A9-JW2.\n        Please\
+      \ be sure to attend.\n\n        Thank you,\n        Charles Parker\n      repeatRule:\
+      \ \"none\"\n      priority: \"normal\"\n\n  - tool: sendMessage\n    arguments:\n\
+      \      refinedQuery: \"Send a notification email for the 'Weekly Team Meeting'\
+      \ to OliviaDavis@goodcompany.com\"\n      email: \"OliviaDavis@goodcompany.com\"\
+      \n      channel: \"email\"\n      message: |\n        Hello, Olivia,\n\n   \
+      \     The \"Weekly Team Meeting\" will be held on Monday, 11:00 AM at Conference\
+      \ Room A9-JW2.\n        Please be sure to attend.\n\n        Thank you,\n  \
+      \      Charles Parker\n      repeatRule: \"none\"\n      priority: \"normal\"\
+      \n\n  - tool: sendMessage\n    arguments:\n      refinedQuery: \"Send a notification\
+      \ email for the 'Weekly Team Meeting' to HannahThompson@goodcompany.com\"\n\
+      \      email: \"HannahThompson@goodcompany.com\"\n      channel: \"email\"\n\
+      \      message: |\n        Hello, Hannah,\n\n        The \"Weekly Team Meeting\"\
+      \ will be held on Monday, 11:00 AM at Conference Room A9-JW2.\n        Please\
+      \ be sure to attend.\n\n        Thank you,\n        Charles Parker\n      repeatRule:\
+      \ \"none\"\n      priority: \"normal\"\n\ntool_call_result:\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-001\"\n\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-002\"\n\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-003\"\n\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-004\"\n\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-005\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: I’ve completed setting up the meeting schedule and sent out the emails
+      as requested. If you need anything else, just let me know!

@@ -1,0 +1,156 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: 2027-7-12'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I got a strange call from (202) 123-4567 and answered it. This isn’t
+      some kind of phone scam, right? Could you check the details of this number for
+      me? And just in case, please review my bank account to see if there have been
+      any suspicious transactions.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"Look\
+      \ up information for phone number (202) 123-4567\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ personal_banking_agent\n      refined_query: \"Check if there are any suspicious\
+      \ transactions on my account\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPhoneNumberInfo\narguments:\n  refinedQuery: \"Look up information\
+      \ for phone number (202) 123-4567\"\n  phoneNumber: \"2021234567\"\ntool_call_result:\n\
+      \  phoneNumber: \"2021234567\"\n  results:\n    - owner: \"Unknown\"\n     \
+      \ location: \"Washington, D.C., USA\"\n      carrier: \"AT&T\"\n      spam_score:\
+      \ 85\n      spam_type: \"Suspected phone scam\"\n      report_count: 120\n \
+      \ status: \"completed\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Account number, bank name, and account holder''s name'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: To verify your banking transaction details, please provide the account
+      holder's name, the bank name, and the account number you would like to check.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 'Emily Parker
+
+      Chase Bank
+
+      110123456789'
+- workflow_id: null
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"Check if there\
+      \ are any suspicious transactions on Emily Parker's account at Chase Bank\"\n\
+      \  accountNumber: \"110123456789\"\n  accountHolderName: \"Emily Parker\"\n\
+      \  bankName: \"Chase Bank\"\n  includeTransactions: true\ntool_call_result:\n\
+      \  accountNumber: \"110123456789\"\n  accountHolderName: \"Emily Parker\"\n\
+      \  bankName: \"Chase Bank\"\n  currentBalance: 1500\n  transactions:\n    -\
+      \ date: \"2027-07-10\"\n      description: \"ATM Withdrawal\"\n      amount:\
+      \ 100\n      transactionType: \"debit\"\n    - date: \"2027-07-11\"\n      description:\
+      \ \"Online Shopping Payment\"\n      amount: 250\n      transactionType: \"\
+      debit\"\n    - date: \"2027-07-12\"\n      description: \"Suspicious Transaction\
+      \ Detected\"\n      amount: 5000\n      transactionType: \"debit\"\n      alert:\
+      \ \"Suspicious Transaction\"\n  status: \"completed\"\n  alertPresent: true\n\
+      \  alertMessage: \"A suspicious transaction worth $5,000 has been detected in\
+      \ this account. Immediate review is required.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Information about phone number (202) 123-4567\n\n- Owner: Unknown\
+      \  \n- Location: Washington, D.C., USA  \n- Carrier: AT&T  \n- Spam Score: 85\
+      \  \n- Spam Type: Suspected phone scam  \n- Reports: 120  \n\nThis number is\
+      \ suspected of being used for scam calls. Please exercise caution and avoid\
+      \ sharing personal or financial information with the caller. Consider blocking\
+      \ the number and reporting it to your carrier or to the FTC if needed.\n\n---\n\
+      \n◾ Recent Transaction History\n\nBelow are the recent activity and the suspicious\
+      \ transaction detected on Emily Parker’s account at Chase Bank.\n\n- Account\
+      \ Number: 110123456789  \n- Current Balance: $1,500\n\nTransaction History:\
+      \  \n1. 2027-07-10 — ATM Withdrawal — $100 (debit)  \n2. 2027-07-11 — Online\
+      \ Shopping Payment — $250 (debit)  \n3. 2027-07-12 — Suspicious Transaction\
+      \ Detected — $5,000 (debit) — Irregular Transaction\n\nWarning: A suspicious\
+      \ transaction worth $5,000 has been detected on this account. Immediate verification\
+      \ is required. Please contact your bank right away to review and secure the\
+      \ account."
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: Oh no... What should I do if I’ve been scammed by a phone scam? Can you
+      tell me how to respond right now and guide me through the reporting process?
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      Look up information for the number (202) 123-4567\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ personal_banking_agent\n      refined_query: \"Check if there are any suspicious\
+      \ transactions on my account\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"What to do and how to report if I get scammed by a phone scam\""
+- workflow_id: workflow_3
+  step_id: 12
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"What to do and how to\
+      \ report if I get scammed by a phone scam\"\ntool_call_result:\n  query: \"\
+      What to do and how to report if I get scammed by a phone scam\"\n  results:\n\
+      \    - title: \"Immediate steps to take if you’ve been scammed by a phone scam\"\
+      \n      steps:\n        1. \"Call your bank immediately and request to freeze\
+      \ your account.\"\n        2. \"Visit the nearest bank branch and file an incident\
+      \ report.\"\n        3. \"Go to the local police station to submit a report\
+      \ and provide any necessary documents.\"\n        4. \"Contact the FTC (Federal\
+      \ Trade Commission) at 1-877-382-4357 or your state’s consumer protection office\
+      \ for further support.\"\n      additionalResources:\n        - title: \"FTC\
+      \ Guide to Avoiding and Reporting Phone Scams\"\n          url: \"https://www.ftc.gov/consumer-advice/scams\"\
+      \n  status: \"completed\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s what to do if you become a victim of a phone scam and how to\
+      \ report it:\n\n1. Call your bank immediately and request a freeze on your account.\
+      \  \n2. Visit the nearest bank branch and file an incident report.  \n3. Go\
+      \ to your local police station to submit a report and provide any necessary\
+      \ documents.  \n4. Contact the FTC (Federal Trade Commission) at 1-877-382-4357\
+      \ or reach out to your state’s consumer protection office for further support.\
+      \  \n\nFor more detailed information, please refer to the [FTC Guide to Avoiding\
+      \ and Reporting Phone Scams](https://www.ftc.gov/consumer-advice/scams).\n\n\
+      Follow these steps promptly, and always stay alert to prevent further damage."

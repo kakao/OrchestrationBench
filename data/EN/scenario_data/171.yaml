@@ -1,0 +1,85 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- birthday: "1995-05-15"
+
+      - gender: "male"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Why are Psiryn’s songs so good? I want to marry Psiryn. Tell me which
+      member is the most compatible with me.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"Birthdays\
+      \ of Psiryn members\"\n    - status: pending\n      name: counsel_agent\n  \
+      \    refined_query: \"Recommend which Psiryn member would be most compatible\
+      \ with me\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"Psiryn members' birthdays\"\
+      \n  groupName: \"Psiryn\"\ntool_call_result:\n  data:\n    - name: \"Anaya\"\
+      \n      realName: \"Anaya Chayenne\"\n      birthDate: \"2002-07-15\"\n    \
+      \  nationality: \"American\"\n      position: [\"Vocalist\", \"Dancer\"]\n \
+      \     debutDate: \"2024-05-10\"\n      notes: \"Known for her soulful tone and\
+      \ dynamic stage presence.\"\n    - name: \"Jada\"\n      realName: \"Jada Denise\"\
+      \n      birthDate: \"2001-11-02\"\n      nationality: \"American\"\n      position:\
+      \ [\"Lead Vocalist\"]\n      debutDate: \"2024-05-10\"\n      notes: \"The powerhouse\
+      \ voice of Psiryn, delivering strong R&B-influenced vocals.\"\n    - name: \"\
+      Victoria\"\n      realName: \"Victoria McQueen\"\n      birthDate: \"2003-03-21\"\
+      \n      nationality: \"American\"\n      position: [\"Vocalist\", \"Rapper\"\
+      ]\n      debutDate: \"2024-05-10\"\n      notes: \"Balances singing and rap\
+      \ with charisma, adding versatility to the group.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getCompatibilityInfo\n    arguments:\n      refinedQuery:\
+      \ \"Compatibility between Anaya and me\"\n      personA:\n        birthDate:\
+      \ \"1995-05-15\"\n        gender: \"male\"\n      personB:\n        birthDate:\
+      \ \"2002-07-15\"\n        gender: \"female\"\n  - tool: getCompatibilityInfo\n\
+      \    arguments:\n      refinedQuery: \"Compatibility between Jada and me\"\n\
+      \      personA:\n        birthDate: \"1995-05-15\"\n        gender: \"male\"\
+      \n      personB:\n        birthDate: \"2001-11-02\"\n        gender: \"female\"\
+      \n  - tool: getCompatibilityInfo\n    arguments:\n      refinedQuery: \"Compatibility\
+      \ between Victoria and me\"\n      personA:\n        birthDate: \"1995-05-15\"\
+      \n        gender: \"male\"\n      personB:\n        birthDate: \"2003-03-21\"\
+      \n        gender: \"female\"\ntool_call_result:\n  - compatibility:\n      score:\
+      \ 80\n      description: \"You and Anaya both value creativity and emotional\
+      \ connection. Your maturity offers her guidance, while her youthful energy brings\
+      \ vitality to the relationship. This balance can foster a supportive, dynamic\
+      \ bond.\"\n  - compatibility:\n      score: 77\n      description: \"With Jada,\
+      \ your stability complements her passionate and expressive nature. While her\
+      \ intensity may sometimes clash with your grounded approach, it can also inspire\
+      \ you to be more spontaneous, creating a harmonious balance.\"\n  - compatibility:\n\
+      \      score: 83\n      description: \"You and Victoria can have a lively, inspiring\
+      \ relationship. Her charisma and versatility match well with your wisdom and\
+      \ practical mindset. Together, you can encourage each other to grow while maintaining\
+      \ mutual respect.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "Oh, marrying a celebrity, huh? You’re dreaming big! \n\nIt looks like\
+      \ you’d be most compatible with \"Victoria\", scoring **83 out of 100**.\nThe\
+      \ two of you can have a lively, inspiring relationship. Victoria’s charisma\
+      \ and versatility match well with your wisdom and practical mindset. Together,\
+      \ you can encourage each other to grow while maintaining mutual respect.\n\n\
+      Wishing you the best of luck!"

@@ -1,0 +1,139 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2027-7-12'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 02-123-4567 번호로 이상한 전화가 와서 받았는데, 보이스피싱 아니겠지? 이 번호 정보 한 번 확인해봐. 그리고 혹시
+      모르니까 내 계좌에서 이상 금융 거래 있는지 확인해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"02-123-4567\
+      \ 번호 정보 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"내 계좌에서 이상 금융 거래 내역 있는지 확인\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPhoneNumberInfo\narguments:\n  refinedQuery: \"02-123-4567\
+      \ 번호 정보 조회\"\n  phoneNumber: \"021234567\"\ntool_call_result:\n  phoneNumber:\
+      \ \"021234567\"\n  results:\n    - owner: \"알 수 없음\"\n      location: \"서울,\
+      \ 대한민국\"\n      carrier: \"KT\"\n      spam_score: 85\n      spam_type: \"보이스피싱\
+      \ 의심 번호\"\n      report_count: 120\n  status: \"completed\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 조회할 계좌번호, 은행명, 예금주 성함'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 금융 거래 내역 확인을 위해서는 예금주 성함과 은행명, 조회하실 계좌의 계좌번호를 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 박온유, 하나은행, 110-123-456789
+- workflow_id: null
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"박온유의 하나은행 계좌에서\
+      \ 이상 금융 거래 내역 있는지 확인\"\n  accountNumber: \"110-123-456789\"\n  accountHolderName:\
+      \ \"박온유\"\n  bankName: \"하나은행\"\n  includeTransactions: true\ntool_call_result:\n\
+      \  accountNumber: \"110-123-456789\"\n  accountHolderName: \"박온유\"\n  bankName:\
+      \ \"하나은행\"\n  currentBalance: 1500000\n  transactions:\n    - date: \"2027-07-10\"\
+      \n      description: \"ATM 출금\"\n      amount: 100000\n      transactionType:\
+      \ \"debit\"\n    - date: \"2027-07-11\"\n      description: \"온라인 쇼핑몰 결제\"\n\
+      \      amount: 250000\n      transactionType: \"debit\"\n    - date: \"2027-07-12\"\
+      \n      description: \"이상 금융 거래 감지\"\n      amount: 5000000\n      transactionType:\
+      \ \"debit\"\n      alert: \"이상 거래\"\n  status: \"completed\"\n  alertPresent:\
+      \ true\n  alertMessage: \"해당 계좌에서 500만원의 이상 금융 거래가 감지되었습니다. 즉시 확인이 필요합니다.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "◾전화번호 02-123-4567에 대한 정보\n\n- 소유자: 알 수 없음\n- 위치: 서울, 대한민국\n- 통신사: KT\n\
+      - 스팸 점수: 85\n- 스팸 유형: 보이스피싱 의심 번호\n- 신고 건수: 120\n\n이 번호는 보이스피싱이 의심되므로 주의가 필요합니다.\
+      \ 추가적인 조치나 문의가 필요할 경우, 관련 기관과 상담하시기 바랍니다. \n\n\n◾최근 거래 내역 조회\n\n박온유님의 하나은행 계좌에서\
+      \ 조회된 최근 거래 내역과 이상 금융 거래에 대한 정보입니다.\n\n- 계좌 번호: 110-123-456789\n- 현재 잔액: 1,500,000\
+      \ 원\n\n거래 내역:\n1. 2027-07-10: ATM 출금, 100,000 원 (출금)\n2. 2027-07-11: 온라인 쇼핑몰\
+      \ 결제, 250,000 원 (출금)\n3. 2027-07-12: 이상 금융 거래 감지, 5,000,000 원 (출금) - 이상 거래\n\
+      \n경고: 해당 계좌에서 5,000,000원의 이상 금융 거래가 감지되었습니다. 즉시 확인이 필요합니다.\n\n바로 방금 발생한 거래이므로\
+      \ 빠른 시간 내에 은행과 상담하여 적절한 조치를 취하시기 바랍니다."
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: 어떡해... 보이스피싱 당했을 때 어떻게 해야 해? 지금 어떻게 대처해야 하는지 알려주고 신고 절차 안내해줘.
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      02-123-4567 번호 정보 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: personal_banking_agent\n   \
+      \   refined_query: \"내 계좌에서 이상 금융 거래 내역 있는지 확인\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: search_agent\n\
+      \      refined_query: \"보이스피싱 당했을 때 대처 방법과 신고 절차\""
+- workflow_id: workflow_3
+  step_id: 12
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"보이스피싱 당했을 때 대처 방법과 신고\
+      \ 절차\"\ntool_call_result:\n  query: \"보이스피싱 당했을 때 대처 방법과 신고 절차\"\n  results:\n\
+      \    - title: \"보이스피싱 피해 시 즉각 대처 방법\"\n      steps:\n        1. \"은행에 즉시 전화하여\
+      \ 계좌 지급 정지를 요청합니다.\"\n        2. \"가까운 은행 지점을 방문하여 사고 신고서를 작성합니다.\"\n      \
+      \  3. \"경찰서에 방문하여 사건을 신고하고 필요한 자료를 제출합니다.\"\n        4. \"금융감독원 1332 콜센터에 전화를\
+      \ 걸어 추가 지원을 요청합니다.\"\n      additionalResources:\n        - title: \"금융위원회 보이스피싱\
+      \ 대응 가이드\"\n          url: \"http://example.com/financial-guide\"\n      status:\
+      \ \"completed\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: '보이스피싱 피해를 당했을 때 대처 방법과 신고 절차에 대해 안내드립니다.
+
+
+      1. 은행에 즉시 전화하여 계좌 지급 정지를 요청합니다.
+
+      2. 가까운 은행 지점을 방문하여 사고 신고서를 작성합니다.
+
+      3. 경찰서에 방문하여 사건을 신고하고 필요한 자료를 제출합니다.
+
+      4. 금융감독원 1332 콜센터에 전화를 걸어 추가 지원을 요청합니다.
+
+
+      추가로, 더 많은 정보를 원하시면 금융위원회의 [보이스피싱 대응 가이드](http://example.com/financial-guide)를
+      참조하세요.
+
+
+      위 절차에 따라 신속히 대응하시고, 추가적인 피해를 예방하기 위해 항상 경계하시기 바랍니다.'

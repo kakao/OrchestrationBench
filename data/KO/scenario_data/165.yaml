@@ -1,0 +1,147 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- current time: 2026-07-28T13:44:00+09:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번 주 토요일 저녁 7시쯤에 CGV 용산에서 'F1 더 무비' 성인 두 명 예매해주고, 영화 시간에 맞춰 판교역에서 CGV
+      용산까지 가는 대중교통 경로도 알려줘. 자리는 가능하면 가운데로 해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      이번주 토요일 저녁 7시쯤 CGV 용산 'F1 더 무비' 조회\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: entertainment_agent\n      refined_query: \"이번주 토요일 저녁 7시쯤 CGV\
+      \ 용산 'F1 더 무비' 가운데 자리로 성인 두 명 예매\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"이번주 토요일 영화 시간에 맞춰 판교역에서\
+      \ 용산 CGV로 가는 대중교통 경로 찾기\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"2026년 8월 1일 CGV 용산에서\
+      \ 상영 중인 영화 'F1 더 무비' 정보\"\n  movieTitle: \"F1 더 무비\"\n  theaterLocation: \"\
+      CGV 용산\"\n  screeningDate: \"2026-08-01\"\n  sortBy: \"releaseDate\"\n  isReleased:\
+      \ true\ntool_call_result:\n  status: success\n  data:\n    movieTitle: \"F1\
+      \ 더 무비\"\n    releaseDate: \"2026-07-24\"\n    ageRating: \"12세 이상 관람가\"\n \
+      \   genre: \"다큐멘터리, 스포츠\"\n    director: \"벤저민 터너\"\n    actors: [\"루이스 해밀턴\"\
+      , \"맥스 페르스타펜\", \"세르지오 페레즈\"]\n    duration: \"104분\"\n    isReleased: true\n\
+      \    theaterLocation: \"CGV 용산\"\n    screeningDate: \"2026-08-01\"\n    showtimes:\n\
+      \      - startTime: \"18:30\"\n        availableSeats: 38\n        theaterHall:\
+      \ \"IMAX관\"\n      - startTime: \"19:10\"\n        availableSeats: 22\n    \
+      \    theaterHall: \"IMAX관\"\n      - startTime: \"21:45\"\n        availableSeats:\
+      \ 41\n        theaterHall: \"IMAX관\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 영화 상영 시간, 예약자이름, 전화번호'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "다음은 2026년 8월 1일(토) CGV 용산에서 상영 중인 'F1 더 무비' 상영 시간은 다음과 같습니다.\n\n상영 시간표\
+      \ (IMAX관)\n- 18:30 (잔여 좌석: 38석)\n- 19:10 (잔여 좌석: 22석) ← 요청하신 시간대\n- 21:45 (잔여\
+      \ 좌석: 41석)\n\n19:10 타임이 가장 적절하며 예매 가능합니다.\n원하시면 가운데 좌석으로 2인 예매 진행해드릴게요! \n예약자\
+      \ 이름과 전화번호도 함께 알려주세요!"
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 6시 30분도 괜찮을 거 같아!! 오선희 010-2222-3333으로 예약해줘.
+- workflow_id: null
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookMovieTicket\narguments:\n  refinedQuery: \"2026년 8월 1일 토요일\
+      \ 18:30 CGV 용산 'F1 더 무비' 가운데 자리로 성인 두 명 예매\"\n  movieTitle: \"F1 더 무비\"\n  theaterName:\
+      \ \"CGV 용산\"\n  showDate: \"2026-08-01\"\n  showTime: \"18:30\"\n  audienceCount:\
+      \ 2\n  audienceTypes: [\"adult\", \"adult\"]\n  userInfo:\n    name: \"오선희\"\
+      \n    contactNumber: \"010-2222-3333\"\n\ntool_call_result:\n  status: success\n\
+      \  data:\n    - ticketId: \"C2026080107FLLEQ\"\n      seatNumber:\n        -\
+      \ \"E5\"\n        - \"E6\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"2026년 8월 1일 판교역에서\
+      \ 용산 CGV로 오후 6시 30분 전에 도착하는 대중교통 길 찾기\"\n  origin: \"판교역\"\n  destination: \"\
+      CGV 용산\"\n  arrivalTime: \"2026-08-01T18:30:00+09:00\"\n  transportModes: [\"\
+      subway\", \"bus\"]\n  optimizeBy: \"fastest\"\n  departureTime: \"13:44\"\n\
+      tool_call_result:\n  status: success\n  data:\n    route:\n      - route: \"\
+      판교역 승차 (신분당선)\"\n        shortcuts:\n          - \"1-2\"\n        num_stations:\
+      \ 5\n        time_consumed: \"16분\"\n\n      - route: \"신논현역 환승 (9호선)\"\n  \
+      \      shortcuts:\n          - \"3-1\"\n          - \"5-2\"\n        num_stations:\
+      \ 3\n        time_consumed: \"11분\"\n\n      - route: \"노량진역 환승 (1호선)\"\n  \
+      \      num_stations: 1\n        time_consumed: \"4분\"\n\n      - route: \"용산역\
+      \ 하차\"\n\n      - route: \"CGV 용산아이파크몰까지 도보로 이동\"\n        time_consumed: \"\
+      2분\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '안녕하세요! 요청하신 영화 예매 및 경로 안내입니다. 😊
+
+
+      ### 🎬 ''F1 더 무비'' 예매 완료
+
+
+      요청하신 2026년 8월 1일 토요일 저녁 6시 30분 CGV 용산의 ''F1 더 무비'' 2매가 중앙 좌석으로 예매되었습니다.
+
+
+      - 영화: F1 더 무비
+
+      - 극장: CGV 용산
+
+      - 일시: 2026년 8월 1일 (토) 18:30
+
+      - 좌석: E5, E6
+
+      - 예매자: 오선호 (010-2222-3333)
+
+
+      ---
+
+
+      ### 🗺️ 판교역 → CGV 용산 대중교통 경로
+
+
+      영화 상영시간인 저녁 6시 30분 전까지 도착하는 판교역에서 CGV 용산까지 가장 빠른 대중교통 경로는 다음과 같습니다.
+
+
+      1.  판교역에서 신분당선을 타고 신논현역으로 이동합니다. (약 16분 소요)
+
+      2.  신논현역에서 9호선으로 환승하여 노량진역으로 이동합니다. (약 11분 소요)
+
+      3.  노량진역에서 1호선으로 환승하여 용산역에서 하차합니다. (약 4분 소요)
+
+      4.  용산역에서 하차 후 CGV 용산아이파크몰까지 걸어갑니다. (약 2분 소요)
+
+
+      총 소요 시간은 약 40분 정도 예상되지만, 환승 시간을 고려하여 여유롭게 출발하시는 것을 추천해 드립니다.
+
+
+      즐거운 영화 관람 되세요!'

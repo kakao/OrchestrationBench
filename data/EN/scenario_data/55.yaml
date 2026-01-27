@@ -1,0 +1,283 @@
+metadata:
+  total_steps: 21
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2026-06-30
+
+      - Name: Mina Parker
+
+      - Contact: (310)313-4646'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I heard this year’s Worlds is being held in Los Angeles. Can you check
+      when T1 is playing, and then book me a flight to Los Angeles that matches their
+      schedule?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"Check this\
+      \ year's T1 match schedule for the Worlds in Los Angeles\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: travel_agent\n      refined_query: \"Find\
+      \ flights to Los Angeles that match this year's T1 Worlds schedule in Los Angeles\"\
+      \n\nworkflow_3:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\
+      \n  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"Book flights to Los Angeles that match this year's T1 Worlds schedule in\
+      \ Los Angeles\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"Check this year's\
+      \ T1 match schedule for the Worlds in Los Angeles\"\n  teamName: \"T1\"\ntool_call_result:\n\
+      \  data:\n    teamName: \"T1\"\n    league: \"LoL World Championship\"\n   \
+      \ schedule:\n      - date: \"2026-09-10\"\n        opponent: \"G2 Esports\"\n\
+      \        time: \"6:00 PM\"\n        venue: \"Los Angeles Convention Center\"\
+      \n        status: \"Scheduled\"\n      - date: \"2026-09-12\"\n        opponent:\
+      \ \"Cloud9\"\n        time: \"8:00 PM\"\n        venue: \"Los Angeles Convention\
+      \ Center\"\n        status: \"Scheduled\"\n      - date: \"2026-09-15\"\n  \
+      \      opponent: \"DetonatioN FocusMe\"\n        time: \"6:00 PM\"\n       \
+      \ venue: \"Los Angeles Convention Center\"\n        status: \"Scheduled\"\n\
+      \    lastUpdated: \"2026-06-30\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure date'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s T1’s schedule for this year’s League of Legends World Championship
+      matches in Los Angeles:
+
+
+      • Thursday, September 10 at 6:00 PM vs G2 Esports
+
+      • Saturday, September 12 at 8:00 PM vs Cloud9
+
+      • Tuesday, September 15 at 6:00 PM vs DetonatioN FocusMe
+
+
+      Venue: Los Angeles Convention Center
+
+
+      For which match should I book flights to Los Angeles?'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: So the first day is the 10th, right? Then could you look it up for September
+      9th instead?
+- workflow_id: null
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"Search for flights\
+      \ to Los Angeles on September 9\"\n  departure: \"JFK\"\n  destination: \"Los\
+      \ Angeles\"\n  departureDate: \"2026-09-09\"\ntool_call_result:\n  flights:\n\
+      \    - tripID: \"USAAIR0502AA100\"\n      airline: \"American Airlines\"\n \
+      \     flightNumber: \"AA100\"\n      departureTime: \"2026-09-09T08:00\"\n \
+      \     arrivalTime: \"2026-09-09T13:45\"\n      price: \"$350\"\n      seatClass:\
+      \ \"Business\"\n      isDirect: true\n      availability: \"Sold Out\"\n\n \
+      \   - tripID: \"USAAIR0502DL200\"\n      airline: \"Delta Airlines\"\n     \
+      \ flightNumber: \"DL200\"\n      departureTime: \"2026-09-09T12:00\"\n     \
+      \ arrivalTime: \"2026-09-09T17:45\"\n      price: \"$340\"\n      seatClass:\
+      \ \"Business\"\n      isDirect: true\n      availability: \"Sold Out\"\n\n \
+      \   - tripID: \"USAAIR0502AA101ECO\"\n      airline: \"American Airlines\"\n\
+      \      flightNumber: \"AA101\"\n      departureTime: \"2026-09-09T08:00\"\n\
+      \      arrivalTime: \"2026-09-09T13:45\"\n      price: \"$180\"\n      seatClass:\
+      \ \"Economy\"\n      isDirect: true\n      availability: \"5 seats left\"\n\n\
+      \    - tripID: \"USAAIR0502DL201ECO\"\n      airline: \"Delta Airlines\"\n \
+      \     flightNumber: \"DL201\"\n      departureTime: \"2026-09-09T12:00\"\n \
+      \     arrivalTime: \"2026-09-09T17:45\"\n      price: \"$175\"\n      seatClass:\
+      \ \"Economy\"\n      isDirect: true\n      availability: \"5 seats left\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Flight details, date of birth, gender, seat class, baggage options
+      (basic / extra / carry_on_only), and whether mileage points will be used'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "Flight search results for September 9, 2026 from JFK to Los Angeles\
+      \ (LAX):\nBusiness Class is currently sold out, but Economy Class still has\
+      \ seats available.\n\n◾ Business Class (Sold Out)\n1. American Airlines AA100\n\
+      \   Departure: 08:00 / Arrival: 13:45\n   Non-stop / Sold Out\n\n2. Delta Airlines\
+      \ DL200\n   Departure: 12:00 / Arrival: 17:45\n   Non-stop / Sold Out\n\n◾ Economy\
+      \ Class (Available)\n1. American Airlines AA101\n   Departure: 08:00 / Arrival:\
+      \ 13:45\n   Non-stop / 5 seats left\n   Fare: $180\n2. Delta Airlines DL201\n\
+         Departure: 12:00 / Arrival: 17:45\n   Non-stop / 5 seats left\n   Fare: $175\n\
+      \nIf you specifically need Business Class, I can check other dates or flights\
+      \ for you.\nIf you’d like to proceed with Economy Class, please provide your\
+      \ preferred flight and the following details:\n\n• Date of birth\n• Gender\n\
+      • Seat class (e.g., Economy)\n• Baggage option:\n  - Basic \n  - Extra \n  -\
+      \ Carry-on only\n• Mileage use (Yes / No)\n\nOnce I have this information, I’ll\
+      \ proceed with the booking."
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: Ugh, I really don’t like economy. How about business class on September
+      8?
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: sports_agent\n      refined_query: \"Check\
+      \ this year's T1 match schedule for the Worlds in Los Angeles\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: completed\n      name: travel_agent\n      refined_query: \"\
+      Find flights to Los Angeles that match this year's T1 Worlds schedule in Los\
+      \ Angeles\"\n\nworkflow_3:\n  status: paused\n  type: dependent\n  depend_on:\
+      \ \"workflow_2-1\"\n  steps:\n    - status: paused\n      name: travel_agent\n\
+      \      refined_query: \"Book a business class ticket to Los Angeles on September\
+      \ 8\"\n\nworkflow_2-1:\n  status: pending\n  type: independent\n  steps:\n \
+      \   - status: pending\n      name: travel_agent\n      refined_query: \"Search\
+      \ for business class flights to Los Angeles on September 8\""
+- workflow_id: workflow_2
+  step_id: 13
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"Search for business\
+      \ class flights to Los Angeles on September 8\"\n  departure: \"JFK\"\n  destination:\
+      \ \"Los Angeles\"\n  departureDate: \"2026-09-08\"\n  seatClass: \"business\"\
+      \ntool_call_result:\n  flights:\n    - tripID: \"USAAIR0808AA200\"\n      airline:\
+      \ \"American Airlines\"\n      flightNumber: \"AA200\"\n      departureTime:\
+      \ \"2026-09-08T08:00\"\n      arrivalTime: \"2026-09-08T13:30\"\n      price:\
+      \ \"$360\"\n      seatClass: \"Business\"\n      isDirect: true\n      availability:\
+      \ \"8 seats left\"\n\n    - tripID: \"USAAIR0808DL300\"\n      airline: \"Delta\
+      \ Airlines\"\n      flightNumber: \"DL300\"\n      departureTime: \"2026-09-08T12:00\"\
+      \n      arrivalTime: \"2026-09-08T17:30\"\n      price: \"$355\"\n      seatClass:\
+      \ \"Business\"\n      isDirect: true\n      availability: \"8 seats left\""
+- workflow_id: workflow_3
+  step_id: 14
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Flight details, date of birth, gender, seat class, baggage options
+      (basic / extra / carry_on_only), and whether mileage points will be used'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "Here are the results for business class flights from JFK to Los Angeles\
+      \ on September 8, 2026.\n\n◾ Business Class (Available for booking)\n1. American\
+      \ Airlines AA200\n   Departure: 08:00 / Arrival: 13:30\n   Non-stop / 8 seats\
+      \ remaining\n   Fare: $360\n2. Delta Airlines DL300\n   Departure: 12:00 / Arrival:\
+      \ 17:30\n   Non-stop / 8 seats remaining\n   Fare: $355\n\nTo proceed with booking,\
+      \ please provide your preferred flight along with the following details:\n\n\
+      • Date of birth\n• Gender\n• Baggage option:\n  - Basic \n  - Extra \n  - Carry-on\
+      \ only\n• Mileage use (Yes / No)\n\nOnce I have your information, I’ll complete\
+      \ the reservation for you."
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: The friend I was supposed to go with just canceled on me. How should
+      I cope when I'm feeling unsettled and emotionally shaken like this?
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: sports_agent\n      refined_query: \"Check\
+      \ this year's T1 match schedule for the Worlds in Los Angeles\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: completed\n      name: travel_agent\n      refined_query: \"\
+      Find flights to Los Angeles that match this year's T1 Worlds schedule in Los\
+      \ Angeles\"\n\nworkflow_3:\n  status: paused\n  type: dependent\n  depend_on:\
+      \ \"workflow_2-1\"\n  steps:\n    - status: paused\n      name: travel_agent\n\
+      \      refined_query: \"Book a business class ticket to Los Angeles on September\
+      \ 8\"\n\nworkflow_2-1:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: travel_agent\n      refined_query: \"\
+      Search for business class flights to Los Angeles on September 8\"\n\ninterrupted_workflow_3-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: counsel_agent\n      refined_query: \"How to cope when feeling unsettled\
+      \ and emotionally overwhelmed\""
+- workflow_id: workflow_3
+  step_id: 18
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"How to cope when\
+      \ feeling deeply unsettled and emotionally shaken\"\ntool_call_result:\n  data:\n\
+      \    advice:\n      - \"Calm your mind with deep breathing and meditation.\"\
+      \n      - \"Share your feelings with someone close and spend time receiving\
+      \ support.\"\n      - \"Consider seeking professional counseling for psychological\
+      \ support.\"\n      - \"Maintain your physical health with regular exercise\
+      \ and sufficient rest.\"\n      - \"Recognize negative thoughts and make an\
+      \ effort to shift toward a positive mindset.\"\n    resources:\n      - \"National\
+      \ Mental Health Center Helpline: (877)555-0199\"\n      - \"Local counseling\
+      \ center directory\"\n      - \"Recommended online meditation and mindfulness\
+      \ apps\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: "1. When you’re feeling unsettled or experiencing emotional shock, try\
+      \ the following:\n\n[Ways to Calm Your Mind]\n• Practice deep breathing and\
+      \ meditation to release tension.\n• Maintain balance with regular exercise and\
+      \ enough rest.\n• Share your feelings with someone you trust and seek their\
+      \ support.\n• Recognize negative thoughts and consciously redirect them toward\
+      \ something positive.\n• Don’t hesitate to seek professional help if needed.\n\
+      \n[Where to Reach out for Help]\n• National Mental Health Hotline: (877)555-0199\n\
+      • Local counseling centers or mental health hospitals/clinics\n• Online meditation\
+      \ or mindfulness apps can also be useful in daily life.\n\nDon’t try to endure\
+      \ everything alone—reach out for help whenever you need it.\nAnd remember, healing\
+      \ takes time.\n\n\n2. Would you like me to help you book a business class flight\
+      \ from New York (JFK) to Los Angeles on September 8, 2026?\n\nIf you’d like\
+      \ to proceed with the booking, please provide the following details:\n\n• Date\
+      \ of birth\n• Gender\n• Baggage option:\n  - Basic \n  - Extra \n  - Carry-on\
+      \ only\n• Mileage use (Yes / No)\n\nOnce I have this information, I’ll take\
+      \ care of the booking for you."
+- workflow_id: null
+  step_id: 20
+  agent: user
+  agent_type: user
+  data:
+    content: If she can’t come, I won’t have anyone to go with… I really don’t want
+      to go alone. Forget it, I’ll just stay home and watch it on YouTube. I’m not
+      going on the trip.
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: It’s always more fun to go with a friend. OK, but if you change your
+      mind, just let me know anytime. Staying home watching YouTube is a great choice,
+      too!

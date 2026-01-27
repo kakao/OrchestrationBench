@@ -1,0 +1,140 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s Date: July 15, 2025
+
+      - Reservation Name: Olivia Park
+
+      - Reservation Phone Number: (202) 555-1234
+
+      - Reservation Email: abcde@example.com'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Find and book a pet-friendly hotel in New York that offers city-view
+      rooms. There are 4 guests, who will be staying for 3 days and 2 nights.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"Recommend\
+      \ a pet-friendly hotel in downtown New York with city-view rooms that can accommodate\
+      \ 4 people for a 3-day, 2-night stay\"\n\nworkflow_2:\n  status: pending\n \
+      \ type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: travel_agent\n      refined_query: \"Book a pet-friendly hotel\
+      \ in downtown New York with city-view rooms that can accommodate 4 people for\
+      \ a 3-day, 2-night stay\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"Pet-friendly\
+      \ hotel in New York with city-view rooms for 4 guests staying for 2 nights,\
+      \ 3 days\"\n  location: \"New York\"\n  checkInDate: \"2025-07-15\"\n  checkOutDate:\
+      \ \"2025-07-17\"\n  guestCount: 4\n  roomCount: 1\n  accommodationType: \"hotel\"\
+      \n  sortBy: \"highest_rating\"\n  petFriendly: true\n  viewType: \"city_view\"\
+      \ntool_call_result:\n  data:\n    accommodations:\n      - name: \"The Langham,\
+      \ New York, Fifth Avenue\"\n        rating: 4.9\n        address: \"400 Fifth\
+      \ Avenue, New York, NY 10018\"\n        petFriendly: true\n        viewType:\
+      \ \"city_view\"\n        availableRooms:\n          - roomType: \"Premier City\
+      \ View Family Room\"\n            roomTypeId: \"PREMIER_CITYVIEW_FAMILY\"\n\
+      \            capacity: 4\n            pricePerNight: \"$560\"\n            amenities:\n\
+      \              - \"Free Wi-Fi\"\n              - \"Bathtub\"\n             \
+      \ - \"Pet-friendly\"\n              - \"City view\"\n      - name: \"Arlo NoMad\"\
+      \n        rating: 4.7\n        address: \"11 East 31st Street, New York, NY\
+      \ 10016\"\n        petFriendly: true\n        viewType: \"city_view\"\n    \
+      \    availableRooms:\n          - roomType: \"City View Deluxe Quad Room\"\n\
+      \            roomTypeId: \"DELUXE_CITYVIEW_QUAD\"\n            capacity: 4\n\
+      \            pricePerNight: \"$390\"\n            amenities:\n             \
+      \ - \"Rooftop terrace\"\n              - \"Pet-friendly\"\n              - \"\
+      Individual heating & cooling\"\n              - \"City view\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Check-in/check-out dates and hotel selected by user'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "Here are two hotels in downtown New York where you can stay with your\
+      \ pet in a city-view room. Both hotels are suitable for four guests staying\
+      \ for three days and two nights, and they meet the requirements of being pet-friendly\
+      \ with city views.\n\n1. The Langham, New York, Fifth Avenue\n   * Rating: 4.9\n\
+      \   * Address: 400 Fifth Avenue, New York, NY 10018\n   * Room: Premier City\
+      \ View Family Room (roomTypeId: `PREMIER_CITYVIEW_FAMILY`)\n   * Capacity: 4\
+      \ guests\n   * Price per night: $560\n   * Key amenities: Free Wi-Fi, bathtub,\
+      \ pet-friendly, city view\n\n2. Arlo NoMad\n   * Rating: 4.7\n   * Address:\
+      \ 11 East 31st Street, New York, NY 10016\n   * Room: City View Deluxe Quad\
+      \ Room (roomTypeId: `DELUXE_CITYVIEW_QUAD`)\n   * Capacity: 4 guests\n   * Price\
+      \ per night: $390\n   * Key amenities: Rooftop terrace, pet-friendly, individual\
+      \ heating & cooling, city view\n\nWould you like me to book one of these hotels\
+      \ for you? To proceed smoothly, please let me know your check-in and check-out\
+      \ dates."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: I think The Langham, New York, Fifth Avenue would be nice. Planning to
+      check in on August 15 and check out on the 17th.
+- workflow_id: null
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: bookAccommodation\narguments:\n  refinedQuery: \"Book a Premier\
+      \ City View Family Room at The Langham, New York, Fifth Avenue for 4 guests\
+      \ from August 15 to August 17\"\n  accommodationName: \"The Langham, New York,\
+      \ Fifth Avenue\"\n  roomTypeId: \"PREMIER_CITYVIEW_FAMILY\"\n  checkInDate:\
+      \ \"2025-08-15\"\n  checkOutDate: \"2025-08-17\"\n  guestCount: 4\n  roomCount:\
+      \ 1\n  location: \"New York\"\n  userInfo:\n    name: \"Olivia Park\"\n    contactNumber:\
+      \ \"(202) 555-1234\"\n    email: \"abcde@example.com\"\ntool_call_result:\n\
+      \  data:\n    reservationId: \"RSV20250815002\"\n    accommodationName: \"The\
+      \ Langham, New York, Fifth Avenue\"\n    roomType: \"Premier City View Family\
+      \ Room\"\n    roomTypeId: \"PREMIER_CITYVIEW_FAMILY\"\n    checkInDate: \"2025-08-15\"\
+      \n    checkOutDate: \"2025-08-17\"\n    guestCount: 4\n    roomCount: 1\n  \
+      \  totalPrice: \"$1,150\"\n    reservedFor:\n      name: \"Olivia Park\"\n \
+      \     contactNumber: \"(202) 555-1234\"\n      email: \"abcde@example.com\"\n\
+      \    status: \"confirmed\"\n    confirmationMessage: \"Your reservation for\
+      \ a Premier City View Family Room at The Langham, New York, Fifth Avenue is\
+      \ confirmed. Check-in is on August 15, 2025, and check-out is on August 17,\
+      \ 2025.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your reservation for the Premier City View Family Room at The Langham,
+      New York, Fifth Avenue has been confirmed.
+
+      The booking is for 4 guests, with check-in on August 15, 2025 and check-out
+      on August 17, 2025.
+
+      The total cost is $1,150. Reservation details are as follows:
+
+
+      * Guest Name: Olivia Park
+
+      * Contact: (202) 555-1234
+
+      * Email: abcde@example.com
+
+
+      I hope you enjoy your stay. If you have any additional requests, please let
+      me know anytime.'

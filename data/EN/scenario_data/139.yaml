@@ -1,0 +1,315 @@
+metadata:
+  total_steps: 24
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: October 17, 2025'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Is there any currently ongoing exhibition at the New York City Art Museum
+      that you’d recommend? I’m planning to go tomorrow and I want to book tickets
+      in advance.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Recommend exhibitions at the New York City Art Museum that I can see tomorrow\"\
+      \n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Book tickets for exhibitions at the New York City Art Museum that I can\
+      \ see tomorrow\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionInfo\narguments:\n  refinedQuery: \"Recommended exhibitions\
+      \ at the New York City Art Museum on October 18, 2025\"\n  venueName: \"New\
+      \ York City Art Museum\"\n  date: \"2025-10-18\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"Recommended exhibitions at the New York City Art Museum\
+      \ on October 18, 2025\"\n    venueName: \"New York City Art Museum\"\n    date:\
+      \ \"2025-10-18\"\n    exhibitions:\n      - title: \"Contemporary Art and Innovation\"\
+      \n        description: \"An exhibition exploring innovative perspectives through\
+      \ contemporary artworks.\"\n        startDate: \"2025-09-01\"\n        endDate:\
+      \ \"2025-10-30\"\n        operatingHours: \"10:00 - 18:00\"\n        ticketPrice:\
+      \ 12\n        additionalInfo: \"Guided tours start daily at 2 PM.\"\n      \
+      \  exhibitionId: \"EXH20250901-002\"\n      - title: \"Humans in Nature\"\n\
+      \        description: \"A photography exhibition exploring the relationship\
+      \ between humans and nature.\"\n        startDate: \"2025-09-15\"\n        endDate:\
+      \ \"2025-11-10\"\n        operatingHours: \"10:00 - 18:00\"\n        ticketPrice:\
+      \ 10\n        additionalInfo: \"Family discounts are available on weekends.\"\
+      \n        exhibitionId: \"EXH20250720-001\"\n      - title: \"Traditional Meets\
+      \ Modern\"\n        description: \"An exhibition showcasing the fusion of traditional\
+      \ art and modern technology.\"\n        startDate: \"2025-07-10\"\n        endDate:\
+      \ \"2025-11-20\"\n        operatingHours: \"09:00 - 19:00\"\n        ticketPrice:\
+      \ 15\n        additionalInfo: \"Special lectures are held every Saturday.\"\n\
+      \        exhibitionId: \"EXH20250710-003\"\n      - title: \"Visions of the\
+      \ Future City\"\n        description: \"An exhibition presenting artistic visions\
+      \ of future cities and architecture.\"\n        startDate: \"2025-09-01\"\n\
+      \        endDate: \"2025-10-31\"\n        operatingHours: \"10:00 - 17:00\"\n\
+      \        ticketPrice: 5\n        additionalInfo: \"Visitors receive discounts\
+      \ on beverage at the first-floor café.\"\n        exhibitionId: \"EXH20250901-004\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Exhibition selected by user and booker''s phone number'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "If you visit the New York City Art Museum tomorrow, here are the exhibitions\
+      \ you can enjoy! Each one has its own unique theme and charm, so feel free to\
+      \ choose the one that interests you most.\n\n1. Contemporary Art and Innovation\n\
+      \   - Dates: September 1 – October 30, 2025  \n   - Hours: 10:00 AM – 6:00 PM\
+      \  \n   - Admission: $12  \n   - Extra Info: Guided tours are available daily\
+      \ at 2:00 PM.\n\n2. Humans in Nature \n   - Dates: September 15 – November 10,\
+      \ 2025  \n   - Hours: 10:00 AM – 6:00 PM  \n   - Admission: $10  \n   - Extra\
+      \ Info: Family discounts are available on weekends.\n\n3. Traditional Meets\
+      \ Modern \n   - Dates: July 10 – November 20, 2025  \n   - Hours: 9:00 AM –\
+      \ 7:00 PM  \n   - Admission: $15  \n   - Extra Info: Special lectures are held\
+      \ every Saturday.\n\n4. Visions of the Future City  \n   - Dates: September\
+      \ 1 – October 31, 2025  \n   - Hours: 10:00 AM – 5:00 PM  \n   - Admission:\
+      \ $5  \n   - Extra Info: Visitors receive a discount on drinks at the first-floor\
+      \ café.\n\nPlease let me know which exhibition you’d like to attend, and I’ll\
+      \ help you with the reservation. For a smooth booking process, kindly provide\
+      \ your phone number."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Are there any free exhibitions?
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Recommended exhibitions at the New York City Art Museum that I can see tomorrow\"\
+      \n\nworkflow_2:\n  status: paused\n  type: dependent\n  depend_on: \"workflow_1-1\"\
+      \n  steps:\n    - status: paused\n      name: entertainment_agent\n      refined_query:\
+      \ \"Book tickets for exhibitions at the New York City Art Museum that I can\
+      \ see tomorrow\"\n\nworkflow_1-1:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Recommended free exhibitions at the New York City Art Museum that I can\
+      \ see tomorrow\""
+- workflow_id: workflow_1
+  step_id: 9
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionInfo\narguments:\n  refinedQuery: \"Free exhibition\
+      \ recommendations at the New York City Art Museum on October 18, 2025\"\n  venueName:\
+      \ \"New York City Art Museum\"\n  date: \"2025-10-18\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Free exhibition recommendations at the New York\
+      \ City Art Museum on October 18, 2025\"\n    venueName: \"New York City Art\
+      \ Museum\"\n    date: \"2025-10-18\"\n    exhibitions:\n      - title: \"Reinterpreting\
+      \ Space\"\n        description: \"An exhibition featuring installation art that\
+      \ reimagines space. Visitors are invited to interact with the works and experience\
+      \ the environment in new ways.\"\n        startDate: \"2025-10-01\"\n      \
+      \  endDate: \"2025-11-15\"\n        operatingHours: \"10:00 - 18:00\"\n    \
+      \    ticketPrice: \"free\"\n        additionalInfo: \"Every Thursday at 2 PM,\
+      \ there will be a workshop with the installation artist.\"\n        exhibitionId:\
+      \ \"EXH20251001-005\"\n      - title: \"The Aesthetics of Sound\"\n        description:\
+      \ \"An exhibition exploring the beauty of sound through sound art. Offers a\
+      \ unique auditory experience, admission is free.\"\n        startDate: \"2025-10-01\"\
+      \n        endDate: \"2025-11-30\"\n        operatingHours: \"10:00 - 18:00\"\
+      \n        ticketPrice: \"free\"\n        additionalInfo: \"Every day at 3 PM,\
+      \ there will be a special talk with the artist.\"\n        exhibitionId: \"\
+      EXH20251001-006\"\n      - title: \"The Charm of Vintage\"\n        description:\
+      \ \"An exhibition showcasing vintage works that connect the past and present.\
+      \ Free admission offers visitors a chance to enjoy a journey through time.\"\
+      \n        startDate: \"2025-10-05\"\n        endDate: \"2025-11-05\"\n     \
+      \   operatingHours: \"09:00 - 17:00\"\n        ticketPrice: \"free\"\n     \
+      \   additionalInfo: \"On weekends, a vintage market will also be held.\"\n \
+      \       exhibitionId: \"EXH20251005-007\""
+- workflow_id: workflow_2
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Exhibition selected by user and booker''s phone number'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "I’d like to recommend some free exhibitions happening at the New York\
+      \ City Art Museum!\n\n1. Reinterpreting Space\n   - An installation art exhibition\
+      \ where you can experience new perspectives on space.  \n   - Dates: October\
+      \ 1 – November 15, 2025  \n   - Hours: 10:00 AM – 6:00 PM  \n   - Every Thursday\
+      \ at 2 PM, there will be a workshop with the artist.\n\n2. The Aesthetics of\
+      \ Sound  \n   - An exhibition exploring the beauty of diverse sounds through\
+      \ sound art.  \n   - Dates: October 1 – November 30, 2025  \n   - Hours: 10:00\
+      \ AM – 6:00 PM  \n   - Every day at 3 PM, there will be a special talk with\
+      \ the artist.\n\n3. The Charm of Vintage  \n   - Enjoy vintage works that connect\
+      \ the past and present, all free of charge.  \n   - Dates: October 5 – November\
+      \ 5, 2025  \n   - Hours: 9:00 AM – 5:00 PM  \n   - On weekends, a vintage market\
+      \ will also be held.\n\nThese exhibitions offer a wide range of artistic experiences\
+      \ at no cost. Does any of them interest you?  \nIf you’d like to attend, I can\
+      \ help you with reservations. For a smooth booking process, please provide the\
+      \ phone number of the person making the reservation."
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: It looks like Ryan would enjoy it, too. Should I ask if he wants to come
+      along? Send him a text for me.
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Recommended exhibitions at the New York City Art Museum that I can see tomorrow\"\
+      \n\nworkflow_2:\n  status: paused\n  type: dependent\n  depend_on: \"workflow_1-1\"\
+      \n  steps:\n    - status: paused\n      name: entertainment_agent\n      refined_query:\
+      \ \"Book tickets for exhibitions at the New York City Art Museum that I can\
+      \ see tomorrow\"\n\nworkflow_1-1:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Recommended free exhibitions at the New York City Art Museum that I can\
+      \ see tomorrow\"\n\ninterrupted_workflow_2-1:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: message_agent\n      refined_query:\
+      \ \"Send a text to Ryan asking if he wants to go to the exhibition together\
+      \ tomorrow\""
+- workflow_id: workflow_2
+  step_id: 14
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient''s phone number and message content'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: To send a text message, I'll need the recipient's phone number. Please
+      enter also the message you’d like to send.
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 'Ryan''s number is (220) 220-2200. Send him: ''Want to go see the exhibition
+      at the New York City Art Museum tomorrow?'''
+- workflow_id: null
+  step_id: 17
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Send a text to Ryan\
+      \ saying 'Want to go see the exhibition at the New York City Art Museum tomorrow?\"\
+      \n  channel: \"sms\"\n  phoneNumber: \"(220) 220-2200\"\n  message: \"Want to\
+      \ go see the exhibition at the New York City Art Museum tomorrow?\"\n  repeatRule:\
+      \ \"none\"\n  priority: \"normal\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Send a text to Ryan saying 'Want to go see the exhibition at the New York\
+      \ City Art Museum tomorrow?\"\n    channel: \"sms\"\n    phoneNumber: \"(220)\
+      \ 220-2200\"\n    message: \"Want to go see the exhibition at the New York City\
+      \ Art Museum tomorrow?\"\n    repeatRule: \"none\"\n    priority: \"normal\"\
+      \n    status: \"Sent successfully\"\n    timestamp: \"2025-10-17T16:00:00\"\n\
+      \    deliveryConfirmation: \"Delivery confirmed\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your message to Ryan has been successfully sent!
+
+      Here’s what you wrote: "Want to go see the exhibition at the New York City Art
+      Museum tomorrow?"
+
+
+      Enjoy the diverse exhibits at the New York City Art Museum with your friend!
+
+      If you want, I can help you book tickets for a specific exhibition. Please provide
+      the phone number of the person making the reservation.'
+- workflow_id: null
+  step_id: 19
+  agent: user
+  agent_type: user
+  data:
+    content: Since Ryan prefers the day after tomorrow, please book two tickets for
+      "Humans in Nature" then.
+- workflow_id: workflow_2
+  step_id: 20
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Customer phone number'
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: To make a reservation for the exhibition, please provide the phone number
+      of the booking person.
+- workflow_id: null
+  step_id: 22
+  agent: user
+  agent_type: user
+  data:
+    content: (330)330-3300
+- workflow_id: null
+  step_id: 23
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookExhibitionTicket\narguments:\n  refinedQuery: \"Book 2 tickets\
+      \ for the exhibition 'Humans in Nature' at the New York City Art Museum on October\
+      \ 19, 2025\"\n  exhibitionId: \"EXH20250720-001\"\n  date: \"2025-10-19\"\n\
+      \  exhibitionTitle: \"Humans in Nature\"\n  visitorCount: 2\n  contactInfo:\
+      \ \"(330)330-3300\"\ntool_call_result:\n  data:\n    refinedQuery: \"Book 2\
+      \ tickets for the exhibition 'Humans in Nature' at the New York City Art Museum\
+      \ on October 19, 2025\"\n    exhibitionId: \"EXH20250720-001\"\n    date: \"\
+      2025-10-19\"\n    exhibitionTitle: \"Humans in Nature\"\n    visitorCount: 2\n\
+      \    contactInfo: \"(330)330-3300\"\n    bookingStatus: \"Booking Successful\"\
+      \n    bookingReference: \"BR20250720-XYZ123\"\n    totalPrice: 20\n    message:\
+      \ \"Your booking is confirmed. Your reservation number is BR20250720-XYZ123.\""
+- workflow_id: null
+  step_id: 24
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your reservation for the "Humans in Nature" exhibition at the New York
+      City Art Museum has been successfully completed!
+
+
+      ◾ Reservation Details
+
+      - Exhibition: Humans in Nature
+
+      - Visit Date: October 19, 2025
+
+      - Number of Visitors: 2
+
+      - Reservation Number: BR20250720-XYZ123
+
+      - Total Price: $20.00
+
+
+      The reservation details have been sent to your registered contact number ((330)
+      330-3300). I hope you enjoy the exhibition!'

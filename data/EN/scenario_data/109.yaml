@@ -1,0 +1,148 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2035-03-11T11:32'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'How’s the traffic around Brooklyn Botanic Garden right now? With the
+      Cherry Blossom Festival, I bet a lot of people drove out there...
+
+      Also, can you tell me the fastest way to get to Brooklyn Botanic Garden from
+      Parkview Apartments in the suburbs by public transportation?'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Current\
+      \ traffic conditions around Brooklyn Botanic Garden during the Cherry Blossom\
+      \ Festival\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      Fastest public transit route from Parkview Apartments in the suburbs to Brooklyn\
+      \ Botanic Garden\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTrafficInfo\narguments:\n  refinedQuery: \"Current traffic\
+      \ conditions at Brooklyn Botanic Garden in Brooklyn\"\n  location: \"Brooklyn\
+      \ Botanic Garden, Brooklyn\"\n  timeRange: \"2035-03-11T11:32\"\n  trafficType:\
+      \ \"Car\"\ntool_call_result:\n  trafficInfo:\n    location: \"Brooklyn Botanic\
+      \ Garden, Brooklyn\"\n    time: \"2035-03-11T11:32\"\n    congestionScore: 8.7\n\
+      \    status: \"Heavily congested\"\n    averageSpeed: \"15 km/h\"\n    estimatedDelay:\
+      \ \"About 30 minutes longer than usual\"\n    incident:\n      type: \"Cherry\
+      \ Blossom Festival\"\n      description: \"Large crowds and vehicles due to\
+      \ the festival are causing major congestion at entrances and parking areas\"\
+      \n    alternativeRoutes:\n      - route: \"Use Flatbush Avenue detour via Downtown\
+      \ Brooklyn\"\n        estimatedTime: \"Saves about 20 minutes\"\n      - route:\
+      \ \"Take Manhattan Bridge northbound to Brooklyn\"\n        estimatedTime: \"\
+      Saves about 15 minutes\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Fastest public transit\
+      \ route from Parkview Apartments in the suburbs to Brooklyn Botanic Garden\"\
+      \n  transportModes: [\"subway\", \"bus\"]\n  optimizeBy: \"fastest\"\n  origin:\
+      \ \"Parkview Apartments\"\n  destination: \"Brooklyn Botanic Garden\"\n  departureTime:\
+      \ \"11:32\"\ntool_call_result:\n  directions:\n    origin: \"Parkview Apartments\"\
+      \n    destination: \"Brooklyn Botanic Garden\"\n    departureTime: \"11:32\"\
+      \n    transportModes: [\"subway\", \"bus\"]\n    optimizeBy: \"fastest\"\n \
+      \   totalTime: \"1 hr 15 min\"\n    fare: \"$5.65\"\n    steps:\n      - step:\
+      \ \"Board PATH at Hoboken → Get off at 33 St\"\n        time: \"20 min\"\n \
+      \       transfer: \"Transfer to Subway 2 or 3\"\n      - step: \"Board Subway\
+      \ 2/3 at 34 St–Penn Station → Get off at Franklin Ave\"\n        time: \"30\
+      \ min\"\n        transfer: \"Transfer to Shuttle (S)\"\n      - step: \"Board\
+      \ Shuttle S → Get off at Prospect Park\"\n        time: \"10 min\"\n       \
+      \ transfer: \"Walk toward Brooklyn Botanic Garden\"\n      - step: \"Walk from\
+      \ Prospect Park Station → Enter Brooklyn Botanic Garden\"\n        time: \"\
+      15 min\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ As of March 11, 2035, 11:32 AM, the area near Brooklyn Botanic Garden\
+      \ is heavily congested due to the Cherry Blossom Festival. The average driving\
+      \ speed is about 9 mph, with delays of roughly 30 minutes compared to usual.\
+      \  \nIf driving, taking the detour via Flatbush Avenue through Downtown Brooklyn\
+      \ saves about 20 minutes, or about 15 minutes if you go via Manhattan Bridge\
+      \ northbound.  \n\n▶ From Parkview Apartments to Brooklyn Botanic Garden by\
+      \ public transit (using PATH, Subway 2/3, and Shuttle), the total travel time\
+      \ is about 1 hour 15 minutes, with fare of about $5.65.  \nThe route is as follows:\
+      \  \n\n1. Board PATH at Hoboken → Get off at 33 St (20 min) → Transfer to Subway\
+      \ 2 or 3  \n2. Board Subway 2/3 at 34 St–Penn Station → Get off at Franklin\
+      \ Ave (30 min) → Transfer to Shuttle (S)  \n3. Board Shuttle S → Get off at\
+      \ Prospect Park (10 min) → Walk toward Brooklyn Botanic Garden  \n4. Walk from\
+      \ Prospect Park Station → Enter Brooklyn Botanic Garden (15 min)"
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: But besides Brooklyn Botanic Garden, are there any other popular spots
+      in New York City for cherry blossom viewing during the festival?
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: transport_agent\n      refined_query: \"\
+      Current traffic conditions around Brooklyn Botanic Garden during the Cherry\
+      \ Blossom Festival\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: transport_agent\n      refined_query:\
+      \ \"Fastest public transit route from Parkview Apartments in the suburbs to\
+      \ Brooklyn Botanic Garden\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"Popular cherry blossom viewing spots in New York City, excluding Brooklyn\
+      \ Botanic Garden\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPopularPlaceInfo\narguments:\n  refinedQuery: \"Popular cherry\
+      \ blossom viewing spots in New York City, excluding Brooklyn Botanic Garden\"\
+      \n  location: \"New York City\"\n  placeType: \"park\"\n  sortBy: \"highest_rated\"\
+      \ntool_call_result:\n  data:\n    places:\n      - name: \"Central Park (Cherry\
+      \ Hill & Reservoir)\"\n        address: \"Central Park, New York, NY\"\n   \
+      \     phone: \"(212) 310-6600\"\n        website: \"https://www.centralparknyc.org\"\
+      \n        features:\n          - \"Scenic cherry blossom paths around the Reservoir\"\
+      \n          - \"Cherry Hill picnic area with great views\"\n          - \"Iconic\
+      \ springtime photo spots\"\n      - name: \"Flushing Meadows Corona Park\"\n\
+      \        address: \"Grand Central Pkwy, Queens, NY 11368\"\n        phone: \"\
+      (718) 760-6565\"\n        website: \"https://www.nycgovparks.org/parks/flushing-meadows-corona-park\"\
+      \n        features:\n          - \"Wide cherry blossom groves near the Unisphere\"\
+      \n          - \"Expansive lawns for gatherings\"\n          - \"Cultural festivals\
+      \ often held in spring\"\n      - name: \"Riverside Park\"\n        address:\
+      \ \"Riverside Dr, New York, NY\"\n        phone: \"(212) 870-3070\"\n      \
+      \  website: \"https://riversideparknyc.org\"\n        features:\n          -\
+      \ \"Picturesque cherry blossom paths along Hudson River\"\n          - \"Peaceful\
+      \ atmosphere with benches and lawns\"\n          - \"Close to Upper West Side\
+      \ cafés and restaurants\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "Besides Brooklyn Botanic Garden, there are several other popular cherry\
+      \ blossom spots in New York City.\n\n1. Central Park (Cherry Hill & the Reservoir):\
+      \ Scenic blossom paths circling the Reservoir, Cherry Hill picnic area with\
+      \ sweeping views, and classic spring photo spots.  \n\n2. Flushing Meadows Corona\
+      \ Park: Broad cherry blossom groves near the Unisphere, expansive lawns for\
+      \ gatherings, and frequent spring cultural events.  \n\n3. Riverside Park: Picturesque\
+      \ cherry trees along Hudson River, a calm atmosphere with benches and lawns,\
+      \ easy access to nearby cafés and restaurants."

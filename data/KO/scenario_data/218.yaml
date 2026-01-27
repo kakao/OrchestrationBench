@@ -1,0 +1,79 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- date: "2025-7-16"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번주 토요일 부산 결혼식 일정 조회 후에 늦지 않게 가려면 서울역에서 몇 시 기차 타야 되는지 알아봐줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"이번 주 토요일\
+      \ 등록된 결혼식 일정 조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"이번 주 토요일 서울역에서부터 부산 결혼식까지 늦지 않게 갈 기차 시간 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"이번 주 토요일 등록된 결혼식 일정\"\
+      \n  startDate: \"2025-07-19\"\n  endDate: \"2025-07-19\"\n  keyword: \"결혼식\"\
+      \ntool_call_result:\n  schedule:\n    title: \"짱아 결혼식\"\n    location: \"부산\
+      \ W컨벤션센터\"\n    date: \"2025-07-19\"\n    time: \"14:00\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransitSchedule\narguments:\n  refinedQuery: \"7월 19일 서울역에서\
+      \ 부산역 가는 기차 스케쥴 조회\"\n  departureStation: \"서울역\"\n  arrivalStation: \"부산역\"\
+      \n  departureDate: \"2025-07-19\"\n  transportType: \"train\"\ntool_call_result:\n\
+      \  schedule:\n    departureDate: \"2025-07-19\"\n    route: \"서울역 → 부산역\"\n\
+      \    trains:\n      - trainNo: \"KTX 101\"\n        type: \"KTX\"\n        departureTime:\
+      \ \"07:00\"\n        arrivalTime: \"09:28\"\n        duration: \"2시간 28분\"\n\
+      \        seatType: [\"standard\", \"business\"]\n        price: \"₩59,800\"\n\
+      \n      - trainNo: \"KTX 105\"\n        type: \"KTX\"\n        departureTime:\
+      \ \"08:15\"\n        arrivalTime: \"10:43\"\n        duration: \"2시간 28분\"\n\
+      \        seatType: [\"standard\", \"business\"]\n        price: \"₩59,800\"\n\
+      \n      - trainNo: \"KTX 109\"\n        type: \"KTX\"\n        departureTime:\
+      \ \"09:30\"\n        arrivalTime: \"11:55\"\n        duration: \"2시간 25분\"\n\
+      \        seatType: [\"standard\", \"business\"]\n        price: \"₩59,800\"\n\
+      \n      - trainNo: \"KTX 115\"\n        type: \"KTX\"\n        departureTime:\
+      \ \"11:10\"\n        arrivalTime: \"13:40\"\n        duration: \"2시간 30분\"\n\
+      \        seatType: [\"standard\", \"business\"]\n        price: \"₩59,800\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '이번 주 토요일(7월 19일) 부산 W컨벤션센터에서 열리는 결혼식은 오후 2시에 시작됩니다. 행사장까지 여유 있게 도착하시려면
+      최소 1시간 전인 오후 1시까지 부산역에 도착하는 것이 좋습니다.
+
+
+      ✅ 추천 기차편 (서울역 → 부산역)
+
+      KTX 101: 07:00 출발 → 09:28 도착
+
+      KTX 105: 08:15 출발 → 10:43 도착
+
+      KTX 109: 09:30 출발 → 11:55 도착
+
+      KTX 115: 11:10 출발 → 13:40 도착 ← 가장 늦은 추천편
+
+
+      🔔 결론: KTX 115 (11:10 출발) 열차까지는 타셔야 결혼식에 늦지 않게 도착할 수 있습니다.
+
+      더 여유 있게 이동하시려면 KTX 105 (08:15 출발) 정도를 추천드려요. 원하시면 예매 도와드릴게요!'

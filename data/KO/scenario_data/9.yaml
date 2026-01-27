@@ -1,0 +1,128 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜: 2025-07-17
+
+      - 회사: 서울 용산구 대사관로 59
+
+      - 집: 경기도 김포시 유현로 200'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 저녁에 강변북로 교통 상황이랑 공사하고 있는지 좀 봐줄래? 많이 정체되면 강변북로로 안가게 우회할 수 있는 빠른 길 알려줘.
+      그리고 집 근처에 드라이브스루 할 수 있는 샌드위치랑 팬케이크 파는 카페도 있는지 좀 봐줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"오늘 저녁\
+      \ 강변북로 공사 여부 및 교통 상황 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"집 근처에 위치한 샌드위치와 팬케이크를 파는 드라이브스루 카페 조회\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"오늘 저녁 강변북로가 많이 정체되면 강변북로를\
+      \ 거치지 않는 빠른 우회길 안내\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTrafficInfo\narguments:\n  refinedQuery: \"오늘 저녁 강변북로 공사 여부\
+      \ 및 교통 상황 조회\"\n  location: \"강변북로\"\n  timeRange: \"2025-07-17T18:00~20:59\"\
+      \n  trafficType: \"자동차\"\n  incidentType: \"공사\"\n  sortBy: \"delay_level\"\n\
+      tool_call_result:\n  status: success\n  data:\n    location: \"강변북로\"\n    timeRange:\
+      \ \"2025-07-17T18:00~20:59\"\n    trafficType: \"자동차\"\n    incidentType: \"\
+      공사\"\n    conditions:\n      - segment: \"성수대교 남단 ~ 잠실대교 북단\"\n        averageSpeedKmh:\
+      \ 10\n        congestionLevel: \"매우 심한 정체\"\n        incidents:\n          -\
+      \ \"대규모 공사로 2차로 통제 중\"\n          - \"교통량 급증으로 정체 심화\"\n      - segment: \"\
+      잠실대교 북단 ~ 동부간선도로 분기점\"\n        averageSpeedKmh: 20\n        congestionLevel:\
+      \ \"심한 정체\"\n        incidents:\n          - \"공사 구간 인근으로 인한 병목 현상\"\n     \
+      \ - segment: \"동부간선도로 분기점 ~ 구리암사대교\"\n        averageSpeedKmh: 40\n        congestionLevel:\
+      \ \"원활\"\n        incidents: []\n    advisory: \"강변북로 대규모 공사로 인해 심한 정체가 예상되니\
+      \ 우회 경로 이용을 권장합니다.\"\n  source: \"교통 시스템\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"집 근처에 위치한\
+      \ 샌드위치와 팬케이크를 파는 드라이브스루 카페 조회\"\n  location: \"경기도 김포시 유현로 200\"\n  cuisineType:\
+      \ \"카페\"\n  sortBy: \"nearest\"\n  tag: \"드라이브스루\"\n  specificDishes: [\"샌드위치\"\
+      , \"팬케이크\"]\ntool_call_result:\n  status: success\n  data:\n    restaurants:\n\
+      \      - name: \"샌드위치 카페 김포점\"\n        address: \"경기도 김포시 유현로 210\"\n     \
+      \   rating: 4.6\n        reviewCount: 150\n        features:\n          - \"\
+      샌드위치\"\n          - \"팬케이크\"\n          - \"드라이브스루\"\n          - \"주차장\"\n\
+      \        openingHours: \"07:00~21:00\"\n        distanceKm: 0.3\n      - name:\
+      \ \"드라이브스루 브런치 하우스\"\n        address: \"경기도 김포시 유현로 198\"\n        rating:\
+      \ 4.4\n        reviewCount: 120\n        features:\n          - \"샌드위치\"\n \
+      \         - \"팬케이크\"\n          - \"드라이브스루\"\n          - \"무료 와이파이\"\n    \
+      \    openingHours: \"06:30~22:00\"\n        distanceKm: 0.5\n      - name: \"\
+      카페 샌드위치앤고\"\n        address: \"경기도 김포시 유현로 205\"\n        rating: 4.5\n   \
+      \     reviewCount: 100\n        features:\n          - \"샌드위치\"\n          -\
+      \ \"팬케이크\"\n          - \"드라이브스루\"\n          - \"친환경 컵\"\n        openingHours:\
+      \ \"07:00~20:00\"\n        distanceKm: 0.6\n  source: \"장소 추천 시스템\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출발지, 도착지'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '저녁 시간 강변북로 우회 경로를 찾아드리려면, 출발지와 도착지 정보가 필요합니다.
+
+      ''집'', ''서울역'', ''현재 위치'' 등으로 말씀해주시면 됩니다.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 회사에서 저녁 6시에 출발해서 집으로 갈거야~
+- workflow_id: null
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"오늘 저녁 회사에서 저녁 6시에\
+      \ 출발해서 집으로 갈 때 강변북로를 거치지 않는 빠른 우회길 안내\"\n  origin: \"서울 용산구 대사관로 59\"\n  destination:\
+      \ \"경기도 김포시 유현로 200\"\n  transportModes: \"car\"\n  optimizeBy: \"fastest\"\n\
+      \  departureTime: \"18:00\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    origin: \"서울 용산구 대사관로 59\"\n    destination: \"경기도 김포시 유현로 200\"\n    transportModes:\
+      \ \"car\"\n    optimizeBy: \"fastest\"\n    departureTime: \"18:00\"\n    routeOptions:\n\
+      \      - routeId: 1\n        description: \"내부순환로를 이용해 강변북로를 거치지 않는 우회 경로\"\n\
+      \        estimatedTimeMin: 38\n        distanceKm: 23.0\n        steps:\n  \
+      \        - \"회사에서 출발\"\n          - \"내부순환로 진입\"\n          - \"동부간선도로 경유\"\n\
+      \          - \"강변북로 우회\"\n          - \"집 도착\"\n        trafficConditions: \"\
+      내부순환로 일부 구간 정체 있으나 강변북로를 완전히 우회 가능\"\n    recommendation: \"퇴근 시간 강변북로를 피하는\
+      \ 경로로 내부순환로 우회 경로를 권장합니다.\"\n  source: \"교통 시스템\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "[강변북로 정체 심각]\n\n• 성수대교 남단 ~ 잠실대교 북단 구간: 대규모 공사로 2차로 통제\n• 잠실대교 북단 ~\
+      \ 동부간선도로 분기점: 공사 인근 병목 현상으로 매우 심한 정체\n→ 강변북로 이용은 피하시고 우회 경로를 추천드립니다.\n\n\n[추천\
+      \ 우회 경로]\n\n오늘 저녁 퇴근길 우회 경로를 안내해 드릴게요!\n\n• 경로 설명: 내부순환로 → 동부간선도로 경유 → 강변북로\
+      \ 완전 우회\n• 예상 소요 시간: 38분\n• 총 거리: 약 23km\n• 교통 상황: 내부순환로 일부 구간 정체 있지만, 강변북로는\
+      \ 완전히 피할 수 있음\n• 경로 요약\n 1. 회사에서 출발 (서울 용산구 대사관로 59)\n 2. 내부순환로 진입\n 3. 동부간선도로\
+      \ 경유\n 4. 강변북로 우회\n 5. 집 도착 (경기도 김포시 유현로 200)\n\n\n[근처 드라이브스루 카페 추천]\n\n1. 샌드위치\
+      \ 카페 김포점  \n   - 평점 4.6, 리뷰 150개, 거리 약 0.3km  \n   - 특징: 샌드위치, 팬케이크, 드라이브스루,\
+      \ 주차장  \n   - 운영시간: 07:00~21:00  \n\n2. 드라이브스루 브런치 하우스  \n   - 평점 4.4, 리뷰 120개,\
+      \ 거리 약 0.5km  \n   - 특징: 샌드위치, 팬케이크, 드라이브스루, 무료 와이파이  \n   - 운영시간: 06:30~22:00\
+      \  \n\n3. 카페 샌드위치앤고  \n   - 평점 4.5, 리뷰 100개, 거리 약 0.6km  \n   - 특징: 샌드위치, 팬케이크,\
+      \ 드라이브스루, 친환경 컵  \n   - 운영시간: 07:00~20:00  \n\n필요하시면 예약이나 추가 정보도 도와드릴게요!"

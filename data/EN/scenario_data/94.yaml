@@ -1,0 +1,343 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2031-03-21T23:54'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I was drinking in Allston and public transportation has stopped for the
+      night, so I need to stay at a nearby hotel. Please recommend the closest hotel
+      to Harvard Avenue in Allston and give me the shortest walking route there on
+      Google Maps right now.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Recommend\
+      \ the closest hotel to Harvard Avenue in Allston\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: transport_agent\n      refined_query: \"Using Google\
+      \ Maps, show the shortest walking route from Harvard Avenue in Allston to the\
+      \ nearest hotel now\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Recommend the closest\
+      \ hotel to Harvard Avenue in Allston\"\n  sortBy: \"distance\"\n  placeCategory:\
+      \ \"hotel\"\n  specialCondition: \"sleeping available\"\ntool_call_result:\n\
+      \  results:\n    - name: \"Harvard Avenue Inn Allston\"\n      address: \"166\
+      \ Harvard Ave, Allston, MA 02134\"\n      distance: \"0.2 mi\"\n      phone:\
+      \ \"(617)555-0142\"\n      checkIn: \"24-hour front desk; same-night check-in\
+      \ available\"\n      website: \"https://harvardaveinn.example.com\"\n      features:\n\
+      \        - \"Free Wi-Fi\"\n        - \"Close to MBTA Green Line B (Harvard Ave)\"\
+      \n\n    - name: \"Packard Corner Hotel\"\n      address: \"1100 Commonwealth\
+      \ Ave, Boston, MA 02215\"\n      distance: \"0.4 mi\"\n      phone: \"(617)555-0198\"\
+      \n      checkIn: \"Late check-in until 2:00 AM\"\n      website: \"https://packardcornerhotel.example.com\"\
+      \n      features:\n        - \"24/7 reception\"\n        - \"Steps from Packard’s\
+      \ Corner (Green Line B)\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure and destination'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ I looked up some Hotels near Harvard Avenue where you can sleep overnight.
+
+
+      - Harvard Avenue Inn Allston — 0.2 mi
+
+      Address: 166 Harvard Ave, Allston, MA 02134
+
+      Phone: (617)555-0142
+
+      Check-in: 24-hour front desk; same-night check-in available
+
+      Website: https://harvardaveinn.example.com
+
+
+      Features: Free Wi-Fi · Steps from MBTA Green Line B (Harvard Ave)
+
+
+      - Packard Corner Hotel — 0.4 mi
+
+      Address: 1100 Commonwealth Ave, Boston, MA 02215
+
+      Phone: (617)555-0198
+
+      Check-in: Late check-in until 2:00 AM
+
+      Website: https://packardcornerhotel.example.com
+
+
+      Features: 24/7 reception · Near Packard’s Corner (Green Line B)
+
+
+      To get directions, please let me know your starting point and which hotel you’d
+      like to visit.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Please remind me at 8:00 a.m. tomorrow so that I don’t forget to submit
+      my assignment by 4:00 p.m. Also, could you recommend a burger place near Boston
+      University for tomorrow? I’m planning to eat at 11:00 a.m.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: place_agent\n      refined_query: \"Recommend\
+      \ the closest hotel to Harvard Avenue in Allston\"\n\nworkflow_2:\n  status:\
+      \ paused\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ paused\n      name: transport_agent\n      refined_query: \"Using Google Maps,\
+      \ show the shortest walking route from Harvard Avenue in Allston to the nearest\
+      \ hotel now\" \n\ninterrupted_workflow_2-1:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"Set a reminder at 8:00 a.m. tomorrow so that I don’t forget to submit my\
+      \ assignment by 4:00 p.m.\"\n\ninterrupted_workflow_2-2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Recommend a burger place near Boston University in Allston\
+      \ for around 11 AM tomorrow\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"Set a reminder at\
+      \ 8:00 a.m. tomorrow so that I don’t forget to submit my assignment by 4:00\
+      \ p.m.\"\n  reminderContent: \"Submit assignment by 4 PM today\"\n  reminderTime:\
+      \ \"2031-03-22T08:00\"\n  repeatRule: \"none\"\n  priority: \"normal\"\n  deliveryMethod:\
+      \ \"chat\"\ntool_call_result:\n  status: \"success\"\n  reminderId: \"reminder_20310321_001\"\
+      \n  reminderContent: \"Submit assignment by 4 PM today\"\n  reminderTime: \"\
+      2031-03-22T08:00\"\n  repeatRule: \"none\"\n  priority: \"normal\"\n  deliveryMethod:\
+      \ \"chat\"\n  message: \"A reminder has been set for March 22, 2031 at 8:00\
+      \ AM: 'Submit assignment by 4 PM today'.\""
+- workflow_id: workflow_2
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Recommend\
+      \ a burger place near Boston University in Allston for around 11 AM tomorrow\"\
+      \n  sortBy: \"nearest\"\n  location: \"Boston University\"\n  specificDishes:\
+      \ \"burger\"\n  reservationTime: \"tomorrow at 11 AM\"\ntool_call_result:\n\
+      \  recommendations:\n    - name: \"Boston Burger Company — Allston\"\n     \
+      \ address: \"110 Brighton Ave, Allston, MA 02134\"\n      distance: \"≈0.6 mi\
+      \ from BU West\"\n      cuisineType: \"Burgers\"\n      opensAt: \"11:00 AM\"\
+      \n      reservation: \"Walk-in; call-ahead for groups\"\n      features:\n \
+      \       - \"Creative specialty burgers\"\n        - \"Takeout available\"\n\
+      \        - \"Beer & wine\"\n\n    - name: \"UBurger — Kenmore\"\n      address:\
+      \ \"636 Beacon St, Boston, MA 02215\"\n      distance: \"≈0.5 mi from BU East\"\
+      \n      cuisineType: \"Burgers\"\n      opensAt: \"11:00 AM\"\n      reservation:\
+      \ \"No reservations\"\n      features:\n        - \"Fast-casual counter service\"\
+      \n        - \"Veggie options\"\n        - \"Quick turnaround at lunch\"\n\n\
+      \    - name: \"Five Guys — Allston\"\n      address: \"1374 Commonwealth Ave,\
+      \ Allston, MA 02134\"\n      distance: \"≈0.9 mi from BU West\"\n      cuisineType:\
+      \ \"Burgers\"\n      opensAt: \"11:00 AM\"\n      reservation: \"No reservations\"\
+      \n      features:\n        - \"Customizable toppings\"\n        - \"Quick service\"\
+      \n        - \"Peanut oil (allergy caution)\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ A notification has been set to be sent via chat on March 22, 2031
+      at 8:00 AM: "Submit your assignment by 4:00 PM today."
+
+
+      ▶ Recommended burger spots near Boston University in Allston
+
+
+      1. Boston Burger Company — Allston (≈0.6 mi from BU West)
+
+      Address: 110 Brighton Ave, Allston, MA 02134
+
+      Opens: 11:00 AM
+
+      Reservation: Walk-in; call ahead for groups
+
+      Highlights: Creative specialty burgers · Takeout · Beer & wine
+
+
+      2. UBurger — Kenmore (≈0.5 mi from BU East)
+
+      Address: 636 Beacon St, Boston, MA 02215
+
+      Opens: 11:00 AM
+
+      Reservation: No reservations
+
+      Highlights: Fast-casual counter service · Veggie options · Quick lunch turnaround
+
+
+      3. Five Guys — Allston (≈0.9 mi from BU West)
+
+      Address: 1374 Commonwealth Ave, Allston, MA 02134
+
+      Opens: 11:00 AM
+
+      Reservation: No reservations
+
+      Highlights: Customizable toppings · Quick service · Peanut oil (allergy caution)
+
+
+      If you need directions to any of these burger spots, please provide your starting
+      location.'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: Show me how to get to Harvard Avenue Inn Allston from Harvard Avenue
+      using Google Maps
+- workflow_id: null
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Using Google Maps,\
+      \ show the shortest walking route from Harvard Avenue in Allston to Harvard\
+      \ Avenue Inn Allston\"\n  origin: \"Harvard Avenue\"\n  destination: \"Harvard\
+      \ Avenue Inn Allston\"\n  departureTime: \"2031-03-21T23:54\"\n  transportModes:\
+      \ \"walk\"\n  optimizeBy: \"least_walk\"\n  source: \"Google Maps\"\ntool_call_result:\n\
+      \  data:\n    origin: \"Harvard Avenue (Allston)\"\n    destination: \"Harvard\
+      \ Avenue Inn Allston\"\n    departureTime: \"2031-03-21T23:54\"\n    transportMode:\
+      \ \"walk\"\n    optimizeBy: \"least_walk\"\n    duration: \"About 4 minutes\"\
+      \n    distance: \"0.2 mi (≈350 m)\"\n    steps:\n      - \"Start at Harvard\
+      \ Ave & Brighton Ave (Allston).\"\n      - \"Head north on Harvard Ave toward\
+      \ Commonwealth Ave (≈300 m).\"\n      - \"Harvard Avenue Inn Allston (166 Harvard\
+      \ Ave) will be on your left.\"\n    mapLink: \"https://www.google.com/maps/dir/?api=1&origin=Harvard+Avenue+Allston&destination=166+Harvard+Ave,+Allston,+MA+02134&travelmode=walking\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Harvard Avenue (Allston) → Harvard Avenue Inn Allston
+
+
+      - Departure time: 2031-03-21 11:54 PM
+
+      - Mode: Walk (least-walk route)
+
+      - Estimated time: About 4 minutes
+
+      - Distance: 0.2 mi (≈350 m)
+
+      - Steps
+
+      - Start at Harvard Ave & Brighton Ave (Allston).
+
+      - Head north on Harvard Ave toward Commonwealth Ave (≈300 m).
+
+      - Harvard Avenue Inn Allston (166 Harvard Ave) will be on your left.
+
+
+      Map link: https://www.google.com/maps/dir/?api=1&origin=Harvard+Avenue+Allston&destination=166+Harvard+Ave,+Allston,+MA+02134&travelmode=walking'
+- workflow_id: null
+  step_id: 15
+  agent: user
+  agent_type: user
+  data:
+    content: The hotel you recommended was closed when I got there. Can you check
+      if there’s a night bus running from here to Copley Square in Back Bay right
+      now?
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: place_agent\n      refined_query: \"Recommend\
+      \ the closest hotel to Harvard Avenue in Allston\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    -\
+      \ status: completed\n      name: transport_agent\n      refined_query: \"Using\
+      \ Google Maps, show the shortest walking route from Harvard Avenue in Allston\
+      \ to the nearest hotel now\" \n\ninterrupted_workflow_2-1:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: calendar_agent\n\
+      \      refined_query: \"Set a reminder at 8:00 a.m. tomorrow so that I don’t\
+      \ forget to submit my assignment by 4:00 p.m.\"\n\ninterrupted_workflow_2-2:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: place_agent\n      refined_query: \"Recommend a burger place near\
+      \ Boston University in Allston for around 11 AM tomorrow\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: transport_agent\n      refined_query: \"Check if there’s a night\
+      \ bus running from Harvard Avenue to Copley Square in Back Bay\""
+- workflow_id: workflow_3
+  step_id: 17
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Check the current\
+      \ late-night bus schedule from Harvard Avenue to Copley Square in Back Bay\"\
+      \n  origin: \"Harvard Avenue\"\n  destination: \"Copley Square in Back Bay\"\
+      \n  departureTime: \"2031-03-21T23:54\"\n  transportModes: \"bus\"\n  optimizeBy:\
+      \ \"fastest\"\ntool_call_result:\n  data:\n    origin: \"Harvard Avenue\"\n\
+      \    destination: \"Copley Square, Back Bay\"\n    departureTime: \"2031-03-21T23:54\"\
+      \n    transportMode: \"bus\"\n    optimizeBy: \"fastest\"\n    routes:\n   \
+      \   - type: \"Bus (Fastest)\"\n        duration: \"≈ 33 min\"\n        etaArrival:\
+      \ \"2031-03-22T00:27\"\n        fare: \"Standard MBTA bus fare\"\n        steps:\n\
+      \          - \"Walk 2 min to Harvard Ave @ Brighton Ave (MBTA Route 57 stop).\"\
+      \n          - \"Take MBTA Bus 57 (Inbound to Kenmore) — departs ≈ 11:58 PM;\
+      \ ride ~12 min to Kenmore Busway.\"\n          - \"Transfer to MBTA Bus 9 (Inbound\
+      \ to City Point) — departs ≈ 12:15 AM; ride ~8–10 min to Boylston St @ Dartmouth\
+      \ St (Copley Square).\"\n          - \"Walk 1–2 min to the Copley Square plaza.\"\
+      \n        mapLink: \"https://www.google.com/maps/dir/?api=1&origin=166+Harvard+Ave,+Allston,+MA+02134&destination=Copley+Square,+Boston,+MA&travelmode=transit&dir_action=navigate\"\
+      \n        notes: \"Late-night headways may vary; expect short transfer wait\
+      \ at Kenmore.\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: 'Harvard Avenue Inn Allston → Copley Square (Back Bay)
+
+      Date/Time: Depart ~11:54 PM on Fri, Mar 21, 2031 → Arrive ~12:27 AM on Sat,
+      Mar 22, 2031
+
+      Total time: ≈ 33 minutes
+
+      Fare: Standard MBTA bus fare
+
+
+      Step-by-step:
+
+
+      Walk ~2 minutes to Harvard Ave @ Brighton Ave (MBTA Route 57 stop).
+
+
+      MBTA Bus 57 (Inbound to Kenmore) — departs at around 11:58 PM. Ride ~12 minutes
+      to Kenmore Busway.
+
+
+      Transfer to MBTA Bus 9 (Inbound to City Point) — departs at around 12:15 AM.
+      Ride 8–10 minutes to Boylston St @ Dartmouth St (Copley Square).
+
+
+      Walk 1–2 minutes to the Copley Square plaza.
+
+
+      Notes: Late-night headways can vary; expect a short transfer wait at Kenmore.
+
+
+      Map: Open turn-by-turn directions'

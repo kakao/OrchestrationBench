@@ -1,0 +1,80 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025/08/03
+
+      contact: 010-1234-1234'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '여자친구랑 여행 가기로 한거랑 겹쳐서 어제 예매한 서교동미술관 전시 예매 취소해야겠어, 그리고
+
+      요즘 커플들 자주가는 강원도 여행지 몇개만 추천해줘'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      어제 예매한 서교동미술관 전시 취소를 위한 예매 조회\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"어제 예매한 서교동미술관 전시 예매 취소\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"요즘 커플들이 자주 가는 강원도 여행지 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionReservationInfo\narguments:\n  refinedQuery: \"어제\
+      \ 예매한 서교동미술관 전시 예매 취소를 위한 조회\"\n  contactInfo: \"010-1234-1234\"\ntool_call_result:\n\
+      \  reservationInfo:\n    reservationId: \"RSV-20250802-00123\"\n    exhibitionTitle:\
+      \ \"서교동미술관 특별전 – 빛과 사유\"\n    reserverContact: \"010-1234-1234\"\n    reservationDate:\
+      \ \"2025-08-05\"\n    exhibitionDate: \"2025-08-10\"\n    numberOfTickets: 2\n\
+      \    status: \"예매 완료\"\n    cancelAvailable: true"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getPopularPlaceInfo\narguments:\n  refinedQuery: \"차를 타고 갈 요즘\
+      \ 커플들이 자주 가는 강원도 여행지 추천\"\n  location: \"강원도\"\n  placeType: \"여행지\"\n  sortBy:\
+      \ \"highest_rated\"\ntool_call_result:\n  popularPlaces:\n    - name: \"강릉 안반데기\"\
+      \n      location: \"강원도 강릉시 왕산면\"\n      rating: \"4.8\"\n      description:\
+      \ \"탁 트인 억새밭과 일출 명소로 유명한 드라이브 데이트 코스\"\n      features:\n        - \"일출 명소\"\
+      \n        - \"사진 촬영 명소\"\n        - \"드라이브 코스\"\n      link: \"https://map.naver.com/p/강릉-안반데기\"\
+      \n\n    - name: \"양양 서피비치\"\n      location: \"강원도 양양군 현남면\"\n      rating:\
+      \ \"4.7\"\n      description: \"감성 캠핑과 서핑을 함께 즐길 수 있는 해변 명소\"\n      features:\n\
+      \        - \"서핑 가능\"\n        - \"푸드트럭존\"\n        - \"감성 포토존\"\n      link:\
+      \ \"https://map.naver.com/p/양양-서피비치\"\n\n    - name: \"속초 아바이마을\"\n      location:\
+      \ \"강원도 속초시 청호동\"\n      rating: \"4.6\"\n      description: \"옛 추억이 깃든 감성적인\
+      \ 골목과 음식이 있는 인기 여행지\"\n      features:\n        - \"갯배 체험\"\n        - \"오징어순대\
+      \ 맛집\"\n        - \"인생샷 포인트\"\n      link: \"https://map.naver.com/p/속초-아바이마을\""
+- workflow_id: null
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelExhibitionTicket\narguments:\n  refinedQuery: \"어제 예매한 서교동미술관\
+      \ 전시 예매 취소\"\n  reservationId: \"RSV-20250802-00123\"\ntool_call_result:\n \
+      \ cancelResult:\n    reservationId: \"RSV-20250802-00123\"\n    status: \"취소\
+      \ 완료\"\n    message: \"서교동미술관 전시 예매가 정상적으로 취소되었습니다. 환불은 영업일 기준 2~3일 내 처리됩니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 서교동미술관 전시 예매 취소 안내\n서교동미술관 전시 예매가 정상적으로 취소되었습니다.\n\n* 예약 번호: RSV-20250802-00123\n\
+      * 상태: 취소 완료\n\n▶ 강원도 커플 인기 여행지 추천\n\n1. 강릉 안반데기\n\n   * 위치: 강릉시 왕산면\n   * 특징:\
+      \ 일출 명소, 드라이브 코스, 사진 촬영 명소\n   * 평점: 4.8\n   * [지도 보기](https://map.naver.com/p/강릉-안반데기)\n\
+      \n2. 양양 서피비치\n\n   * 위치: 양양군 현남면\n   * 특징: 서핑 가능, 푸드트럭존, 감성 포토존\n   * 평점: 4.7\n\
+      \   * [지도 보기](https://map.naver.com/p/양양-서피비치)\n\n3. 속초 아바이마을\n\n   * 위치: 속초시\
+      \ 청호동\n   * 특징: 갯배 체험, 오징어순대 맛집, 인생샷 포인트\n   * 평점: 4.6\n   * [지도 보기](https://map.naver.com/p/속초-아바이마을)"

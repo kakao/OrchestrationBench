@@ -1,0 +1,239 @@
+metadata:
+  total_steps: 21
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 3월 17일
+
+      - 사용자 이름: 박온유
+
+      - userId: U0DK23121'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번 주 토요일에 야구 경기 직관 가는데 LG 유니폼 괜찮은거 있으면 하나 사려고.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"LG 트윈스\
+      \ 야구 유니폼 추천\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"LG 트윈스 야구 유니폼 구매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"LG 트윈스 야구 유니폼 추천\"\
+      \n  productName: \"LG 트윈스 야구 유니폼\"\n  sortBy: \"latest\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"LG 트윈스 야구 유니폼 추천\"\n    products:\n      - name:\
+      \ \"LG 트윈스 레트로 유니폼\"\n        description: \"LG 트윈스의 전성기를 기념하는 레트로 디자인의 유니폼입니다.\
+      \ 팬들에게 특별한 추억을 선사합니다.\"\n        price: \"130,000 원\"\n      - name: \"LG 트윈스\
+      \ 팬 에디션 유니폼\"\n        description: \"팬들을 위한 특별 에디션 유니폼으로 팀 로고와 선수 이름이 커스터마이즈\
+      \ 가능한 제품입니다.\"\n        price: \"150,000 원\"\n      - name: \"LG 트윈스 클래식 홈 유니폼\"\
+      \n        description: \"전통적인 디자인이 돋보이는 LG 트윈스의 클래식 홈 유니폼입니다. 팬들의 사랑을 받는 아이템입니다.\"\
+      \n        price: \"125,000 원\"\n      - name: \"LG 트윈스 스페셜 에디션 유니폼\"\n     \
+      \   description: \"특별한 이벤트를 기념하여 제작된 스페셜 에디션 유니폼입니다. 한정판으로 발매되어 팬들의 소장 욕구를 자극합니다.\"\
+      \n        price: \"160,000 원\"\n      - name: \"LG 트윈스 서포터즈 유니폼\"\n        description:\
+      \ \"LG 트윈스를 열렬히 응원하는 팬들을 위한 서포터즈 전용 유니폼입니다. 착용 시 경기장의 분위기를 한층 더합니다.\"\n    \
+      \    price: \"110,000 원\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주문할 상품 사용자 선택'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "다양한 LG 트윈스 유니폼을 소개합니다. 팬들을 위한 특별 아이템으로, 경기를 더욱 즐겁게 응원할 수 있는 유니폼들을 만나보세요:\n\
+      \n1. LG 트윈스 레트로 유니폼\n   - 전성기를 기념하는 레트로 디자인으로, 팬들에게 특별한 추억을 선사합니다.\n   - 가격:\
+      \ 130,000 원\n\n2. LG 트윈스 팬 에디션 유니폼\n   - 팀 로고와 선수 이름을 커스터마이즈할 수 있는 특별 에디션으로\
+      \ 제작되었습니다.\n   - 가격: 150,000 원\n\n3. LG 트윈스 클래식 홈 유니폼\n   - 전통적인 디자인이 돋보이는 클래식\
+      \ 홈 유니폼으로, 팬들의 꾸준한 사랑을 받고 있는 아이템입니다.\n   - 가격: 125,000 원\n\n4. LG 트윈스 스페셜 에디션\
+      \ 유니폼\n   - 특별 이벤트를 기념하는 스페셜 에디션 유니폼으로 한정판으로 발매되어 소장 가치가 높습니다.\n   - 가격: 160,000\
+      \ 원\n\n5. LG 트윈스 서포터즈 유니폼\n   - 열혈 팬들을 위한 서포터즈 전용 유니폼으로, 경기장에서의 응원 열기를 한층 더해줍니다.\n\
+      \   - 가격: 110,000 원\n\n마음에 드는 상품을 알려주시면 구매를 도와드리겠습니다."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 아 근데 이번 주 토요일에 잠실에 비 안오나? 우천 시 취소라는데
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      LG 트윈스 야구 유니폼 추천\"\n\nworkflow_2:\n  status: paused\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: paused\n      name: shopping_agent\n\
+      \      refined_query: \"LG 트윈스 야구 유니폼 구매\"\n\ninterrupted_workflow_2-1:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ weather_agent\n      refined_query: \"이번 주 토요일 잠실 비 예보\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"2025년 3월 22일\
+      \ 토요일 잠실 비 예보\"\n  date: \"2025-03-22\"\n  location: \"잠실\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"2025년 3월 22일 토요일 잠실 비 예보\"\n    date: \"2025-03-22\"\
+      \n    location: \"잠실\"\n    weatherForecast:\n      condition: \"흐림\"\n    \
+      \  temperatureRange: \"최저 10°C / 최고 16°C\"\n      precipitationProbability:\
+      \ \"10%\"\n      wind: \"북서풍 7 km/h\"\n      humidity: \"70%\"\n      additionalInfo:\
+      \ \"하루 종일 흐린 날씨가 예상되지만 비는 내리지 않을 것으로 보입니다. 외출 시에는 다소 쌀쌀할 수 있으니 가벼운 겉옷을 준비하세요.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '◾2025년 3월 22일 토요일 잠실 지역의 날씨 예보
+
+
+      2025년 3월 22일 토요일에는 종일 흐린 날씨가 예상되지만 비는 내리지 않을 것으로 보입니다. 예상 기온은 최저 10°C에서 최고 16°C로
+      다소 쌀쌀하게 느껴질 수 있으니 외출 시 가벼운 겉옷을 준비하시는 것이 좋겠습니다. 강수 확률은 10% 정도로 낮아 야외 활동에 큰 지장은
+      없을 것으로 보입니다. 바람은 북서풍이 불며, 풍속은 약 7 km/h로 예상됩니다. 습도는 70%로 다소 높게 유지될 것으로 예상되오니
+      참고하시기 바랍니다.
+
+
+      추천드린 상품 중 마음에 드는 상품을 알려주시면 구매를 도와드릴게요!'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 다행이다. 그러면 이번에 최고심이랑 콜라보한 유니폼으로 보여줄래? 경기 시작 전에 경기장 입장 가능한 시간은 몇 시부터인지도
+      알려줘.
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      LG 트윈스 야구 유니폼 추천\"\n\nworkflow_2:\n  status: paused\n  type: dependent\n  depend_on:\
+      \ \"workflow_1-1\"\n  steps:\n    - status: paused\n      name: shopping_agent\n\
+      \      refined_query: \"LG 트윈스 야구 유니폼 구매\"\n\ninterrupted_workflow_2-1:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ weather_agent\n      refined_query: \"이번 주 토요일 잠실 비 예보\"\n\nworkflow_1-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: shopping_agent\n      refined_query: \"최고심과 콜라보한 LG 트윈스 유니폼 추천\"\
+      \n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: sports_agent\n      refined_query: \"이번 주 토요일 잠실에서 열리는\
+      \ LG 트윈스 야구 경기 시작 전 경기장에 입장 가능한 시간\""
+- workflow_id: workflow_1
+  step_id: 13
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"최고심과 콜라보한 LG 트윈스\
+      \ 유니폼 추천\"\n  productName: \"LG 트윈스 최고심 콜라보 유니폼\"\n  sortBy: \"latest\"\ntool_call_result:\n\
+      \  recommendations:\n    - productId: \"lt001\"\n      productName: \"LG 트윈스\
+      \ x 최고심 콜라보 홈 유니폼\"\n      description: \"최고심과의 콜라보로 탄생한 특별한 홈 유니폼. 독창적인 디자인과\
+      \ 고급 소재로 팬들에게 특별한 경험을 제공합니다.\"\n      price: 180000\n      imageUrl: \"https://example.com/images/lg_home.jpg\"\
+      \n      purchaseLink: \"https://store.example.com/product/lt001\"\n    - productId:\
+      \ \"lt002\"\n      productName: \"LG 트윈스 x 최고심 콜라보 원정 유니폼\"\n      description:\
+      \ \"스타일리시한 최고심 디자인이 돋보이는 원정 유니폼. 착용 시 편안함을 제공합니다.\"\n      price: 175000\n \
+      \     imageUrl: \"https://example.com/images/lg_away.jpg\"\n      purchaseLink:\
+      \ \"https://store.example.com/product/lt002\"\n    - productId: \"lt003\"\n\
+      \      productName: \"LG 트윈스 x 최고심 레트로 유니폼\"\n      description: \"레트로 디자인의\
+      \ 최고심 콜라보 유니폼으로, 과거의 향수를 불러일으키는 제품입니다.\"\n      price: 190000\n      imageUrl:\
+      \ \"https://example.com/images/lg_retro.jpg\"\n      purchaseLink: \"https://store.example.com/product/lt003\"\
+      \n    - productId: \"lt004\"\n      productName: \"LG 트윈스 x 최고심 스페셜 에디션 유니폼\"\
+      \n      description: \"한정판으로 출시된 스페셜 에디션 유니폼. 최고심의 독창적 스타일을 감상할 수 있습니다.\"\n\
+      \      price: 200000\n      imageUrl: \"https://example.com/images/lg_special.jpg\"\
+      \n      purchaseLink: \"https://store.example.com/product/lt004\"\n    - productId:\
+      \ \"lt005\"\n      productName: \"LG 트윈스 x 최고심 패치 유니폼\"\n      description:\
+      \ \"다양한 패치 디자인이 특징인 최고심 콜라보 유니폼. 팬들에게 유니크한 선택을 제공합니다.\"\n      price: 185000\n\
+      \      imageUrl: \"https://example.com/images/lg_patch.jpg\"\n      purchaseLink:\
+      \ \"https://store.example.com/product/lt005\""
+- workflow_id: workflow_3
+  step_id: 14
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"2025년 3월 22일 토요일\
+      \ 잠실에서 열리는 LG 트윈스 야구 경기 시작 전 경기장에 입장 가능한 시간\"\n  targetDate: \"2025-03-22\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"2025년 3월 22일 토요일 잠실에서 열리는 LG\
+      \ 트윈스 야구 경기 시작 전 경기장에 입장 가능한 시간\"\n    gameDate: \"2025-03-22\"\n    location:\
+      \ \"잠실\"\n    gameStartTime: \"오후 6시 30분\"\n    entryTime: \"오후 3시 30분부터 입장\
+      \ 가능\"\n    additionalInfo: \"경기 시작 3시간 전인 오후 3시 30분부터 잠실 경기장에 입장할 수 있습니다. 경기\
+      \ 전 다양한 이벤트와 부대 행사를 즐기실 수 있으니, 여유 있게 도착하셔서 즐거운 시간을 보내세요.\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "◾경기장 입장 가능 시간 안내\n\n2025년 3월 22일 토요일, 잠실에서 열리는 LG 트윈스 야구 경기를 기다리고 계신가요?\
+      \ 경기는 오후 6시 30분에 시작되며, 경기장 입장은 경기 시작 3시간 전인 오후 3시 30분부터 가능합니다. 일찍 도착하셔서 경기 전\
+      \ 다양한 이벤트와 부대 행사를 즐기실 수 있으니, 여유 있는 시간을 계획해 보세요. 즐겁고 신나는 경기 관람 되시길 바랍니다!\n\n\n\
+      ◾최고심과 콜라보한 LG 트윈스 유니폼 추천\n\n최고심과 콜라보한 특별한 LG 트윈스 유니폼을 소개합니다. 최고심의 독창적 디자인과 LG\
+      \ 트윈스의 팀 아이덴티티가 결합된 유니폼으로 특별한 순간을 함께하세요!\n\n1. LG 트윈스 x 최고심 콜라보 홈 유니폼\n   -\
+      \ 특별한 홈 유니폼으로 독창적인 디자인과 고급 소재로 제작되었습니다.\n   - 가격: 180,000 원\n\n2. LG 트윈스 x 최고심\
+      \ 콜라보 원정 유니폼\n   - 스타일리시한 원정 유니폼으로 최고심의 디자인이 돋보입니다.\n   - 가격: 175,000 원\n\n\
+      3. LG 트윈스 x 최고심 레트로 유니폼\n   - 레트로 디자인으로 과거의 향수를 불러일으킵니다.\n   - 가격: 190,000 원\n\
+      \n4. LG 트윈스 x 최고심 스페셜 에디션 유니폼\n   - 한정판으로 출시된 스페셜 에디션 유니폼입니다.\n   - 가격: 200,000\
+      \ 원\n\n5. LG 트윈스 x 최고심 패치 유니폼\n   - 다양한 패치 디자인이 특징적인 유니폼입니다.\n   - 가격: 185,000\
+      \ 원\n\n어떤 상품이 마음에 드시나요? 마음에 드는 상품을 선택해주시면 구매를 도와드릴게요."
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 최고심 패치 유니폼으로 할래! M사이즈로 언니 것까지 2개 구매해줘.
+- workflow_id: workflow_2
+  step_id: 17
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수령인 주소, 전화번호'
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: 네, 주문 도와드리겠습니다. 주문을 위해서는 전화번호와 받으실 주소를 알려주세요.
+- workflow_id: null
+  step_id: 19
+  agent: user
+  agent_type: user
+  data:
+    content: 주소는 서울시 동작구 사당로 302, 1102호야. 전화번호는 010-1234-5678
+- workflow_id: null
+  step_id: 20
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"LG 트윈스 x 최고심 패치 유니폼\
+      \ M사이즈 2개 주문\"\n  userId: \"U0DK23121\"\n  productItems:\n    - productId: \
+      \ \"lt005\"\n      productName: \"LG 트윈스 x 최고심 패치 유니폼\"\n      size: \"M\"\n\
+      \      quantity: 2\n      price: 185000\n  shippingAddress:\n    recipient:\
+      \ \"박온유\"\n    address: \"서울시 동작구 사당로 302, 1102호\"\n    phone: \" 010-1234-5678\"\
+      \ntool_call_result:\n  orderId: \"ORD-20250317002\"\n  status: \"confirmed\"\
+      \n  estimatedDelivery: \"2025-03-20\"\n  trackingLink: \"https://store.example.com/track/ORD-20250317002\"\
+      \n  message: \"박온유 님, LG 트윈스 x 최고심 패치 유니폼 M사이즈 2개 주문이 확인되었습니다. 배송은 3월 20일로 예상되며,\
+      \ 배송 추적은 위 링크에서 가능합니다.\""
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: 박온유 님께서 주문하신 'LG 트윈스 x 최고심 패치 유니폼' M사이즈 2개 주문이 성공적으로 확인되었습니다! 주문하신 제품은
+      3월 20일에 배송될 예정입니다.

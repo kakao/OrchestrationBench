@@ -1,0 +1,107 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 키쿠지로의 여름에 나온 OST 중에 히사이시조가 작곡하고 피아노친 유명한곡 뭔지 알려줘 그리고 좋은 OST 로 유명한 애니메이션
+      영화도 추천헤줘.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      키쿠지로의 여름에 나온 OST 중 히사이시조가 작곡한 유명한 피아노곡\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"좋은 OST로 유명한 애니메이션 영화 추천\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMusicInfo\narguments:\n  refinedQuery: \"키쿠지로의 여름에 나온 OST 중\
+      \ 히사이시조가 작곡한 유명한 피아노곡\"\n  artistName: \"히사이시 조\"\n  albumTitle: \"키쿠지로의 여름OST\"\
+      \n  chartType: \"melon\"\ntool_call_result:\n  music:\n    - title: \"Summer\"\
+      \n      artist: \"히사이시 조\"\n      album: \"키쿠지로의 여름 OST\"\n      releaseYear:\
+      \ \"1999\"\n      duration: \"3분 38초\"\n      description: \"영화 '기쿠지로의 여름'의\
+      \ 메인 테마곡으로, 따뜻하고 서정적인 피아노 선율이 특징입니다.\"\n      link: \"https://www.youtube.com/watch?v=ZfKA4b5SFq4\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"좋은 OST로 유명한 애니메이션\
+      \ 영화 추천\"\n  genre: \"애니메이션\"\n  sortBy: \"popularity\"\ntool_call_result:\n\
+      \  movies:\n    - title: \"센과 치히로의 행방불명\"\n      director: \"미야자키 하야오\"\n  \
+      \    releaseYear: \"2001\"\n      genre: \"애니메이션, 판타지\"\n      description:\
+      \ \"신비한 세계에 빠진 소녀 치히로의 모험을 그린 스튜디오 지브리의 대표작으로, 히사이시 조의 OST 'One Summer’s Day'가\
+      \ 특히 유명합니다.\"\n      notableOST: \"One Summer’s Day – 히사이시 조\"\n\n    - title:\
+      \ \"코코 (Coco)\"\n      director: \"리 언크리치\"\n      releaseYear: \"2017\"\n \
+      \     genre: \"애니메이션, 뮤지컬, 가족\"\n      description: \"죽은 자의 세계에서 음악을 통해 가족의\
+      \ 사랑을 깨닫는 소년의 이야기. 'Remember Me'는 아카데미 주제가상을 수상했습니다.\"\n      notableOST: \"\
+      Remember Me – Kristen Anderson-Lopez & Robert Lopez\"\n\n    - title: \"너의 이름은.\"\
+      \n      director: \"신카이 마코토\"\n      releaseYear: \"2016\"\n      genre: \"\
+      애니메이션, 로맨스, 드라마\"\n      description: \"서로 몸이 바뀐 두 소년소녀의 운명적 만남을 그린 작품으로, RADWIMPS의\
+      \ 음악이 영화 분위기를 완벽히 살렸다는 평가를 받았습니다.\"\n      notableOST: \"Zenzenzense – RADWIMPS\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 히사이시 조가 작곡한 피아노곡 중 가장 잘 알려진 곡 Summer를 안내드립니다.\n\n* 곡명: Summer\n* 작곡가:\
+      \ 히사이시 조\n* 수록 앨범: 키쿠지로의 여름 OST\n* 발매 연도: 1999년\n* 재생 시간: 3분 38초\n* 곡 설명: 영화\
+      \ '기쿠지로의 여름'의 메인 테마곡으로, 따뜻하고 서정적인 피아노 선율이 인상적인 곡입니다.\n* 감상 링크:https://www.youtube.com/watch?v=ZfKA4b5SFq4\n\
+      \n편안한 분위기에서 감상해보시기 바랍니다.\n\n\n▶ OST로 유명한 애니메이션 영화\n\n다음은 뛰어난 OST로 잘 알려진 애니메이션\
+      \ 영화 3편입니다.\n\n1. 센과 치히로의 행방불명** (2001, 미야자키 하야오 감독)\n\n   * 신비한 세계에 빠진 소녀의\
+      \ 모험을 그린 작품으로, 히사이시 조의 피아노곡 ‘One Summer’s Day’가 대표 OST로 유명합니다.\n\n2. 코코 (Coco)**\
+      \ (2017, 리 언크리치 감독)\n\n   * 죽은 자들의 세계에서 펼쳐지는 가족과 음악에 대한 이야기로, Remember Me’는\
+      \ 아카데미 주제가상을 수상하며 깊은 감동을 남겼습니다.\n\n3. 너의 이름은.** (2016, 신카이 마코토 감독)\n\n   * 서로의\
+      \ 몸이 바뀐 두 청소년의 인연을 그린 로맨스 애니메이션으로, RADWIMPS 의 곡 ‘Zenzenzense’를 포함한 OST 전반이 영화\
+      \ 분위기를 완성시켰다는 평가를 받습니다.\n\n각 영화는 감성과 음악을 함께 즐기고 싶은 분들께 특히 추천됩니다."
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 어 그럼 summer 악보랑 다양한 OST 피아노곡 악보 다운로드 받을 수 있는 사이트도 알려줘
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"키쿠지로의여름에 나온 OST 중 히사이시조가 작곡한 유명한 피아노곡\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: entertainment_agent\n\
+      \      refined_query: \"좋은 OST로 유명한 애니메이션 영화 추천\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ search_agent\n      refined_query: \"summer 악보와 다양한 OST 피아노곡을 다운로드할 수 있는 사이트\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"히사이시 조의 summer 악보와 다양한\
+      \ OST 피아노곡 악보 다운로드할 수 있는 사이트 추천\"\ntool_call_result:\n  sites:\n    - name:\
+      \ \"뮤즈스코어 (Musescore)\"\n      description: \"전 세계 사용자들이 공유하는 다양한 영화·애니메이션 OST\
+      \ 악보가 무료 또는 유료로 제공됨\"\n      url: \"https://musescore.com\"\n\n    - name: \"\
+      IMSLP\"\n      description: \"퍼블릭 도메인 클래식 악보 모음 사이트로, 일부 현대 OST 편곡 악보도 포함\"\n\
+      \      url: \"https://imslp.org\"\n\n    - name: \"Sheet Music Plus\"\n    \
+      \  description: \"영화 및 애니메이션 OST를 포함한 상업용 피아노 악보를 구매 또는 다운로드할 수 있는 사이트\"\n \
+      \     url: \"https://www.sheetmusicplus.com\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "히사이시 조의 \"Summer\"를 포함해 다양한 OST 피아노곡 악보를 찾을 수 있는 사이트를 추천드립니다.\n\n1.\
+      \ 뮤즈스코어 (Musescore)\n   전 세계 사용자들이 공유하는 다양한 영화 및 애니메이션 OST 악보를 제공하며, 일부는 무료로\
+      \ 열람 및 다운로드 가능합니다.\n   ▶ https://musescore.com\n\n2. IMSLP\n   퍼블릭 도메인 클래식 악보\
+      \ 중심 사이트이지만, 현대 OST 편곡 악보도 일부 등록되어 있습니다.\n   ▶ https://imslp.org\n\n3. Sheet\
+      \ Music Plus\n   영화, 드라마, 애니메이션 OST를 포함한 상업용 피아노 악보를 구매하거나 다운로드할 수 있습니다.\n \
+      \  ▶ https://www.sheetmusicplus.com\n\n각 사이트에서 원하는 악보를 검색해보시기 바랍니다."

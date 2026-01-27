@@ -1,0 +1,62 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 7월 16일 수요일
+
+      - 한국 현재 시각: 14:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 캘리포니아와 한국 시차가 꽤 많이 났던 것 같은데... 캘리포니아 시간으로 토요일 오후 6시에 친구들과 구글 미팅하려면 시간을
+      언제로 잡아야 할지 알려주고 캘린더에도 등록해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"캘리포니아\
+      \ 현재 시각\"\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"캘리포니아 기준 토요일 오후 6시가 한국 시간으로 몇 시인지 확인한 후 친구들과의 구글 미팅 일정을 등록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getWorldTime\narguments:\n  refinedQuery: \"캘리포니아 현재 시각\"\n  targetCity:\
+      \ \"캘리포니아\"\ntool_call_result:\n  data:\n    currentTimeInCalifornia: \"2025년\
+      \ 7월 15일 22:00\"\n    currentTimeInSeoul: \"2025년 7월 16일 14:00\" \n    timezoneInCalifornia:\
+      \ \"PDT (Pacific Daylight Time)\"\n    timeDifference: \"캘리포니아는 서울보다 16시간 늦음\"\
+      \n    additionalInfo: \"캘리포니아는 현재 일광 절약 시간제(PDT)를 사용 중입니다.\""
+- workflow_id: null
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"7월 20일 일요일 오전 10시에\
+      \ 친구들과의 구글 미팅 일정을 등록\"\n  title: \"친구들과의 구글 미팅\"\n  startDateTime: \"2025-07-20T10:00\"\
+      \n  endDateTime:  \"2025-07-20T11:00\"\ntool_call_result:\n  data:\n    eventTitle:\
+      \ \"친구들과의 구글 미팅\"\n    startDateTimeInSeoul: \"2025-07-20T10:00 KST\"\n    endDateTimeInSeoul:\
+      \ \"2025-07-20T11:00 KST\"\n    startDateTimeInCalifornia: \"2025-07-19T18:00\
+      \ PDT\"\n    endDateTimeInCalifornia: \"2025-07-19T19:00 PDT\"\n    timezoneInSeoul:\
+      \ \"KST (Korea Standard Time)\"\n    timezoneInCalifornia: \"PDT (Pacific Daylight\
+      \ Time)\"\n    scheduleStatus: \"등록 완료\"\n    note: \"한국 시간으로 7월 20일 일요일 오전\
+      \ 10시부터 11시까지 구글 미팅 일정이 등록되었습니다. 이는 캘리포니아 시간으로 7월 19일 토요일 오후 6시부터 7시까지입니다.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "Google Meet 일정이 성공적으로 등록되었습니다. \n\n◾한국과 캘리포니아의 시차 정보\n- 캘리포니아 현재 시각:\
+      \ 2025-07-15 오후 10:00 PDT\n- 한국 현재 시각: 2025-07-16 오후 2:00 KST\n* 시차: 16시간 (캘리포니아는\
+      \ 한국보다 16시간 늦습니다)\n\n◾ 일정 등록 정보\n* 미팅 등록 시간: 2025년 7월 20일 일요일 오전 10시부터 오전 11시까지\
+      \ (한국 시간)\n* 미국 캘리포니아 기준: 7월 19일 토요일 오후 6시부터 7시까지 (PDT)\n\n예약이 완료되었으며, 캘리포니아\
+      \ 시간으로 7월 19일, 한국 시간으로 7월 20일에 미팅이 시작됩니다. 즐거운 미팅 되세요!"

@@ -1,0 +1,53 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current date: 2025-07-14
+
+      - Current time: 5:02 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Please schedule the weekly meeting for July 16 at 10 AM. The location
+      is Aurora Tower A, Room O16.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Schedule\
+      \ a weekly meeting on July 16 at 10:00 AM in Aurora Tower A, Room O16\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Register a weekly\
+      \ meeting on July 16 at 10:00 AM in Aurora Tower A, Room O16\"\n  title: \"\
+      Weekly Meeting\"\n  startDateTime: \"2025-07-16T10:00\"\n  endDateTime: \"2025-07-16T11:00\"\
+      \n  location: \"Aurora Tower A, Room O16\"\ntool_call_result:\n  data:\n   \
+      \ scheduleID: \"evt_40256\"\n    title: \"Weekly Meeting\"\n    startDateTime:\
+      \ \"2025-07-16T10:00\"\n    endDateTime: \"2025-07-16T11:00\"\n    location:\
+      \ \"Aurora Tower A, Room O16\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 'The meeting schedule has been successfully registered as follows:
+
+
+      - Weekly Meeting
+
+
+      * Date & Time: Wednesday, July 16, 2025, 10:00 AM – 11:00 AM
+
+      * Location: Aurora Tower A, Room O16'

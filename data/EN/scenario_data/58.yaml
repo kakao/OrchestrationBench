@@ -1,0 +1,160 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2027-03-03
+
+      - Contact: (220)888-7777'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Oh, I didn’t realize my younger sibling had allergies. I’m going to cancel
+      the restaurant reservation for today. Also, I want to book an Amtrak Acela Express
+      ticket to Washington Union Station for the day after tomorrow.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Check today's\
+      \ restaurant reservations\"\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Cancel today's restaurant reservation\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: transport_agent\n      refined_query: \"Search for Amtrak Acela\
+      \ Express to Washington Union Station the day after tomorrow\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      Book an Amtrak Acela Express to Washington Union Station the day after tomorrow\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"Check today's\
+      \ restaurant reservations\"\n  contactInfo: \"(220)888-7777\"\n  date: \"2027-03-03\"\
+      \n  placeCategory: \"restaurant\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Check today's restaurant reservations\"\n    contactInfo: \"(220)888-7777\"\
+      \n    date: \"2027-03-03\"\n    placeCategory: \"restaurant\"\n    reservations:\n\
+      \      - placeName: \"Whispers of the Sea Seafood House\"\n        reservationDate:\
+      \ \"2027-03-03\"\n        reservationTime: \"7:00 PM\"\n        partySize: 4\n\
+      \        specialRequest: \"Please seat us by the window\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure station'
+- workflow_id: workflow_1
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: Same-day reservations cannot be canceled'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "I understand you're worried because of your sibling’s allergy.  \nUnfortunately,\
+      \ today’s reservation at \"Whispers of the Sea Seafood House\" cannot be canceled\
+      \ since it was made for the same day.  \nIf you need any other assistance, please\
+      \ let me know.\n\nAlso, to help you book a train ticket to Uljin Station, I’ll\
+      \ need to know your departure station.  \nOnce you provide that, I can check\
+      \ the availability right away!"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: Oh really? Well, nothing we can do about it. We'll just have to go without
+      my younger brother. We're leaving from the New York Penn Station.
+- workflow_id: workflow_2
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransitSchedule\narguments:\n  refinedQuery: \"Check Amtrak\
+      \ Acela schedule to Washington Union Station the day after tomorrow\"\n  transportType:\
+      \ \"train\"\n  departureStation: \"New York Penn Station\"\n  arrivalStation:\
+      \ \"Washington Union Station\"\n  departureDate: \"2027-03-05\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Search for Amtrak Acela Express to Washington\
+      \ Union Station the day after tomorrow\"\n    transportType: \"train\"\n   \
+      \ departureStation: \"New York Penn Station\"\n    arrivalStation: \"Washington\
+      \ Union Station\"\n    departureDate: \"2027-03-05\"\n    schedules:\n     \
+      \ - trainNumber: \"AC1234\"\n        departureTime: \"08:30\"\n        arrivalTime:\
+      \ \"12:45\"\n        duration: \"4h 15m\"\n        seatAvailability: \"Plenty\
+      \ available\"\n      - trainNumber: \"AC5678\"\n        departureTime: \"11:00\"\
+      \n        arrivalTime: \"15:15\"\n        duration: \"4h 15m\"\n        seatAvailability:\
+      \ \"Almost sold out\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure time and number of passengers'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s the train schedule to Washington Union Station for the day after
+      tomorrow:
+
+      - Departs 08:30, Arrives 12:45 (plenty of seats available)
+
+      - Departs 11:00, Arrives 15:15 (almost sold out)
+
+
+      Which departure time would you like to book?
+
+      Please let me know the number of passengers and preferred departure time.'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 8:30 AM, 1 person
+- workflow_id: null
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookTransitTicket\narguments:\n  refinedQuery: \"Book 1 train\
+      \ ticket to Washington Union Station on March 5th at 8:30 AM\"\n  transportType:\
+      \ \"train\"\n  departureStation: \"New York Penn Station\"\n  arrivalStation:\
+      \ \"Washington Union Station\"\n  departureDate: \"2027-03-05\"\n  departureTime:\
+      \ \"08:30\"\n  seatType: \"standard\"\n  passengerCount: 1\n  roundTrip: false\n\
+      \  contactInfo: \"(220)888-7777\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Book 1 train ticket to Washington Union Station on March 5th at 8:30 AM\"\
+      \n    transportType: \"train\"\n    departureStation: \"New York Penn Station\"\
+      \n    arrivalStation: \"Washington Union Station\"\n    departureDate: \"2027-03-05\"\
+      \n    departureTime: \"08:30\"\n    seatType: \"standard\"\n    passengerCount:\
+      \ 1\n    contactInfo: \"(220)888-7777\"\n    bookingStatus: \"Reservation Confirmed\"\
+      \n    bookingId: \"AC202703050830001\"\n    ticketPrice: \"$45\"\n    seatNumber:\
+      \ \"12A\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "Your reservation for the Amtrak Acela Express to Washington Union Station\
+      \ on March 5 has been completed successfully.\n\n[Reservation Details]\n- Departure:\
+      \ New York Penn Station\n- Arrival: Washington Union Station\n- Departure Date\
+      \ & Time: 2027-03-05 08:30  \n- Seat Class: Standard  \n- Passenger: 1  \n-\
+      \ Seat Number: 12A  \n- Reservation Number: AC202703050830001  \n- Ticket Price:\
+      \ $45  \n\nIf you have any additional requests or need to make changes, please\
+      \ let me know!"

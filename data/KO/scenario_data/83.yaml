@@ -1,0 +1,121 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-07-18'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 다음주 수요일 KBO 경기 일정이랑 현재 팀별 순위들 쫙 보여줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"다음 주 수요일\
+      \ KBO 경기 일정\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: sports_agent\n      refined_query: \"현재\
+      \ KBO 팀별 순위\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"다음 주 수요일 KBO 경기\
+      \ 일정\"\n  league: \"KBO\"\n  targetDate: \"다음 주 수요일\"\ntool_call_result:\n \
+      \ data:\n    league: \"KBO\"\n    date: \"2025-07-23 (수요일)\"\n    games:\n \
+      \     - home: \"LG 트윈스\"\n        away: \"한화 이글스\"\n        time: \"18:30\"\n\
+      \        venue: \"잠실야구장\"\n\n      - home: \"롯데 자이언츠\"\n        away: \"SSG\
+      \ 랜더스\"\n        time: \"18:30\"\n        venue: \"사직야구장\"\n\n      - home:\
+      \ \"KT 위즈\"\n        away: \"키움 히어로즈\"\n        time: \"18:30\"\n        venue:\
+      \ \"수원KT위즈파크\"\n\n      - home: \"NC 다이노스\"\n        away: \"삼성 라이온즈\"\n   \
+      \     time: \"18:30\"\n        venue: \"창원NC파크\"\n\n      - home: \"KIA 타이거즈\"\
+      \n        away: \"두산 베어스\"\n        time: \"18:30\"\n        venue: \"광주기아챔피언스필드\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportRank\narguments:\n  refinedQuery: \"현재 KBO 팀별 순위\"\n \
+      \ league: \"KBO\"\n  season: \"2025\"\ntool_call_result:\n  data:\n    league:\
+      \ \"KBO\"\n    season: 2025\n    date: \"2025-07-18\"\n    rankings:\n     \
+      \ - rank: 1\n        team: \"LG 트윈스\"\n        wins: 57\n        losses: 33\n\
+      \        draws: 2\n        winRate: 0.633\n        gamesBehind: 0\n\n      -\
+      \ rank: 2\n        team: \"SSG 랜더스\"\n        wins: 54\n        losses: 35\n\
+      \        draws: 3\n        winRate: 0.607\n        gamesBehind: 2.5\n\n    \
+      \  - rank: 3\n        team: \"KIA 타이거즈\"\n        wins: 51\n        losses:\
+      \ 37\n        draws: 4\n        winRate: 0.580\n        gamesBehind: 5.0\n\n\
+      \      - rank: 4\n        team: \"NC 다이노스\"\n        wins: 50\n        losses:\
+      \ 40\n        draws: 2\n        winRate: 0.556\n        gamesBehind: 7.0\n\n\
+      \      - rank: 5\n        team: \"두산 베어스\"\n        wins: 49\n        losses:\
+      \ 42\n        draws: 1\n        winRate: 0.538\n        gamesBehind: 8.5\n\n\
+      \      - rank: 6\n        team: \"KT 위즈\"\n        wins: 45\n        losses:\
+      \ 44\n        draws: 3\n        winRate: 0.506\n        gamesBehind: 11.5\n\n\
+      \      - rank: 7\n        team: \"키움 히어로즈\"\n        wins: 43\n        losses:\
+      \ 49\n        draws: 1\n        winRate: 0.467\n        gamesBehind: 15.0\n\n\
+      \      - rank: 8\n        team: \"한화 이글스\"\n        wins: 41\n        losses:\
+      \ 52\n        draws: 0\n        winRate: 0.441\n        gamesBehind: 17.5\n\n\
+      \      - rank: 9\n        team: \"삼성 라이온즈\"\n        wins: 38\n        losses:\
+      \ 54\n        draws: 2\n        winRate: 0.413\n        gamesBehind: 20.0\n\n\
+      \      - rank: 10\n        team: \"롯데 자이언츠\"\n        wins: 33\n        losses:\
+      \ 58\n        draws: 3\n        winRate: 0.363\n        gamesBehind: 24.5"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '● KBO 경기 일정 & 팀 순위 안내
+
+      ■ 다음 주 수요일, 7월 23일 경기 일정은 아래와 같아요:
+
+
+      ▶ LG 트윈스 (1위) vs 한화 이글스 (8위) – 잠실야구장
+
+      ▶ 롯데 자이언츠 (10위) vs SSG 랜더스 (2위) – 사직야구장
+
+      ▶ KT 위즈 (6위) vs 키움 히어로즈 (7위) – 수원KT위즈파크
+
+      ▶ NC 다이노스 (4위) vs 삼성 라이온즈 (9위) – 창원NC파크
+
+      ▶ KIA 타이거즈 (3위) vs 두산 베어스 (5위) – 광주기아챔피언스필드
+
+
+      ●  2025년 7월 18일 기준 KBO 팀 순위
+
+
+      1. LG 트윈스 (57승 33패 2무 / 승률 0.633)
+
+
+      2. SSG 랜더스 (54승 35패 3무 / 승률 0.607 / 2.5게임차)
+
+
+      3. KIA 타이거즈 (51승 37패 4무 / 승률 0.580)
+
+
+      4. NC 다이노스 (50승 40패 2무 / 승률 0.556)
+
+
+      5. 두산 베어스 (49승 42패 1무 / 승률 0.538)
+
+
+      6. KT 위즈 (45승 44패 3무 / 승률 0.506)
+
+
+      7. 키움 히어로즈 (43승 49패 1무 / 승률 0.467)
+
+
+      8. 한화 이글스 (41승 52패 / 승률 0.441)
+
+
+      9. 삼성 라이온즈 (38승 54패 2무 / 승률 0.413)
+
+
+      10. 롯데 자이언츠 (33승 58패 3무 / 승률 0.363)'

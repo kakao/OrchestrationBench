@@ -1,0 +1,64 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 12월 1일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번 2025 NBA 시즌 득점왕이 누구인지랑, 그 선수 관련 올해 소식 좀 알려줄래?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"이번 2025\
+      \ 시즌 NBA 득점왕\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: person_agent\n\
+      \      refined_query: \"이번 2025 시즌 NBA 득점왕 선수 관련 올해 소식\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportRank\narguments:\n  refinedQuery: \"이번 2025 시즌 NBA 득점왕\"\
+      \n  league: \"NBA\"\n  season: \"2025\"\ntool_call_result:\n  league: \"NBA\"\
+      \n  season: \"2025\"\n  category: \"득점왕\"\n  player:\n    name: \"존 스미스\"\n\
+      \    team: \"샌안토니오 스퍼스\"\n    averagePoints: 30.5\n    gamesPlayed: 82\n  status:\
+      \ \"completed\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"2025 시즌 NBA 득점왕 '존\
+      \ 스미스' 선수 관련 올해 소식\"\ntool_call_result:\n  query: \"2025 시즌 NBA 득점왕 '존 스미스'\
+      \ 선수 관련 올해 소식\"\n  articles:\n    - title: \"존 스미스, NBA 득점왕 선정으로 개인 최고 시즌 기록\"\
+      \n      description: \"샌안토니오 스퍼스의 존 스미스가 2025 시즌 NBA 득점왕을 차지하며 팀을 플레이오프로 이끈\
+      \ 소식을 전했습니다.\"\n      url: \"http://news.example.com/john-smith-mvp\"\n    \
+      \  source: \"스포츠뉴스\"\n      published_at: \"2025-06-15T10:00:00Z\"\n    - title:\
+      \ \"존 스미스, 차기 시즌 계약 연장 논의 중\"\n      description: \"NBA 득점왕 존 스미스가 소속팀 샌안토니오\
+      \ 스퍼스와의 계약 연장을 논의하고 있다는 소식이 전해졌습니다.\"\n      url: \"http://news.example.com/john-smith-contract\"\
+      \n      source: \"스포츠월드\"\n      published_at: \"2025-07-20T15:30:00Z\"\n  status:\
+      \ \"completed\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "◾2025 시즌 NBA 득점왕 정보\n\n- 선수 이름: 존 스미스\n- 소속 팀: 샌안토니오 스퍼스\n- 평균 득점: 30.5점\n\
+      - 출전 경기 수: 82경기\n\n존 스미스 선수는 2025 시즌 동안 놀라운 득점력을 발휘하며 리그에서 최고의 득점자로 선정되었습니다.\
+      \ \n\n\n◾2025 시즌 NBA 득점왕 존 스미스 선수와 관련된 최근 소식\n\n1. 제목: 존 스미스, NBA 득점왕 선정으로 개인\
+      \ 최고 시즌 기록\n   - 설명: 샌안토니오 스퍼스의 존 스미스가 2025 시즌 NBA 득점왕을 차지하며 팀을 플레이오프로 이끈 소식을\
+      \ 전했습니다.\n   - 출처: 스포츠뉴스\n   - 발행일: 2025-06-15\n   - 링크: [기사 읽기](http://news.example.com/john-smith-mvp)\n\
+      \n2. 제목: 존 스미스, 차기 시즌 계약 연장 논의 중\n   - 설명: NBA 득점왕 존 스미스가 소속팀 샌안토니오 스퍼스와의 계약\
+      \ 연장을 논의하고 있다는 소식이 전해졌습니다.\n   - 출처: 스포츠월드\n   - 발행일: 2025-07-20\n   - 링크: [기사\
+      \ 읽기](http://news.example.com/john-smith-contract)\n\n존 스미스 선수의 활약이 계속되기를 기대합니다!"

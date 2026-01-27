@@ -1,0 +1,165 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025/07/22'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: There’s a recent incident in the Marine Corps where a senior allegedly
+      abused his authority and harassed a junior, prompting the junior to desert with
+      a weapon. Please give me only three news links and also provide summaries of
+      those three articles. I need to send the summary to my mother via SMS.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: news_agent\n      refined_query: \"Three news\
+      \ links about a recent incident in the Marine Corps where a senior allegedly\
+      \ abused authority and harassed a junior, prompting the junior to desert while\
+      \ armed.\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: news_agent\n\
+      \      refined_query: \"Summaries of the three news links about the recent incident\
+      \ in the Marine Corps where a senior allegedly abused authority and harassed\
+      \ a junior, prompting the junior to desert while armed.\"\n\nworkflow_3:\n \
+      \ status: pending\n  type: dependent\n  depend_on: [\"workflow_1\", \"workflow_2\"\
+      ]\n  steps:\n    - status: pending\n      name: message_agent\n      refined_query:\
+      \ \"Send the three news links and their summaries about the recent incident\
+      \ in the Marine Corps—where a senior allegedly abused authority and harassed\
+      \ a junior, prompting the junior to desert while armed—to my mother via SMS.\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"Three news links about\
+      \ a recent incident in the Marine Corps where a senior allegedly abused authority\
+      \ and harassed a junior, prompting the junior to desert while armed.\"\n  limit:\
+      \ 3\ntool_call_result:\n  news:\n    - title: \"Marine Corps Launches Probe\
+      \ into Alleged Power Abuse After Armed Desertion\"\n      publisher: \"Defense\
+      \ Daily Monitor\"\n      content: \"The Marine Corps opened an internal investigation\
+      \ after a junior Marine allegedly left his unit while armed, citing harassment\
+      \ and abuse of authority by a senior. Officials said the Marine surrendered\
+      \ safely, and he was taken for evaluation while the alleged misconduct is being\
+      \ reviewed.\"\n      link: \"https://defensedailymonitor.example.com/articles/2025/08/marine-probe-armed-desertion\"\
+      \n\n    - title: \"Command Climate Under Scrutiny Following Reported Hazing\
+      \ Incident\"\n      publisher: \"Pacific Chronicle\"\n      content: \"Base\
+      \ leadership initiated a command-climate assessment amid claims that a senior\
+      \ Marine repeatedly intimidated and hazed a subordinate. Preliminary findings\
+      \ indicate supervisory lapses, and the unit has expanded access to confidential\
+      \ reporting channels.\"\n      link: \"https://pacificchronicle.example.com/security/2025/08/command-climate-review\"\
+      \n\n    - title: \"Policy Review Ordered as Marines Address Leadership Misconduct\
+      \ Allegations\"\n      publisher: \"National Security Wire\"\n      content:\
+      \ \"The service directed a fast-track review of mentorship and grievance procedures\
+      \ after an alleged armed desertion linked to senior-on-junior abuse. Training\
+      \ refreshers on anti-hazing rules and bystander intervention are being rolled\
+      \ out across select commands.\"\n      link: \"https://nationalsecuritywire.example.com/us-military/2025/08/marines-leadership-policy-review\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call: \n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"Marine Corps Launches Probe into Alleged Power Abuse After Armed Desertion:\
+      \ News summary\"\n      style: \"short\"\n      url: \"https://defensedailymonitor.example.com/articles/2025/08/marine-probe-armed-desertion\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Command Climate\
+      \ Under Scrutiny Following Reported Hazing Incident: News summary\"\n      style:\
+      \ \"short\"\n      url: \"https://pacificchronicle.example.com/security/2025/08/command-climate-review\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Policy Review\
+      \ Ordered as Marines Address Leadership Misconduct Allegations: News summary\"\
+      \n      style: \"short\"\n      url: \"https://nationalsecuritywire.example.com/us-military/2025/08/marines-leadership-policy-review\"\
+      \n\ntool_call_result:\n  summaries:\n    - title: \"Marine Corps Launches Probe\
+      \ into Alleged Power Abuse After Armed Desertion\"\n      url: \"https://defensedailymonitor.example.com/articles/2025/08/marine-probe-armed-desertion\"\
+      \n      summary: \"The Marine Corps opened an internal investigation after a\
+      \ junior Marine allegedly deserted while armed, citing harassment and abuse\
+      \ of authority by a senior. Officials say the Marine surrendered safely and\
+      \ the unit’s leadership practices are under review.\"\n\n    - title: \"Command\
+      \ Climate Under Scrutiny Following Reported Hazing Incident\"\n      url: \"\
+      https://pacificchronicle.example.com/security/2025/08/command-climate-review\"\
+      \n      summary: \"Base leaders initiated a command-climate assessment amid\
+      \ claims that a senior intimidated and hazed a subordinate. Early findings point\
+      \ to supervisory lapses, with expanded confidential reporting and support resources\
+      \ announced.\"\n\n    - title: \"Policy Review Ordered as Marines Address Leadership\
+      \ Misconduct Allegations\"\n      url: \"https://nationalsecuritywire.example.com/us-military/2025/08/marines-leadership-policy-review\"\
+      \n      summary: \"The service ordered a rapid review of mentorship and grievance\
+      \ procedures linked to the alleged armed desertion. Refresher training on anti-hazing\
+      \ rules and bystander intervention is being rolled out across select commands.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient phone number'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: I need the phone number of the mother who will receive the messages.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: (220)220-2220
+- workflow_id: null
+  step_id: 9
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Send the three news\
+      \ links and their summaries about the recent incident in the Marine Corps—where\
+      \ a senior allegedly abused authority and harassed a junior, prompting the junior\
+      \ to desert while armed—to my mother via SMS.\"\n  phoneNumber: \"(220)220-2220\"\
+      \n  channel: \"sms\"\n  priority: \"normal\"\n  repeatRule: \"none\"\n  message:\
+      \ |\n    Here are three key news links and summaries regarding the recent Marine\
+      \ Corps incident where a senior allegedly abused authority and harassed a junior,\
+      \ prompting the junior to desert while armed.\n\n    1. \"Marine Corps Launches\
+      \ Probe into Alleged Power Abuse After Armed Desertion\"\n       https://defensedailymonitor.example.com/articles/2025/08/marine-probe-armed-desertion\n\
+      \n    2. \"Command Climate Under Scrutiny Following Reported Hazing Incident\"\
+      \n       https://pacificchronicle.example.com/security/2025/08/command-climate-review\n\
+      \n    3. \"Policy Review Ordered as Marines Address Leadership Misconduct Allegations\"\
+      \n       https://nationalsecuritywire.example.com/us-military/2025/08/marines-leadership-policy-review\n\
+      \n    Summaries:\n    * The Marine Corps opened an internal investigation after\
+      \ a junior Marine allegedly deserted while armed, citing harassment and abuse\
+      \ of authority by a senior. Officials say the Marine surrendered safely and\
+      \ the unit’s leadership practices are under review.\n    * Base leaders initiated\
+      \ a command-climate assessment amid claims that a senior intimidated and hazed\
+      \ a subordinate. Early findings point to supervisory lapses, with expanded confidential\
+      \ reporting and support resources announced.\n    * The service ordered a rapid\
+      \ review of mentorship and grievance procedures linked to the alleged armed\
+      \ desertion. Refresher training on anti-hazing rules and bystander intervention\
+      \ is being rolled out across select commands.\ntool_call_result:\n  status:\
+      \ \"sent\"\n  channel: \"sms\"\n  recipient: \"Mom\"\n  timestamp: \"2025-07-22T14:35:00+09:00\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ US Marine Corps Incident — Three News Links & Summaries\n\n1. Marine\
+      \ Corps Launches Probe into Alleged Power Abuse After Armed Desertion\n  https://defensedailymonitor.example.com/articles/2025/08/marine-probe-armed-desertion\n\
+      \n2. Command Climate Under Scrutiny Following Reported Hazing Incident\n  https://pacificchronicle.example.com/security/2025/08/command-climate-review\n\
+      \n3. Policy Review Ordered as Marines Address Leadership Misconduct Allegations\n\
+      \   https://nationalsecuritywire.example.com/us-military/2025/08/marines-leadership-policy-review\n\
+      \n▶ Message Delivery\n\n * The Marine Corps opened an internal investigation\
+      \ after a junior Marine allegedly deserted while armed, citing harassment and\
+      \ abuse of authority by a senior. Officials say the Marine surrendered safely\
+      \ and the unit’s leadership practices are under review.\n * Base leaders initiated\
+      \ a command-climate assessment amid claims that a senior intimidated and hazed\
+      \ a subordinate. Early findings point to supervisory lapses, with expanded confidential\
+      \ reporting and support resources announced.\n * The service ordered a rapid\
+      \ review of mentorship and grievance procedures linked to the alleged armed\
+      \ desertion. Refresher training on anti-hazing rules and bystander intervention\
+      \ is being rolled out across select commands.\n\nThe requested message has been\
+      \ successfully sent to your mother via SMS."

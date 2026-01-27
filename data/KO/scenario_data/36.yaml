@@ -1,0 +1,109 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2026-08-02
+
+      - 시간: 07:25
+
+      - 이름: 조올림
+
+      - 연락처: 010-5626-6252'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 유등체육공원 주변 주차장 중 시간당 주차 요금이 저렴한 순으로 알려줄래? 아 지금 도마지하차도 통제중인거 맞아? 그리고 나
+      터키로 가는 항공편 예약한 거 날짜 변경을 하려고
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"유등체육공원\
+      \ 주변 주차장을 시간당 주차 요금이 저렴한 순으로 추천\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"현재 도마지하차도 통제 여부 확인\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"터키행 항공편 예약 내역 조회\"\n    - status: pending\n      name:\
+      \ travel_agent\n      refined_query: \"터키행 항공편 날짜 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"유등체육공원 주변 주차장을 시간당\
+      \ 주차 요금이 저렴한 순으로 추천\"\n  location: \"유등체육공원\"\n  searchRadius: 500\n  priceType:\
+      \ \"hourly\"\n  sortBy: \"lowest_price\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"유등체육공원 주변 주차장을 시간당 주차 요금이 저렴한 순으로 추천\"\n    location: \"유등체육공원\"\n    searchRadius:\
+      \ 500\n    priceType: \"hourly\"\n    sortBy: \"lowest_price\"\n    parkingLots:\n\
+      \      - parkingId: \"PKG001\"\n        name: \"유등체육공원 공영주차장\"\n        address:\
+      \ \"대전 동구 유등로 123\"\n        distance: 350\n        pricePerHour: 1500\n   \
+      \     parkingType: \"public\"\n        availableSpaces: 12\n        reservationAvailable:\
+      \ false\n        vehicleTypeSupported: [\"compact\", \"SUV\"]\n        chargingAvailable:\
+      \ false\n      - parkingId: \"PKG002\"\n        name: \"동구 사설 주차장\"\n      \
+      \  address: \"대전 동구 중앙로 45\"\n        distance: 420\n        pricePerHour: 1800\n\
+      \        parkingType: \"private\"\n        availableSpaces: 8\n        reservationAvailable:\
+      \ true\n        vehicleTypeSupported: [\"compact\", \"SUV\", \"EV\"]\n     \
+      \   chargingAvailable: true\n      - parkingId: \"PKG003\"\n        name: \"\
+      유등체육공원 발렛 주차장\"\n        address: \"대전 동구 유등로 130\"\n        distance: 300\n\
+      \        pricePerHour: 2000\n        parkingType: \"valet\"\n        availableSpaces:\
+      \ 5\n        reservationAvailable: true\n        vehicleTypeSupported: [\"compact\"\
+      , \"SUV\"]\n        chargingAvailable: false"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTrafficInfo\narguments:\n  refinedQuery: \"현재 도마지하차도 통제 여부\
+      \ 확인\"\n  location: \"도마지하차도\"\n  incidentType: \"통제\"\n  trafficType: \"자동차\"\
+      \n  timeRange: \"2026-08-02T07:25\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"현재 도마지하차도 통제 여부 확인\"\n    location: \"도마지하차도\"\n    incidentType: \"통제\"\
+      \n    trafficType: \"자동차\"\n    sortBy: \"incident_recent\"\n    timeRange:\
+      \ \"2026-08-02T07:25\"\n    incidents:\n      - incidentId: \"INC20260802-001\"\
+      \n        type: \"통제\"\n        description: \"폭우로 인해 도마지하차도 통제 중입니다.\"\n  \
+      \      startTime: \"2026-08-02T06:30\"\n        expectedEndTime: \"2026-08-02T17:00\"\
+      \n        affectedLanes: \"전 차선\"\n        severity: \"심각\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getFlightReservation\narguments:\n  refinedQuery: \"터키행 항공편 예약\
+      \ 내역 조회\"\n  name: \"조올림\"\n  contactNumber: \"010-5626-6252\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"터키행 항공편 예약 내역 조회\"\n    name: \"조올림\"\n    contactNumber:\
+      \ \"010-5626-6252\"\n    reservations:\n      - reservationId: \"RES87YD216T4\"\
+      \n        modificationCount: 1\n        passengerName: \"조올림\"\n        flightNumber:\
+      \ \"TK123\"\n        departure: \"2026-09-15T14:30\"\n        arrival: \"2026-09-16T06:45\"\
+      \n        origin: \"인천국제공항\"\n        destination: \"이스탄불공항\"\n        status:\
+      \ \"confirmed\""
+- workflow_id: null
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 예약 변경 가능 횟수가 1회 초과하여 변경 불가'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "■  유등체육공원 주변 주차장 (시간당 요금 저렴한 순)\n\n1. 유등체육공원 공영주차장\n\n• 주소: 대전 동구 유등로\
+      \ 123\n• 요금: 시간당 1,500원\n• 거리: 약 350m\n• 주차 가능 차량: 소형, SUV\n• 충전시설: 없음\n• 예약:\
+      \ 불가\n\n2. 동구 사설 주차장\n\n• 주소: 대전 동구 중앙로 45\n• 요금: 시간당 1,800원\n• 거리: 약 420m\n\
+      • 주차 가능 차량: 소형, SUV, 전기차\n• 충전시설: 있음\n• 예약: 가능\n\n3. 유등체육공원 발렛 주차장\n\n• 주소:\
+      \ 대전 동구 유등로 130\n• 요금: 시간당 2,000원\n• 거리: 약 300m\n• 주차 가능 차량: 소형, SUV\n• 충전시설:\
+      \ 없음\n• 예약: 가능\n\n■  도마지하차도 통제 상황\n\n• 통제 중\n• 사유: 폭우로 인한 침수\n• 통제 시작: 2026년\
+      \ 8월 2일 06:30\n• 예상 종료: 2026년 8월 2일 17:00\n• 통제 구간: 전 차선\n → 현재는 우회 경로 이용을 권장합니다.\n\
+      \n■  터키행 항공편 예약 변경\n\n• 탑승객: 조올림\n• 항공편: TK123 (인천 → 이스탄불)\n• 출발: 2026년 9월 15일\
+      \ 14:30\n• 도착: 2026년 9월 16일 06:45\n• 예약 상태: 확정됨\n• 변경 가능 횟수 초과로 인해 날짜 변경이 불가합니다.\n\
+      \n다른 도움이 필요하시면 언제든지 알려주세요."

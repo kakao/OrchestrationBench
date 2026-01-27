@@ -1,0 +1,136 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-01-02'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Tell me today’s gold price and the euro exchange rate, and also recommend
+      some comics and YouTube videos that would help my 5th grader son build financial
+      knowledge.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"Check current\
+      \ gold prices\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: finance_agent\n      refined_query: \"Check\
+      \ today's Euro exchange rate\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Recommend comics that are good for a 5th grader son to build financial knowledge\"\
+      \n\nworkflow_4:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: entertainment_agent\n      refined_query: \"Recommend\
+      \ YouTube videos that are good for a 5th grader son to build financial knowledge\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Unit of measurement (g, carat, oz)'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getExchangeRate\narguments:\n  refinedQuery: \"Check euro exchange\
+      \ rate on January 2, 2025\"\n  baseCurrency: \"USD\"\n  targetCurrency: \"EUR\"\
+      \n  date: \"2025-01-02\"\n  exchangeType: \"spot\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"Check euro exchange rate on January 2, 2025\"\n    baseCurrency:\
+      \ \"USD\"\n    targetCurrency: \"EUR\"\n    date: \"2025-01-02\"\n    exchangeType:\
+      \ \"spot\"\n    rate: 0.91\n  source: \"European Central Bank\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getWebtoonInfo\narguments:\n  refinedQuery: \"Recommend comics\
+      \ that are good for my 5th grader son to build financial knowledge\"\ntool_call_result:\n\
+      \  data:\n    recommendations:\n      - title: \"Money Talk Talk\"\n       \
+      \ authorName: \"James Ronny\"\n        genre: \"school_life\"\n        description:\
+      \ \"A finance comic that even elementary students can easily understand, covering\
+      \ everything from the basics of money to saving and investing in a fun way.\"\
+      \n      - title: \"The Economy Explorers\"\n        authorName: \"Sophie Harry\"\
+      \n        genre: \"slice_of_life\"\n        description: \"An educational comic\
+      \ where elementary school protagonists naturally learn financial concepts through\
+      \ everyday economic situations.\"\n      - title: \"How to Become Rich\"\n \
+      \       authorName: \"Henry Johnson\"\n        genre: \"comedy\"\n        description:\
+      \ \"A humorous comic about financial literacy, designed to keep kids engaged\
+      \ while making economic concepts easy to grasp.\"\n  status: success\n  source:\
+      \ \"Webtoon Information System\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"YouTube videos recommended\
+      \ for a 5th grader to build financial knowledge\"\ntool_call_result:\n  data:\n\
+      \    videos:\n      - title: \"Fun Financial Education for Kids\"\n        channel:\
+      \ \"KidsMoneyTV\"\n        uploadDate: \"2024-11-15\"\n        views: 125000\n\
+      \        duration: \"12:34\"\n        url: \"https://youtube.com/watch?v=abc123xyz\"\
+      \n      - title: \"Money Basics: Easy Finance Tips for 5th Graders\"\n     \
+      \   channel: \"Children's Finance Classroom\"\n        uploadDate: \"2024-12-05\"\
+      \n        views: 98000\n        duration: \"15:20\"\n        url: \"https://youtube.com/watch?v=def456uvw\"\
+      \n      - title: \"Fun Money Stories – A Must-Watch for Kids\"\n        channel:\
+      \ \"SmartMoney Kids\"\n        uploadDate: \"2024-10-20\"\n        views: 87000\n\
+      \        duration: \"10:45\"\n        url: \"https://youtube.com/watch?v=ghi789rst\"\
+      \n  status: success\n  source: \"YouTube Search System\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'To provide you with the current gold price, please select the unit you’d
+      like to check:
+
+
+      • g: 1 gram
+
+      • don: 1 don (3.75g)
+
+      • oz: 1 ounce (31.1035g)
+
+
+      Which unit would you like?'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 1Gram
+- workflow_id: workflow_1
+  step_id: 10
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getGoldPrice\narguments:\n  refinedQuery: \"Check the price of\
+      \ 1 gram of gold\"\n  unit: \"g\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Check the price of 1 gram of gold\"\n    unit: \"g\"\n    date: \"2025-01-02\"\
+      \n    price: 75\n    currency: \"USD\"\n  source: \"USA Gold Exchange\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Gold Price\n• Unit: 1 gram\n• Date: January 2, 2025\n• Price: 75 USD\n\
+      \n◾ Today’s Euro Exchange Rate\n• Reference Date: January 2, 2025\n• USD → EUR\
+      \ Base Rate: 0.91\n(Source: European Central Bank)\n\n---\n\n◾ Recommended Comics\
+      \ for a 5th Grader to Build Financial Knowledge\n1. Money Talk Talk (by James\
+      \ Ronny)\n   – Explains the basics of money, saving, and investing in a fun,\
+      \ easy way\n\n2. The Economy Explorers (by Sophie Harry)\n   – Teaches economics\
+      \ naturally through everyday stories\n\n3. How to Become Rich (by Henry Johnson)\n\
+      \   – A humorous comic packed with financial knowledge\n\n---\n\n◾ Recommended\
+      \ YouTube Videos\n1. Fun Financial Education for Kids – KidsMoneyTV (12:34)\n\
+      2. Money Basics: Easy Finance Tips for 5th Graders – Children's Finance Classroom\
+      \ (15:20)\n3. Fun Money Stories – A Must-Watch for Kids – SmartMoney Kids (10:45)"

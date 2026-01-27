@@ -1,0 +1,161 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2029/04/27 금요일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '유튜브에 주방 타일 교체 DIY 영상좀 찾아줘,
+
+      필요한 준비물들은 뭐가있지?'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      유튜브 주방 타일 교체 DIY 영상 추천\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"주방 타일 교체 DIY에 필요한 준비물\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"유튜브 주방 타일 교체 DIY 영상\
+      \ 추천\"\ntool_call_result:\n  videos:\n    - title: \"셀프로 주방 타일 교체하기 | 초보도 가능한\
+      \ DIY 방법\"\n      channel: \"집수리왕초보\"\n      uploadDate: \"2024-08-12\"\n  \
+      \    views: \"1.2만회\"\n      link: \"https://www.youtube.com/watch?v=DIYTILE001\"\
+      \n\n    - title: \"3시간 만에 주방 타일 셀프 시공! | 타일교체 A to Z\"\n      channel: \"인테리어홀릭\"\
+      \n      uploadDate: \"2024-06-30\"\n      views: \"3.5만회\"\n      link: \"https://www.youtube.com/watch?v=DIYTILE002\"\
+      \n\n    - title: \"타일 전문가가 알려주는 셀프 타일 교체 팁\"\n      channel: \"셀프인테리어마스터\"\n\
+      \      uploadDate: \"2023-11-05\"\n      views: \"2.8만회\"\n      link: \"https://www.youtube.com/watch?v=DIYTILE003\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"주방 타일 교체 DIY에 필요한 준비물\"\
+      \ntool_call_result:\n  info:\n    title: \"주방 타일 교체 DIY 준비물 리스트\"\n    summary:\
+      \ \"주방 타일을 셀프로 교체하려면 다음과 같은 준비물이 필요합니다.\"\n    items:\n      - 타일 (원하는 디자인 및\
+      \ 크기)\n      - 타일 접착제 (본드 또는 몰탈)\n      - 타일 커터기 또는 절단기\n      - 줄눈제 (타일 사이의\
+      \ 틈을 메우는 재료)\n      - 헤라 및 고무 흙손\n      - 수평자 및 줄자\n      - 스펀지 및 물통 (줄눈제 닦기용)\n\
+      \      - 안전장비 (장갑, 보호안경, 무릎보호대)\n      - 고무망치 (타일 고정용)\n      - 마스킹 테이프 및 커버링\
+      \ 시트 (주변 보호용)\n    source: \"셀프 인테리어 가이드북 / DIY 타일 교체 블로그 모음\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '주방 타일 교체를 계획 중이시라면 아래 정보를 참고해보세요.
+
+
+      1. DIY 영상 추천 목록
+
+
+      * [셀프로 주방 타일 교체하기 | 초보도 가능한 DIY 방법](https://www.youtube.com/watch?v=DIYTILE001)
+      (채널: 집수리왕초보)
+
+      * [3시간 만에 주방 타일 셀프 시공! | 타일교체 A to Z](https://www.youtube.com/watch?v=DIYTILE002)
+      (채널: 인테리어홀릭)
+
+      * [타일 전문가가 알려주는 셀프 타일 교체 팁](https://www.youtube.com/watch?v=DIYTILE003) (채널:
+      셀프인테리어마스터)
+
+
+      2. 필요한 준비물 리스트
+
+
+      * 타일 (원하는 디자인 및 크기)
+
+      * 타일 접착제 (본드 또는 몰탈)
+
+      * 타일 커터기 또는 절단기
+
+      * 줄눈제 (타일 사이의 틈을 메우는 재료)
+
+      * 헤라 및 고무 흙손
+
+      * 수평자 및 줄자
+
+      * 스펀지 및 물통 (줄눈제 닦기용)
+
+      * 안전장비 (장갑, 보호안경, 무릎보호대)
+
+      * 고무망치 (타일 고정용)
+
+      * 마스킹 테이프 및 커버링 시트 (주변 보호용)
+
+
+      보다 자세한 정보는 DIY 인테리어 블로그나 유튜브 채널을 참고해보세요.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: '다음주 금요일 아침 11시에 어머니 오시는날 일정등록좀 해주고
+
+      그전까지 해야되서 내일모레 타일 DIY 재료사러가는거 까먹지않도록 내일 자기전에 저녁 10시쯤 다시 알려줘'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"유튜브 주방 타일 교체 DIY 영상 추천\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: search_agent\n      refined_query:\
+      \ \"주방 타일 교체 DIY에 필요한 준비물\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"다음주 금요일 아침 어머니 오시는날 로 일정 등록\"\n\nworkflow_4:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"내일모레 타일 DIY 재료 사러 가는것 까먹지 않도록 내일 저녁 10시 알림\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"다음주 금요일 아침 11시 어머니\
+      \ 오시는날 로 일정 등록\"\n  title: \"어머니 오시는날\"\n  startDateTime: \"2029-05-04T11:00\"\
+      \n  endDateTime: \"2029-05-04T12:00\"\n  repeatRule: \"none\"\ntool_call_result:\n\
+      \  event:\n    title: \"어머니 오시는날\"\n    startDateTime: \"2029-05-04T11:00\"\n\
+      \    endDateTime: \"2029-05-04T12:00\"\n    calendarType: \"personal\"\n   \
+      \ repeatRule: \"none\"\n    status: \"등록 완료\"\n    eventId: \"event-20290504-1100\"\
+      \n    description: \"다음주 금요일 11시 어머니 방문 일정이 등록되었습니다.\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"내일 모레 주방 타일 DIY\
+      \ 작업 재료 구매를 까먹지 않도록 내일 저녁 10시에 알림\"\n  reminderContent: \"주방 타일 DIY 작업 재료 구매\"\
+      \n  reminderTime: \"2029-04-28T22:00\"\n  repeatRule: \"none\"\n  priority:\
+      \ \"normal\"\n  deliveryMethod: \"push\"\ntool_call_result:\n  reminder:\n \
+      \   reminderContent: \"주방 타일 DIY 작업 재료 구매\"\n    reminderTime: \"2029-04-28T22:00\"\
+      \n    repeatRule: \"none\"\n    priority: \"normal\"\n    deliveryMethod: \"\
+      push\"\n    status: \"알림 등록 완료\"\n    reminderId: \"reminder-20290428-2200\"\
+      \n    message: \"알림이 정상적으로 등록되었습니다. 지정된 시간에 푸시 알림이 전송됩니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 일정 등록 완료 안내
+
+      2029년 5월 4일(금) 11:00부터 12:00까지의 일정으로 "어머니 오시는날" 일정이 개인 캘린더에 정상적으로 등록되었습니다.
+
+
+      ▶알림 설정 완료 안내
+
+      "주방 타일 DIY 작업 재료 구매" 알림이 2029년 4월 28일 22:00에 푸시 알림으로 전송되도록 설정되었습니다.
+
+      까먹지 않도록 지정된 시간에 알림이 전달됩니다.'

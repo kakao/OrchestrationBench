@@ -1,0 +1,146 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-05-02
+
+      - userId: user_20250805_001
+
+      - Name: Ethan Miller
+
+      - Contact: (212)555-7890'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I want to cancel the order I placed yesterday. Also, I have a class reunion
+      coming up—can you check when it is and let me know? And please cancel the Jazz
+      Festival event I have scheduled for May 25. It's just too bad, but I’ll catch
+      it next time.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Check\
+      \ the order I placed yesterday\"\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"Cancel the order I placed yesterday\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: calendar_agent\n      refined_query: \"Check class reunion schedule\"\
+      \n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: calendar_agent\n      refined_query: \"Check the jazz\
+      \ festival scheduled for May 25\"\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"Cancel the jazz festival scheduled for May 25\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check the order\
+      \ I placed yesterday\"\n  userId: \"user_20250805_001\"\n  recipientName: \"\
+      Ethan Miller\"\n  phoneNumber: \"(212)555-7890\"\n  orderDate: \"2025-05-01\"\
+      \ntool_call_result:\n  data:\n    orderId: \"ORD20250501001\"\n    userId: \"\
+      user_20250805_001\"\n    recipientName: \"Ethan Miller\"\n    phoneNumber: \"\
+      (212)555-7890\"\n    orderDate: \"2025-05-01\"\n    orderStatus: \"Order Completed\"\
+      \n    items:\n      - productName: \"Picnic Mat\"\n        quantity: 1\n   \
+      \     price: 45\n        options:\n          - \"Color: Green\"\n          -\
+      \ \"Set: For 4 people\"\n    paymentMethod: \"Credit Card\"\n    deliveryAddress:\
+      \ \"123 Main St, Downtown, New York, NY 10001\"\n    estimatedDeliveryDate:\
+      \ \"2025-05-03\"\n    trackingNumber: null\n    notes: \"Request for fast delivery\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check class reunion\
+      \ schedule\"\n  keyword: \"class reunion\"\ntool_call_result:\n  data:\n   \
+      \ schedules:\n      - scheduleID: \"SCH20250503_001\"\n        title: \"Class\
+      \ Reunion Gathering\"\n        date: \"2025-05-03\"\n        time: \"6:30 PM\"\
+      \n        location: \"Downtown Lounge\"\n        memo: \"Schedule for the class\
+      \ reunion\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check the jazz festival\
+      \ scheduled for May 25\"\n  startDate: \"2025-05-25\"\n  endDate: \"2025-05-25\"\
+      \n  keyword: \"Jazz Festival\"\ntool_call_result:\n  data:\n    schedules:\n\
+      \      - scheduleID: \"SCH20250525_001\"\n        title: \"Jazz Festival\"\n\
+      \        date: \"2025-05-25\"\n        time: \"7:00 PM\"\n        location:\
+      \ \"Hollywood Bowl, Los Angeles, CA\"\n        memo: \"Schedule for the Jazz\
+      \ Festival on May 25, 2025.\""
+- workflow_id: workflow_1
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelOrder\narguments:\n  refinedQuery: \"Cancel the picnic mat\
+      \ order placed on May 1, 2025\"\n  orderId: \"ORD20250501001\"\n  cancelType:\
+      \ \"full\"\n  refundMethod: \"original_method\"\ntool_call_result:\n  data:\n\
+      \    orderId: \"ORD20250501001\"\n    cancelType: \"full\"\n    refundMethod:\
+      \ \"original_method\"\n    cancelStatus: \"Cancellation completed\"\n    refundStatus:\
+      \ \"Refund in progress\"\n    message: \"The picnic mat order placed on May\
+      \ 1, 2025 has been canceled successfully. The refund will be processed using\
+      \ your original payment method.\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelSchedule\narguments:\n  refinedQuery: \"Cancel the jazz\
+      \ festival scheduled for May 25\"\n  scheduleID: \"SCH20250525_001\"\ntool_call_result:\n\
+      \  data:\n    scheduleID: \"SCH20250525_001\"\n    cancelStatus: \"Canceled\"\
+      \n    message: \"The jazz festival scheduled for May 25, 2025 has been canceled\
+      \ successfully.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Hello! Here’s a summary of your request.
+
+
+      ■ Order Cancellation Details
+
+
+      • Product: Picnic Mat (Color: Green / Set: For 4 people)
+
+      • Order Date: 2025-05-01
+
+      • Cancellation Status: Canceled
+
+      • Refund: Being processed, to be credited to your credit card
+
+      • Shipping Address: 123 Main St, Downtown, New York, NY 10001
+
+      • Note: Requested expedited delivery
+
+
+      ■ Upcoming Schedule
+
+
+      • Event: Class Reunion Gathering
+
+      • Date & Time: 2025-05-03 6:30 PM
+
+      • Location: Downtown Lounge
+
+      • Memo: Schedule for the class reunion
+
+
+      ■ Canceled Schedule
+
+
+      • Canceled Event: Jazz Festival
+
+      • Original Schedule: 2025-05-25 7:00 PM, Hollywood Bowl, Los Angeles, CA
+
+      • Cancellation Status: Successfully canceled'

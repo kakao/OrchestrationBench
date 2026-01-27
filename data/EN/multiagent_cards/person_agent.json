@@ -1,0 +1,90 @@
+{
+  "agent_card": {
+    "name": "Person",
+    "agent_id": "person_agent",
+    "description": "Searches for and provides comprehensive information on various people such as celebrities, public figures, politicians, athletes, including their affiliations, main activities, notable works, incidents/issues, and recent news.",
+    "url": "http://localhost:10009/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getProfile",
+        "name": "Person Profile",
+        "description": "Allows you to check a specific person's background, field of activity, affiliation, notable works, group members, etc. You can also narrow down by desired profession or type of work (TV drama, variety show, movie, etc.).",
+        "examples": [
+          "What projects has Jason Seo appeared in recently?",
+          "Tell me all the members' names of NEWJEANS.",
+          "Which agency represents actor Daniel Park?",
+          "Has John Lee appeared in any modern or contemporary dramas?",
+          "What movies has Don Ma starred in?",
+          "Can you tell me who Anna's boyfriend is?",
+          "Give me details about the White House press secretary."
+        ]
+      },
+      {
+        "id": "getPersonNews",
+        "name": "Person News",
+        "description": "Searches for and summarizes the latest events, issues, controversies, trending news, and notable facts related to famous people or celebrities.",
+        "examples": [
+          "What lipstick shade did Anna wear at the awards ceremony?",
+          "What's the status of Representative James Lee's development scandal?",
+          "Who was the most talked-about actor on the red carpet this time?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getProfile",
+      "description": "A tool for retrieving relatively static profile information about a famous person or group, such as basic details, roles, profession, field of activity, affiliated group, and notable works. Suitable for career-focused exploration rather than recent activities or issues. Can be called repeatedly for multiple subjects.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query reflecting the previous conversation context and the user's search intent. Example: 'the member who is the leader of BTS', 'information on the lead actor in a comedy movie'"
+          },
+          "personName": {
+            "type": "string",
+            "description": "The name of the person to look up. Either personName or groupName is required."
+          },
+          "groupName": {
+            "type": "string",
+            "description": "The name of the group or organization the person belongs to. Either personName or groupName is required."
+          },
+          "roleType": {
+            "type": "string",
+            "description": "The person's field of activity or profession (e.g., 'singer', 'politician', 'athlete', 'actor'). Optional."
+          },
+          "workType": {
+            "type": "string",
+            "description": "Specify the type of work or activity (e.g., 'TV drama', 'movie', 'variety show', 'musical', 'period drama'). Optional."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPersonNews",
+      "description": "A tool for searching and summarizing recent news, interviews, controversies, appearances, and other timely dynamic information about famous people, celebrities, and public figures. Suitable when you need up-to-date information based on recent trends and media coverage. If calling for multiple subjects, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query based on the user's natural language question and necessary context, including characteristics of the person or event, specific issues, and relevant timeframes. For example: 'Tell me about Yuna Kim's latest interview', 'What was the theme of the event Taylor Swift attended?', 'Summarize David Beckham's major issues in 2024'."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

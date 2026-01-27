@@ -1,0 +1,131 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2031/07/12'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '결혼반지 맞추려는데 뭐이렇게 비싸? 금값이 비싸서그런가?
+
+      오늘 금 1돈 시세는 얼마야? 그리고 까르띠에나 티파니 말고 연희동 결혼반지 제작하는곳 상담 예약 하고싶어'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"오늘 금 1돈\
+      \ 시세 조회 \"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"까르띠에\
+      \ 티파니 같은 브랜드가 아닌 연희동 내 결혼반지 제작하는 곳 검색\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"까르띠에 티파니 같은 브랜드가 아닌 연희동 내 결혼반지\
+      \ 제작하는 곳 상담 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getGoldPrice\narguments:\n  refinedQuery: \"오늘 금 1돈 시세 조회\"\n\
+      \  unit: \"don\"\n  date: \"2031-07-12\"\ntool_call_result:\n  goldPrice:\n\
+      \    date: \"2031-07-12\"\n    unit: \"1don\"\n    price: \"₩423,000\"\n   \
+      \ source: \"한국금거래소\"\n    updateTime: \"2031-07-12T10:30:00\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"까르띠에 티파니 같은 브랜드가 아닌\
+      \ 연희동 내 결혼반지 제작하는 곳 검색\"\n  placeCategory: \"주얼리제작\"\n  location: \"연희동\"\n\
+      \  sortBy: \"distance\"\ntool_call_result:\n  data:\n    places:\n      - name:\
+      \ \"연희공방\"\n        address: \"서울 서대문구 연희로11길 18\"\n        phone: \"02-1234-5678\"\
+      \n        website: \"http://yeonhiworkshop.kr\"\n        distance: \"230m\"\n\
+      \        features:\n          - \"수제 결혼반지 맞춤 제작\"\n          - \"은세공 및 금속공예\
+      \ 전문\"\n          - \"예약제 운영\"\n\n      - name: \"모노주얼리 스튜디오\"\n        address:\
+      \ \"서울 서대문구 연희동 132-12\"\n        phone: \"02-8765-4321\"\n        website:\
+      \ \"http://monojewelry.co.kr\"\n        distance: \"410m\"\n        features:\n\
+      \          - \"커플링 & 웨딩밴드 맞춤 디자인\"\n          - \"소규모 작업실 기반 1:1 제작\"\n    \
+      \      - \"디자이너와 직접 상담 가능\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 업체명, 예약 날짜, 예약 시간, 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 연희동 내 결혼반지 제작 가능한 공방 안내\n\n1. 연희공방\n\n   * 주소: 서울 서대문구 연희로11길 18\n\
+      \   * 전화: 02-1234-5678\n   * 웹사이트: http://yeonhiworkshop.kr\n   * 특징:\n\n  \
+      \   * 수제 결혼반지 맞춤 제작\n     * 은세공 및 금속공예 전문\n     * 예약제 운영\n\n2. 모노주얼리 스튜디오\n\n\
+      \   * 주소: 서울 서대문구 연희동 132-12\n   * 전화: 02-8765-4321\n   * 웹사이트: http://monojewelry.co.kr\n\
+      \   * 특징:\n\n     * 커플링 & 웨딩밴드 맞춤 디자인\n     * 소규모 작업실 기반 1:1 제작\n     * 디자이너와\
+      \ 직접 상담 가능\n\n제작 상담 할 곳을 고르셨나요? \n예약을 위해 업체명과 예약 날짜와 시간, 연락처가 필요해요."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: '연희공방 좋다, 여기로 7월 20일 오후 3시로 예약해줘
+
+      010-9876-5432
+
+
+      결혼반지 제작한다고 제작자분께 전달드리면 좋을거같아'
+- workflow_id: null
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"연희동 연희공방 7월 20일 오후\
+      \ 3시 결혼반지 제작 상담 예약\"\n  placeName: \"연희공방\"\n  placeCategory: \"악세사리제작\"\n \
+      \ reservationDate: \"2031-07-20\"\n  reservationTime: \"15:00\"\n  contactInfo:\
+      \ \"010-9876-5432\"\n  option: \"결혼반지제작\"\ntool_call_result:\n  reservation:\n\
+      \    placeName: \"연희공방\"\n    placeCategory: \"악세사리제작\"\n    reservationDate:\
+      \ \"2031-07-20\"\n    reservationTime: \"15:00\"\n    contact: \"010-9876-5432\"\
+      \n    option: \"결혼반지제작\"\n    status: \"예약 완료\"\n    reservationId: \"RSV-20310720-0001\"\
+      \n    message: \"연희공방의 결혼반지 제작 상담이 7월 20일 오후 3시로 예약되었습니다.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 오늘의 금 시세 안내
+
+
+      * 날짜: 2031년 7월 12일
+
+      * 단위: 1돈
+
+      * 시세: **₩423,000**
+
+      * 출처: 한국금거래소
+
+      * 업데이트 시간: 2031년 7월 12일 오전 10시 30분
+
+
+
+      ▶ 연희동 연희공방에 다음과 같이 예약이 완료되었습니다:
+
+
+      * 날짜: 2031년 7월 20일 (토)
+
+      * 시간: 오후 3시
+
+      * 예약 항목: 결혼반지 제작 상담
+
+      * 연락처: 010-9876-5432
+
+      * 예약 번호: RSV-20310720-0001'

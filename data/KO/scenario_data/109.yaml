@@ -1,0 +1,132 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2035-03-11T11:32'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '여의도 한강공원쪽 지금 교통상황 어때? 벚꽃축제라 차 가지고 나온 사람들 많을 것 같은데..
+
+      죽전 아이파크에서 여의도 한강공원까지 대중교통 타고 가는 가장 빠른길도 알려줘.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"현재 벚꽃축제를\
+      \ 하는 여의도 한강공원 교통상황\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"죽전 아이파크에서 여의도 한강공원까지 대중교통 이용하여 가장 빠른 길\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTrafficInfo\narguments:\n  refinedQuery: \"현재 여의도 한강공원 교통상황\"\
+      \n  location: \"여의도 한강공원\"\n  timeRange: \"2035-03-11T11:32\"\n  trafficType:\
+      \ \"자동차\"\ntool_call_result:\n  trafficInfo:\n    location: \"여의도 한강공원\"\n \
+      \   time: \"2035-03-11T11:32\"\n    congestionScore: 8.7\n    status: \"매우 혼잡\"\
+      \n    averageSpeed: \"15km/h\"\n    estimatedDelay: \"평소보다 약 30분 지연\"\n    incident:\n\
+      \      type: \"벚꽃축제\"\n      description: \"벚꽃축제 관람객과 차량이 몰리면서 주요 진입로와 주차장이\
+      \ 모두 혼잡한 상태\"\n    alternativeRoutes:\n      - route: \"여의서로 → 여의하류IC 우회\"\n\
+      \        estimatedTime: \"약 20분 단축\"\n      - route: \"마포대교 북단 방면 경유\"\n   \
+      \     estimatedTime: \"약 15분 단축\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"죽전 아이파크에서 여의도 한강공원까지\
+      \ 대중교통 이용하여 가장 빠른 길\"\n  transportModes: [\"subway\", \"bus\"]\n  optimizeBy:\
+      \ \"fastest\"\n  origin: \"죽전 아이파크\"\n  destination: \"여의도 한강공원\"\n  departureTime:\
+      \ \"11:32\"\ntool_call_result:\n  directions:\n    origin: \"죽전 아이파크\"\n   \
+      \ destination: \"여의도 한강공원\"\n    departureTime: \"11:32\"\n    transportModes:\
+      \ [\"subway\", \"bus\"]\n    optimizeBy: \"fastest\"\n    totalTime: \"1시간 15분\"\
+      \n    fare: \"₩2,450\"\n    steps:\n      - step: \"죽전역(분당선) 승차 → 선릉역 하차\"\n\
+      \        time: \"40분\"\n        transfer: \"2호선으로 환승\"\n      - step: \"선릉역(2호선)\
+      \ 승차 → 당산역 하차\"\n        time: \"25분\"\n        transfer: \"9호선으로 환승\"\n   \
+      \   - step: \"당산역(9호선) 승차 → 여의나루역 하차\"\n        time: \"5분\"\n      - step:\
+      \ \"여의나루역 2번 출구 도보 이동 → 여의도 한강공원\"\n        time: \"5분\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 여의도 한강공원 인근은 2035년 3월 11일 11시 32분 기준 매우 혼잡하며, 벚꽃축제 영향으로 평균 속도는 약 15km/h,
+      평소보다 약 30분가량 지연되고 있습니다.
+
+      차량 이용 시 여의서로 → 여의하류IC 우회하면 약 20분, 마포대교 북단 경유 시 약 15분 단축이 가능합니다.
+
+
+      ▶ 죽전 아이파크에서 여의도 한강공원까지 대중교통(분당선·2호선·9호선) 이용 시, 총 소요 시간은 약 1시간 15분, 요금은 2,450원
+      입니다.
+
+      경로는 다음과 같습니다.
+
+
+      1. 죽전역(분당선) 승차 → 선릉역 하차 (40분) → 2호선 환승
+
+      2. 선릉역(2호선) 승차 → 당산역 하차 (25분) → 9호선 환승
+
+      3. 당산역(9호선) 승차 → 여의나루역 하차 (5분)
+
+      4. 여의나루역 2번 출구에서 도보 5분 → 여의도 한강공원'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 아 근데 여의도 한강공원 말고 벚꽃축제로 인기 많은 한강공원 더 있어?
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: transport_agent\n      refined_query: \"\
+      현재 여의도 한강공원 교통상황\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: transport_agent\n      refined_query:\
+      \ \"죽전 아이파크에서 여의도 한강공원까지 대중교통 이용하여 가장 빠른 길\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: search_agent\n\
+      \      refined_query: \"여의도 한강공원을 제외한 벚꽃축제로 인기 많은 한강공원\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPopularPlaceInfo\narguments:\n  refinedQuery: \"여의도 한강공원을 제외한\
+      \ 벚꽃춪제로 인기많은 서울 한강공원\"\n  sortBy: \"highest_rated\"\n  placeType: \"공원\"\ntool_call_result:\n\
+      \  data:\n    places:\n      - name: \"뚝섬 한강공원\"\n        address: \"서울 광진구\
+      \ 자양동 112\"\n        phone: \"02-3780-0501\"\n        website: \"https://hangang.seoul.go.kr/parks/tks\"\
+      \n        features:\n          - \"대규모 벚꽃길과 유채꽃밭\"\n          - \"자전거 대여소\"\n\
+      \          - \"피크닉 구역 및 카페\"\n      - name: \"잠원 한강공원\"\n        address: \"\
+      서울 서초구 잠원동 121\"\n        phone: \"02-3780-0551\"\n        website: \"https://hangang.seoul.go.kr/parks/jamwon\"\
+      \n        features:\n          - \"한강변 벚꽃 산책로\"\n          - \"조용한 분위기와 전망 좋은\
+      \ 벤치\"\n          - \"인근 카페·레스토랑 밀집\"\n      - name: \"이촌 한강공원\"\n        address:\
+      \ \"서울 용산구 이촌동 302-17\"\n        phone: \"02-3780-0555\"\n        website: \"\
+      https://hangang.seoul.go.kr/parks/ichon\"\n        features:\n          - \"\
+      한강변 벚꽃길과 대형 잔디광장\"\n          - \"야경 명소\"\n          - \"주차장 및 편의시설 완비\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '여의도 한강공원을 제외하고도 벚꽃 명소로 인기 많은 서울 한강공원들이 있습니다.
+
+
+      1. 뚝섬 한강공원: 대규모 벚꽃길과 유채꽃밭, 자전거 대여소, 피크닉 구역과 카페 운영
+
+
+      2. 잠원 한강공원: 한강변 벚꽃 산책로, 조용한 분위기의 전망 좋은 벤치, 인근 카페·레스토랑 밀집
+
+
+      3. 이촌 한강공원: 벚꽃길과 대형 잔디광장, 야경 명소, 주차장 및 편의시설 완비'

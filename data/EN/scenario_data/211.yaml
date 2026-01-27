@@ -1,0 +1,142 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-07-04'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you tell me when Son Heung-min’s game is next week? And please recommend
+      a good pub near my place where I can enjoy some chicken and beer while watching
+      the match.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"Find information\
+      \ about Son Heung-min's game next week\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"Recommend a good pub near my\
+      \ home to enjoy chicken and beer during the game time\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"Search for Son\
+      \ Heung-min's game schedule next week\"\n  playerName: \"Son Heung-min\"\n \
+      \ targetDate: \"next week\"\ntool_call_result:\n  data:\n    playerName: \"\
+      Son Heung-min\"\n    team: \"Tottenham Hotspur\"\n    league: \"EPL\"\n    matchDate:\
+      \ \"2025-07-11\"\n    opponent: \"Chelsea\"\n    kickoffTime: \"20:00\"\n  \
+      \  venue: \"Tottenham Hotspur Stadium\"\n    status: \"scheduled\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Current user location'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: To recommend a good local pub where you can enjoy fried chicken and beer,
+      I’ll need to know your home location. Could you tell me where you live?
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: near Brooklyn
+- workflow_id: null
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Good pubs\
+      \ near Brooklyn for chicken and beer next Friday at 8 PM\"\n  cuisineType: \"\
+      Pub\"\n  specificDishes: \"Chicken & Beer\"\n  location: \"Brooklyn, NY\"\n\
+      \  reservationTime: \"2025-07-11T20:00\"\n  sortBy: \"nearest\"\ntool_call_result:\n\
+      \  matchedPlaces:\n    - name: \"Chimaek House Brooklyn\"\n      address: \"\
+      156 Bedford Ave, Brooklyn, NY 11211\"\n      description: \"Trendy spot with\
+      \ an outdoor patio. Famous for Korean-style crispy fried chicken and wide selection\
+      \ of local craft beers.\"\n      contact: \"(718)555-1234\"\n      operatingHours:\
+      \ \"5:00 PM – 2:00 AM\"\n    - name: \"Hop 101 Bar & Grill\"\n      address:\
+      \ \"45 Flatbush Ave, Brooklyn, NY 11217\"\n      description: \"Casual pub with\
+      \ modern interior and affordable prices. Great for groups, with plenty of appetizers\
+      \ and beer options.\"\n      contact: \"(718)555-9876\"\n      operatingHours:\
+      \ \"4:00 PM – 1:00 AM\"\n    - name: \"Pub Tree\"\n      address: \"99 Dekalb\
+      \ Ave, Brooklyn, NY 11205\"\n      description: \"British-style pub with a cozy\
+      \ vibe. Recommended: chicken platter with craft beer set.\"\n      contact:\
+      \ \"(718)555-7890\"\n      operatingHours: \"6:00 PM – 3:00 AM\"\n  searchLocation:\
+      \ \"Brooklyn, NY\"\n  availableDate: \"2025-07-11\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Next week, Son Heung-min’s match against Chelsea will take place on
+      July 11.
+
+
+      ---------
+
+
+      Here are some great pubs where you can enjoy chicken and beer on July 11 at
+      8 PM.
+
+
+      Recommended Chicken & Beer Spots
+
+
+      1. Chimaek House Brooklyn
+
+      - Address: 156 Bedford Ave, Brooklyn, NY 11211
+
+      - Hours: 5:00 PM – 2:00 AM
+
+      - (718)555-1234
+
+      Trendy spot with an outdoor patio. Famous for Korean-style crispy fried chicken
+      and wide selection of local craft beers.
+
+
+      2. Hop 101 Bar & Grill
+
+
+      - Address: 45 Flatbush Ave, Brooklyn, NY 11217
+
+      - Hours: 4:00 PM – 1:00 AM
+
+      - (718)555-9876
+
+      Casual pub with modern interior and affordable prices. Great for groups, with
+      plenty of appetizers and beer options.
+
+
+      3. Pub Tree
+
+
+      - Address: 99 Dekalb Ave, Brooklyn, NY 11205
+
+      - Hours: 6:00 PM – 3:00 AM
+
+      - (718)555-7890
+
+      British-style pub with a cozy vibe. Recommended: chicken platter with craft
+      beer set.
+
+
+      Let’s cheer passionately and hope Son Heung-min and Tottenham Hotspur achieve
+      a great result against Chelsea. Have a wonderful time!'

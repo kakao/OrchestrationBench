@@ -1,0 +1,143 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- location: "One Times Square near Times Square–42nd Street Station,
+      New York City"
+
+      - datetime: "2025-09-17 12:34"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I have an overnight shift tonight due to an incident response. Please
+      recommend a nearby restaurant where I can quickly grab some takeout for dinner,
+      and book me a late-night taxi that matches the end of my shift.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"A nearby\
+      \ restaurant where I can quickly pick up dinner to-go\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ calendar_agent\n      refined_query: \"Check tonight’s on-call shift schedule\
+      \ for incident response\"\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Book a late-night taxi timed with the end of my shift\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "- tool: recommendRestaurants\n  arguments:\n    refinedQuery: \"A restaurant\
+      \ near One Times Square (Times Square–42nd Street Station) where I can quickly\
+      \ grab dinner to-go\"\n    location: \"One Times Square, New York City\"\n \
+      \   sortBy: \"highest_rated\"\n    reservationTime: \"tonight\"\n    tag: \"\
+      fast takeout available\"\n  tool_call_result:\n    restaurants:\n      - name:\
+      \ \"Shake Shack\"\n        rating: 4.5\n        address: \"691 8th Ave, New\
+      \ York, NY\"\n        contact: \"(212) 555-4321\"\n        availableSeats: 10\n\
+      \        distance: \"400 ft\"\n        takeoutAvailable: true\n\n      - name:\
+      \ \"Sweetgreen\"\n        rating: 4.4\n        address: \"1500 Broadway, New\
+      \ York, NY\"\n        contact: \"(212) 555-6789\"\n        availableSeats: 6\n\
+      \        distance: \"650 ft\"\n        takeoutAvailable: true\n\n      - name:\
+      \ \"Dos Toros Taqueria\"\n        rating: 4.3\n        address: \"1379 Broadway,\
+      \ New York, NY\"\n        contact: \"(212) 555-2468\"\n        availableSeats:\
+      \ 8\n        distance: \"1,150 ft\"\n        takeoutAvailable: true"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "- tool: getSchedule\n  arguments:\n    refinedQuery: \"Check the on-call\
+      \ overnight duty schedule for system incident response today\"\n    startDate:\
+      \ \"2025-09-17\"\n    endDate: \"2025-09-17\"\n    keyword: \"Incident Response\
+      \ Overnight Duty\"\n  tool_call_result:\n    schedule:\n      title: \"Incident\
+      \ Response Overnight Duty\"\n      location: \"4 Times Square, New York, NY\"\
+      \n      date: \"2025-09-17\"\n      endtime: \"23:00\""
+- workflow_id: null
+  step_id: 6
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Destination, reserver''s contact information'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: To book a taxi, please provide both the destination and the contact number
+      of the person making the reservation.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: I'm heading home. 123 Happiness Road, Brooklyn, New York City, NY. My
+      phone number is (212) 987-6543.
+- workflow_id: null
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "- tool: callTaxi\n  arguments:\n    refinedQuery: \"Book a taxi from\
+      \ One Times Square near Times Square–42nd Street Station to 123 Happiness Road,\
+      \ Brooklyn, NY 11201 at 11 PM\"\n    pickupLocation: \"One Times Square, Times\
+      \ Square–42nd Street Station, New York City\"\n    dropoffLocation: \"123 Happiness\
+      \ Road, Brooklyn, NY 11201\"\n    pickupTime: \"2025-09-17T23:00\"\n    passengerCount:\
+      \ 1\n    taxiType: \"general\"\n    reservation: true\n    contactInfo: \"(212)\
+      \ 987-6543\"\n  tool_call_result:\n    status: \"success\"\n    taxiInfo:\n\
+      \      taxiNumber: \"NYC-5678\"\n      driverName: \"Michael Johnson\"\n   \
+      \   driverPhone: \"(212) 123-4567\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'I’ve prepared everything for your late-night shift!
+
+
+      Nearby restaurants with takeout options:
+
+      - Shake Shack (★ 4.5) — 691 8th Ave, 400 ft
+
+      - Sweetgreen (★ 4.4) — 1500 Broadway, 650 ft
+
+      - Dos Toros Taqueria (★ 4.3) — 1379 Broadway, 1,150 ft
+
+      All offer quick takeout and have great ratings!
+
+
+      -----------
+
+
+      Work schedule check:
+
+      - Task: Incident response duty
+
+      - Location: 4 Times Square, New York, NY
+
+      - End time: 11:00 PM
+
+
+      ----------
+
+
+      Late-night taxi reservation confirmed:
+
+      - Pickup: 11:00 PM, One Times Square (Times Square–42nd Street Station)
+
+      - Destination: 123 Happiness Rd, Brooklyn, NY 11201
+
+      - Car number: NYC-5678, Driver: Michael Johnson ((212) 123-4567)
+
+
+      Wishing you a smooth end to your shift and a safe night at work!'

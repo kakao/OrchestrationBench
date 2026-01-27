@@ -1,0 +1,78 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '오늘 날짜: 2025-10-11'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오스트리아에서 1주일 보내려면 돈을 총 얼마나 환전하면 좋을까? 환율 고려해서 원화로 얼마나 필요한지 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"오스트리아 1주일\
+      \ 여행 평균 경비 예산 정보\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: finance_agent\n      refined_query:\
+      \ \"현재 유로(EUR) 살 때 원화(KRW) 환율 정보 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"오스트리아 1주일 여행 평균 경비 예산\
+      \ 정보\"\ntool_call_result:\n  data:\n    summary: \"오스트리아 1주일 여행 경비는 여행 스타일에\
+      \ 따라 크게 달라집니다. 일반적으로 항공권을 제외하고 1인 기준, 숙소, 식비, 교통, 약간의 관광 비용을 포함하여 다음과 같이 예상할\
+      \ 수 있습니다.\\n- 알뜰 여행: 하루 약 70~100유로 (호스텔, 저렴한 식사 위주)\\n- 일반적인 여행: 하루 약 150~200유로\
+      \ (중급 호텔, 레스토랑 식사 포함)\\n- 고급 여행: 하루 약 300유로 이상 (고급 호텔, 파인 다이닝, 쇼핑 포함)\\n따라서\
+      \ 일반적인 스타일로 여행할 경우, 1주일(7일)간 약 1,050유로 ~ 1,400유로 정도를 예산으로 잡는 것이 좋습니다.\"\n  \
+      \  sources:\n      - \"BudgetYourTrip - Austria Travel Cost\"\n      - \"Lonely\
+      \ Planet - Money and Costs in Austria\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getExchangeRate\narguments:\n  refinedQuery: \"현재 유로(EUR) 살 때\
+      \ 원화(KRW) 환율 정보 조회\"\n  baseCurrency: \"KRW\"\n  targetCurrency: \"EUR\"\n \
+      \ date: \"2025-10-11\"\n  exchangeType: \"cash_buy\"\ntool_call_result:\n  data:\n\
+      \    baseCurrency: \"KRW\"\n    targetCurrency: \"EUR\"\n    exchangeType: \"\
+      cash_buy\"\n    rate: 1515.50\n    date: \"2025-10-11\"\n    message: \"1유로를\
+      \ 현찰로 살 때 1,515.50원입니다.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '오스트리아 1주일 여행 시 필요한 경비와 현재 환율을 고려한 원화 예산을 알려드릴게요.
+
+
+      ■ 오스트리아 1주일 예상 경비 (1인, 항공권 제외)
+
+
+      일반적인 여행 스타일을 기준으로 할 때, 오스트리아에서 1주일간 필요한 경비는 약 1,050 ~ 1,400유로 (한화 약 159만 원 ~
+      212만 원) 수준입니다. 이는 숙소, 식비, 교통비, 기본적인 관광 비용을 포함한 금액입니다.
+
+
+      *   알뜰 여행: 하루 약 70~100유로
+
+      *   일반 여행: 하루 약 150~200유로
+
+
+      ■ 현재 환율 정보
+
+
+      오늘 기준으로 1유로를 현찰로 구매하실 때 환율은 1,515.50원입니다.
+
+
+      따라서 일반적인 기준으로 최소 160만 원에서 220만 원 정도를 환전 예산으로 고려하시면 좋습니다. 물론 개인의 여행 스타일이나 쇼핑
+      계획에 따라 실제 경비는 달라질 수 있으니 참고용으로 활용해 주세요.'

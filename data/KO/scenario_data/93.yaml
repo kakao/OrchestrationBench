@@ -1,0 +1,362 @@
+metadata:
+  total_steps: 31
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2029/09/10T13:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 친구 집에 공기정화식물 선물하고 싶은데 뭘 줘야될지 모르겠다,, 카톡으로 선물하게 추천좀 해줘봐 그리고 공기정화가 어떻게 되는건지도
+      좀 궁금해
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"친구에게 카카오톡으로\
+      \ 선물할 공기정화식물 추천\"\n\nworkflow_2:\n  status: pending\n  type: independent\n \
+      \ steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"공기정화식물이 공기정화를 하는 방법\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"친구에게 카카오톡으로 선물할 공기정화식물 구매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"친구 집에 선물할 공기정화식물\
+      \ 추천\"\n  recipientType: \"친구\"\n  items: \"공기정화식물\"\ntool_call_result:\n  data:\n\
+      \    recipientType: \"친구\"\n    item: \"공기정화식물\"\n    recommendations:\n   \
+      \   - productId: \"plant-001\"\n        productName: \"산세베리아\"\n        description:\
+      \ \"공기 정화 효과가 뛰어나고 관리가 쉬운 대표적인 실내용 식물입니다.\"\n        price: 22000\n        careLevel:\
+      \ \"초보자용\"\n        imageUrl: \"https://plantstore.example.com/images/sansevieria.jpg\"\
+      \n\n      - productId: \"plant-002\"\n        productName: \"스투키\"\n       \
+      \ description: \"적은 물로도 잘 자라며 인테리어 효과가 뛰어난 다육질 식물입니다.\"\n        price: 18000\n\
+      \        careLevel: \"물 주기 간편\"\n        imageUrl: \"https://plantstore.example.com/images/stuckyi.jpg\"\
+      \n\n      - productId: \"plant-003\"\n        productName: \"아레카야자\"\n     \
+      \   description: \"공기 중의 유해물질 제거에 탁월하며 밝은 분위기를 더해주는 대형 식물입니다.\"\n        price:\
+      \ 35000\n        careLevel: \"빛 필요\"\n        imageUrl: \"https://plantstore.example.com/images/areca.jpg\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"공기정화식물이 공기정화를 하는 방법\"\
+      \ntool_call_result:\n  data:\n    query: \"공기정화식물이 공기정화를 하는 방법\"\n    summary:\
+      \ \"공기정화식물은 잎과 뿌리를 통해 공기 중 유해물질을 흡수하고, 동시에 산소를 방출하여 실내 공기 질을 개선합니다. 특히 일부 식물은\
+      \ 포름알데히드, 벤젠, 톨루엔 등의 화학 물질을 효과적으로 제거하는 능력이 있어 실내 환경을 쾌적하게 유지하는 데 도움을 줍니다.\"\n\
+      \    mechanisms:\n      - \"잎 표면의 기공을 통해 공기 중 유해물질을 흡수\"\n      - \"뿌리를 통해 흡수된\
+      \ 오염물질을 미생물과 함께 분해\"\n      - \"광합성을 통해 산소 방출\"\n      - \"실내 습도 조절 효과도 있어 건조한\
+      \ 환경 완화\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 상품명, 수령자 이름, 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 친구 집에 어울리는 공기정화식물을 추천드릴게요. 관리가 쉽고 인테리어 효과도 좋은 인기 식물 3가지를 골라봤어요.\n\n\
+      1. 산세베리아\n   공기 정화 효과가 뛰어나고 관리가 쉬운 대표적인 실내용 식물이에요.\n   ▸ 가격: 22,000원\n   ▸ 난이도:\
+      \ 초보자용\n   [이미지 보기]\n\n2. 스투키\n   적은 물로도 잘 자라는 다육질 식물로, 인테리어 소품으로도 예뻐요.\n  \
+      \ ▸ 가격: 18,000원\n   ▸ 난이도: 물 주기 간편\n   [이미지 보기]\n\n3. 아레카야자\n   공기 중 유해물질 제거에\
+      \ 탁월하며 실내를 환하게 만들어주는 대형 식물이에요.\n   ▸ 가격: 35,000원\n   ▸ 난이도: 빛 필요\n   [이미지 보기]\n\
+      \n▶ 공기정화식물은 단순히 예쁜 인테리어 식물을 넘어, 실제로 실내 공기를 깨끗하게 만들어주는 역할을 합니다.\n다음과 같은 방식으로\
+      \ 공기정화를 도와줘요:\n\n1. 잎의 기공을 통해 공기 중 유해물질을 흡수\n\n2. 뿌리에서 미생물과 함께 오염물질을 분해\n\n\
+      3. 광합성을 통해 산소를 방출\n\n4. 실내 습도 조절에도 효과적이어서 건조한 환경을 완화해줘요\n\n상품을 고르셨다면 받으시는분의\
+      \ 성함과 연락처가 필요합니다."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 집들이 선물이라 저 가격대는 좀 저렴한거같고.. 20만원 이상 대형식물로 추천해줘 아 예쁜 화분으로 분갈이 되있는걸로 해줘야해.
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구에게 카카오톡으로 선물할 공기정화식물 추천\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: search_agent\n      refined_query:\
+      \ \"공기정화식물이 공기정화를 하는 방법\"\n\nworkflow_3:\n  status: paused\n  type: dependent\n\
+      \  depend_on: \"workflow_1-1\"\n  steps:\n    - status: paused\n      name:\
+      \ shopping_agent\n      refined_query: \"친구 집들이 선물 카카오톡으로 보낼 예쁜 화분으로 분갈이가  된\
+      \ 20만원 이상의 대형 공기정화식물 구매\"\n\nworkflow_1-1:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"친구 집들이 선물 카카오톡으로 보낼 예쁜 화분으로 분갈이가  된 20만원 이상의 대형 공기정화식물 추천\""
+- workflow_id: workflow_1
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"카카오톡으로 보내는 친구 집들이\
+      \ 선물 20만원 이상의 화분으로 분갈이가 되어있는 대형 공기정화식물 추천\"\n  recipientType: \"친구\"\n  items:\
+      \ \"공기정화식물\"\n  occasion: \"집들이\"\n  minPrice: 200000\ntool_call_result:\n \
+      \ data:\n    recipientType: \"친구\"\n    item: \"대형 공기정화식물\"\n    occasion: \"\
+      집들이\"\n    minPrice: 200000\n    recommendations:\n      - productId: \"plant-201\"\
+      \n        productName: \"올리브나무 대형 화분\"\n        description: \"공기 정화뿐 아니라 심신\
+      \ 안정에도 도움을 주며, 인테리어 효과가 뛰어난 인기 식물입니다. 고급 분갈이 화분 포함.\"\n        price: 215000\n\
+      \        careLevel: \"햇빛 필요, 주 1회 물 주기\"\n        imageUrl: \"https://plantstore.example.com/images/olive_large.jpg\"\
+      \n\n      - productId: \"plant-202\"\n        productName: \"파키라 수형 대형 분재\"\n\
+      \        description: \"금전운을 불러온다는 의미로 집들이 선물에 많이 선택되며, 실내에서 잘 자라고 잎이 풍성한 편입니다.\"\
+      \n        price: 238000\n        careLevel: \"중간 밝기, 격주 물 주기\"\n        imageUrl:\
+      \ \"https://plantstore.example.com/images/pachira_large.jpg\"\n\n      - productId:\
+      \ \"plant-203\"\n        productName: \"율마 고급형 공기정화식물 세트\"\n        description:\
+      \ \"상쾌한 향기와 함께 포름알데히드 제거 효과가 탁월한 율마. 고급 자기 화분에 분갈이 완료된 상태로 배송됩니다.\"\n      \
+      \  price: 225000\n        careLevel: \"은은한 햇빛, 흙 촉촉 유지\"\n        imageUrl:\
+      \ \"https://plantstore.example.com/images/yulma_large.jpg\""
+- workflow_id: workflow_3
+  step_id: 11
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 상품명, 수령자 이름, 연락처'
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '카카오톡으로 친구에게 보내기 좋은 20만원 이상 대형 공기정화식물 선물을 추천드릴게요. 분갈이까지 완료된 고급 화분 구성이라
+      집들이 선물로 제격이에요:
+
+
+      ▶ 올리브나무 대형 화분
+
+      공기 정화뿐 아니라 심신 안정에도 도움을 주며, 인테리어 효과도 뛰어난 식물입니다. 고급 분갈이 화분 포함.
+
+      ∙ 가격: 215,000원 / 관리: 햇빛 필요, 주 1회 물 주기
+
+
+      ▶ 파키라 수형 대형 분재
+
+      금전운을 상징하는 의미로 집들이 선물에 인기가 높아요. 잎이 풍성하고 실내에서도 잘 자랍니다.
+
+      ∙ 가격: 238,000원 / 관리: 중간 밝기, 격주 물 주기
+
+
+      ▶ 율마 고급형 공기정화식물 세트
+
+      포름알데히드 제거 효과가 뛰어나고, 상쾌한 향기가 나는 율마. 고급 자기 화분에 분갈이 완료 상태로 배송됩니다.
+
+      ∙ 가격: 225,000원 / 관리: 은은한 햇빛, 흙 촉촉 유지
+
+
+      상품을 고르셨다면 받으시는분의 성함과 연락처가 필요합니다.'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: '아 근데 실제로 보고 살수있는데는 없나?
+
+      양재시민의숲 근처에 식물 볼수있는데좀 추천해줘
+
+      양재시민의숲 역에서 추천해준곳 지금 바로 걸어가게 제일 빠른 길도 알려줘'
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구에게 카카오톡으로 선물할 공기정화식물 추천\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: search_agent\n      refined_query:\
+      \ \"공기정화식물이 공기정화를 하는 방법\"\n\nworkflow_3:\n  status: cancelled\n  type: dependent\n\
+      \  depend_on: \"workflow_1-1\"\n  steps:\n    - status: cancelled\n      name:\
+      \ shopping_agent\n      refined_query: \"친구 집들이로 선물할 20만원 이상의 예쁜 화분으로 분갈이가 되어있는\
+      \ 대형 공기정화식물 구매\"\n\nworkflow_1-1:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: shopping_agent\n      refined_query:\
+      \ \"카카오톡으로 보내는 친구 집들이 선물 20만원 이상의 화분으로 분갈이가 되어있는 대형 공기정화식물 추천\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: place_agent\n      refined_query: \"양재시민의숲 근처 식물을 보고 살 수 있는 곳 추천\"\
+      \n\nworkflow_5:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_4\"\
+      \n  steps:\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"양재시민의숲부터 추천해준 훼화샵 까지 지금 걸어서 가장 빠른 길 안내\""
+- workflow_id: workflow_4
+  step_id: 15
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"양재시민의숲 근처 식물을 보고 살\
+      \ 수 있는 곳 추천\"\n  sortBy: \"distance\"\n  location: \"양재시민의숲역\"\n  placeCategory:\
+      \ \"원예점\"\ntool_call_result:\n  data:\n    location: \"양재시민의숲역\"\n    category:\
+      \ \"원예점\"\n    results:\n      - name: \"플랜트하우스 양재점\"\n        address: \"서울\
+      \ 서초구 양재대로12길 17\"\n        programs:\n          - \"공기정화식물 판매\"\n         \
+      \ - \"분갈이 서비스\"\n        contact: \"02-3456-7890\"\n        website: \"https://planthouse.co.kr\"\
+      \n        features:\n          - \"다양한 실내식물 보유\"\n          - \"초보자 맞춤 추천\"\n\
+      \          - \"주차 가능\"\n\n      - name: \"그린포레 양재\"\n        address: \"서울 강남구\
+      \ 남부순환로 2608\"\n        programs:\n          - \"가드닝 클래스\"\n          - \"선물용\
+      \ 식물 포장\"\n        contact: \"02-2222-3333\"\n        website: \"https://greenforet.co.kr\"\
+      \n        features:\n          - \"다육식물 전문\"\n          - \"소형부터 대형 식물까지\"\n\
+      \n      - name: \"플랜츠&리빙\"\n        address: \"서울 서초구 매헌로 10길 25\"\n       \
+      \ programs:\n          - \"플랜테리어 상담\"\n          - \"인테리어용 식물 판매\"\n       \
+      \ contact: \"02-7777-8888\"\n        website: \"https://plantsnliving.com\"\n\
+      \        features:\n          - \"감각적인 인테리어 식물\"\n          - \"라이프스타일 숍과 결합\""
+- workflow_id: workflow_5
+  step_id: 16
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 도착지 필요
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "양재시민의숲 근처에서 식물을 직접 보고 구매할 수 있는 원예점들을 추천드립니다. 공기정화식물부터 플랜테리어 아이템까지 다양하게\
+      \ 만나보실 수 있어요.\n\n▶ 플랜트하우스 양재점\n주소: 서울 서초구 양재대로12길 17\n\n* 공기정화식물 판매, 분갈이 서비스\n\
+      * 다양한 실내식물 보유, 초보자 맞춤 추천, 주차 가능\n  문의: 02-3456-7890\n  [홈페이지 바로가기](https://planthouse.co.kr)\n\
+      \n▶ 그린포레 양재\n주소: 서울 강남구 남부순환로 2608\n\n* 가드닝 클래스, 선물용 식물 포장\n* 다육식물 전문, 소형부터\
+      \ 대형 식물까지\n  문의: 02-2222-3333\n  [홈페이지 바로가기](https://greenforet.co.kr)\n\n▶\
+      \ 플랜츠&리빙\n주소: 서울 서초구 매헌로 10길 25\n\n* 플랜테리어 상담, 인테리어용 식물 판매\n* 감각적인 인테리어 식물,\
+      \ 라이프스타일 숍과 결합\n  문의: 02-7777-8888\n  [홈페이지 바로가기](https://plantsnliving.com)\n\
+      \n길 안내를 위해 방문하실 플라워샵을 알려주세요."
+- workflow_id: null
+  step_id: 18
+  agent: user
+  agent_type: user
+  data:
+    content: 그린포레 안내해줘
+- workflow_id: null
+  step_id: 19
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"양재시민의숲부터 추천해준 훼화샵\
+      \ 까지 지금 걸어서 가장 빠른 길 안내\"\n  departureTime: \"2029-09-10T13:00\"\n  transportModes:\
+      \ \"walk\"\n  origin: \"양재시민의숲역\"\n  destination: \"서울 강남구 남부순환로 2608, 그린포레\
+      \ 양재\"\n  optimizeBy: \"least_walk\"\ntool_call_result:\n  data:\n    origin:\
+      \ \"양재시민의숲역\"\n    destination: \"서울 강남구 남부순환로 2608, 그린포레 양재\"\n    departureTime:\
+      \ \"2029-09-10T13:00\"\n    transportMode: \"walk\"\n    optimizeBy: \"least_walk\"\
+      \n    duration: \"약 6분\"\n    distance: \"410m\"\n    steps:\n      - \"양재시민의숲역\
+      \ 2번 출구로 나와 직진\"\n      - \"양재대로를 따라 300m 이동\"\n      - \"남부순환로 방향으로 좌회전\"\n\
+      \      - \"그린포레 양재 건물 입구 도착 (도로변 1층)\"\n    mapLink: \"https://map.kakao.com/link/to/그린포레양재,37.4781,127.0387\""
+- workflow_id: null
+  step_id: 20
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 지금 양재시민의숲역에서 그린포레 양재까지 걷는 가장 짧은 경로는 약 410m, 6분 정도 소요됩니다.
+
+      2번 출구로 나와 직진한 뒤 남부순환로 쪽으로 좌회전하면 도로변 1층 입구에 도착할 수 있어요.
+
+      지도 보기'
+- workflow_id: null
+  step_id: 21
+  agent: user
+  agent_type: user
+  data:
+    content: 하 근데 식물들 구매링크 보면서 든 생각인데 20만원짜리 대형 식물은 들고가지 못할거같아,, 배송비도 비싸고,, 그냥 돈으로
+      주는게 나을거같다. 지금 30 만원 계좌이체좀 해줘
+- workflow_id: null
+  step_id: 22
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구에게 카카오톡으로 선물할 공기정화식물 추천\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: search_agent\n      refined_query:\
+      \ \"공기정화식물이 공기정화를 하는 방법\"\n\nworkflow_3:\n  status: cancelled\n  type: dependent\n\
+      \  depend_on: \"workflow_1-1\"\n  steps:\n    - status: cancelled\n      name:\
+      \ shopping_agent\n      refined_query: \"친구 집들이로 선물할 20만원 이상의 예쁜 화분으로 분갈이가 되어있는\
+      \ 대형 공기정화식물 구매\"\n\nworkflow_1-1:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: shopping_agent\n      refined_query:\
+      \ \"카카오톡으로 보내는 친구 집들이 선물 20만원 이상의 화분으로 분갈이가 되어있는 대형 공기정화식물 추천\"\n\nworkflow_4:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: place_agent\n      refined_query: \"양재시민의숲 근처 식물을 보고 살 수 있는 곳 추천\"\
+      \n\nworkflow_5:\n  status: completed\n  type: dependent\n  depend_on: \"workflow_4\"\
+      \n  steps:\n    - status: completed\n      name: transport_agent\n      refined_query:\
+      \ \"양재시민의숲부터 추천해준 훼화샵 까지 지금 걸어서 가장 빠른 길 안내\"\n\nworkflow_6:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"지금 친구에게 30만원 송금을 위한 계좌 조회\"\n    - status: pending\n\
+      \      name: personal_banking_agent\n      refined_query: \"지금 친구에게 30만원 송금\""
+- workflow_id: workflow_4
+  step_id: 23
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 송금인의 성함, 계좌번호, 은행명'
+- workflow_id: null
+  step_id: 24
+  agent: main
+  agent_type: main
+  data:
+    content: 보내는분의 성함, 은행명과 계좌번호가 필요합니다.
+- workflow_id: null
+  step_id: 25
+  agent: user
+  agent_type: user
+  data:
+    content: 배지우 국민은행 001001-01-001001
+- workflow_id: null
+  step_id: 26
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"지금 친구에게 30만원\
+      \ 송금을 위한 계좌 조회\"\n  bankName: \"국민은행\"\n  accountNumber: \"001001-01-001001\"\
+      \n  accountHolderName: \"배지우\"\n  includeTransactions: false\ntool_call_result:\n\
+      \  data:\n    bankName: \"국민은행\"\n    accountNumber: \"001001-01-001001\"\n\
+      \    accountHolderName: \"배지우\"\n    sourceAccountId: \"KB-001001-01-001001\"\
+      \n    balance: 518000\n    currency: \"KRW\""
+- workflow_id: null
+  step_id: 27
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수취인의 성함, 계좌번호, 은행명'
+- workflow_id: null
+  step_id: 28
+  agent: main
+  agent_type: main
+  data:
+    content: 받는분의 성함, 은행명과 계좌번호가 필요합니다.
+- workflow_id: null
+  step_id: 29
+  agent: user
+  agent_type: user
+  data:
+    content: 이상민 국민은행 261502-05-050901
+- workflow_id: null
+  step_id: 30
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"지금 친구에게 30만원 송금\"\
+      \n  recipientName: \"이상민\"\n  bankName: \"국민은행\"\n  accountNumber: \"261502-05-050901\"\
+      \n  amount: 300000\n  sourceAccountId: \"KB-001001-01-001001\"\ntool_call_result:\n\
+      \  data:\n    recipientName: \"이상민\"\n    bankName: \"국민은행\"\n    accountNumber:\
+      \ \"261502-05-050901\"\n    amount: 300000\n    sourceAccountId: \"BA-001001-01-001001\"\
+      \n    transferTime: \"2029-09-10T13:00\"\n    confirmationNumber: \"TRX-7832610928\""
+- workflow_id: null
+  step_id: 31
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 요청하신 금액 300,000원을 국민은행 이상민님(261502-05-050901) 계좌로 송금 완료했습니다.
+
+      송금 시각: 2029-09-10 13:00, 확인번호: TRX-7832610928.
+
+      다른 송금이 필요하시면 알려주세요.'

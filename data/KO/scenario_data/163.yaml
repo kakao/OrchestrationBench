@@ -1,0 +1,227 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- current time: 2025-07-24T15:19:53+09:00
+
+      - phone: +82-10-1347-0000
+
+      - name: 이치환
+
+      - email: chwpark@kakao.com'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 다음 달 둘째 주 주말에 부산으로 여자친구랑 다녀오는 1박 2일 여행 갈거야. 서울역에서 출발하는 KTX 왕복표 예매하고,
+      해운대 근처 4성급 호텔로 숙소도 예약해줘. 여행 기간 동안 부산 날씨랑, 호텔 근처 맛집도 추천해 줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"다음 달\
+      \ 둘째 주 주말 서울역-부산역 KTX 2인 왕복 티켓 조회\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: travel_agent\n \
+      \     refined_query: \"다음 달 둘째 주 주말 부산 해운대 근처 여자친구와 1박 2일 머물 4성급 호텔 조회\"\n\n\
+      workflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: weather_agent\n      refined_query: \"다음 달 둘째 주 주말 부산\
+      \ 날씨\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n  depend_on: \"\
+      workflow_1\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"다음 달 둘째 주 주말 서울역-부산역 KTX 2인 왕복 티켓 발권\"\n\nworkflow_5:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: pending\n      name: travel_agent\n      refined_query: \"다음\
+      \ 달 둘째 주 주말 부산 해운대 근처 여자친구와 1박 2일 머물 4성급 호텔 예약\"\n\nworkflow_6:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_5\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"다음 달 둘째 주 주말 부산 해운대 호텔 근처 맛집\
+      \ 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransitSchedule\narguments:\n  refinedQuery: \"2025년 8월 9일에서\
+      \ 1박 2일 서울역에서 부산역까지 KTX 왕복 2인 시간표\"\n  transportType: \"train\"\n  departureStation:\
+      \ \"서울역\"\n  arrivalStation: \"부산역\"\n  departureDate: \"2025-08-09\"\n  returnDate:\
+      \ \"2025-08-10\"\n  roundTrip: true\ntool_call_result:\n  status: success\n\
+      \  data:\n    departureDate: \"2025-08-09\"\n    returnDate: \"2025-08-10\"\n\
+      \    departureStation: \"서울역\"\n    arrivalStation: \"부산역\"\n    transportType:\
+      \ \"train\"\n    roundTrip: true\n    outbound:\n      date: \"2025-08-09\"\n\
+      \      route: \"서울역 → 부산역\"\n      trains:\n        - trainNo: \"KTX 101\"\n\
+      \          departureTime: \"07:00\"\n          arrivalTime: \"09:15\"\n    \
+      \      duration: \"2h 15m\"\n        - trainNo: \"KTX 109\"\n          departureTime:\
+      \ \"08:30\"\n          arrivalTime: \"10:47\"\n          duration: \"2h 17m\"\
+      \n        - trainNo: \"KTX 117\"\n          departureTime: \"10:00\"\n     \
+      \     arrivalTime: \"12:13\"\n          duration: \"2h 13m\"\n        - trainNo:\
+      \ \"KTX 125\"\n          departureTime: \"11:30\"\n          arrivalTime: \"\
+      13:50\"\n          duration: \"2h 20m\"\n    return:\n      date: \"2025-08-10\"\
+      \n      route: \"부산역 → 서울역\"\n      trains:\n        - trainNo: \"KTX 132\"\n\
+      \          departureTime: \"16:00\"\n          arrivalTime: \"18:20\"\n    \
+      \      duration: \"2h 20m\"\n        - trainNo: \"KTX 140\"\n          departureTime:\
+      \ \"17:30\"\n          arrivalTime: \"19:44\"\n          duration: \"2h 14m\"\
+      \n        - trainNo: \"KTX 148\"\n          departureTime: \"18:45\"\n     \
+      \     arrivalTime: \"21:00\"\n          duration: \"2h 15m\"\n        - trainNo:\
+      \ \"KTX 154\"\n          departureTime: \"20:00\"\n          arrivalTime: \"\
+      22:13\"\n          duration: \"2h 13m\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"2025년 8월 9일부터\
+      \ 1박 2일 동안 성인 2인 머물 해운대 근처 4성급 호텔 예약\"\n  location: \"부산 해운대\"\n  checkInDate:\
+      \ \"2025-08-09\"\n  checkOutDate: \"2025-08-10\"\n  guestCount: 2\n  roomCount:\
+      \ 1\n  accommodationType: \"hotel\"\n  sortBy: \"highest_rating\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    accommodations:\n      - accommodationId: \"\
+      AH102938B1\"\n        name: \"신라스테이 해운대\"\n        address: \"부산광역시 해운대구 해운대로570번길\
+      \ 46\"\n        description: \"해운대 해수욕장과 가까우며, 세련된 시설과 루프탑 수영장으로 인기가 높은 4성급\
+      \ 호텔입니다.\"\n        room_type: \"스탠다드룸, 2인 기준\"\n        roomTypeId: \"STANDARD\"\
+      \n        price: 356000\n        note: \"세금 및 봉사료 포함 예상 가격입니다. 현재 일부 예약 사이트에서\
+      \ 조회가 가능하나, 예약 시점에 따라 변동될 가능성이 매우 높습니다.\"\n      - accommodationId: \"B11231AJ221\"\
+      \n        name: \"라마다 앙코르 바이 윈덤 부산 해운대\"\n        address: \"부산광역시 해운대구 구남로\
+      \ 9\"\n        description: \"해운대역과 해수욕장 접근성이 뛰어나 관광객에게 인기가 많습니다. 루프탑에서 해운대를\
+      \ 조망할 수 있습니다.\"\n        room_type: \"스탠다드 더블룸, 2인 기준\"\n        roomTypeId:\
+      \ \"STANDARD_DOUBLE\"\n        price: 324000\n        note: \"세금 및 봉사료 포함 예상\
+      \ 가격입니다. 8월 성수기 주말 요금으로, 실제 예약 시 가격이 변동될 수 있습니다.\"\n      - accommodationId:\
+      \ \"AH1772639AY\"\n        name: \"해운대 센텀 호텔\"\n        address: \"부산광역시 해운대구\
+      \ 센텀3로 20\"\n        description: \"벡스코(BEXCO)와 백화점이 바로 앞에 있어 비즈니스 및 쇼핑에 최적화된\
+      \ 위치를 자랑합니다.\"\n        room_type: \"스탠다드 더블, 2인 기준\"\n        roomTypeId: \"\
+      STANDARD_DOUBLE\"\n        price: 280000\n        note: \"세금 및 봉사료 포함 예상 가격입니다.\
+      \ 해수욕장과는 다소 거리가 있으나, 합리적인 가격이 장점입니다. 예약 시점에 따라 가격 변동이 예상됩니다.\"\n      - accommodationId:\
+      \ \"D728127BAYY2\"\n        name: \"베스트웨스턴 플러스 해운대\"\n        address: \"부산광역시\
+      \ 해운대구 해운대해변로 249\"\n        description: \"해운대 해변 바로 앞에 위치하여 오션뷰 객실이 인기 있는\
+      \ 호텔입니다.\"\n        room_type: \"스탠다드룸, 2인 기준\"\n        roomTypeId: \"STANDARD\"\
+      \n        price: 310000\n        note: \"세금 및 봉사료 포함 예상 가격입니다. 위치가 매우 좋아 성수기에는\
+      \ 조기 예약 마감이 예상되며, 가격 변동 가능성이 큽니다.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"2025년 8월 9일 부산 날씨 조회\"\n      location: \"부산\"\n      date: \"2025-08-09\"\
+      \n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery: \"2025년\
+      \ 8월 10일 부산 날씨 조회\"\n      location: \"부산\"\n      date: \"2025-08-10\"\ntool_call_result:\n\
+      \  - tool: getDomesticWeather\n    result: \"2025년 8월 9일 부산은 맑고 기온은 최고 31도,\
+      \ 최저 25도입니다.\"\n  - tool: getDomesticWeather\n    result: \"2025년 8월 10일 부산은\
+      \ 흐리고 오후에 비가 올 확률이 있으며, 기온은 최고 29도, 최저 24도입니다.\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 왕복 일정 선택'
+- workflow_id: workflow_5
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약 호텔 선택'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "다음 달 둘째 주 주말인 8월 9일(토)~10일(일) 기준으로 서울↔부산 KTX 왕복 시간표는 아래와 같습니다:\n\n▶\
+      \ [가는 편 – 서울역 → 부산역 (8/9)]\nKTX 101: 07:00 → 09:15\nKTX 109: 08:30 → 10:47\n\
+      KTX 117: 10:00 → 12:13\nKTX 125: 11:30 → 13:50\n\n▶ [오는 편 – 부산역 → 서울역 (8/10)]\n\
+      KTX 132: 16:00 → 18:20\nKTX 140: 17:30 → 19:44\nKTX 148: 18:45 → 21:00\nKTX\
+      \ 154: 20:00 → 22:13\n\n---------\n\n▶ 해운대 근처 4성급 호텔 추천 (1박, 2인 기준)\n신라스테이 해운대\
+      \ – 루프탑 수영장, 해변 도보 거리 (₩356,000)\n라마다 앙코르 해운대 – 해운대역 근처, 조망 좋은 루프탑 (₩324,000)\n\
+      해운대 센텀 호텔 – 벡스코 인근, 가성비 우수 (₩280,000)\n베스트웨스턴 플러스 해운대 – 해변 바로 앞, 오션뷰 인기 (₩310,000)\n\
+      \n----------\n\n KTX 시간대와 투숙을 희망하는 호텔을 선택해주세요."
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: '서울역에서 10시 출발, 부산에서 오후 5시 반 출발로 예약해줘.
+
+      호텔은 젤 비싼 거로 할게!'
+- workflow_id: workflow_4
+  step_id: 11
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookTransitTicket\narguments:\n  refinedQuery: \"2025년 8월 9일 서울역\
+      \ 10시 출발, 10일 부산역 오후 5시 반 출발 KTX 왕복 2인 예매\"\n  transportType: \"train\"\n  departureStation:\
+      \ \"서울역\"\n  arrivalStation: \"부산역\"\n  departureDate: \"2025-08-09\"\n  departureTime:\
+      \ \"10:00\"\n  returnDate: \"2025-08-10\"\n  returnTime: \"17:30\"\n  roundTrip:\
+      \ true\n  seatType: \"standard\"\n  passengerCount: 2\n  contactInfo: \"010-1347-0000\"\
+      \ntool_call_result:\n  status: success\n  data:\n    tickets:\n      - ticketId:\
+      \ \"82222-1027-10001-45\"\n        departureStation: \"서울역\"\n        arrivalStation:\
+      \ \"부산역\"\n        departureDate: \"2025-08-09\"\n        departureTime: \"\
+      10:00\"\n        train: \"KTX 117\"\n        seats:\n          - \"4호차 6C\"\n\
+      \          - \"4호차 6D\"\n      - ticketId: \"82222-1022-10012-88\"\n       \
+      \ departureStation: \"부산역\"\n        arrivalStation: \"서울역\"\n        departureDate:\
+      \ \"2025-08-10\"\n        departureTime: \"17:30\"\n        train: \"KTX 140\"\
+      \n        seats:\n          - \"6호차 11A\"\n          - \"6호차 11B\""
+- workflow_id: workflow_5
+  step_id: 12
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: bookAccommodation\narguments:\n  refinedQuery: \"2025년 8월 9일부터\
+      \ 1박 2일 동안 머물 신라스테이 해운대 스탠다드룸 2인 예약\"\n  accommodationID: \"AH102938B1\"\n \
+      \ accommodationName: \"신라스테이 해운대\"\n  roomTypeId: \"STANDARD\"\n  checkInDate:\
+      \ \"2025-08-09\"\n  checkOutDate: \"2025-08-10\"\n  guestCount: 2\n  roomCount:\
+      \ 1\n  userInfo:\n    name: \"이치환\"\n    contactNumber: \"010-1347-0000\"\n\
+      \    email: \"chwpark@kakao.com\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    reservationId: \"SH-20250816-AA1\""
+- workflow_id: workflow_6
+  step_id: 13
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"2025년 8월 9일\
+      \ 또는 10일에 2명이 갈 신라스테이 해운대 호텔 근처 맛집 추천\"\n  location: \"신라스테이 해운대 호텔\"\n  sortBy:\
+      \ \"highest_rated\"\n  reservationTime: \"2025년 8월 9일 또는 10일\"\n  partySize:\
+      \ \"2\"\n\ntool_call_result:\n  status: success\n  data:\n    restaurants:\n\
+      \      - placeId: \"1128034030\"\n        name: \"기요항 해운대점\"\n        description:\n\
+      \          - \"신선한 해산물 가득한 일식 덮밥의 진수\"\n          - \"제이타쿠동 추천\"\n         \
+      \ - \"바테이블\"\n          - \"유아의자 있음\"\n        contact: \"051-747-3830\"\n \
+      \       address: \"부산 해운대구 해운대로570번길 46 신라스테이호텔 1층\"\n        link: \"https://instagram.com/giyohan_haeundae\"\
+      \n\n      - placeId: \"499066619\"\n        name: \"황금조개구이횟집 해물탕곰장어 3호점\"\n\
+      \        description:\n          - \"신선한 조개구이와 얼큰한 매운탕의 조화\"\n          - \"\
+      회+조개구이+낙지+매운탕 (2인) 추천\"\n          - \"테라스\"\n        contact: \"0507-1325-0801\"\
+      \n        address: \"부산 해운대구 구남로 42 베스트웨스턴호텔 1층 102~103호\"\n        link: \"\
+      https://instagram.com/goldclam_official\"\n\n      - placeId: \"455501700\"\n\
+      \        name: \"오복돼지국밥\"\n        description:\n          - \"진한 사골육수에 담긴 깊은\
+      \ 풍미\"\n          - \"돼지국밥 추천\"\n          - \"단체석\"\n          - \"유아의자 있음\"\
+      \n        contact: \"051-731-1488\"\n        address: \"부산 해운대구 구남로 15 1층\"\n\
+      \        link: \"https://app.catchtable.co.kr/ct/shop/obok_haeundae\"\n\n  \
+      \    - placeId: \"1750938976\"\n        name: \"본앤브레드 부산 파라다이스점\"\n        description:\n\
+      \          - \"재즈 선율 속 깊은 육즙의 향연\"\n          - \"포터하우스 (800g) 추천\"\n      \
+      \    - \"프라이빗룸\"\n          - \"고기구워주는 집\"\n          - \"유아의자 있음\"\n      \
+      \  contact: \"051-749-2400\"\n        address: \"부산 해운대구 해운대해변로 296 지하 1층\"\n\
+      \        link: \"https://instagram.com/born_n_bred_busan\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "요청하신 내용에 맞춰 준비한 정보입니다.\n\n▶ KTX 왕복 예매 완료!\n\n가는 편 (2025년 8월 9일 토요일)\n\
+      → KTX 117, 서울역 10:00 출발 → 부산역 12:13 도착\n→ 좌석: 4호차 6C, 6D\n\n오는 편 (2025년 8월 10일\
+      \ 일요일)\n→ KTX 140, 부산역 17:30 출발 → 서울역 19:44 도착\n→ 좌석: 6호차 11A, 11B\n\n예약이 완료되었습니다.\n\
+      \n▶ 숙소 예약 완료 \n\n* 일정: 2025년 8월 09일 (토) - 2025년 8월 10일 (일), 1박 2일\n* 호텔: 신라스테이\
+      \ 해운대\n* 객실: 스탠다드룸 (2인)\n* 예약번호: SH-20250816-AA1\n\n예약이 성공적으로 완료되었습니다.\n\n▶\
+      \ 8월 둘째 주 부산 날씨 정보\n\n정확한 예보는 여행 날짜가 가까워져야 알 수 있지만, 과거 데이터를 바탕으로 예상되는 8월 중순\
+      \ 부산 날씨를 알려드릴게요.\n\n부산 날씨 (예보 기준)\n8월 9일 (토): 맑고 무더움 (최고 31℃ / 최저 25℃)\n8월 10일\
+      \ (일): 흐리고 오후에 비 가능성 있음 (최고 29℃ / 최저 24℃)\n\n▶ 신라스테이 해운대 근처 맛집 추천\n\n호텔에서 가까운\
+      \ 곳들로 엄선해 봤어요.\n\n1.  기요항 해운대점\n    * 추천 메뉴: 제이타쿠동\n    * 특징: 신선한 해산물이 가득 올라간\
+      \ 일본식 덮밥을 맛볼 수 있는 곳이에요.\n\n2.  황금조개구이횟집 해물탕곰장어 3호점\n    * 추천 메뉴: 회+조개구이+낙지+매운탕\
+      \ 세트\n    * 특징: 신선한 조개구이와 회, 얼큰한 매운탕까지 한 번에 즐길 수 있어요.\n\n3.  오복돼지국밥\n    * 추천\
+      \ 메뉴: 돼지국밥\n    * 특징: 진한 사골 육수의 깊은 맛이 일품인 부산 대표 음식이에요.\n\n4.  본앤브레드 부산 파라다이스점\n\
+      \    * 추천 메뉴: 포터하우스 (800g)\n    * 특징: 분위기 있는 재즈 선율과 함께 최상급 한우를 맛볼 수 있는 곳이에요.\
+      \ 특별한 저녁을 원하신다면 추천해요.\n\n여자친구분과 함께 즐거운 부산 여행 다녀오세요!"

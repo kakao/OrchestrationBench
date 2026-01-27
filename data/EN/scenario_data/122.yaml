@@ -1,0 +1,173 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2026/01/15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you give me yesterday's closing price for Apple, and please summarize
+      any major news about Apple this week, if any, in three sentences.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"Check yesterday's\
+      \ closing price for Apple\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: news_agent\n      refined_query:\
+      \ \"Find major Apple news from this week\"\n    - status: pending\n      name:\
+      \ news_agent\n      refined_query: \"Summarize this week's major Apple news\
+      \ in 3 sentences\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"Check closing price\
+      \ of Apple on January 14, 2026\"\n  stockName: \"Apple\"\n  date: \"2026-01-14\"\
+      \n  priceType: \"Closing Price\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    stockName: \"Apple\"\n    price: 155"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"Major Apple news this\
+      \ week\"\n  fromDate: \"2026-01-12\"\n  toDate: \"2026-01-15\"\n  limit: 5\n\
+      tool_call_result:\n  status: success\n  data:\n    articles:\n      - title:\
+      \ \"Apple unveils new iPhone 18 lineup\"\n        source: \"The Verge\"\n  \
+      \      publishedAt: \"2026-01-12T08:35\"\n        url: \"https://www.theverge.com/2026/01/12/apple-iphone-18-launch\"\
+      \n\n      - title: \"Apple reports Q1 2026 earnings exceed expectations\"\n\
+      \        source: \"CNBC\"\n        publishedAt: \"2026-01-12T14:22\"\n     \
+      \   url: \"https://www.cnbc.com/2026/01/12/apple-q1-earnings\"\n\n      - title:\
+      \ \"Apple expands Apple Music to Southeast Asia\"\n        source: \"Bloomberg\"\
+      \n        publishedAt: \"2026-01-14T11:10\"\n        url: \"https://www.bloomberg.com/news/articles/2026-01-14/apple-music-expansion\"\
+      \n\n      - title: \"Apple announces environmental initiatives for 2026\"\n\
+      \        source: \"Reuters\"\n        publishedAt: \"2026-01-15T17:45\"\n  \
+      \      url: \"https://www.reuters.com/technology/apple-environment-initiatives-2026\"\
+      \n\n      - title: \"Apple launches pre-orders for new MacBook Pro\"\n     \
+      \   source: \"TechCrunch\"\n        publishedAt: \"2026-01-13T13:30\"\n    \
+      \    url: \"https://techcrunch.com/2026/01/13/apple-macbook-pro-preorder\""
+- workflow_id: null
+  step_id: 6
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"Summarize the news article 'Apple unveils new iPhone 18 lineup'.\"\n   \
+      \   date: \"2026-01-12\"\n      url: \"https://www.theverge.com/2026/01/12/apple-iphone-18-launch\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Summarize\
+      \ the news article 'Apple reports Q1 2026 earnings beat expectations'.\"\n \
+      \     date: \"2026-01-12\"\n      url: \"https://www.cnbc.com/2026/01/12/apple-q1-earnings\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Summarize\
+      \ the news article 'Apple expands Apple Music to Southeast Asia'.\"\n      date:\
+      \ \"2026-01-14\"\n      url: \"https://www.bloomberg.com/news/articles/2026-01-14/apple-music-expansion\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Summarize\
+      \ the news article 'Apple announces environmental initiatives for 2026'.\"\n\
+      \      date: \"2026-01-15\"\n      url: \"https://www.reuters.com/technology/apple-environment-initiatives-2026\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Summarize\
+      \ the news article 'Apple launches pre-orders for new MacBook Pro'.\"\n    \
+      \  date: \"2026-01-13\"\n      url: \"https://techcrunch.com/2026/01/13/apple-macbook-pro-preorder\"\
+      \n\ntool_call_result:\n  - result: |\n      Apple unveiled its new iPhone 18\
+      \ lineup with significant hardware and software upgrades.  \n      Key features\
+      \ include more advanced A20 Bionic chip, improved camera system, and longer\
+      \ battery life.  \n      The devices are expected to drive strong global demand.\n\
+      \n  - result: |\n      Apple reported Q1 2026 earnings that exceeded Wall Street\
+      \ expectations.  \n      Strong iPhone sales and growth in its services segment\
+      \ were major contributors.  \n      Analysts remain optimistic about Apple’s\
+      \ revenue outlook for the year.\n\n  - result: |\n      Apple announced the\
+      \ expansion of Apple Music to several Southeast Asian countries.  \n      Localized\
+      \ playlists and partnerships with regional artists are part of its strategy.\
+      \  \n      This move is expected to strengthen Apple’s global music streaming\
+      \ market share.\n\n  - result: |\n      Apple introduced new environmental initiatives\
+      \ for 2026, focusing on carbon neutrality and sustainable materials.  \n   \
+      \   The company plans to expand its recycling programs and invest in renewable\
+      \ energy projects.  \n      These efforts align with Apple’s long-term commitment\
+      \ to environmental responsibility.\n\n  - result: |\n      Apple opened pre-orders\
+      \ for its new MacBook Pro models.  \n      The laptops feature upgraded M4 chips,\
+      \ better displays, and longer battery life.  \n      Consumer demand appears\
+      \ strong ahead of the official release later this month."
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 'On January 14, 2026, Apple’s stock closed at $155.
+
+
+      Here’s a 3-sentence summary of Apple’s major news this week:
+
+
+      Apple unveiled the new iPhone 18 lineup featuring the powerful A20 Bionic chip,
+      enhanced cameras, and longer battery life, which is expected to boost global
+      demand.
+
+      The company reported Q1 2026 earnings that exceeded Wall Street expectations,
+      driven by strong iPhone sales and growth in its services business.
+
+      Apple also expanded Apple Music to Southeast Asia, introduced new environmental
+      initiatives for 2026, and opened pre-orders for the latest MacBook Pro, signaling
+      continued momentum across its ecosystem.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: When will Apple release its Q1 earnings this year? Once you've found
+      the date, please schedule a reminder for 9:00 AM and notify me with a voice
+      alert.
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"Check\
+      \ yesterday's closing price for Apple\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: news_agent\n\
+      \      refined_query: \"Find major Apple news from this week\"\n    - status:\
+      \ completed\n      name: news_agent\n      refined_query: \"Summarize this week's\
+      \ major Apple news in 3 sentences\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: search_agent\n \
+      \     refined_query: \"Apple Q1 earnings release date this year\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n\
+      \    - status: pending\n      name: calendar_agent\n      refined_query: \"\
+      Schedule a reminder and set a voice alert for Apple’s Q1 earnings release this\
+      \ year at 9:00 AM.\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Apple Q1 2026 earnings\
+      \ release date\"\ntool_call_result:\n  status: success\n  data:\n    dateIR:\
+      \ \"2026-04-29T09:00\"\n    references:\n      - \"https://investor.apple.com/earnings\"\
+      \n      - \"https://www.reuters.com/technology/apple-reports-q1-2026-earnings-2026-04-29/\""
+- workflow_id: workflow_4
+  step_id: 11
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"Schedule a reminder\
+      \ and set a voice alert for Apple’s Q1 earnings release this year at 9:00 AM.\"\
+      \n  reminderContent: \"Apple Q1 2026 earnings release date\"\n  reminderTime:\
+      \ \"2026-04-29T09:00\"\n  repeatRule: \"none\"\n  priority: \"normal\"\n  deliveryMethod:\
+      \ \"voice\"\ntool_call_result:\n  status: success\n  data:\n    reminderId:\
+      \ \"REM20260429-001\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: Apple’s Q1 2026 earnings announcement is scheduled for April 29! I’ve
+      set a reminder so that you don’t forget. You’ll receive a voice alert at 9:00
+      AM on April 29.

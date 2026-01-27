@@ -1,0 +1,120 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current date: 2025-07-14
+
+      - Current time: 2:45 PM
+
+      - Name: Sarah David
+
+      - Contact: (202)123-4567
+
+      - Current location: 50 Main Street, Nexus Building, Brooklyn, New York, NY 11201,
+      USA'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I need to send the contract by courier at 3 PM today!
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"Schedule\
+      \ a same-day courier for the contract at 3 PM today\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: Reservation not available because pickupTime is set within
+      30 minutes from the current time'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: You can only book a time at least 30 minutes from now. Please check the
+      time again.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: Hmm, then book it for 4 o’clock.
+- workflow_id: null
+  step_id: 7
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Pickup location, delivery address, recipient name, and recipient
+      contact number'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: To proceed with your reservation, please provide the pickup location,
+      delivery address, and recipient’s name and contact information.
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: Yeah, you can just come pick me up where I am now—I'm on the first basement
+      level. The items need to go to the 5th-floor conference room at the Brooklyn
+      Nexus Building. Look for Susan Park there and hand them to her. Susan Park,
+      (202)321-1234.
+- workflow_id: null
+  step_id: 10
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: bookDeliveryService\narguments:\n  refinedQuery: \"Schedule a\
+      \ quick delivery today at 4 PM from my location, Basement Level 1, to the 5th-floor\
+      \ conference room at Yongsan Amorepacific, deliver the contract to Susan Park\"\
+      \n  deliveryType: \"motorcycle_courier\"\n  pickupLocation: \"50 Main Street,\
+      \ Nexus Building, Brooklyn, New York, Basement Level 1\"\n  dropoffLocation:\
+      \ \"Brooklyn Nexus Building, 5th-Floor Conference Room\"\n  pickupTime: \"2025-07-14T16:00\"\
+      \n  senderInfo:\n    name: \"Sarah David\"\n    phone: \"(202)123-4567\"\n \
+      \ receiverInfo:\n    name: \"Susan Park\"\n    phone: \"(202)321-1234\"\n  itemDescription:\
+      \ \"Contract\"\n  reservation: true\ntool_call_result:\n  data:\n    reservationId:\
+      \ \"QK202507141600001\"\n    pickupLocation: \"50 Main Street, Nexus Building,\
+      \ Brooklyn, New York, Basement Level 1\"\n    dropoffLocation: \"Brooklyn Nexus\
+      \ Building, 5th-Floor Conference Room\"\n    pickupTime: \"2025-07-14T16:00\"\
+      \n    deliveryType: \"quick\"\n    senderInfo:\n      name: \"Sarah David\"\n\
+      \      phone: \"(202)123-4567\"\n    receiverInfo:\n      name: \"Susan Park\"\
+      \n      phone: \"(202)321-1234\"\n    itemDescription: \"Contract\"\n    status:\
+      \ \"Reservation Confirmed\"\n  source: \"Quick Delivery Service API\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your same-day courier reservation has been confirmed.
+
+
+      At 4:00 PM on July 14, 2025, the contract will be picked up from Basement Level
+      1, 50 Main Street, Nexus Building, Brooklyn, New York and delivered to the 5th-Floor
+      Conference Room, Brooklyn Nexus Building, for Susan Park.
+
+
+      Sender: Sarah David · (202)123-4567
+
+      Receiver: Susan Park · (202)321-1234
+
+
+      Your reservation number is QK202507141600001.'

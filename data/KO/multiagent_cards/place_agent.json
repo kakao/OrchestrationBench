@@ -1,0 +1,491 @@
+{
+  "agent_card": {
+    "name": "장소(place)",
+    "agent_id": "place_agent",
+    "description": "다양한 장소 및 맛집 추천, 장소 검색과 예약, 그리고 부동산 정보까지 생활에 필요한 모든 장소 관련 서비스를 제공합니다.",
+    "url": "http://localhost:10020/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "recommendRestaurants",
+        "name": "맛집 추천",
+        "description": "지역, 음식 종류, 예산, 분위기, 식단 제한 등 다양한 조건을 바탕으로 사용자에게 맞는 맛집을 추천합니다.",
+        "examples": [
+          "홍대에서 조용하게 식사할 수 있는 일식당 추천해줘",
+          "부산 해운대에 가성비 좋은 디저트 카페 어디 있어?",
+          "광교에서 단체 모임하기 좋은 고기집 알려줘",
+          "연남동에서 브런치 맛집 골라줄 수 있어?",
+          "채식 가능한 강남 파스타 레스토랑 추천해줘"
+        ]
+      },
+      {
+        "id": "searchPlaces",
+        "name": "장소 검색",
+        "description": "특정 조건(대상자, 시간, 특수 편의시설 등)에 맞춰 생활형·일상형 장소 정보를 제공합니다. 의료기관, 미용실, 키즈카페 등 다양한 장소를 카테고리, 위치, 동행인 조건, 특수 서비스 등으로 손쉽게 탐색합니다.",
+        "examples": [
+          "성수동에서 테라피 잘하는 피부과 알려줘",
+          "카카오T로 등록된 충전소가 근처에 있나?",
+          "이번 주 토요일 노년 할머니랑 갈 수 있는 한의원 찾아줘",
+          "어린이 놀이방이 있는 양재동 미용실 검색해줘",
+          "세 명이 갈만한 노원구 야외 키즈카페 있니?"
+        ]
+      },
+      {
+        "id": "reservePlaces",
+        "name": "장소 예약",
+        "description": "음식점, 병원, 미용실 등 원하는 장소의 예약을 돕습니다. 날짜, 시간, 인원, 요청사항 등 상세 조건으로 맞춤 예약이 가능하며 '맛집 추천' 또는 '장소 검색'을 통해 예약할 장소를 지정해야 합니다.",
+        "examples": [
+          "강릉 바다뷰 레스토랑 내일 저녁 7시에 5명 예약해줘",
+          "이번 금요일 12시에 서초동 치과 예약할 수 있을까?",
+          "마포동 고양이카페 오늘 오후 3시에 자리 잡아줘",
+          "압구정 동물병원 내일 오후 2시에 강아지 진료 예약 부탁해",
+          "다음 주 수요일 저녁 6시에 단체 회식장소 예약해줘"
+        ]
+      },
+      {
+        "id": "getPlaceReservationInfo",
+        "name": "장소 예약 조회",
+        "description": "예약자의 연락처를 기준으로 장소 예약 내역을 조회합니다.",
+        "examples": [
+          "내일 예약된 병원 일정 알려줘",
+          "홍길동 이름으로 예약된 카페가 있는지 확인해줘",
+          "이번 주 병원 예약 내역 전체 보고 싶어"
+        ]
+      },
+      {
+        "id": "cancelPlaceReservation",
+        "name": "장소 예약 취소",
+        "description": "기존 예약을 취소하고 선택적으로 사유를 입력할 수 있습니다. '장소 예약 조회'를 통해 취소할 예약을 선택해야 합니다.",
+        "examples": [
+          "내일 점심 예약된 쌀국수집 취소할래",
+          "이번 주 금요일 저녁 예약 취소해줘, 일정이 변경됐어",
+          "카페 플랜트 예약 취소하고 싶어"
+        ]
+      },
+      {
+        "id": "modifyPlaceReservation",
+        "name": "장소 예약 변경",
+        "description": "기존 예약 정보를 기반으로 날짜, 시간, 인원 수, 요청사항 등을 수정할 수 있습니다. '장소 예약 조회'를 통해 변경할 예약을 선택해야 합니다.",
+        "examples": [
+          "이번 주 토요일 미용실 예약을 다음 주 토요일로 바꿔줘",
+          "키즈카페 4명 예약했는데 2명으로 줄여줄 수 있을까?",
+          "어제 예약한 식당을 7시 예약인데 8시로 시간만 변경하고 싶어"
+        ]
+      },
+      {
+        "id": "getRealEstateInfo",
+        "name": "부동산 정보",
+        "description": "아파트, 오피스텔, 빌라, 단독주택 등 다양한 유형의 매매, 전세, 월세 등 부동산 정보를 면적, 위치, 가격, 단지명 등 조건별로 제공합니다.",
+        "examples": [
+          "동탄에 새로 지은 20평대 오피스텔 전세 얼마나 하나요?",
+          "학군이 좋은 판교역 주변 아파트 추천해줘",
+          "마포구 복층 오피스텔 월세 옵션이 궁금해",
+          "강동구에서 여성 1인 거주하기 좋은 빌라 구해줄 수 있을까?",
+          "서초구 래미안하이리버 최근 거래 시세 알려줘"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "recommendRestaurants",
+      "description": "사용자의 취향, 예산, 위치, 식단 조건, 분위기 등 다양한 요구사항을 반영하여 맞춤형 맛집을 추천하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 쿼리를 모두 통합한 정제된 맛집 검색 질의 (예: '압구정에서 분위기 좋은 이탈리안 레스토랑', '신촌 혼밥 가능한 한식당 추천해줘')"
+          },
+          "location": {
+            "type": "string",
+            "description": "추천 받고자 하는 지역 정보 (주소, 지명, 또는 좌표 등). 값이 없을 경우 기본값은 '서울'로 설정됨 (예: '부산 해운대', '제주도 서귀포')"
+          },
+          "cuisineType": {
+            "type": "string",
+            "description": "음식 종류 또는 테마 (예: '한식', '중식', '이탈리아 요리', '디저트 카페')"
+          },
+          "specificDishes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "특정 음식 이름 또는 메뉴 항목 (예: '마라탕', '랍스터 버터구이', '초밥', '함박스테이크')"
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "1인당 최소 식사 예산 (예: 12000)"
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "1인당 최대 식사 예산 (예: 35000)"
+          },
+          "dietaryPreferences": {
+            "type": "string",
+            "description": "비건, 채식, 글루텐프리, 할랄 등 식단 선호 또는 제한 조건 (예: '채식 가능', '알레르기 친화', '비건 옵션 있음')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "most_reviewed",
+              "highest_rated",
+              "nearest",
+              "newest",
+              "trending"
+            ],
+            "description": "추천 결과의 정렬 기준 ('highest_rated'가 기본값)"
+          },
+          "ambience": {
+            "type": "string",
+            "description": "원하는 분위기 및 테이블 형태 (예: '데이트용', '조용한', '단체 모임', '가족 친화적', '혼밥하기 좋음', '전망 좋은')"
+          },
+          "reservationTime": {
+            "type": "string",
+            "description": "방문 희망 시간 또는 예약 요청 시간 (예: '내일 오후 6시', '주말 저녁 8시')"
+          },
+          "source": {
+            "type": "string",
+            "description": "추천에 참고한 콘텐츠, 인플루언서, 매체 등 (예: '인스타그램', 'SNS 핫플', 'TV 맛집 프로그램', '블로거 리뷰')"
+          },
+          "tag": {
+            "type": "string",
+            "description": "특정 키워드나 사용자 요청에 기반한 태그 추가 (예: '가성비 맛집', '웨이팅 긴 곳', '노키즈존', '로컬 인기집')"
+          },
+          "event": {
+            "type": "string",
+            "description": "방문 목적 또는 특별한 이벤트 (예: '결혼기념일', '환갑잔치', '1주년')"
+          },
+          "partySize": {
+            "type": "string",
+            "description": "식사 인원 또는 규모 (예: '2명', '4명', '단체', '대가족')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "searchPlaces",
+      "description": "특정 조건(대상자, 시간, 특수 편의시설 등)에 맞춰 생활형·일상형 장소 정보를 제공합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 쿼리를 종합하여, 명확하고 목적에 맞게 정제한 장소 검색용 문장 (예: '부산에서 평일 오후에 영유아가 놀기 좋은 실내 놀이터 찾아줘', '인천 근처 3인 가족이 갈만한 미용실 추천')."
+          },
+          "placeCategory": {
+            "type": "string",
+            "description": "검색할 장소의 구체적인 유형 또는 카테고리. refinedQuery에서 자동 추출하며, 예시: '안과', '소아과', '미용실', '충전소', '키즈카페', '놀이공원' 등."
+          },
+          "placeName": {
+            "type": "string",
+            "description": "구체적인 장소 이름 (ex. 맥도날드, 에버랜드 등)"
+          },
+          "location": {
+            "type": "string",
+            "description": "사용자의 현재 위치 또는 관심 있는 지역 (예: '서울 강남구', '제주공항 근처')."
+          },
+          "targetPerson": {
+            "type": "string",
+            "description": "동행인 또는 방문 대상자의 조건, 특징, 인원 (예: '6세 남아', '4명 가족', '임산부 동반', '고령자 포함'). 아이 동반 등 특수조건일 경우 관련 편의시설이 specialCondition에 반영됨."
+          },
+          "availableDate": {
+            "type": "string",
+            "description": "방문 가능한 날짜 또는 날짜 구간 (예: '2024-07-01~2024-07-07', '이번 주말')."
+          },
+          "availableTime": {
+            "type": "string",
+            "description": "방문 가능한 시간 또는 시간대 (예: '14:00~18:00', '오전 10시 이후')."
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "distance",
+              "popularity",
+              "highest_rated",
+              "recently_searched"
+            ],
+            "description": "장소 결과 정렬 방식. 기본값은 거리순이며, 인기 장소라면 popularity으로 적용"
+          },
+          "specialCondition": {
+            "type": "string",
+            "description": "특수 조건 또는 서비스 속성. 대상자(아이, 고령자 등)에 따른 유아용 의자, 놀이방 등 편의시설 포함. 기타 예: '예약 가능', '주차 가능', '장애인 접근성', '카카오맵에 등록됨' 등."
+          },
+          "source": {
+            "type": "string",
+            "description": "장소가 언급된 콘텐츠의 출처(예: '네이버 블로그 리뷰', 'TV 프로그램 추천', 'SNS 언급')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "reservePlaces",
+      "description": "여러 장소(음식점, 병원, 카페 등)의 예약을 위해 필요한 정보들을 입력받아 사용자의 예약 요청을 처리하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 예약 요청을 자연어로 정제한 쿼리 (예: '토요일 저녁에 홍대 근처 이탈리안 레스토랑 2명 예약해줘')"
+          },
+          "placeId": {
+            "type": "string",
+            "description": "예약 장소의 고유 식별자(사전에 선택된 경우에만 사용)"
+          },
+          "placeName": {
+            "type": "string",
+            "description": "예약을 원하는 장소명(음식점, 병원, 매장 등, 예: '카페 플랜트')"
+          },
+          "placeCategory": {
+            "type": "string",
+            "description": "장소 유형 또는 세부 카테고리(예: '레스토랑', '치과', '스터디룸'). 병원 카테고리의 경우 진료과목 등 추가 정보가 필수일 수 있음"
+          },
+          "reservationDate": {
+            "type": "string",
+            "description": "예약 원하는 날짜(형식: 'YYYY-MM-DD'). 오늘부터 최대 60일까지 선택 가능",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "reservationTime": {
+            "type": "string",
+            "description": "예약 원하는 시간(형식: 'HH:mm'). 00분 또는 30분 단위로 입력. 장소 운영시간 내에서만 예약 가능",
+            "pattern": "^([01]\\d|2[0-3]):(00|30)$"
+          },
+          "partySize": {
+            "type": "integer",
+            "description": "예약 인원 수 (예: 4)"
+          },
+          "userId": {
+            "type": "string",
+            "description": "예약 요청자(사용자)의 고유 ID"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예약자 연락처(필수 입력, 휴대폰 번호 형식: 010-1234-5678)",
+            "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "요청 사항이나 전달하고 싶은 메모(예: '창가 자리 요청', '아기 침대 필요')"
+          },
+          "option": {
+            "type": "string",
+            "description": "부가 예약 옵션(코스, 서비스 선택 등, 예: '디너 세트 요청', '비건 메뉴 포함 요청, '1인 코스 선택', '레이저 시술 포함', '디자이너 지정')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "placeName",
+          "reservationDate",
+          "reservationTime",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPlaceReservationInfo",
+      "description": "예약자 연락처를 기준으로 특정 날짜 또는 전체 기간의 예약 내역을 조회하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어로 표현된 조회 요청의 정제 쿼리 (예: '오늘 예약된 식당 알려줘')"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예약자 연락처 (형식: 010-1234-5678)",
+            "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+          },
+          "date": {
+            "type": "string",
+            "description": "조회하고 싶은 날짜 (선택값, 형식: YYYY-MM-DD)"
+          },
+          "placeName": {
+            "type": "string",
+            "description": "장소명 필터링 (선택값)"
+          },
+          "placeCategory": {
+            "type": "string",
+            "description": "검색할 장소의 구체적인 유형 또는 카테고리. 예시: '안과', '소아과', '미용실', '충전소', '키즈카페', '놀이공원' 등."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelPlaceReservation",
+      "description": "장소 예약 조회를 통해 기존 예약을 취소하고, 선택적으로 사유와 연락처를 함께 입력하여 취소 처리를 요청하는 도구입니다. 단, 예약일 당일에는 취소 불가하며, '장소 예약 조회'를 통해 취소할 예약을 선택해야 합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "취소 요청을 반영한 자연어 정제 문장 (예: '수요일 저녁 예약 취소해줘')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "예약Id"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "취소 사유 (선택값)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyPlaceReservation",
+      "description": "기존 예약 정보를 기반으로 날짜, 시간, 인원 수, 요청사항 등을 수정하는 도구입니다.  '장소 예약 조회'를 통해 변경할 예약을 선택해야 하며, 예약일 당일에는 변경 불가합니다. 최소 하나 이상의 변경 내용(newDate, newTime, newPartySize, specialRequest)이 포함되어야 합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어 예약 변경 요청을 정제한 쿼리 (예: '다음 주 화요일 저녁 7시로 시간만 바꿔줘')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "예약 식별자"
+          },
+          "placeName": {
+            "type": "string",
+            "description": "예약했던 장소명"
+          },
+          "newDate": {
+            "type": "string",
+            "description": "변경할 날짜 (예: '2025-08-15')"
+          },
+          "newTime": {
+            "type": "string",
+            "description": "변경할 시간 (예: '19:00')"
+          },
+          "newPartySize": {
+            "type": "integer",
+            "description": "변경할 인원 수 (선택)"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "변경된 요청사항 또는 메모 (선택)"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예약자 연락처 (필수)",
+            "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getRealEstateInfo",
+      "description": "사용자의 요청에 따라 특정 부동산 유형, 거래 방식, 위치, 가격, 면적, 입주 가능 시점, 건물명 등 다양한 조건으로 부동산 시세, 매물 정보, 인근 환경 등을 검색하고 제공하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 함께 사용자의 자연어 질문을 기준으로 한 구체화된 검색 쿼리 (예: '홍대 근처 20평대 빌라 월세 매물 알려줘', '판교역 가까운 3억 이하 오피스텔 매매 시세는?')"
+          },
+          "propertyType": {
+            "type": "string",
+            "enum": [
+              "아파트",
+              "오피스텔",
+              "빌라",
+              "단독주택",
+              "상가",
+              "토지"
+            ],
+            "description": "부동산 유형 (예: '아파트', '오피스텔', '상가' 등)"
+          },
+          "transactionType": {
+            "type": "string",
+            "enum": [
+              "매매",
+              "전세",
+              "월세",
+              "분양",
+              "공공임대"
+            ],
+            "description": "거래 방식 (예: '매매', '전세', '월세', '분양', '공공임대')"
+          },
+          "location": {
+            "type": "string",
+            "description": "관심 있는 지역 또는 위치 (예: '신사동', '광화문역', '부산 해운대')"
+          },
+          "area": {
+            "type": "string",
+            "description": "면적 정보 (평 또는 ㎡ 단위로 구체적으로 작성, 예: '전용 25평', '60㎡ 이상')"
+          },
+          "minPrice": {
+            "type": "number",
+            "minimum": 10000000,
+            "description": "최소 가격 (1000만원 단위 이상만 입력 가능, 예: 200000000)"
+          },
+          "maxPrice": {
+            "type": "number",
+            "maximum": 10000000000,
+            "description": "최대 가격 (1000만원 단위 이상만 입력 가능, 예: 800000000)"
+          },
+          "movingDate": {
+            "type": "string",
+            "description": "입주 가능 시점 또는 원하는 이사 시기 (예: '2024년 가을', '즉시', '내년 4월 이후')"
+          },
+          "buildingName": {
+            "type": "string",
+            "description": "특정 단지명 또는 건물명 (예: '힐스테이트 판교역', '래미안 루센티아')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "latest",
+              "lowest_price",
+              "highest_price",
+              "newest_building",
+              "most_viewed"
+            ],
+            "description": "정렬 기준 (예: 'lowest_price', 'latest', 'most_viewed')"
+          },
+          "source": {
+            "type": "string",
+            "description": "데이터 출처 또는 참고 콘텐츠 (예: '네이버부동산', '직방', '호갱노노', '카카오맵', '유튜브')"
+          },
+          "options": {
+            "type": "object",
+            "description": "부동산의 세부 조건들을 통합한 필드로, 방향, 층수, 방/욕실 수, 엘리베이터 유무, 융자 가능 여부, 준공 연도 등을 포함합니다."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

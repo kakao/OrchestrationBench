@@ -1,0 +1,151 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: I need to ship out a secondhand shirt I sold. Can you help me book a
+      pickup with FedEx right now? I’m going to pack it up and leave it out immediately.
+      Also, can you recommend some good apps for buying secondhand clothes?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"Schedule\
+      \ a shipment with FedEx to send the secondhand shirt I sold now\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: search_agent\n      refined_query: \"Recommend a good app where\
+      \ I can buy secondhand clothes\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: Pickup location, pickup time, destination, sender’s name and phone number,
+      and recipient’s name and phone number are required.
+- workflow_id: workflow_2
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Recommend good apps\
+      \ for buying secondhand clothes\"\ntool_call_result:\n  info:\n    query: \"\
+      Recommend good apps for buying secondhand clothes\"\n    recommendedApps:\n\
+      \      - name: \"Recle\"\n        description: \"An app that collects and sells\
+      \ clothes you’ve let go. Lets you declutter without handling shipping. Popular\
+      \ among Gen Z and eco-conscious users.\"  \n      - name: \"Charan\"\n     \
+      \   description: \"One of the most affordable secondhand fashion apps. Provides\
+      \ a one-stop service from clothing pickup to selling or donating.\"  \n    \
+      \  - name: \"Lightning Market\"\n        description: \"Offers a strong secure\
+      \ transaction system. Includes brand item search and premium authentication\
+      \ services.\"  \n      - name: \"Neighborhood Market\"\n        description:\
+      \ \"A local community-based secondhand marketplace. Great for finding rare items\
+      \ or unique local treasures.\"  \n      - name: \"Fruits Family\"\n        description:\
+      \ \"Specializes in vintage and streetwear brands. Strong in brand-based curation\
+      \ and community style-sharing features.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: To schedule a package pickup, the sender’s pickup location, name, and
+      phone number as well as the recipient’s address, name, and phone number are
+      required.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 'Sender:
+
+      12345 Maplewood Ave, Apt 5B, Los Angeles, CA 90012 / Andrew Collins / (323)
+      555-0147
+
+
+      Recipient:
+
+      236 Berry St, Apt 4C, Brooklyn, NY 11249 / Emily Johnson / (718) 555-0199'
+- workflow_id: workflow_1
+  step_id: 7
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: bookDeliveryService\narguments:\n  refinedQuery: \"Book a courier\
+      \ pickup with CJ Logistics to send the secondhand shirt now\"\n  deliveryType:\
+      \ \"parcel\"\n  pickupLocation: \"12345 Maplewood Ave, Apt 5B, Los Angeles,\
+      \ CA 90012\"\n  pickupTime: \"now\"\n  dropoffLocation: \"236 Berry St, Apt\
+      \ 4C, Brooklyn, NY 11249\"\n  senderInfo:\n    name: \"Andrew Collins\"\n  \
+      \  phone: \"(323) 555-0147\"\n  receiverInfo:\n    name: \"Emily Johnson\"\n\
+      \    phone: \"(718) 555-0199\"\n  itemDescription: \"Clothing\"\n  source: \"\
+      FedEx\"\ntool_call_result:\n  status: \"success\"\n  data:\n    refinedQuery:\
+      \ \"Book a courier pickup with CJ Logistics to send the secondhand shirt now\"\
+      \n    deliveryType: \"parcel\"\n    pickupLocation: \"12345 Maplewood Ave, Apt\
+      \ 5B, Los Angeles, CA 90012\"\n    pickupTime: \"now\"\n    dropoffLocation:\
+      \ \"236 Berry St, Apt 4C, Brooklyn, NY 11249\"\n    senderInfo:\n      name:\
+      \ \"Andrew Collins\"\n      phone: \"(323) 555-0147\"\n    receiverInfo:\n \
+      \     name: \"Emily Johnson\"\n      phone: \"(718) 555-0199\"\n    itemDescription:\
+      \ \"Clothing\"\n    carrier: \"FedEx\"\n    serviceLevel: \"Express Saver (3\
+      \ business days)\"\n    package:\n      weight: \"1 lb\"\n      dimensions:\
+      \ \"12 x 10 x 2 in\"\n    priceEstimate: \"$34.50\"\n    pickupConfirmation:\
+      \ \"PU-2025-08-29-0142\"\n    trackingNumber: \"788123456789\"\n    labelLink:\
+      \ \"https://example.org/fedex/labels/PU-2025-08-29-0142.pdf\"\n    estimatedDelivery:\
+      \ \"3 business days from pickup\"\n  note: \"Carrier set to FedEx per 'source'\
+      \ parameter; refined query mentioned CJ Logistics.\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'Carrier / Service: FedEx — Express Saver (≈ 3 business days)
+
+
+      - Pickup Time & Location: Now — 12345 Maplewood Ave, Apt 5B, Los Angeles, CA
+      90012
+
+      - Drop-off Location: 236 Berry St, Apt 4C, Brooklyn, NY 11249
+
+      - Sender: Andrew Collins • (323) 555-0147
+
+      - Recipient: Emily Johnson • (718) 555-0199
+
+      - Item: Clothing
+
+      - Package: 1 lb • 12 × 10 × 2 in
+
+      - Price Estimate: $34.50
+
+      - Pickup Confirmation: PU-2025-08-29-0142
+
+      - Tracking Number: 788123456789
+
+      - Estimated Delivery: ~3 business days from pickup.
+
+
+
+      If you’re considering buying secondhand clothing, here are some recommended
+      apps:
+
+
+      1. Recle — Collects and sells items you’ve let go; hassle-free decluttering
+      with no shipping to handle. Popular with Gen Z and eco-minded users.
+
+
+      2. Charan — Budget-friendly marketplace offering pickup, selling, and donation
+      in one flow.
+
+
+      3. Lightning Market — Emphasizes secure transactions, with brand search and
+      premium authentication.
+
+
+      4. Neighborhood Market — Community-based local trading; great for rare finds
+      and neighborhood treasures.
+
+
+      5. Fruits Family — Focused on vintage and streetwear labels with curated feeds
+      and style sharing.'

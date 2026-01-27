@@ -1,0 +1,163 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2026-07-16
+
+      Time: 09:14'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Check today's schedule for me
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"View all\
+      \ events scheduled for today\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"View all events scheduled\
+      \ for today\"\n  startDate: \"2026-07-16\"\n  endDate: \"2026-07-16\"\ntool_call_result:\n\
+      \  data:\n    - scheduleId: \"SCHD20260716_001\"\n      title: \"Weekly Work\
+      \ Report\"\n      startDateTime: \"2026-07-16T14:00:00\"\n      endDateTime:\
+      \ \"2026-07-16T15:00:00\"\n      location: \"Head Office, 3rd Floor Conference\
+      \ Room\"\n      calendarType: \"work\"\n    - scheduleId: \"SCHD20260716_002\"\
+      \n      title: \"Dinner with Jason Dawson\"\n      startDateTime: \"2026-07-16T19:00:00\"\
+      \n      endDateTime: \"2026-07-16T21:00:00\"\n      location: \"Times Sq–42\
+      \ St\"\n      calendarType: \"personal\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 'Yes, you have two appointments today.
+
+
+      * 2:00 PM: Weekly work report (Head Office, 3rd Floor Conference Room)
+
+      * 7:00 PM: Dinner with Jason Dawson (Times Sq–42 St)'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: Can you recommend a good place to eat near Times Sq–42 St for dinner
+      and also make a reservation right away?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: calendar_agent\n      refined_query: \"\
+      View all events scheduled for today\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: place_agent\n  \
+      \    refined_query: \"Recommend good restaurants near Times Sq–42 St for dinner\
+      \ at 7 PM with Jason Dawson\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Make a reservation at a good restaurant near Times Sq–42\
+      \ St for dinner at 7 PM with Jason Dawson\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Dinner restaurant\
+      \ for 2 near Times Sq–42 St at 7 PM\"\n  location: \"Times Sq–42 St\"\n  partySize:\
+      \ \"2 people\"\n  reservationTime: \"7 PM\"\n  sortBy: \"highest_rated\"\ntool_call_result:\n\
+      \  data:\n  - restaurantId: \"REST_TS_001\"\n    name: \"Becco\"\n    cuisineType:\
+      \ \"Italian\"\n    location: \"355 W 46th St, New York, NY\"\n    rating: 4.8\n\
+      \    description: \"A renowned Italian restaurant by Lidia Bastianich, offering\
+      \ unlimited pasta and extensive wine list. Perfect for dinner near Broadway.\"\
+      \n\n  - restaurantId: \"REST_TS_002\"\n    name: \"Carmine’s Italian Restaurant\
+      \ - Times Square\"\n    cuisineType: \"Italian / Family Style\"\n    location:\
+      \ \"200 W 44th St, New York, NY\"\n    rating: 4.6\n    description: \"A New\
+      \ York classic for family-style Italian dining, known for huge portions and\
+      \ lively atmosphere. Great for sharing before or after a show.\"\n\n  - restaurantId:\
+      \ \"REST_TS_003\"\n    name: \"STK Steakhouse Midtown\"\n    cuisineType: \"\
+      Steakhouse / American\"\n    location: \"1114 6th Ave, New York, NY\"\n    rating:\
+      \ 4.7\n    description: \"A modern upscale steakhouse serving prime cuts and\
+      \ craft cocktails in a chic, vibrant setting.\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Select location, contact information'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'Sure, I can recommend three great restaurants with a nice atmosphere
+      near Times Sq–42 St.
+
+
+      1. Becco: A renowned Italian restaurant by Lidia Bastianich, offering unlimited
+      pasta and extensive wine list—perfect for dinner near Broadway.
+
+      2. Carmine’s Italian Restaurant - Times Square: A New York classic for family-style
+      Italian dining, known for huge portions and lively atmosphere—great for sharing
+      before or after a show.
+
+      3. STK Steakhouse Midtown: A modern upscale steakhouse serving prime cuts and
+      craft cocktails in a chic, vibrant setting.
+
+
+      Which one would you like me to help you book? Please share your contact information
+      as well.'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: Make it number 1, and the phone number is (202)555-0173.
+- workflow_id: null
+  step_id: 12
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"Dinner reservation\
+      \ for 2 people at 'Becco' near Times Sq–42 St. on July 16, 2026 at 7:00 PM\"\
+      \n  placeName: \"Becco\"\n  placeCategory: \"restaurant\"\n  reservationDate:\
+      \ \"2026-07-16\"\n  reservationTime: \"19:00\"\n  partySize: 2\n  contactInfo:\
+      \ \"(202)555-0173\"\ntool_call_result:\n  data:\n    reservationId: \"RES_GN_12345\"\
+      \n    status: \"confirmed\"\n    placeName: \"Becco\"\n    reservationDate:\
+      \ \"2026-07-16\"\n    reservationTime: \"19:00\"\n    partySize: 2\n    message:\
+      \ \"Your reservation has been completed successfully.\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your reservation for two at Becco is confirmed for 7:00 PM this evening.
+
+
+      Please review your reservation details below:
+
+
+      *   Restaurant: Becco
+
+      *   Date & Time: Today, 7:00 PM
+
+      *   Guests: 2
+
+      *   Reservation Number: RES_GN_12345
+
+
+      Enjoy your dinner!'

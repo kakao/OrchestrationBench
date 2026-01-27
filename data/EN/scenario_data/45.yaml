@@ -1,0 +1,285 @@
+metadata:
+  total_steps: 16
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-07-18
+
+      - Time: 08:42
+
+      - Name: Sarah Collins
+
+      - Contact: (202)888-4444
+
+      - userID: user_abc12345'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: After watching the movie Inception, I got curious about black holes.
+      Can you tell me about them?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"black hole\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Black hole\"\ntool_call_result:\n\
+      \  data:\n    query: \"Black hole\"\n    summary: \"A black hole is an astronomical\
+      \ object with gravity so strong that not even light can escape. It was predicted\
+      \ by general relativity and it can form from the collapse of massive stars or\
+      \ exist as supermassive black holes at the centers of galaxies. It has a boundary\
+      \ called the event horizon, and its internal structure is still not fully understood.\"\
+      \n    keyConcepts:\n      - Gravity\n      - Event horizon\n      - General\
+      \ relativity\n      - Stellar collapse\n      - Supermassive black hole\n  \
+      \  relatedTopics:\n      - Neutron star\n      - Quasar\n      - Gravitational\
+      \ waves\n    status: \"Lookup complete\"\n  source: \"Astronomy database\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "So you watched the movie *Inception* and got curious about black holes!\n\
+      \nA black hole is a celestial object with gravity so strong that not even light\
+      \ can escape.  \nIt was predicted by the theory of general relativity, and it\
+      \ can form when stars collapse or exist as supermassive black holes at the centers\
+      \ of galaxies.\n\nA black hole has a boundary called the \"event horizon,\"\
+      \  \nand its internal structure is still not fully understood.\n\nYou might\
+      \ also find these related topics interesting:  \n- Neutron stars  \n- Quasars\
+      \  \n- Gravitational waves\n\nFeel free to ask anytime if you have more questions!"
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: Inception just got re-released—if there’s a theater showing it right
+      now, I want to go see it! Also, can you check if there are any space-themed
+      interior design products? I’d love to buy some.
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: search_agent\n      refined_query: \"Black\
+      \ hole\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Find theaters currently showing the re-release of Inception\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: shopping_agent\n      refined_query: \"Recommend space-themed interior\
+      \ decor products\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_2\"\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"If there are theaters currently showing the re-release\
+      \ of Inception, book tickets for Inception right now\"\n\nworkflow_5:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"Purchase space-themed\
+      \ interior decor products\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"Find theaters currently\
+      \ showing the re-release of Inception\"\n  movieTitle: \"Inception\"\n  isReleased:\
+      \ true\n  sortBy: \"releaseDate\"\n  screeningDate: \"2025-07-18\"\ntool_call_result:\n\
+      \  data:\n    query: \"Check theaters currently showing the re-release of Inception\"\
+      \n    movieTitle: \"Inception\"\n    isReleased: true\n    sortBy: \"releaseDate\"\
+      \n    screeningDate: \"2025-07-18\"\n    theaters:\n      - name: \"AMC Empire\
+      \ 25\"\n        address: \"234 W 42nd St, New York, NY\"\n        showtimes:\n\
+      \          - \"2:00 PM\"\n          - \"5:30 PM\"\n          - \"8:45 PM\"\n\
+      \        screenType: \"IMAX\"\n      - name: \"Regal LA Live\"\n        address:\
+      \ \"1000 W Olympic Blvd, Los Angeles, CA\"\n        showtimes:\n          -\
+      \ \"1:15 PM\"\n          - \"4:40 PM\"\n          - \"7:55 PM\"\n        screenType:\
+      \ \"4DX\"\n      - name: \"Cinemark Century San Francisco Centre\"\n       \
+      \ address: \"845 Market St, San Francisco, CA\"\n        showtimes:\n      \
+      \    - \"3:00 PM\"\n          - \"6:30 PM\"\n          - \"9:00 PM\"\n     \
+      \   screenType: \"Standard\"\n    status: \"Lookup complete\"\n  source: \"\
+      Movie theater showtime API\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Space-themed interior\
+      \ design product recommendations\"\n  productCategory: \"Interior decor\"\n\
+      \  sortBy: \"latest\"\ntool_call_result:\n  data:\n    query: \"Space-themed\
+      \ interior design products\"\n    productCategory: \"Interior decor\"\n    sortBy:\
+      \ \"latest\"\n    products:\n      - productId: \"prod_001\"\n        name:\
+      \ \"Milky Way LED Light\"\n        description: \"A soft LED light evocative\
+      \ of the cosmos, perfect for creating an atmospheric vibe in your room.\"\n\
+      \        price: 34.99\n        currency: \"USD\"\n      - productId: \"prod_002\"\
+      \n        name: \"Planet-Shaped Cushion Set\"\n        description: \"A set\
+      \ of 5 cushions in various planet shapes to bring a cosmic touch to your space.\"\
+      \n        price: 24.99\n        currency: \"USD\"\n      - productId: \"prod_003\"\
+      \n        name: \"Space-Themed Wallpaper\"\n        description: \"Wallpaper\
+      \ with stars and planet patterns that transforms your room into a cosmic space.\"\
+      \n        price: 59.99\n        currency: \"USD\"\n    status: \"Lookup complete\"\
+      \n  source: \"Interior Shopping Mall API\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Movie theater name, movie start time, number of viewers, and
+      breakdown of adult vs. child tickets'
+- workflow_id: workflow_5
+  step_id: 11
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Product name to order and shipping address'
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '[Inception Re-release Theater Information]
+
+
+      Inception has been re-released and it is currently showing at the following
+      theaters:
+
+
+      1. AMC Empire 25 (IMAX)
+
+      - Address: 234 W 42nd St, New York, NY
+
+      - Showtimes: 2:00 PM, 5:30 PM, 8:45 PM
+
+
+      2. Regal LA Live (4DX)
+
+      - Address: 1000 W Olympic Blvd, Los Angeles, CA
+
+      - Showtimes: 1:15 PM, 4:40 PM, 7:55 PM
+
+
+      3. Cinemark Century San Francisco Centre (Standard)
+
+      - Address: 845 Market St, San Francisco, CA
+
+      - Showtimes: 3:00 PM, 6:30 PM, 9:00 PM
+
+
+      Please let me know your preferred theater and showtime.
+
+      I’ll also need the number of tickets and whether they’re for adults or children
+      for booking.
+
+
+      ----------
+
+
+      [Interior Product Recommendations]
+
+
+      Here are the latest space-themed interior products:
+
+
+      1. Milky Way LED Light
+
+      - Price: $34.99
+
+      - Description: A soft LED light evocative of the cosmos, perfect for creating
+      an atmospheric vibe in your room.
+
+
+      2. Planet-Shaped Cushion Set
+
+      - Price: $24.99
+
+      - Description: A set of 5 cushions in various planet shapes to bring a cosmic
+      touch to your space.
+
+
+      3. Space-Themed Wallpaper
+
+      - Price: $59.99
+
+      - Description: Wallpaper with stars and planet patterns that transforms your
+      room into a cosmic space.
+
+
+      If you’d like to order any of these, please let me know the product name and
+      your shipping address.
+
+      Once I have all the details, I can help you with both the booking and the purchase
+      right away!'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: 'Book it at Regal LA Live for the 4:40 PM show. One adult ticket. And
+      I’ll buy one LED light. Ship to: 1234 Main St, Apt 1305, Building 101, Los Angeles,
+      CA 90015.'
+- workflow_id: workflow_4
+  step_id: 14
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookMovieTicket\narguments:\n  refinedQuery: \"Book Inception\
+      \ at Regal LA Live today at 4:40 PM\"\n  movieTitle: \"Inception\"\n  theaterName:\
+      \ \"Regal LA Live\"\n  showDate: \"2025-07-18\"\n  showTime: \"16:40\"\n  audienceCount:\
+      \ 1\n  audienceTypes: \"adult\"\n  userInfo:\n    name: \"Sarah Collins\"\n\
+      \    contactNumber: \"(202)888-4444\"\ntool_call_result:\n  data:\n    reservationId:\
+      \ \"MOV202507181640001\"\n    movieTitle: \"Inception\"\n    theaterName: \"\
+      Regal LA Live (4DX)\"\n    showDate: \"2025-07-18\"\n    showTime: \"4:40 PM\"\
+      \n    seatNumbers:\n      - \"D10\"\n    audienceCount: 1\n    audienceTypes:\
+      \ \"adult\"\n    userInfo:\n      name: \"Sarah Collins\"\n      contactNumber:\
+      \ \"(202)888-4444\"\n    status: \"Reservation Confirmed\"\n    message: \"\
+      Your ticket for Inception at Regal LA Live on July 18 at 4:40 PM has been confirmed.\
+      \ 1 adult seat reserved: D10.\"\n  source: \"Movie Ticketing System\""
+- workflow_id: workflow_5
+  step_id: 15
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"Purchase Milky Way\
+      \ LED Light\"\n  userId: \"user_abc12345\"\n  productItems:\n    - productId:\
+      \ \"prod_001\"\n      productName: \"Milky Way LED Light\"\n      quantity:\
+      \ 1\n      price: 34.99\n  shippingAddress: \n    recipient: \"Sarah Collins\"\
+      \n    address: \"1234 Main St, Apt 1305, Building 101, Los Angeles, CA 90015\"\
+      \n    phone: \"(202)888-4444\"\ntool_call_result:\n  data:\n    orderId: \"\
+      ORD202507121330001\"\n    userId: \"user_abc12345\"\n    productItems:\n   \
+      \   - productId: \"prod_001\"\n        productName: \"Milky Way LED Light\"\n\
+      \        quantity: 1\n        price: 34.99\n    shippingAddress:\n      recipient:\
+      \ \"Sarah Collins\"\n      address: \"1234 Main St, Apt 1305, Building 101,\
+      \ Los Angeles, CA 90015\"\n      phone: \"(202)888-4444\"\n    orderStatus:\
+      \ \"Order Completed\"\n    message: \"Your order for 1 Milky Way LED Light has\
+      \ been placed successfully.\"\n  source: \"Online Shopping Order System\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your reservation for the movie Inception at Regal LA Live (4DX) has
+      been confirmed for July 18 at 4:40 PM, seat D10 (1 adult).
+
+      (Reservation ID: MOV202507181640001)
+
+
+      ----------
+
+
+      Also, your order for 1 Milky Way LED Light has been successfully placed and
+      will be shipped to:
+
+      1234 Main St, Apt 1305, Building 101, Los Angeles, CA 90015.
+
+      (Order ID: ORD202507121330001)'

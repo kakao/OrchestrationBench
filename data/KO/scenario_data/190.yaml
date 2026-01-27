@@ -1,0 +1,162 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-07-17'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 아 9월에 미국가는 비행기표 취소해줘 그리고 기분이 우울하니까 강남에 위스키바 100만원 이상인곳 추천해봐
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"9월에 미국가는\
+      \ 비행기표 조회\"\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"9월에 미국가는 비행기표 취소\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"우울할 때 갈 강남에 위스키바 100만원 이상인곳 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 연락처'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"우울할 때 갈 강남에\
+      \ 위스키바 100만원 이상인곳 추천\"\n  location: \"강남\"\n  cuisineType: \"위스키 바\"\n  minPrice:\
+      \ 1000000\n  sortBy: \"highest_rated\"\ntool_call_result:\n  status: success\n\
+      \  data:\n    search_summary:\n      query: \"강남 위스키 바 (100만원 이상, 최고 평점순)\"\n\
+      \      notes: \"100만원 이상 지출이 가능한 '희귀 보틀(Old & Rare)' 리스트를 보유한 업소 위주로 검색했습니다.\"\
+      \n      returned_count: 2\n    restaurants:\n      - place_id: \"BAR20250722A\"\
+      \n        name: \"르 챔버 (Le Chamber)\"\n        category: \"위스키 바\"\n       \
+      \ address: \"서울특별시 강남구 청담동 83-4\"\n        rating: \"4.9 / 5.0\"\n        price_range:\
+      \ \"칵테일 3~5만원대, 희귀 위스키 바틀 주문 시 100만원 이상\"\n        vibe: \"스피크이지(Speakeasy)\
+      \ 컨셉의 비밀스러운 공간, 앤틱한 인테리어, 프라이빗한 분위기\"\n        recommendation_reason: \"국내 최고의\
+      \ 바로 꾸준히 선정되는 곳입니다. '글렌피딕 40년' 등 수백만원을 호가하는 올드 보틀 리스트를 보유하고 있어, 특별한 경험과 함께 조용히\
+      \ 위스키에 집중하고 싶을 때 최적의 장소입니다.\"\n        contact: \"02-6337-2014\"\n      - place_id:\
+      \ \"BAR20250722B\"\n        name: \"앨리스 청담 (Alice Cheongdam)\"\n        category:\
+      \ \"위스키 바\"\n        address: \"서울특별시 강남구 청담동 84-2\"\n        rating: \"4.8\
+      \ / 5.0\"\n        price_range: \"칵테일 3~6만원대, 희귀 위스키 바틀 주문 시 100만원 이상\"\n  \
+      \      vibe: \"이상한 나라의 앨리스를 모티브로 한 신비롭고 몽환적인 인테리어, 아늑한 분위기\"\n        recommendation_reason:\
+      \ \"독특한 컨셉과 창의적인 시그니처 칵테일로 유명하지만, '맥캘란 M 디캔터'와 같은 희귀 한정판 위스키 라인업 또한 매우 충실합니다.\
+      \ 현실을 잠시 잊고 싶은 기분일 때 추천합니다.\"\n        contact: \"02-511-8422\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 항공권 예매 조회를 위해 예약자분의 전화번호가 필요합니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 010-5678-1234
+- workflow_id: workflow_1
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getFlightReservation\narguments:\n  refinedQuery: \"9월에 미국가는 비행기표\
+      \ 예약 조회\"\n  contactNumber: \"010-5678-1234\"\ntool_call_result:\n  status:\
+      \ success\n  data:\n    reservationId: \"BK20250615ABC\"\n    passengerName:\
+      \ \"JO WOON\"\n    contactNumber: \"010-5678-1234\"\n    departureAirport: \"\
+      ICN (인천국제공항)\"\n    arrivalAirport: \"JFK (존 F. 케네디 국제공항)\"\n    airline: \"\
+      대한항공 (Korean Air)\"\n    flightNumber: \"KE081\"\n    departureTime: \"2025-09-08T10:00+09:00\"\
+      \n    arrivalTime: \"2025-09-08T11:05-04:00\"\n    seatClass: \"Prestige\"\n\
+      \    status: \"Confirmed\""
+- workflow_id: null
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelFlight\narguments:\n  refinedQuery: \"9월에 미국가는 비행기표 예약 취소\"\
+      \n  reservationId: \"BK20250615ABC\"\n  refundMethod: \"original_payment\"\n\
+      \  notifyVia: \"sms\"\ntool_call_result:\n  - tool: cancelFlight\n    data:\n\
+      \      reservationId: \"BK20250615ABC\"\n      status: \"cancelled\"\n     \
+      \ refundMethod: \"original_payment\"\n      refundStatus: \"processing\"\n \
+      \     notifyVia: \"sms\"\n      airline: \"대한항공\"\n      departure: \"ICN\"\n\
+      \      destination: \"JFK\"\n      departureTime: \"2025-09-08T10:00+09:00\"\
+      \n      arrivalTime: \"2025-09-08T11:05-04:00\"\n      passengers:\n       \
+      \ - name: \"JO WOON\"\n          seatClass: \"Prestige\"\n          baggage:\
+      \ \"basic\"\n          contactNumber: \"010-5678-1234\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '귀하께서 요청하신 9월 미국행 비행기표 예약이 정상적으로 취소되었습니다. 예약 세부 내역은 다음과 같습니다.
+
+
+      * 항공사: 대한항공
+
+      * 출발지 / 도착지: 인천(ICN) → 뉴욕(JFK)
+
+      * 출발 / 도착 시간: 2025년 9월 8일 10:00(KST) → 11:05(EST)
+
+      * 승객: JO WOON
+
+      * 좌석 등급: Prestige
+
+      * 수하물: 기본
+
+      * 예약 상태: 취소 완료
+
+      * 환불 방식: 원결제 수단
+
+      * 환불 진행 상태: 처리 중
+
+      * 알림 방식: SMS (010-5678-1234)
+
+
+      환불이 완료되면 원결제 수단으로 자동 입금될 예정입니다.
+
+
+      ---------------------------------------------------------------
+
+
+      마음이 울적하실 땐, 때로는 특별한 공간에서 오롯이 자신에게 집중하는 시간이 위로가 되기도 하죠.
+
+
+      그런 기분에 어울리는, 강남 최고의 프라이빗 위스키 바 두 곳을 찾아봤습니다.
+
+
+      두 곳 모두 ''최소 주문 금액''이 100만 원은 아니지만, 수백만 원을 호가하는 매우 희귀한 위스키(Old & Rare Bottle)
+      리스트를 보유하고 있어, 일생일대의 특별한 경험을 원하실 때 방문하기 좋은 곳들입니다.
+
+
+      1. 르 챔버 (Le Chamber)
+
+      추천 키워드: #정통파 #비밀스러운 #국내최고
+
+
+      설명: 숨겨진 책장을 열고 들어가는 스피크이지 바로, 앤틱한 분위기 속에서 국내 최고 수준의 바텐딩을 경험할 수 있습니다. 위스키 본연의
+      맛과 향에 깊이 집중하고 싶을 때 추천합니다.
+
+
+      2. 앨리스 청담 (Alice Cheongdam)
+
+      추천 키워드: #몽환적인 #컨셉장인 #현실탈출
+
+
+      설명: ''이상한 나라의 앨리스''를 모티브로 한 공간에서 현실을 잠시 잊게 해주는 곳입니다. 독특한 분위기 속에서 새로운 영감을 얻고
+      기분 전환을 하고 싶을 때 좋은 선택이 될 거예요.
+
+
+      어떤 공간이 마음에 더 끌리시나요?'

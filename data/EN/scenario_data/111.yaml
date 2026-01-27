@@ -1,0 +1,94 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-08-11T16:42'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you check the delivery status of the vacuum cleaner I bought on Amazon
+      Marketplace? The tracking number is 011-02-101 with UPS. If it arrives today,
+      I’ll need to clean right away, so please reschedule my soccer meetup I had set
+      for tonight to the day after tomorrow at 8 PM.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"Check\
+      \ delivery status for vacuum cleaner purchased on Amazon Marketplace, shipped\
+      \ via UPS, tracking number 011-02-101\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: calendar_agent\n      refined_query: \"If the vacuum cleaner purchased\
+      \ on Amazon Marketplace arrives today, check my soccer meetup schedule for this\
+      \ evening\"\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"If the vacuum cleaner purchased on Amazon Marketplace arrives today, reschedule\
+      \ tonight's soccer meetup to the day after tomorrow at 8 PM\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"Track delivery for\
+      \ the vacuum cleaner I bought on Amazon Marketplace, shipped via UPS, tracking\
+      \ number 011-02-101\"\n  trackingNumber: \"011-02-101\"\n  carrier: \"UPS\"\n\
+      tool_call_result:\n  deliveryInfo:\n    trackingNumber: \"011-02-101\"\n   \
+      \ carrier: \"UPS\"\n    status: \"In Transit\"\n    lastUpdate: \"2025-08-11T09:42\"\
+      \n    recipient: \"Michael Lee\"\n    origin: \"Los Angeles Distribution Center\"\
+      \n    destination: \"Brooklyn, NY\"\n    estimatedDeliveryDate: \"2025-08-11\"\
+      \n    history:\n      - dateTime: \"2025-08-10T18:15\"\n        location: \"\
+      Los Angeles Distribution Center\"\n        status: \"Picked up\"\n      - dateTime:\
+      \ \"2025-08-11T02:45\"\n        location: \"New Jersey Hub Terminal\"\n    \
+      \    status: \"Loaded onto truck\"\n      - dateTime: \"2025-08-11T07:20\"\n\
+      \        location: \"Brooklyn Delivery Office\"\n        status: \"Out for delivery\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check today's evening\
+      \ soccer meetup schedule\"\n  startDate: \"2025-08-11\"\n  endDate: \"2025-08-11\"\
+      \n  keyword: \"soccer meetup\"\ntool_call_result:\n  schedules:\n    - scheduleID:\
+      \ \"20250811-0001\"\n      title: \"Soccer Meetup\"\n      startDateTime: \"\
+      2025-08-11T19:00\"\n      endDateTime: \"2025-08-11T20:00\"\n      location:\
+      \ \"Brooklyn Sports Field\"\n      description: \"Weekend regular soccer meetup\"\
+      \n      status: \"Confirmed\""
+- workflow_id: null
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: modifySchedule\narguments:\n  refinedQuery: \"Change tonight's\
+      \ soccer meetup to the day after tomorrow at 8 PM\"\n  scheduleID: \"20250811-0001\"\
+      \n  newStartDateTime: \"2025-08-13T20:00\"\n  newEndDateTime: \"2025-08-13T21:00\"\
+      \ntool_call_result:\n  modificationResult:\n    scheduleID: \"20250811-0001\"\
+      \n    oldStartDateTime: \"2025-08-11T19:00\"\n    oldEndDateTime: \"2025-08-11T20:00\"\
+      \n    newStartDateTime: \"2025-08-13T20:00\"\n    newEndDateTime: \"2025-08-13T21:00\"\
+      \n    title: \"Soccer Meetup\"\n    location: \"Brooklyn Sports Field\"\n  \
+      \  status: \"Change Completed\"\n    message: \"The soccer meetup has been successfully\
+      \ rescheduled to August 13, 2025, 8:00 PM–9:00 PM.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Vacuum Cleaner Delivery Status\n\n* Tracking Number: 011-02-101  \n\
+      * Carrier: UPS  \n* Status: In Transit  \n* Last Update: August 11, 2025, 9:42\
+      \ AM  \n* Recipient: Michael Lee  \n* Origin: Los Angeles Distribution Center\
+      \  \n* Destination: Brooklyn, NY  \n* Estimated Delivery Date: August 11, 2025\
+      \  \n* Tracking History:  \n  * August 10, 2025, 6:15 PM – Picked up at Los\
+      \ Angeles Distribution Center  \n  * August 11, 2025, 2:45 AM – Loaded onto\
+      \ truck at New Jersey Hub Terminal  \n  * August 11, 2025, 7:20 AM – Out for\
+      \ delivery at Brooklyn Delivery Office  \n\n▶ Soccer Meetup Rescheduled\n\n\
+      * Title: Soccer Meetup  \n* Location: Brooklyn Sports Field  \n* Old Schedule:\
+      \ August 11, 2025, 7:00 PM–8:00 PM  \n* New Schedule: August 13, 2025, 8:00\
+      \ PM–9:00 PM  \n* Status: Change Completed  \n* Message: The soccer meetup has\
+      \ been successfully rescheduled to August 13, 2025, 8:00 PM–9:00 PM."

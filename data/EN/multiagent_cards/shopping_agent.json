@@ -1,0 +1,735 @@
+{
+  "agent_card": {
+    "name": "Shopping Agent",
+    "agent_id": "shopping_agent",
+    "description": "A shopping assistant that helps users search for products, get personalized gift suggestions, and manage orders including placing, tracking, cancelling, modifying, exchanging, or refunding them.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "searchProducts",
+        "name": "Find Products",
+        "description": "Quickly and easily search for desired products by combining various attributes (category, price, brand, color, size, etc.) and keywords.",
+        "examples": [
+          "Recommend a good value laptop bag",
+          "Find the shoes Taylor Swift posted on Instagram",
+          "What short-sleeve t-shirts are popular in summer?",
+          "Show me men's watches under $200",
+          "I want to find a trendy navy shirt"
+        ]
+      },
+      {
+        "id": "recommendGifts",
+        "name": "Gift Recommendations",
+        "description": "Recommend the perfect gift by considering recipient type, age, budget, occasion, and other conditions.",
+        "examples": [
+          "Recommend a gift for my teacher's appreciation",
+          "Any practical gifts for my partner?",
+          "Suggest a good birthday gift for a teenage boy"
+        ]
+      },
+      {
+        "id": "sendGifts",
+        "name": "Send a Gift",
+        "description": "A tool to send a selected product to an acquaintance via text, email, or WhatsApp (a messaging app) as a gift link. To send a gift, you must first select a product through 'Gift Recommendations'.",
+        "examples": [
+          "I want to send this product to my boyfriend as a gift, can I send it via WhatsApp?",
+          "Send this bouquet as a graduation gift along with a congratulatory message"
+        ]
+      },
+      {
+        "id": "orderProducts",
+        "name": "Place an Order",
+        "description": "A tool to order the product specified by the user. Multiple products can be ordered at once, and to place an order you must first select a product through 'Find Products'.",
+        "examples": [
+          "Order these two shirts and one pair of sneakers together",
+          "Recipient is Jason Dawson, address is 58 Ocean Drive, Miami, let's place the order"
+        ]
+      },
+      {
+        "id": "getOrderStatus",
+        "name": "Check Order Status",
+        "description": "A tool to check order details, status, date, recipient information, etc. Use it when you want to know what orders you have and their status.",
+        "examples": [
+          "Show me the list of products I ordered this month",
+          "I wonder if the item I ordered on 06/10/2023 has been delivered"
+        ]
+      },
+      {
+        "id": "cancelOrder",
+        "name": "Cancel Order",
+        "description": "A tool to cancel an entire order or only selected items. You can set the reason for cancellation and the refund method. To cancel an order, you must first specify it through 'Check Order Status'.",
+        "examples": [
+          "I want to cancel the entire order number 54321. I don't need it anymore",
+          "Can I cancel just the comforter?",
+          "Please cancel the bag I purchased last week"
+        ]
+      },
+      {
+        "id": "modifyOrder",
+        "name": "Modify Order",
+        "description": "A tool to change details of an existing order such as product color, size, quantity, or shipping address. To modify an order, you must first specify it through 'Check Order Status'.",
+        "examples": [
+          "Change the shipping address for order number 7766554433",
+          "Can I change the shoe quantity from 2 to 3?",
+          "Change the purchase option color to beige"
+        ]
+      },
+      {
+        "id": "exchangeProducts",
+        "name": "Exchange Product",
+        "description": "A tool to request a change in size, color, or options for the same product based on order information. To exchange a product, you must first specify it through 'Check Order Status'.",
+        "examples": [
+          "Exchange the sneakers for size 9",
+          "I want to change the black shirt to navy",
+          "Change only the color for this product to the same model"
+        ]
+      },
+      {
+        "id": "refundProducts",
+        "name": "Request a Refund",
+        "description": "A tool to request a refund based on order information. Requests must be made within 30 days of purchase. For returns due to change of mind, a $4 return shipping fee applies. To request a refund, you must first specify the product through 'Check Order Status'.",
+        "examples": [
+          "I want to refund the t-shirt",
+          "The bag I received is defective, please refund it",
+          "I changed my mind, I want to return this product"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "searchProducts",
+      "description": "A tool that searches for products and uses various filters to find items that meet the user's needs. If calling repeatedly for multiple targets, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query reflecting both previous context and the user's natural language query. Example: 'ultralight waterproof backpack', 'recommended men's summer short-sleeve t-shirt'"
+          },
+          "productCategory": {
+            "type": "string",
+            "description": "Specify the category of the product to search. Example: 'wallet', 'sneakers', 'shirt'"
+          },
+          "productName": {
+            "type": "string",
+            "description": "Specific product name or model number to search. Example: 'AirPods', 'Gram laptop'"
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "Minimum price of the product to search. Enter in units of 1 USD, minimum value is 5 USD. Example: 20"
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "Maximum price of the product to search. Enter in units of 1 USD. Example: 800"
+          },
+          "brand": {
+            "type": "string",
+            "description": "You can set a specific brand. Example: 'NIKE', 'Patagonia'"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "low_price",
+              "high_price",
+              "latest",
+              "most_sold",
+              "most_viewed",
+              "highest_rated"
+            ],
+            "description": "Select the sorting criteria for the product list. 'latest' (default), for popular products use 'most_viewed'"
+          },
+          "color": {
+            "type": "string",
+            "description": "Color of the product to search"
+          },
+          "size": {
+            "type": "string",
+            "description": "Enter the size of the product. Example: 'M', 'L', '9'"
+          },
+          "source": {
+            "type": "string",
+            "description": "Enter the media (TV program) or person (popular YouTuber) who mentioned the product."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "recommendGifts",
+      "description": "A tool that provides personalized gift recommendations based on the recipient's type, occasion, budget, interests, and more. If calling repeatedly for multiple recipients, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A clearly refined gift recommendation query that integrates the user's natural language request with previous context (e.g., 'A suitable gift for my dad's 50th birthday')."
+          },
+          "recipientType": {
+            "type": "string",
+            "description": "The type of person receiving the gift (e.g., 'partner', 'parents', 'friend', 'child')."
+          },
+          "occasion": {
+            "type": "string",
+            "description": "The special occasion for giving the gift (e.g., 'birthday', 'anniversary', 'promotion', 'graduation', 'birth')."
+          },
+          "age": {
+            "type": "string",
+            "description": "The recipient's age group (e.g., '20s', '50s', 'elementary school student')."
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "male",
+              "female",
+              "other"
+            ],
+            "description": "The recipient's gender (choose from 'male', 'female', 'other')."
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "Minimum budget amount (in USD, enter 10 or more)."
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "Maximum budget amount (in USD, enter 5,000 or less)."
+          },
+          "interests": {
+            "type": "string",
+            "description": "The recipient's main interests (e.g., 'fashion', 'listening to music', 'sports', 'cooking')."
+          },
+          "personality": {
+            "type": "string",
+            "description": "The recipient's personality and preferences (e.g., 'practical', 'sentimental', 'trendy', 'minimalist')."
+          },
+          "exclude_items": {
+            "type": "string",
+            "description": "Items or categories to exclude from recommendations (e.g., 'flowers', 'stationery')."
+          },
+          "items": {
+            "type": "string",
+            "description": "The item you wish to gift (e.g., 'shoes', 'accessories')."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "sendGifts",
+      "description": "Sends the selected product as a gift. Takes the recipient's name, contact number or address, congratulatory message, and delivery method (text message, email, WhatsApp, etc.) to process gift delivery via a gift link. To specify the productId, you must first run the gift recommendation tool. If sending to multiple gifts repeatedly, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A natural language request including the context of the gift (e.g., 'Send this bag as a birthday gift for my friend')"
+          },
+          "productId": {
+            "type": "string",
+            "description": "The ID of the product to send as a gift"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "The quantity of the product to gift; default is 1"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "The recipient's name"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The recipient's contact number"
+          },
+          "email": {
+            "type": "string",
+            "description": "The recipient's email address (optional, used for email delivery)"
+          },
+          "message": {
+            "type": "string",
+            "description": "A congratulatory message to include in the card or note"
+          },
+          "deliveryMethod": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "WhatsApp",
+              "email"
+            ],
+            "description": "The method for sending the gift link"
+          },
+          "sendTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Scheduled delivery time (optional; if not provided, sent immediately)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "productId",
+          "quantity",
+          "recipientName",
+          "deliveryMethod"
+        ]
+      }
+    },
+    {
+      "name": "orderProducts",
+      "description": "A tool that allows the user to order multiple products and enter shipping information to complete the purchase. To specify productItems, you must first run the Find Products tool. If you need to call it repeatedly for multiple orders, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query for ordering products that reflects the previous conversation context and the user's natural language request. Examples: 'Order men's winter parka', 'I want to pay for white sneakers and women's jeans'"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The unique ID of the user placing the order"
+          },
+          "productItems": {
+            "type": "object",
+            "description": "Information for a single product to be ordered",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "The unique ID of the product being ordered"
+                },
+                "productName": {
+                  "type": "string",
+                  "description": "The name of the product to purchase"
+                },
+                "size": {
+                  "type": "string",
+                  "description": "Size information, which may be optional or required depending on the product (e.g., 'M', '250', 'XL')"
+                },
+                "color": {
+                  "type": "string",
+                  "description": "Color, which may be optional or required depending on the product (e.g., 'Navy', 'Gray')"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "Purchase quantity (minimum 1, maximum 10, defaults to 1 if not specified)",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                "price": {
+                  "type": "number",
+                  "description": "Price per unit of the ordered product (in USD)"
+                }
+              },
+              "required": [
+                "productId",
+                "quantity",
+                "price"
+              ]
+            }
+          },
+          "shippingAddress": {
+            "type": "object",
+            "description": "Shipping address information for the recipient",
+            "properties": {
+              "recipient": {
+                "type": "string",
+                "description": "Name of the recipient"
+              },
+              "address": {
+                "type": "string",
+                "description": "Full shipping address"
+              },
+              "phone": {
+                "type": "string",
+                "description": "Recipient's contact number (e.g., mobile phone)"
+              },
+              "deliveryMemo": {
+                "type": "string",
+                "description": "Delivery instructions (e.g., 'If not home, leave with the building concierge', 'Leave at the front door')"
+              }
+            },
+            "required": [
+              "recipient",
+              "address",
+              "phone"
+            ]
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "userId",
+          "productItems",
+          "shippingAddress"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getOrderStatus",
+      "description": "A tool for checking order details, status, date, recipient information, and more. Use this when you want to know what orders have been placed and their current status. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A reformulated query for order lookup based on the user's natural language input and context (e.g., 'I want to check my recent orders')."
+          },
+          "orderId": {
+            "type": "string",
+            "description": "The order number that uniquely identifies a specific order. Provided if the user mentions an order number."
+          },
+          "userId": {
+            "type": "string",
+            "description": "The unique ID of the customer or account. The user's account information is required."
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "The name of the order recipient."
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The contact phone number registered with the order (e.g., '(202) 555-0173')."
+          },
+          "orderDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The date the order was placed (YYYY-MM-DD format, e.g., '2025-09-10')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "userId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelOrder",
+      "description": "A tool that allows you to cancel all or part of an order and specify the refund method. To cancel an order, you must first retrieve the order details. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined cancellation-related query or conversation context reflecting the current user's request (e.g., 'I want to cancel the sneakers I ordered yesterday', 'Request to cancel only some clothing items purchased from the cart')"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "The unique ID of the order to be canceled (must be confirmed via order lookup, e.g., 'ORD20240501A')"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "Reason for order cancellation (e.g., 'Product change', 'Changed my mind', 'Delivery delay')"
+          },
+          "itemIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of product IDs if canceling only part of the order (required for partial cancellations, e.g., ['PRD789', 'PRD101'])"
+          },
+          "cancelType": {
+            "type": "string",
+            "enum": [
+              "full",
+              "partial"
+            ],
+            "description": "'full' means cancel the entire order, 'partial' means cancel only selected items (itemIds required for partial cancellations; campaign/bundle products can only be fully canceled)"
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "original_method",
+              "store_credit",
+              "bank_transfer"
+            ],
+            "description": "Select refund method (if not selected, defaults to 'original_method' based on payment method; refund policy may differ if points/coupons were used)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "orderId",
+          "cancelType",
+          "refundMethod"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyOrder",
+      "description": "A tool to change the shipping address, options, quantity, gift wrapping, etc., for an order, or to leave a change note. Can only be used after checking the order and only if it is still in the pre-shipping stage. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence reflecting the user's order change request in natural language and previous context (e.g., 'I want to change the shipping address to my office', 'Please change the T-shirt size to L')."
+          },
+          "orderId": {
+            "type": "string",
+            "description": "The unique order number or identifier of the order to be changed (found in the order lookup results)."
+          },
+          "newShippingAddress": {
+            "type": "object",
+            "properties": {
+              "recipient": {
+                "type": "string",
+                "description": "Name of the new recipient."
+              },
+              "address": {
+                "type": "string",
+                "description": "New shipping address."
+              },
+              "phone": {
+                "type": "string",
+                "description": "Recipient's phone number without hyphens (e.g., '2025550173')."
+              }
+            },
+            "required": [
+              "recipient",
+              "address",
+              "phone"
+            ],
+            "description": "Field used when changing shipping address information. Phone number must be entered without hyphens."
+          },
+          "itemChanges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "Unique identifier of the product in the order to be changed."
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "New quantity for the product (some promotional items may be limited to 1)."
+                },
+                "size": {
+                  "type": "string",
+                  "description": "New size option for the product (e.g., 'M', 'L', 'XL', '10')."
+                },
+                "color": {
+                  "type": "string",
+                  "description": "New color option for the product (e.g., 'Black', 'Ivory')."
+                }
+              },
+              "required": [
+                "productId"
+              ]
+            },
+            "description": "Used when changing product options (color, size) or quantity in the order. Some products may have restrictions on quantity changes."
+          },
+          "newGiftOption": {
+            "type": "object",
+            "properties": {
+              "wrap": {
+                "type": "boolean",
+                "description": "Whether to gift wrap (set to true only if the category allows wrapping, e.g., clothing is allowed, electronics are not)."
+              },
+              "message": {
+                "type": "string",
+                "description": "Gift message (up to 100 characters, can only be changed before the product is shipped)."
+              }
+            },
+            "description": "Used when changing or adding gift wrapping and messages."
+          },
+          "changeNote": {
+            "type": "string",
+            "description": "Description or note about the order change request (e.g., 'I entered the recipient's phone number incorrectly, please update it', 'Please change the product option due to wrong color delivery')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "orderId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "exchangeProducts",
+      "description": "A tool for requesting product exchanges. Based on order information, you can request changes to size, color, or options for the same product, and requests can only be made within 30 days of purchase. To exchange a product, you must first look up the order.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined exchange request query that reflects the user's natural language request and previous context (e.g., 'I want to exchange my sneakers for a different size')."
+          },
+          "orderId": {
+            "type": "string",
+            "description": "The unique ID of the order for which the exchange is requested (Order lookup is required for exchange)."
+          },
+          "itemList": {
+            "type": "array",
+            "description": "List of products to exchange (Exchange is only possible for the same product).",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "ID of the product to be exchanged."
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "Quantity to exchange.",
+                  "minimum": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "description": "Reason for exchange for each product (Optional)."
+                }
+              },
+              "required": [
+                "productId",
+                "quantity"
+              ]
+            }
+          },
+          "exchangeOption": {
+            "type": "object",
+            "description": "Desired product options for the exchange (Same product only).",
+            "properties": {
+              "size": {
+                "type": "string",
+                "description": "Size to change to (e.g., 'M', '10')."
+              },
+              "color": {
+                "type": "string",
+                "description": "Color to change to (e.g., 'Black')."
+              },
+              "otherOption": {
+                "type": "string",
+                "description": "Other option changes (e.g., 'Limited Edition')."
+              }
+            }
+          },
+          "reasonCode": {
+            "type": "string",
+            "enum": [
+              "SIZE_ISSUE",
+              "DEFECTIVE",
+              "WRONG_ITEM",
+              "OTHER"
+            ],
+            "description": "Exchange reason code."
+          },
+          "detailedReason": {
+            "type": "string",
+            "description": "Customer’s detailed explanation for the exchange request."
+          },
+          "newShippingAddress": {
+            "type": "object",
+            "description": "Address to receive the exchanged product (use if different from the default shipping address).",
+            "properties": {
+              "recipient": {
+                "type": "string",
+                "description": "Recipient's name."
+              },
+              "address": {
+                "type": "string",
+                "description": "Full address."
+              },
+              "phone": {
+                "type": "string",
+                "description": "Recipient's phone number (numbers only, no hyphens)."
+              }
+            }
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "orderId",
+          "itemList",
+          "exchangeOption"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "refundProducts",
+      "description": "A tool for requesting product refunds. Based on order information, you can enter the reason and method for the refund to proceed with the process. To refund a product, you must first perform an order lookup. ※ Order lookup is required, and requests are only possible within 30 days of purchase. For change-of-mind cases, the customer must deposit a $4 shipping fee to (Bank of America, Routing Number: 026009593, Account Number: 1234567890, Account Holder: Fashion King).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined refund request query reflecting the user's natural language request and previous context (e.g., 'I want to refund a T-shirt')"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "The unique ID of the order for which the refund is requested (※ Order lookup is required for a refund)"
+          },
+          "itemList": {
+            "type": "array",
+            "description": "List of products for refund request",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "ID of the product to be refunded"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "Quantity to be refunded",
+                  "minimum": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "description": "Reason for refund per product (optional)"
+                }
+              },
+              "required": [
+                "productId",
+                "quantity"
+              ]
+            }
+          },
+          "reasonCode": {
+            "type": "string",
+            "enum": [
+              "DEFECTIVE",
+              "WRONG_ITEM",
+              "CHANGE_OF_MIND",
+              "OTHER"
+            ],
+            "description": "Refund reason code (for change of mind, a separate $4 shipping fee deposit is required), default is CHANGE_OF_MIND"
+          },
+          "detailedReason": {
+            "type": "string",
+            "description": "Customer's detailed reason for the refund request"
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "ORIGINAL_PAYMENT",
+              "CREDIT_BALANCE",
+              "OTHER"
+            ],
+            "description": "Refund processing method, default is ORIGINAL_PAYMENT"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "orderId",
+          "itemList",
+          "reasonCode",
+          "refundMethod"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

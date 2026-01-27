@@ -1,0 +1,96 @@
+{
+  "agent_card": {
+    "name": "날씨(weather)",
+    "agent_id": "weather_agent",
+    "description": "실시간과 미래 날씨 정보를 제공하며, 국내 및 해외의 기온, 강수, 미세먼지 등 다양한 기후 요소를 질의할 수 있습니다. 여행, 생활 계획, 건강 관리 등 다양한 상황에 맞는 날씨 조언도 지원합니다.",
+    "url": "http://localhost:10005/",
+    "capabilities": {
+      "streaming": true,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getDomesticWeather",
+        "name": "국내 날씨",
+        "description": "국내(대한민국 내) 주요 도시와 현재 위치 기반의 날씨, 미세먼지 및 기후 정보를 제공합니다. 기압, 강수, 체감 온도, 전날 비교 등 다양한 질의도 인식할 수 있습니다.",
+        "examples": [
+          "부산 해변 근처 오늘 기온 알려줘.",
+          "이번 주말에 강릉에서 비 올 가능성 있어?",
+          "지금 내 위치 미세먼지 상황 어때?",
+          "오늘 대구는 어제보다 더 시원해?",
+          "이따 저녁에 우천 확률 높아?",
+          "압구정 내일 날씨 간단히 요약해줘."
+        ]
+      },
+      {
+        "id": "getGlobalWeather",
+        "name": "세계 날씨",
+        "description": "해외 도시 혹은 국가의 현재 및 특정 날짜의 기후 정보, 계절 흐름, 비/눈 예보 등을 확인할 수 있습니다. 영어 도시명 및 다양한 날짜 표현도 지원합니다.",
+        "examples": [
+          "next Friday에 Rome 날씨 어때?",
+          "지금 Moscow 기온은 몇 도야?",
+          "8월 12일에 New York 여행 예정인데 더울까?",
+          "Sydney는 오늘 비 예보 있어?",
+          "London 겨울철에 주로 비와 눈 중 뭐가 많이 오는지 알려줄래?",
+          "카이로에서 곧 날씨가 시원해지는 시기는 언제야?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getDomesticWeather",
+      "description": "국내 특정 지역 또는 현재 위치의 날씨 정보를 조회하고, 강수 확률, 미세먼지, 기압, 기온 변화 등 다양한 기상 정보를 자연어 쿼리를 바탕으로 확인할 수 있는 도구입니다. 여러 날짜에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자 입력과 이전 맥락을 반영해 정제된 기상 정보 요청 쿼리 (예: '오늘 오후에 비 올 확률', '미세먼지 농도', '어제보다 따뜻한지')"
+          },
+          "location": {
+            "type": "string",
+            "description": "날씨를 확인할 국내 지역명 (예: '인천', '광주', '대전', '내 위치'). 미입력 시 기본값은 사용자 현재 위치 정보, 위치 확인이 불가하면 '서울'로 대체됨"
+          },
+          "date": {
+            "type": "string",
+            "description": "'2024-07-15' 등 자연어 또는 명확한 날짜(YYYY-MM-DD) 표현. 자연어 입력 시 구체적인 날짜로 변환 후 사용, 기본값은 현재 날짜이며 기간 입력은 불가능하며 단일 날짜만 지정할 수 있음"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "date",
+          "location"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getGlobalWeather",
+      "description": "전 세계 도시나 국가의 현재 및 미래 날씨, 기후 정보를 다양한 날짜 조건에 따라 조회할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 원래 질문과 대화 맥락을 반영해 구체화된 자연어 쿼리 (예: '다음 달 도쿄 기온', '에든버러 9월 비 소식')"
+          },
+          "location": {
+            "type": "string",
+            "description": "날씨 또는 기후 정보를 확인하려는 해외 도시 혹은 국가의 영어명. 반드시 영문 표기 활용 (예: 'London', 'Vietnam', 'Buenos Aires')"
+          },
+          "date": {
+            "type": "string",
+            "description": "날씨를 확인하려는 날짜 또는 기간에 대한 정보. 자연어 표현(예: 'tomorrow', 'mid-December', '지금') 및 시간 패턴 (예: 2025-02-12) 모두 허용"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "location",
+          "date"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

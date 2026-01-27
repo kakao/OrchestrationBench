@@ -1,0 +1,174 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2025-07-16
+
+      Time: 10:30 AM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I'm going on a week-long trip to Austria starting next Wednesday. What
+      activities there do you recommend? Please find some popular activities and help
+      me plan the itinerary. Also, add the trip schedule to my calendar.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"Find recommended\
+      \ popular activities in Austria and plan a one-week itinerary starting next\
+      \ Wednesday\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: calendar_agent\n      refined_query: \"\
+      Add a one-week trip to Austria starting next Wednesday to my calendar\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"Find recommended popular\
+      \ activities in Austria and plan a one-week itinerary starting July 23, 2025\"\
+      \n  destination: \"Austria\"\n  duration: \"6 nights 7 days\"\n  startDate:\
+      \ \"2025-07-23\"\n  endDate: \"2025-07-29\"\ntool_call_result:\n  itinerary:\n\
+      \    destination: \"Austria\"\n    startDate: \"2025-07-23\"\n    duration:\
+      \ \"6 nights 7 days\"\n    highlights:\n      - \"Classical music and imperial\
+      \ palace experience in Vienna\"\n      - \"Tour winery villages in the Vienna\
+      \ Woods with a traditional dinner\"\n      - \"Movie location tour and Mozart\
+      \ history in Salzburg\"\n      - \"Kayaking and hot springs in the Salzkammergut\
+      \ lake district\"\n      - \"Hallstatt salt mine and cable car viewpoint tour\"\
+      \n      - \"Stroll through Graz Old Town and art museums\"\n      - \"Hiking\
+      \ and ice cave exploration in the Dachstein Alps\"\n  dailyPlan:\n    - day:\
+      \ \"Day 1 (July 23)\"\n      location: \"Vienna\"\n      activities:\n     \
+      \   - \"Guided tour of the Vienna State Opera House\"\n        - \"Walk through\
+      \ Schönbrunn Palace and gardens\"\n        - \"Taste Sachertorte at a classic\
+      \ Viennese café\"\n\n    - day: \"Day 2 (July 24)\"\n      location: \"Vienna\
+      \ surroundings\"\n      activities:\n        - \"Tour winery villages in the\
+      \ Weinviertel region\"\n        - \"Local wine tasting and dinner at a Heuriger\
+      \ restaurant\"\n\n    - day: \"Day 3 (July 25)\"\n      location: \"Salzburg\"\
+      \n      activities:\n        - \"Visit Mozart’s birthplace and Salzburg Cathedral\"\
+      \n        - \"Do 'The Sound of Music' movie tour\"\n        - \"Evening stroll\
+      \ through Mirabell Gardens\"\n\n    - day: \"Day 4 (July 26)\"\n      location:\
+      \ \"Salzkammergut\"\n      activities:\n        - \"Kayak or sail on Lake Wolfgang\"\
+      \n        - \"Relax at the Bad Ischl hot springs\"\n\n    - day: \"Day 5 (July\
+      \ 27)\"\n      location: \"Hallstatt\"\n      activities:\n        - \"Explore\
+      \ the salt mine and go on a lake cruise\"\n        - \"Ride the cable car to\
+      \ the Hallstatt Skywalk viewpoint\"\n\n    - day: \"Day 6 (July 28)\"\n    \
+      \  location: \"Graz\"\n      activities:\n        - \"Walking tour of Graz Old\
+      \ Town\"\n        - \"Visit Kunsthaus (modern art museum) and Clock Tower\"\n\
+      \n    - day: \"Day 7 (July 29)\"\n      location: \"Dachstein Alps\"\n     \
+      \ activities:\n        - \"Dachstein Skywalk and glacier hike\"\n        - \"\
+      Lunch in a traditional Austrian village before departure\"\n\n  notes:\n   \
+      \ - \"Travel time between major cities by train is about 2–3 hours\"\n    -\
+      \ \"English-speaking guides available throughout the trip\"\n    - \"Some activities\
+      \ require advance booking depending on the weather\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Register a one-week\
+      \ 'Austria trip' starting next Wednesday\"\n  title: \"Austria Trip\"\n  startDateTime:\
+      \ \"2025-07-23T10:30\"\n  endDateTime: \"2025-07-29T11:30\"\ntool_call_result:\n\
+      \  data:\n    scheduleId: \"SCHD20250723_TRAVEL\"\n    status: \"created\"\n\
+      \    title: \"Austria Trip\"\n    startDateTime: \"2025-07-23\"\n    endDateTime:\
+      \ \"2025-07-29\"\n    message: \"Your 'Austria Trip' has been added to the calendar\
+      \ for 7 days starting Wednesday the 23rd.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Yes, as requested, I’ve added a 7-day ‘Austria Trip’ starting next Wednesday
+      (July 23) to your calendar."
+
+      ----
+
+
+      ■ Austria Trip Itinerary (6 nights, 7 days)
+
+
+      Day 1 (July 23) – Vienna
+
+      • Guided tour of the Vienna State Opera House
+
+      • Walk through Schönbrunn Palace and gardens
+
+      • Taste Sachertorte at a classic Viennese café
+
+
+      Day 2 (July 24) – Vienna surroundings
+
+      • Tour winery villages in the Weinviertel region
+
+      • Local wine tasting and dinner at a Heuriger restaurant
+
+
+      Day 3 (July 25) – Salzburg
+
+      • Visit Mozart’s birthplace and Salzburg Cathedral
+
+      • Do "The Sound of Music" movie tour
+
+      • Evening stroll through Mirabell Gardens
+
+
+      Day 4 (July 26) – Salzkammergut
+
+      • Kayak or sail on Lake Wolfgang
+
+      • Relax at Bad Ischl hot springs
+
+
+      Day 5 (July 27) – Hallstatt
+
+      • Explore the salt mine and go on a lake cruise
+
+      • Ride the cable car to the Hallstatt Skywalk viewpoint
+
+
+      Day 6 (July 28) – Graz
+
+      • Walking tour of Graz Old Town
+
+      • Visit Kunsthaus (modern art museum) and Clock Tower
+
+
+      Day 7 (July 29) – Dachstein Alps
+
+      • Dachstein Skywalk and glacier hike
+
+      • Lunch in a traditional Austrian village before departure
+
+
+      ■ Trip Highlights
+
+      • Classical music and imperial palace experience in Vienna
+
+      • Tour winery villages in the Vienna Woods with a traditional dinner
+
+      • Movie location tour and Mozart history in Salzburg
+
+      • Kayaking and hot springs in the Salzkammergut lake district
+
+      • Hallstatt salt mine and cable car viewpoint tour
+
+      • Stroll through Graz Old Town and art museums
+
+      • Hiking and ice cave exploration in the Dachstein Alps
+
+
+      ■ Notes
+
+      • Travel time between major cities by train is about 2–3 hours
+
+      • English-speaking guides are available throughout the trip
+
+      • Some activities require advance booking depending on the weather'

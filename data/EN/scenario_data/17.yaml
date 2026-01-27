@@ -1,0 +1,460 @@
+metadata:
+  total_steps: 23
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-07-25
+
+      Current time: 1:19 PM
+
+      Current location: Los Angeles Union Station'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: What’s the current gold price today? I’ve got about 300g of gold and
+      I’m thinking of selling. Can you find a nearby gold buyer? I’ve got a lot of
+      loan payments to cover.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"Check today’s\
+      \ gold price for 300g\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Find a nearby gold buyer to sell 300g of gold\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getGoldPrice\narguments:\n  refinedQuery: \"Check today's price\
+      \ for 300g of gold\"\n  unit: \"g\"\n  date: \"2025-07-25\"\ntool_call_result:\n\
+      \  data:\n    unit: \"Pure gold (24K) 300g\"\n    date: \"2025-07-25\"\n   \
+      \ pricePerGram: 150\n    totalPrice: 45,000\n    currency: \"USD\"\n    notes:\
+      \ \"This is the market price as of July 25, 2025, and it may differ from the\
+      \ actual price on that date. Gold prices fluctuate daily.\"\n    source: \"\
+      US Trade Gold Exchange\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Find a gold buyer\
+      \ near me to sell 300g Pure gold\"\n  placeCategory: \"gold buyer\"\n  location:\
+      \ \"Los Angeles Union Station\"\n  sortBy: \"distance\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    places:\n      - place_id: \"GB20250725LA1\"\
+      \n        name: \"Union Gold Buyers\"\n        category: \"Gold Buyer\"\n  \
+      \      address: \"125 W 1st St, Los Angeles, CA 90012\"\n        phone_number:\
+      \ \"(213) 555-0174\"\n        business_hours:\n          - day: \"Weekdays\"\
+      \n            hours: \"10:00 - 18:00\"\n          - day: \"Saturday\"\n    \
+      \        hours: \"10:00 - 16:00\"\n          - day: \"Sunday\"\n           \
+      \ hours: \"Closed\"\n        rating: \"4.6 / 5.0\"\n        reviews_summary:\
+      \ \"Spot-based quotes with clear karat testing; fast payout options.\"\n   \
+      \     distance_from_current: \"Approx. 0.4 mi\"\n        notes: \"Near City\
+      \ Hall; buys 10K–24K jewelry and bullion; ID required for cash transactions.\"\
+      \n\n      - place_id: \"GB20250725LA2\"\n        name: \"DTLA Coin & Bullion\"\
+      \n        category: \"Coin & Bullion Dealer (Gold Buyer)\"\n        address:\
+      \ \"415 W 7th St, Los Angeles, CA 90014\"\n        phone_number: \"(213) 555-0123\"\
+      \n        business_hours:\n          - day: \"Weekdays\"\n            hours:\
+      \ \"10:00 - 18:00\"\n          - day: \"Saturday\"\n            hours: \"10:00\
+      \ - 16:00\"\n          - day: \"Sunday\"\n            hours: \"Closed\"\n  \
+      \      rating: \"4.7 / 5.0\"\n        reviews_summary: \"Competitive spreads\
+      \ on coins and bars; transparent testing and receipts.\"\n        distance_from_current:\
+      \ \"Approx. 1.1 mi\"\n        notes: \"In the Jewelry District; buys bullion\
+      \ and scrap gold; appointment recommended for large lots.\"\n\n      - place_id:\
+      \ \"GB20250725LA3\"\n        name: \"Broadway Gold Exchange\"\n        category:\
+      \ \"Gold Buyer\"\n        address: \"640 S Broadway, Los Angeles, CA 90014\"\
+      \n        phone_number: \"(213) 555-0192\"\n        business_hours:\n      \
+      \    - day: \"Weekdays\"\n            hours: \"10:30 - 18:30\"\n          -\
+      \ day: \"Saturday\"\n            hours: \"11:00 - 16:00\"\n          - day:\
+      \ \"Sunday\"\n            hours: \"Closed\"\n        rating: \"4.5 / 5.0\"\n\
+      \        reviews_summary: \"Quick appraisals, pays by cash or wire; fair pricing\
+      \ for mixed-karat jewelry.\"\n        distance_from_current: \"Approx. 1.2 mi\"\
+      \n        notes: \"Walk-in accepted; XRF testing available; bring government-issued\
+      \ ID.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Gold Price Quote
+
+
+      Date: July 25, 2025
+
+      Unit: Pure gold (24K) — 300 g
+
+      Price per gram: $150
+
+      Total (estimated): $45,000 USD
+
+
+      Notes: This is the market price as of July 25, 2025, and it may differ from
+      the actual price on that date. Gold prices fluctuate daily.
+
+      Source: US Trade Gold Exchange
+
+      ----------
+
+
+      ▶ As for places where you can sell gold, I looked up gold buyer near Los Angeles
+      Union Station.
+
+
+      3 Gold Buyers near LA (Downtown)
+
+
+      1) Union Gold Buyers (Closest)
+
+
+      Address: 125 W 1st St, Los Angeles, CA 90012
+
+      Phone: (213) 555-0174
+
+      Hours: Weekdays 10:00–18:00 / Sat 10:00–16:00 / Sun Closed
+
+      Rating: 4.6 / 5.0
+
+      Distance: ~0.4 mi
+
+      Summary: Spot-based quotes, clear karat testing, fast payout options.
+
+      Notes: Near City Hall; buys 10K–24K jewelry and bullion; ID required for cash
+      transactions.
+
+
+      2) DTLA Coin & Bullion (Bullion-Focused)
+
+
+      Address: 415 W 7th St, Los Angeles, CA 90014
+
+      Phone: (213) 555-0123
+
+      Hours: Weekdays 10:00–18:00 / Sat 10:00–16:00 / Sun Closed
+
+      Rating: 4.7 / 5.0
+
+      Distance: ~1.1 mi
+
+      Summary: Competitive spreads on coins and bars; transparent testing and receipts.
+
+      Notes: In the Jewelry District; buys bullion and scrap gold; appointment recommended
+      for large lots.
+
+
+      3) Broadway Gold Exchange (Easy Walk-In)
+
+
+      Address: 640 S Broadway, Los Angeles, CA 90014
+
+      Phone: (213) 555-0192
+
+      Hours: Weekdays 10:30–18:30 / Sat 11:00–16:00 / Sun Closed
+
+      Rating: 4.5 / 5.0
+
+      Distance: ~1.2 mi
+
+      Summary: Quick appraisals, pays by cash or wire; fair pricing for mixed-karat
+      jewelry.
+
+      Notes: Walk-ins accepted; XRF testing available; bring government-issued ID.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: That was a good deal! Check how much I still owe on my home mortgage
+      at Bank of America. Also, check the balance in my checking account, and then
+      transfer $30,000 for the mortgage.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"Check\
+      \ today’s gold price for 300g\"\n\nworkflow_2:\n  status: completed\n  type:\
+      \ independent\n  steps:\n    - status: completed\n      name: place_agent\n\
+      \      refined_query: \"Find a nearby gold buyer to sell 300g of gold\"\n\n\
+      workflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: personal_banking_agent\n      refined_query: \"Check\
+      \ mortgage loan balance at Bank of America\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"Check the balance in my checking account\"\n\nworkflow_5:\n\
+      \  status: pending\n  type: dependent\n  depend_on: [\"workflow_3\", \"workflow_4\"\
+      ]\n  steps:\n    - status: pending\n      name: personal_banking_agent\n   \
+      \   refined_query: \"Transfer $30,000 from my checking account to pay off the\
+      \ mortgage loan\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Loan account number, borrower''s name'
+- workflow_id: workflow_4
+  step_id: 10
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Inquiry bank, account number, name'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ To check your account balance or loan information, I’ll need the following
+      details. Please review the items below and enter them accordingly.
+
+
+      ▶ For regular account balance inquiries
+
+      Bank name (e.g., Chase, Bank of America)
+
+
+      Account number (e.g., 110-1234-5678)
+
+
+      Account holder’s full name (e.g., John Smith)
+
+
+      ▶ For loan account inquiries
+
+      Loan account number or loan product name
+
+
+      Borrower’s full name (e.g., John Smith)
+
+
+      These are required fields to ensure accurate information, so please make sure
+      that nothing is missing.
+
+      Thank you.'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 'My name is Jude, and my loan account number is 203-456-987654.
+
+      My regular account number is 123-123-123444.'
+- workflow_id: workflow_3
+  step_id: 13
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getLoanBalance\narguments:\n  refinedQuery: \"Check mortgage loan\
+      \ balance at Bank of America\"\n  loanAccountNumber: \"203-456-987654\"\n  borrowerName:\
+      \ \"Jude\"\n  loanType: \"mortgage\"\ntool_call_result:\n  data:\n    loanId:\
+      \ \"BOA-MORT-2025-0725-01\"\n    borrowerName: \"Jude\"\n    loanType: \"Mortgage\
+      \ Loan\"\n    loanStatus: \"Active\"\n    principalBalance: 70000\n    originalPrincipal:\
+      \ 75200\n    interestRate: 6.375\n    nextPaymentDate: \"2025-08-01\"\n    nextPaymentAmount:\
+      \ 555.15\n    maturityDate: \"2045-06-01\"\n    currency: \"USD\"\n    retrievalDateTime:\
+      \ \"2025-07-25T13:19\"\n    source: \"Bank of America Mortgage Servicing\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Bank name'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Mortgage Loan Summary — Bank of America\n\nLoan ID: BOA-MORT-2025-0725-01\n\
+      Borrower: Jude\nProduct / Status: Mortgage Loan · Active\nPrincipal Balance:\
+      \ $70,000 (Original $75,200)\nInterest Rate: 6.375%\nMaturity Date: June 1,\
+      \ 2045\n  -Next Payment\n   Due Date: August 1, 2025\n   Amount: $555.15\n\n\
+      ----------\n\n▶ Sorry, but I don’t have the bank information you requested,\
+      \ so I can’t check the balance.\n\nPlease provide the name of the bank you’d\
+      \ like me to check."
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: Oh wait! Can you check the procedure for paying off a home mortgage early?
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"Check\
+      \ today’s gold price for 300g\"\n\nworkflow_2:\n  status: completed\n  type:\
+      \ independent\n  steps:\n    - status: completed\n      name: place_agent\n\
+      \      refined_query: \"Find a nearby gold buyer to sell 300g of gold\"\n\n\
+      workflow_3:\n  status: completed\n  type: independent\n  steps:\n    - status:\
+      \ completed\n      name: personal_banking_agent\n      refined_query: \"Check\
+      \ mortgage loan balance at Bank of America\"\n\nworkflow_4:\n  status: paused\n\
+      \  type: independent\n  steps:\n    - status: paused\n      name: personal_banking_agent\n\
+      \      refined_query: \"Check balance in checking account\"\n\ninterrupted_workflow_4-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: search_agent\n      refined_query: \"Mortgage loan early repayment\
+      \ procedure\"\n\nworkflow_5:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ [\"workflow_3\", \"workflow_4\"]\n  steps:\n    - status: pending\n      name:\
+      \ personal_banking_agent\n      refined_query: \"Transfer $30,000 from checking\
+      \ account to pay off mortgage loan\""
+- workflow_id: workflow_4
+  step_id: 18
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Mortgage loan early\
+      \ repayment procedure\"\ntool_call_result:\n  - tool: searchInfo\n    data:\n\
+      \      refinedQuery: \"Mortgage loan early repayment procedure\"\n      title:\
+      \ \"Guide to Early Repayment of a Mortgage Loan\"\n      summary: |\n      \
+      \  To repay a mortgage loan early, follow these steps:\n\n        1. Contact\
+      \ your bank in advance  \n           Confirm whether there is a prepayment penalty\
+      \ and the amount.\n\n        2. Fill out an early repayment application  \n\
+      \           You can apply by visiting the bank, or through online banking or\
+      \ the mobile app.\n\n        3. Make the repayment  \n           Pay the remaining\
+      \ principal, interest, and if applicable, the prepayment penalty.\n\n      \
+      \  4. Release of collateral  \n           Once the loan is fully repaid, the\
+      \ bank will release the collateral.\n\n        Some financial institutions do\
+      \ not charge a prepayment penalty, or they may waive it after a certain period.\n\
+      \      source: \"Summary of loan product terms from Bank of America\"\n    \
+      \  status: \"success\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ To pay off your mortgage early, please follow the steps below:
+
+
+      1. Contact your bank first.
+
+      Check whether there is an early repayment fee, and if so, how much it is.
+
+
+      2. Fill out an early repayment application.
+
+      You can apply at a bank branch, through the mobile app, or via online banking.
+
+
+      3. Make the repayment.
+
+      You’ll need to pay the remaining principal, interest, and if applicable, the
+      early repayment fee.
+
+
+      4. Request release of collateral.
+
+      Once the loan is fully repaid, the bank will release the lien on the collateral
+      (e.g., your house).
+
+
+      ※ Some banks may waive the fee if a certain period has passed or if specific
+      conditions are met, so be sure to confirm.
+
+
+      ----------
+
+
+      ▶ Sorry, but I don’t have the bank information you requested, so I can’t check
+      your balance.
+
+
+      Please provide the name of the bank you’d like me to look up.'
+- workflow_id: null
+  step_id: 20
+  agent: user
+  agent_type: user
+  data:
+    content: 'Oh, it''s Bank of America.
+
+      I can just transfer the money.'
+- workflow_id: workflow_4
+  step_id: 21
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"Check the balance\
+      \ of my checking account at Bank of America\"\n  accountNumber: \"123-123-123444\"\
+      \n  accountHolderName: \"Jude\"\n  bankName: \"Bank of America\"\n  accountType:\
+      \ \"checking\"\n  includeTransactions: false\ntool_call_result:\n  data:\n \
+      \   accountBalanceResult:\n      bankName: \"Bank of America\"\n      accountNumber:\
+      \ \"123-123-123444\"\n      accountHolderName: \"Jude\"\n      balance: \"$70,000\"\
+      \n      currency: \"USD\"\n      sourceAccountId: \"acc-20250724-001\"\n   \
+      \   status: \"success\""
+- workflow_id: workflow_5
+  step_id: 22
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"Transfer $30,000\
+      \ from my checking account at Bank of America to pay off my home mortgage loan\"\
+      \n  recipientName: \"Jude\"\n  bankName: \"Bank of America\"\n  accountNumber:\
+      \ \"203-456-987654\"\n  amount: 30000\n  sourceAccountId: \"acc-20250724-001\"\
+      \ntool_call_result:\n  data:\n    transferResult:\n      status: \"success\"\
+      \n      message: \"$30,000 has been successfully transferred.\"\n      senderAccount:\n\
+      \        bankName: \"Bank of America\"\n        accountNumber: \"123-123-123444\"\
+      \n        accountHolderName: \"Jude\"\n        sourceAccountId: \"acc-20250724-001\"\
+      \n        remainingBalance: \"$40,000\"\n      recipientAccount:\n        bankName:\
+      \ \"Bank of America\"\n        accountNumber: \"203-456-987654\"\n        accountHolderName:\
+      \ \"Jude\"\n      transaction:\n        transactionId: \"TXN-20250725-0001\"\
+      \n        amount: \"$30,000\"\n        currency: \"USD\"\n        transactionDateTime:\
+      \ \"2025-07-25T13:19:00\"\n        transactionType: \"Loan Repayment\""
+- workflow_id: null
+  step_id: 23
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Checking account balance
+
+      Your account at Bank of America, 123-123-123444, currently has $70,000.00.
+
+
+      ----------
+
+
+      ▶ Your outstanding loan balance is $70,000, and your current account balance
+      is $70,000. Would you like more details?
+
+
+      ----------
+
+
+      ▶ Jude, the mortgage repayment transfer of $30,000 that you requested has been
+      successfully completed.
+
+
+      From Account: Bank of America 123-123-123444 (Account Holder: Jude)
+
+
+      To Account: Bank of America 203-456-987654 (Account Holder: Jude)
+
+
+      Transfer Amount: $30,000
+
+
+      Remaining Balance: $40,000
+
+
+      Transaction Date & Time: July 25, 2025, 1:19 PM
+
+
+      Transaction ID: TXN-20250725-0001
+
+
+      Transaction Type: Loan Repayment
+
+
+      If you have any other questions or to request another repayment, please let
+      me know anytime.'

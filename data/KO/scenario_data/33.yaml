@@ -1,0 +1,99 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2024-08-03
+
+      - userId: user_8392
+
+      - 이름: 조인성인
+
+      - 연락처: 010-8525-8522'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 연주회 공연 예매했었는데 성인 3명으로 잘못 예매했더라고. 성인1명, 어린이2명으로 바꿔야겠더라. 그리고 전에 산 조명 막상
+      받아보니 별로네? 그냥 마음이 바꼈으니까 이거 환불할래
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      연주회 공연 예매 내역 조회\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"연주회 공연을 성인 1명, 어린이 2명으로 예매 내역 변경\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: shopping_agent\n      refined_query: \"조명 주문 내역 조회\"\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"마음이 바뀌어 조명 환불\
+      \ 요청\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceBooking\narguments:\n  refinedQuery: \"연주회 공연 예매\
+      \ 내역 조회\"\n  userId: \"user_8392\"\n  name: \"조인성인\"\n  contactNumber: \"010-8525-8522\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"연주회 공연 예매 내역 조회\"\n    userId:\
+      \ \"user_8392\"\n    name: \"조인성인\"\n    bookings:\n      - bookingId: \"BK20240820-001\"\
+      \n        performanceTitle: \"2024 여름 연주회\"\n        date: \"2024-08-20\"\n\
+      \        time: \"19:00\"\n        venue: \"서울 예술의전당\"\n        seatInfo:\n \
+      \         seatGrade: \"R석\"\n          seatNumbers: [\"R3\", \"R4\", \"R5\"\
+      ]\n          audienceTypes: [\"adult\", \"adult\", \"adult\"]\n        status:\
+      \ \"confirmed\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"조명 주문 내역 조회\"\n\
+      \  userId: \"user_8392\"\n  recipientName: \"조인성인\"\n  phoneNumber: \"010-8525-8522\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"조명 주문 내역 조회\"\n    userId:\
+      \ \"user_8392\"\n    recipientName: \"조인성인\"\n    phoneNumber: \"010-8525-8522\"\
+      \n    orders:\n      - orderId: \"ORD20240710-001\"\n        productName: \"\
+      LED 조명 세트\"\n        orderDate: \"2024-07-16\"\n        productId: \"PROD-LED-0001\"\
+      \n        quantity: 1\n        status: \"배송 완료\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyPerformanceBooking\narguments:\n  refinedQuery: \"BK20240820-001\
+      \ 성인 1명, 어린이 2명으로 예매 변경\"\n  bookingId: \"BK20240820-001\"\n  modifiedAudienceTypes:\
+      \ [\"adult\", \"child\", \"child\"]\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"BK20240820-001 성인 1명, 어린이 2명으로 예매 변경\"\n    bookingId: \"BK20240820-001\"\
+      \n    modifiedAudienceTypes: [\"adult\", \"child\", \"child\"]\n    status:\
+      \ \"변경 완료\"\n    message: \"연주회 공연 예매 내역이 성인 1명, 어린이 2명으로 성공적으로 변경되었습니다.\""
+- workflow_id: workflow_2
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: refundProducts\narguments:\n  refinedQuery: \"마음이 바뀌어 ORD20240710-001\
+      \ 환불 요청\"\n  orderId: \"ORD20240710-001\"\n  itemList:\n    - productId: \"\
+      PROD-LED-0001\"\n      quantity: 1\n  reasonCode: \"CHANGE_OF_MIND\"\n  detailedReason:\
+      \ \"마음이 바뀜\"\n  refundMethod: \"ORIGINAL_PAYMENT\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"마음이 바뀌어 ORD20240710-001 환불 요청\"\n    orderId: \"ORD20240710-001\"\
+      \n    itemList:\n      - productId: \"PROD-LED-0001\"\n        quantity: 1\n\
+      \        reason: \"마음이 바뀜\"\n    reasonCode: \"CHANGE_OF_MIND\"\n    detailedReason:\
+      \ \"마음이 바뀜\"\n    refundMethod: \"ORIGINAL_PAYMENT\"\n    refundStatus: \"환불\
+      \ 요청 접수 완료\"\n    refundNote: \"단순 변심으로 인한 환불 요청이며, 택배비 4,000원 입금이 필요합니다. 입금\
+      \ 계좌: 대한은행 123-456789-0987 (예금주: 패션왕)\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "요청하신 사항들이 아래와 같이 처리되었습니다.\n\n1. 연주회 공연 예매 변경\n\n• 공연명: 2024 여름 연주회\n\
+      • 일시: 2024년 8월 20일 (화) 19:00\n• 장소: 서울 예술의전당\n• 좌석: R석 (R3, R4, R5)\n• 변경 전\
+      \ 인원: 성인 3명\n• 변경 후 인원: 성인 1명, 어린이 2명\n• 처리 결과: 예매 내역 변경 완료\n\n2. LED 조명 세트\
+      \ 환불 요청\n\n• 상품명: LED 조명 세트\n• 주문일: 2024년 7월 16일\n• 상태: 배송 완료\n• 환불 사유: 마음이\
+      \ 바뀜 (단순 변심)\n• 처리 결과: 환불 요청 접수 완료\n• 안내 사항: 택배비 4,000원 입금 필요\n  - 입금 계좌: 대한은행\
+      \ 123-456789-0987 (예금주: 패션왕)\n\n필요하신 다른 변경이나 문의사항 있으면 언제든지 알려주세요."

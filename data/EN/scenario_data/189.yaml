@@ -1,0 +1,56 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Can you read singer Billie Eilish’s Star Sign?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"Find the\
+      \ birthdate of singer Billie Eilish\"\n    - status: pending\n      name: counsel_agent\n\
+      \      refined_query: \"Check singer Billie Eilish's star sign\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"Singer Billie Eilish’s\
+      \ date of birth\"\n  personName: \"Billie Eilish\"\n  roleType: \"Singer\"\n\
+      tool_call_result:\n  status: success\n  data:\n    personName: \"Billie Eilish\"\
+      \n    birthDate: \"2001-12-18\"\n    birthPlace: \"Los Angeles, California,\
+      \ USA\"\n    gender: \"female\"\n    agency: \"Darkroom / Interscope Records\"\
+      \n    workType: [\"Singer\", \"Songwriter\"]\n    knownFor:\n      - \"Hits:\
+      \ bad guy, when the party’s over, ocean eyes\"\n      - \"Multiple Grammy Awards\"\
+      \n    profileImage: \"https://example.com/billie-eilish.jpg\"\n  source: \"\
+      Entertainment Profile Database (verified)\""
+- workflow_id: null
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getStarSignInfo\narguments:\n  refinedQuery: \"Singer born on\
+      \ December 18, 2001, star sign\"\n  birthDate: \"2001-12-18\"\ntool_call_result:\n\
+      \  data:\n    birthDate: \"2001-12-18\"\n    westernZodiac:\n      sign: \"\
+      Sagittarius\"\n      dateRange: \"Nov 22 – Dec 21\"\n      rulingPlanet: \"\
+      Jupiter\"\n      traits: [\"adventurous\", \"candid\", \"curious\", \"optimistic\"\
+      , \"independent\"]\n    chineseZodiac:\n      animal: \"Snake\"\n      element:\
+      \ \"Metal\"\n      traits: [\"perceptive\", \"strategic\", \"self-possessed\"\
+      ]\n    disclaimer: \"This is entertainment guidance based on zodiac traditions.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "Billie Eilish was born on December 18, 2001, which makes her a Sagittarius\
+      \ in the Western zodiac. \nSagittarius is ruled by Jupiter and is often described\
+      \ as adventurous, candid, curious, and optimistic. \nIn the Chinese zodiac,\
+      \ 2001 is the year of the Metal Snake, associated with being perceptive and\
+      \ strategic."

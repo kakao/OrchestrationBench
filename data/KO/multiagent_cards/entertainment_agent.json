@@ -1,0 +1,1214 @@
+{
+  "agent_card": {
+    "name": "엔터 (entertainment)",
+    "agent_id": "entertainment_agent",
+    "description": "TV, 영화, 음악, 공연, 전시, 웹툰 정보를 제공하고 예매, 조회, 변경, 취소까지 한 번에 도와주는 취향 맞춤형 엔터테인먼트 도우미입니다.",
+    "url": "http://localhost:10006/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getTvProgramInfo",
+        "name": "TV프로그램 정보",
+        "description": "방송 프로그램의 편성 시간, 출연진, 줄거리, 추천작, 장르별 목록 등 세부 정보를 제공합니다.",
+        "examples": [
+          "요즘 인기 많은 범죄 수사 드라마 알려줘",
+          "소년심판 4회에 등장하는 배우 명단 보여줘",
+          "하트시그널 마지막 방송이 언제야?",
+          "응답하라 1988 줄거리 축약해줄래?",
+          "비슷한 분위기의 미드 추천해줘"
+        ]
+      },
+      {
+        "id": "getMovieInfo",
+        "name": "영화 정보",
+        "description": "영화의 개봉, 감독, 출연진, 평점, 상영 여부 및 테마 기반 추천, 극장 정보 등 다양한 정보를 안내합니다.",
+        "examples": [
+          "이번 달에 개봉하는 스릴러 영화 뭐있어?",
+          "한효주가 주연인 작품 중 평점 순위 높은 것 알려줘",
+          "인사이드 아웃 2 개봉 날짜가 궁금해",
+          "타란티노 감독 영화 최근에 나온거 알려줘",
+          "강남 메가박스에서 볼 수 있는 전체관람가 영화 알려줘"
+        ]
+      },
+      {
+        "id": "bookMovieTicket",
+        "name": "영화 예매",
+        "description": "원하는 영화, 날짜, 영화관, 좌석(자동 추천 가능) 등 조건에 맞춰 영화 티켓을 예매합니다. '영화 정보'를 통해 예매할 영화를 선택합니다.",
+        "examples": [
+          "이번주 금요일 저녁에 CGV 용산에서 인기순 영화 예매해줘",
+          "일요일 오후 3시에 볼 수 있는 영화 추천하면서 예매까지 해줄래?",
+          "롯데시네마 청량리에서 가족 3명 가볼만한 최신 영화 예매할래"
+        ]
+      },
+      {
+        "id": "getMovieBooking",
+        "name": "영화 예매 조회",
+        "description": "내가 예매한 영화 티켓 정보를 확인하고 예매 내역(전체/특정)을 자세히 안내합니다.",
+        "examples": [
+          "최근 예매한 영화 티켓 내역 좀 보여줄래?",
+          "이름 홍길동, 번호 010-5555-1234로 예약된 영화가 있나?",
+          "내가 오늘 받을 수 있는 영화 티켓이 뭐가 있어?"
+        ]
+      },
+      {
+        "id": "cancelMovieBooking",
+        "name": "영화 예매 취소",
+        "description": "예매한 영화 티켓을 취소하고, 환불 방식을 설정해줍니다. '영화 예매 조회'를 통해 취소할 예약을 선택합니다.",
+        "examples": [
+          "어제 예매한 영화표 취소해줘, 일정이 바뀌었어",
+          "CGV 왕십리에서 예약한 티켓을 환불하고 싶어",
+          "예매 실수로 티켓을 잘못 사서 취소해야겠어"
+        ]
+      },
+      {
+        "id": "modifyMovieBooking",
+        "name": "영화 예매 변경",
+        "description": "이미 예매한 영화의 상영관, 시간, 좌석, 관람객 유형을 변경할 수 있습니다. '영화 예매 조회'를 통해 변경할 예약을 선택합니다.",
+        "examples": [
+          "예약한 영화 좌석 자리 다른 곳으로 바꿔줘",
+          "이번주 일요일로 영화 관람 날짜 변경해줄래?",
+          "CGV 강남에서 보도록 상영관을 바꾸고 싶어"
+        ]
+      },
+      {
+        "id": "getExhibitionInfo",
+        "name": "전시 정보",
+        "description": "전시회 이름, 전시장 위치, 일정, 도슨트 프로그램 및 추천 등 현재 진행 중인 전시 정보를 안내합니다.",
+        "examples": [
+          "9월에 서울에서 하는 예술 전시 뭐가 있을까?",
+          "이번주에 아이랑 갈만한 도슨트 있는 전시 추천해줘",
+          "예술의전당에서 하는 전시회 일정 좀 알려줘"
+        ]
+      },
+      {
+        "id": "bookExhibitionTicket",
+        "name": "전시 예매",
+        "description": "용자가 선택한 전시회에 대해 관람 일자, 인원 수, 도슨트 포함 여부 등의 정보를 바탕으로 티켓 예매를 진행하는 도구입니다. '전시 정보'를 통해 예매할 전시를 선택합니다.",
+        "examples": [
+          "이번 주 토요일에 예술의전당 전시회 2명 예매해줘",
+          "한국 근현대 미술전 3시 타임으로 성인 2장 예약하고 싶어",
+          "디뮤지엄 전시 4명 관람할 건데 도슨트 포함으로 예매할래"
+        ]
+      },
+      {
+        "id": "getExhibitionBooking",
+        "name": "전시 예매 조회",
+        "description": "내가 예매한 전시 일정과 정보를 확인하고, 특정 전시나 날짜에 따른 예매 내역을 조회할 수 있습니다.",
+        "examples": [
+          "이번 주말 예매한 전시 일정 알려줘",
+          "김민수 이름으로 예매된 전시 확인해줘",
+          "예술의전당 전시 예매 내역이 있는지 볼 수 있을까?"
+        ]
+      },
+      {
+        "id": "cancelExhibitionBooking",
+        "name": "전시 예매 취소",
+        "description": "예매한 전시 티켓을 취소를 진행하는 도구입니다. '전시 예매 조회'를 통해 취소할 예매를 선택합니다.",
+        "examples": [
+          "내일 예매한 전시 취소해줘",
+          "디뮤지엄 전시 예매했던 거 취소하고 싶어",
+          "갑자기 일이 생겨서 전시 티켓 취소하려고 해"
+        ]
+      },
+      {
+        "id": "modifyExhibitionBooking",
+        "name": "전시 예매 변경",
+        "description": "예매한 전시의 날짜, 시간, 인원, 티켓 옵션 등을 변경할 수 있습니다. '전시 예매 조회'를 통해 변경할 예매를 선택합니다.",
+        "examples": [
+          "예매한 날짜를 8월 20일로 바꿔줘",
+          "관람 인원을 2명에서 3명으로 변경하고 싶어",
+          "도슨트를 포함해서 오후 3시로 시간만 바꿔줘"
+        ]
+      },
+      {
+        "id": "getPerformanceInfo",
+        "name": "공연 정보",
+        "description": "뮤지컬, 연극, 콘서트 등 공연 일정, 장소, 출연진, 가격, 추천 공연 등 다양한 정보를 제공합니다.",
+        "examples": [
+          "다음달에 가족과 함께 볼만한 공연 추천해줄 수 있어?",
+          "유명한 클래식 공연 곧 하는 거 알려줘",
+          "정성화가 출연하는 뮤지컬 있어?",
+          "요즘 인기 많은 콘서트 알려줘"
+        ]
+      },
+      {
+        "id": "bookPerformance",
+        "name": "공연 예매",
+        "description": "공연 제목, 공연장, 날짜, 좌석 등급, 관람 인원 등의 조건을 입력받아 티켓 예매를 도와줍니다. '공연 정보'를 통해 예매할 공연을 선택합니다.",
+        "examples": [
+          "다음주 토요일에 VIP석 2장 예매해줄래?",
+          "오페라 공연 중에서 R석으로 예매 가능할까?",
+          "세종문화회관에서 열리는 어린이 공연 3명 예약하고 싶어"
+        ]
+      },
+      {
+        "id": "getPerformanceBooking",
+        "name": "공연 예매 조회",
+        "description": "내가 예매한 공연 정보를 확인하고 예약 내역을 자세히 안내합니다.",
+        "examples": [
+          "지난달에 예약한 공연 내역 확인해줘",
+          "홍길동 이름과 번호로 공연 예매 내역 보여줄 수 있어?"
+        ]
+      },
+      {
+        "id": "cancelPerformanceBooking",
+        "name": "공연 예매 취소",
+        "description": "공연 티켓 예매 내역을 확인하고 환불 및 수수료 규정에 따라 취소를 진행합니다. '공연 예매 조회'를 통해 취소할 예매를 선택합니다.",
+        "examples": [
+          "예매했던 뮤지컬 티켓 모두 취소하고 싶어",
+          "일정이 달라져서 다음주 클래식 공연 환불 신청해줄래?"
+        ]
+      },
+      {
+        "id": "modifyPerformanceBooking",
+        "name": "공연 예매 변경",
+        "description": "예매한 공연의 일정/좌석/공연장 등 예약 사항을 변경할 수 있습니다. '공연 예매 조회'를 통해 변경할 예매를 선택합니다.",
+        "examples": [
+          "예매확정된 콘서트 좌석을 다른 자리로 바꿔줄래?",
+          "공연 날짜를 7월 20일로 연기할 수 있을까?"
+        ]
+      },
+      {
+        "id": "searchVideo",
+        "name": "영상 검색",
+        "description": "유튜브 등 플랫폼에서 인기 영상, 브이로그, 뮤직비디오 등 각종 영상을 검색해줍니다.",
+        "examples": [
+          "런던 여행 브이로그 중에서 인기 있는 영상 찾아줘",
+          "블랙핑크 신곡 뮤비 바로 보여줄 수 있어?",
+          "요리 잘하는 채널에서 추천 영상 알려줘"
+        ]
+      },
+      {
+        "id": "getMusicInfo",
+        "name": "음악 정보",
+        "description": "차트순위, 신곡, 아티스트, 장르, 무드, 발매일 등 음악 정보를 안내하고 추천해줍니다.",
+        "examples": [
+          "지금 발매된 발라드 중에서 인기순위를 보여줘",
+          "지난주 유튜브 뮤직 TOP 10 곡 들려줄래?",
+          "운전할 때 신나는 팝송 추천해줘",
+          "가사에 봄이 들어가는 노래 알려줘"
+        ]
+      },
+      {
+        "id": "getWebtoonInfo",
+        "name": "웹툰/만화 정보",
+        "description": "웹툰, 만화, 작가, 신작, 장르, 완결 여부 등 세부 정보를 안내하고 추천합니다.",
+        "examples": [
+          "주간 인기 회귀물 웹툰 뭐가 있지?",
+          "슬램덩크 작가의 최신 만화가 뭔지 궁금해",
+          "공포 테마로 최근 연재 시작한 웹툰 추천해줘",
+          "로맨스 웹툰 올해 신작 중에 볼 만한 거 알려줄래?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getTvProgramInfo",
+      "description": "TV 프로그램 및 시리즈의 상세 정보, 회차 정보, 장르 추천, 출연진, 방송 시간 등 다양한 TV 관련 데이터를 조회할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 흐름과 사용자의 자연어 요청을 반영한 TV 프로그램 관련 정제된 질의 (예: '오늘 밤 인기 드라마 편성표 알려줘', '범죄 수사 장르 추천해줘')"
+          },
+          "programTitle": {
+            "type": "string",
+            "description": "정보를 조회하고 싶은 프로그램 또는 시리즈의 이름 (예: '도깨비', '하트시그널3', 'CSI 라스베가스'). 이 필드 혹은 genre 중 하나는 반드시 필요합니다."
+          },
+          "episodeNumber": {
+            "type": "string",
+            "description": "조회하고 싶은 회차 또는 에피소드 번호 (예: '2', '12', '시즌2 마지막회')"
+          },
+          "genre": {
+            "type": "string",
+            "description": "TV 프로그램을 장르로 검색하거나 추천받고 싶을 때 입력 (예: '예능', '로맨스', '추리', '성장 드라마'). 이 필드 혹은 programTitle 중 하나는 반드시 필요합니다."
+          },
+          "broadcastDate": {
+            "type": "string",
+            "description": "방송 날짜로 기준으로 조회할 때 입력(예: 2025-11-22)"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getMovieInfo",
+      "description": "영화에 대한 상세 정보, 출연 배우나 감독, 장르, 관람 등급, 개봉일, 상영 여부, 영화관 정보 등 다양한 조건으로 원하는 영화를 찾거나 조회할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락과 사용자의 자연어 쿼리를 합쳐 정교하게 재구성한 검색 질의 (예: '서울에서 상영 중인 액션 영화', '15세 관람가 최신 애니메이션 알려줘')"
+          },
+          "movieTitle": {
+            "type": "string",
+            "description": "찾고자 하는 영화의 제목(정확하지 않아도 비슷하게 검색 가능, 예: '인셉션', '범죄도시3')"
+          },
+          "actorName": {
+            "type": "string",
+            "description": "영화에 출연한 배우 이름(예: '공유', '마동석')으로 검색할 경우 해당 배우 출연작은 평점순으로 정렬됨"
+          },
+          "directorName": {
+            "type": "string",
+            "description": "영화 감독의 이름 (예: '봉준호', '김한민')"
+          },
+          "genre": {
+            "type": "string",
+            "description": "영화 장르 필터 (예: '코미디', '범죄', '드라마')"
+          },
+          "ageRating": {
+            "type": "string",
+            "description": "관람 등급별 필터링 (예: '청소년 관람불가', '12세 이상', '전체 관람가')"
+          },
+          "releaseDate": {
+            "type": "string",
+            "description": "특정 개봉일 필터 또는 개봉일 확인용 (예: '2024-09-01')",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "isReleased": {
+            "type": "boolean",
+            "description": "현재 상영 여부 또는 개봉 여부 확인 (예: true)"
+          },
+          "theaterLocation": {
+            "type": "string",
+            "description": "상영 중인 영화관의 구체적인 위치 정보 (예: 'CGV 왕십리', '메가박스 코엑스')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "rating",
+              "releaseDate",
+              "titleLength",
+              "popularity"
+            ],
+            "description": "검색 결과 정렬 옵션. 지정값이 없는 경우 배우 이름 기준 검색은 자동으로 평점순, 그 외에는 최신순 정렬이 기본값으로 합니다."
+          },
+          "screeningDate": {
+            "type": "string",
+            "description": "특정 상영일로 필터링할 경우 사용 (예: '2025-08-03')",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookMovieTicket",
+      "description": "영화관에서 원하는 영화의 좌석과 시간, 인원 정보를 입력하여 예매할 수 있는 도구입니다.  '영화 정보'를 통해 예매할 영화를 선택하며, 원하는 영화, 상영관, 날짜 및 시간, 좌석, 관람객 정보 등으로 빠르고 정확하게 영화 티켓을 예약할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청과 대화 맥락을 반영한 정제된 요청 문장 (예: '롯데시네마 신림에서 다음 금요일 저녁 타임 인기 영화 예매', '부산 해운대 CGV에서 주말 가족 영화 좌석 예약 희망')"
+          },
+          "movieTitle": {
+            "type": "string",
+            "description": "예매할 영화의 제목 (예: '범죄도시4', '인사이드 아웃 2')"
+          },
+          "theaterName": {
+            "type": "string",
+            "description": "예매를 원하는 영화관 이름 (예: '롯데시네마 강남', 'CGV 해운대')"
+          },
+          "showDate": {
+            "type": "string",
+            "format": "date",
+            "description": "관람 날짜로, 오늘 이후부터 2주 이내의 날짜만 입력(예: '2025-07-12')"
+          },
+          "showTime": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$",
+            "description": "영화 상영 시작 시간 (24시간 형식, 예: '19:30')"
+          },
+          "seatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "선택한 좌석 번호의 배열 (예: ['D9','D10']), 좌석을 지정하지 않을 경우 제외하며 시스템에서 랜덤 배정됨"
+          },
+          "audienceCount": {
+            "type": "number",
+            "description": "총 관람 인원 수. seatNumbers의 개수와 반드시 일치"
+          },
+          "audienceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "adult",
+                "child"
+              ]
+            },
+            "description": "관람객 구분의 배열. 예: ['adult', 'child']는 성인 1명, 소아 1명. 순서와 인원수는 audienceCount와 일치"
+          },
+          "userInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "예매자 이름 (예: '김민수')"
+              },
+              "contactNumber": {
+                "type": "string",
+                "description": "예매자 연락처 (예: '010-1234-5678')"
+              }
+            },
+            "required": [
+              "name",
+              "contactNumber"
+            ]
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "movieTitle",
+          "theaterName",
+          "showDate",
+          "showTime",
+          "audienceCount",
+          "audienceTypes",
+          "userInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getMovieBooking",
+      "description": "영화 예매 내역을 사용자의 입력과 계정 정보를 바탕으로 조회하는 도구입니다. 특정 영화, 극장, 날짜, 시간에 따른 내역 확인도 가능합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "질문 맥락을 반영한 자연어 검색 쿼리 (예: '내가 최근 예매한 영화 알려줘', '롯데시네마 건대에서 오늘 예매한 티켓 내역 보여줘')"
+          },
+          "userId": {
+            "type": "string",
+            "description": "예매자 계정 또는 고유 사용자 ID입니다. 시스템 내 사용자 식별에 사용됩니다."
+          },
+          "name": {
+            "type": "string",
+            "description": "예매 시 입력한 예매자 이름. contactNumber와 함께 필수로 입력해야 합니다."
+          },
+          "contactNumber": {
+            "type": "string",
+            "description": "예매 시 등록된 연락처 번호. name과 함께 입력해야 하며, 올바르지 않은 조합일 경우 예매 기록이 조회되지 않습니다."
+          },
+          "movieTitle": {
+            "type": "string",
+            "description": "조회하려는 영화 제목 (예: '범죄도시 4', '쿵푸팬더 5'). 입력하지 않으면 전체 예매 내역을 조회합니다."
+          },
+          "theaterName": {
+            "type": "string",
+            "description": "조회하려는 극장명 (예: 'CGV 서면', '메가박스 동대문'). 입력하지 않으면 전체 극장 예매 내역 조회."
+          },
+          "showDate": {
+            "type": "string",
+            "format": "date",
+            "description": "상영 날짜 (예: '2024-08-01'). 미입력 시 최근 30일 이내 예매 내역만 조회됩니다."
+          },
+          "showTime": {
+            "type": "string",
+            "description": "상영 시간 (예: '13:00', '20:45'). 선택적으로 입력할 수 있습니다."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "name",
+          "contactNumber"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelMovieBooking",
+      "description": "영화 예매 내역을 조회한 후, 사용자가 요청한 영화 예매를 취소하고 환불을 진행하는 도구입니다. '영화 예매 조회'를 통해 취소할 예매를 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 취소 의도가 포함된 자연어 쿼리와 이전 맥락을 결합한 정제된 입력값 (예: '예매한 영화 취소해줘', '다음 주 토요일 영화표 환불하고 싶어')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "취소할 영화 예매의 고유 ID. 반드시 미리 getMovieBooking을 통해 조회한 값을 사용합니다."
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "선택 사항. 예매 취소 사유 (예: '예정이 변경됨', '컨디션이 좋지 않음', '티켓 선택 실수')"
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "original_payment"
+            ],
+            "description": "선택 사항. 환불 수단은 반드시 'original_payment'만 지정할 수 있습니다."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bookingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyMovieBooking",
+      "description": "영화 예매 정보를 수정하여 관람 극장, 날짜, 시간, 좌석, 관람객 유형 등 사용자의 요청에 맞게 변경할 수 있는 도구입니다. '영화 예매 조회'를 통해 변경할 예매를 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락 및 사용자의 영화 예매 변경 요청을 반영한 정제된 쿼리 (예: '예약한 영화 좌석을 앞쪽으로 이동하고 싶어요', '관람 날짜를 다음 주 금요일로 바꿔주세요')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "변경할 영화 예매의 고유 ID. 예매 내역에서 조회하여 사용해야 합니다.",
+            "pattern": "^[A-Za-z0-9\\-]+$"
+          },
+          "modifiedTheaterName": {
+            "type": "string",
+            "description": "변경할 극장 이름. 예: '롯데시네마 월드타워'. 선택 시 해당 극장 및 시간의 상영 가능 여부를 확인해야 합니다."
+          },
+          "modifiedShowDate": {
+            "type": "string",
+            "description": "변경할 관람 날짜. 예: '2025-08-04' (YYYY-MM-DD). 변경 시 해당 극장과 시간의 상영 가능 여부를 확인해야 합니다.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "modifiedShowTime": {
+            "type": "string",
+            "description": "변경할 관람 시간. 예: '17:10'. 극장과 함께 변경할 경우 상영 시간 가능 여부를 반드시 확인해야 합니다.",
+            "pattern": "^([01]?\\d|2[0-3]):[0-5]\\d$"
+          },
+          "modifiedSeatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "변경할 좌석 번호 목록. 예: ['D7', 'D8']"
+          },
+          "modifiedAudienceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "adult",
+                "child",
+                "teen",
+                "senior"
+              ]
+            },
+            "description": "변경할 관람객 유형 배열. 예: ['adult', 'senior']"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "예매 변경 사유. 예: '동반인 일정 변경', '더 좋은 좌석을 원함', '상영관 변경 희망 등'"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bookingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getExhibitionInfo",
+      "description": "사용자의 요청에 따라 전시회 정보를 검색하고, 전시 제목, 전시장 이름, 방문 날짜, 도슨트 프로그램 여부, 관람 등급, 정렬 옵션 등 다양한 조건으로 필터링하여 제공합니다.  여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락과 사용자의 자연어 요청을 모두 반영하여 정제된 전시 정보 검색 쿼리입니다. (예: '어린이와 함께 갈 만한 서울 도슨트 전시', '가족 단위 관람 추천 전시' 등)"
+          },
+          "exhibitionTitle": {
+            "type": "string",
+            "description": "찾고자 하는 특정 전시회 이름입니다. 전체 또는 부분 입력 모두 가능. (예: '한국 근현대 미술전')"
+          },
+          "venueName": {
+            "type": "string",
+            "description": "전시장이나 미술관, 박물관의 이름입니다. (예: '예술의전당', '디뮤지엄')"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "방문하고자 하는 날짜를 YYYY-MM-DD 형식으로 입력합니다. (예: '2025-07-11')"
+          },
+          "includeDocent": {
+            "type": "boolean",
+            "description": "도슨트 프로그램 포함 여부. 도슨트 해설이 포함된 전시만 찾으려면 true로 설정 (예: true)"
+          },
+          "ageRating": {
+            "type": "string",
+            "enum": [
+              "전체 관람가",
+              "12세 이상",
+              "15세 이상",
+              "청소년 관람불가"
+            ],
+            "description": "관람 등급(연령 제한) 조건입니다. 예를 들어 어린이와 함께할 경우 '전체 관람가'를 선택하세요."
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "soonest",
+              "highest_rated",
+              "lowest_price",
+              "most_reviewed"
+            ],
+            "description": "결과 리스트 정렬 기준입니다. (예: '가장 빠른 날짜순', '평점순', '최저가순', '리뷰 많은 순')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookExhibitionTicket",
+      "description": "사용자가 선택한 전시회에 대해 관람 일자, 인원 수, 도슨트 포함 여부 등의 정보를 바탕으로 티켓 예매를 진행하는 도구입니다. '전시 정보'를 통해 에매할 전시를 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 예매 요청을 정제한 문장입니다. (예: '이번 주 토요일에 예술의전당 전시회 2명 예매해줘')"
+          },
+          "exhibitionId": {
+            "type": "string",
+            "description": "예매할 전시회 식별자 (전시 정보 조회 결과로 얻은 ID 값)"
+          },
+          "exhibitionTitle": {
+            "type": "string",
+            "description": "전시회 이름"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "관람할 날짜 (형식: YYYY-MM-DD)"
+          },
+          "time": {
+            "type": "string",
+            "description": "관람 시작 시간 (예: '15:00')"
+          },
+          "visitorCount": {
+            "type": "integer",
+            "description": "예매 인원 수 (예: 2)"
+          },
+          "includeDocent": {
+            "type": "boolean",
+            "description": "도슨트 해설 포함 여부 (예: true)"
+          },
+          "ticketOption": {
+            "type": "string",
+            "description": "예매할 티켓 옵션 또는 카테고리 (예: '성인 일반권', '청소년 할인권')"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예매자 연락처 (형식: 010-1234-5678)",
+            "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "기타 요청 사항 (예: '휠체어 동반 관람')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "exhibitionId",
+          "date",
+          "visitorCount",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getExhibitionReservationInfo",
+      "description": "예매자 연락처를 기준으로 특정 날짜 또는 전체 예매 내역을 조회할 수 있는 도구입니다. 전시회 제목 또는 날짜를 필터로 지정할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어로 표현된 조회 요청을 정제한 문장 (예: '이번 주말 예매한 전시 일정 알려줘')"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예매자 연락처 (형식: 010-1234-5678)",
+            "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "조회할 특정 날짜 (선택값, 형식: YYYY-MM-DD)"
+          },
+          "exhibitionTitle": {
+            "type": "string",
+            "description": "특정 전시 제목으로 필터링 (선택값)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelExhibitionTicket",
+      "description": "전시회 예매를 취소하는 도구입니다. 예매 ID를 기반으로 취소 요청하며, 선택적으로 사유를 입력할 수 있습니다. 관람 시간 2시간 이전까지 취소 가능합니다. '전시 예매 조회'를 통해 취소할 예매를 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어로 표현된 취소 요청을 정제한 문장 (예: '내일 예매한 전시 취소해줘')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "예매 식별 ID (예매 조회 결과에서 확인 가능)"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "취소 사유 (선택)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyExhibitionTicket",
+      "description": "전시회 예매 정보를 수정하는 도구입니다. 관람 날짜, 시간, 인원, 티켓 옵션 등을 변경할 수 있으며, 관람 당일에는 변경이 불가합니다. 최소 하나 이상의 변경 항목이 필요합니다. '전시 예매 조회'를 통해 변경할 예매를 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어 변경 요청을 정제한 문장 (예: '전시 날짜를 하루 미루고 싶어')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "예매 식별 ID (예매 조회 결과에서 확인 가능)"
+          },
+          "newDate": {
+            "type": "string",
+            "format": "date",
+            "description": "변경할 날짜 (예: '2025-08-20')"
+          },
+          "newTime": {
+            "type": "string",
+            "description": "변경할 시간 (예: '14:00')"
+          },
+          "newVisitorCount": {
+            "type": "integer",
+            "description": "변경할 인원 수"
+          },
+          "newTicketOption": {
+            "type": "string",
+            "description": "변경할 티켓 유형 (예: '청소년 할인권')"
+          },
+          "includeDocent": {
+            "type": "boolean",
+            "description": "도슨트 포함 여부 변경"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예매자 연락처 (필수)",
+            "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPerformanceInfo",
+      "description": "공연 정보를 검색하고 사용자 조건에 맞는 공연을 찾아주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 입력과 이전 맥락을 모두 반영한 공연 검색 쿼리 (예: '다음 달 서울에서 열리는 연극 추천', '어린이와 함께 볼 수 있는 뮤지컬')"
+          },
+          "performanceTitle": {
+            "type": "string",
+            "description": "검색할 공연의 제목 (예: '노트르담 드 파리', '라이온 킹')"
+          },
+          "genre": {
+            "type": "string",
+            "enum": [
+              "뮤지컬",
+              "연극",
+              "콘서트",
+              "클래식",
+              "무용",
+              "국악",
+              "오페라"
+            ],
+            "description": "공연의 장르 (예: '뮤지컬', '콘서트')"
+          },
+          "artistName": {
+            "type": "string",
+            "description": "출연자 또는 아티스트의 이름 (예: '정성화', '이무진')"
+          },
+          "venueName": {
+            "type": "string",
+            "description": "공연장 명칭 (예: '예술의전당', 'LG아트센터')"
+          },
+          "location": {
+            "type": "string",
+            "description": "공연이 열리는 도시 또는 지역명 (예: '대구', '인천')"
+          },
+          "date": {
+            "type": "string",
+            "description": "정보를 조회할 날짜, YYYY-MM-DD 형식 (예: '2025-10-15')",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "isCurrentlyRunning": {
+            "type": "boolean",
+            "description": "현재 공연 중인 경우 true로 지정 (예: true)"
+          },
+          "ageRating": {
+            "type": "string",
+            "enum": [
+              "전체 관람가",
+              "12세 이상",
+              "15세 이상",
+              "청소년 관람불가"
+            ],
+            "description": "관람 가능 연령 (예: '전체 관람가', '15세 이상')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "soonest",
+              "highest_rated",
+              "lowest_price",
+              "most_reviewed"
+            ],
+            "description": "공연 목록의 정렬 기준, 값이 없을 때는 'soonest'가 기본값임"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookPerformance",
+      "description": "공연 예매를 위한 정보를 입력받아 원하는 공연의 좌석을 예약하는 도구입니다. '공연 정보'를 통해 예매할 공연을 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 요청이나 맥락을 반영한 공연 예매 의도와 관련 정보를 포함하는 정제된 쿼리 (예: '가족과 함께 뮤지컬 예매 원해요', '7월 5일 저녁에 친구랑 연극 예약')"
+          },
+          "performanceTitle": {
+            "type": "string",
+            "description": "예매하려는 공연의 제목 (예: '레미제라블', '오페라의 유령')"
+          },
+          "venueName": {
+            "type": "string",
+            "description": "관람을 원하는 공연장의 이름 (예: '블루스퀘어', 'LG아트센터')"
+          },
+          "showDate": {
+            "type": "string",
+            "description": "관람을 희망하는 날짜, 공연 하루 전까지 선택 가능하며 오늘로부터 2개월 이내 날짜만 지원 (예: '2025-08-15')",
+            "format": "date"
+          },
+          "showTime": {
+            "type": "string",
+            "description": "관람을 희망하는 시간 (예: '15:00', '20:00')",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$"
+          },
+          "audienceCount": {
+            "type": "integer",
+            "description": "예약을 원하는 총 인원 수 (최대 4명까지 예약 가능, 예: 3), 5인 이상 시 시스템이 자동으로 나누어 예약 진행",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "audienceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "adult",
+                "child",
+                "senior",
+                "disabled"
+              ]
+            },
+            "description": "관람자별 유형 목록 (순서대로 인원에 맞춰 지정, 예: ['adult', 'adult', 'child'])"
+          },
+          "seatGrade": {
+            "type": "string",
+            "description": "원하는 좌석 등급 (예: 'VIP석', 'A석')",
+            "enum": [
+              "R석",
+              "VIP석",
+              "S석",
+              "A석"
+            ]
+          },
+          "seatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "선택적. 특정 좌석 번호 지정 (예: ['C5', 'C6']); 미입력 시 자동으로 최적 좌석 배정"
+          },
+          "userInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "예매자 이름 (예: '김연아')"
+              },
+              "contactNumber": {
+                "type": "string",
+                "description": "예매자 연락처 (예: '010-1234-5678')",
+                "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+              }
+            },
+            "required": [
+              "name",
+              "contactNumber"
+            ]
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "performanceTitle",
+          "venueName",
+          "showDate",
+          "showTime",
+          "audienceCount",
+          "audienceTypes",
+          "seatGrade",
+          "userInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPerformanceBooking",
+      "description": "공연 예매 정보를 다양한 방식으로 조회할 수 있는 도구입니다. 예매 고유 ID, 사용자 ID, 예매자명, 연락처 등 여러 조건을 활용하여 사용자가 원하는 공연 예매 내역을 정확하게 찾을 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청 및 이전 맥락까지 반영한 정제된 조회 쿼리. (예: '6월 뮤지컬 예매 내역 확인', '어제 예약한 무대 공연 조회')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "공연 예매를 식별할 수 있는 고유 ID. 가장 정확하게 예매 정보를 조회할 수 있는 수단입니다. (예: 'PF20240801_015')"
+          },
+          "userId": {
+            "type": "string",
+            "description": "예매자 계정의 고유 ID 혹은 인증된 사용자 정보 식별자. (예: 'user_9513'), userId, name, contactNumber 중 하나의 정보는 필수"
+          },
+          "name": {
+            "type": "string",
+            "description": "공연 예매자의 이름 또는 예매 시 입력한 명의. (예: '김현우'), userId, name, contactNumber 중 하나의 정보는 필수"
+          },
+          "contactNumber": {
+            "type": "string",
+            "description": "예매 시 기재된 휴대폰 번호로, 010-XXXX-XXXX 형태의 형식 유효성 검사가 반드시 필요합니다. (예: '010-5678-1234'), userId, name, contactNumber 중 하나의 정보는 필수",
+            "pattern": "^010-\\d{4}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelPerformanceBooking",
+      "description": "공연 티켓 예매를 취소하고, 환불을 진행할 수 있는 도구입니다. '공연 예매 조회'를 통해 취소할 공연을 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 예매 취소 의도를 명확하게 담은 자연어 또는 대화 맥락 기반 쿼리 (예: '돌연 일정 변경으로 7월 25일 뮤지컬 티켓을 취소하고 싶어요')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "예매 내역 조회를 통해 획득한 취소 대상 예매 ID (예: 'PF20240811_015'). 반드시 getPerformanceBooking 도구로 사전 조회하여 획득해야 하며, 공연 시작 하루 전까지만 유효합니다. 2매 이상 예매 시 부분 취소가 불가하니 전체 취소 후 재예매해야 합니다."
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "예매 취소 사유 (예: '개인 사정', '공연 시간 변경', '체력 문제'). 사유는 선택 사항이나, 명확하게 입력 시 처리 속도가 빨라질 수 있습니다."
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "original_payment",
+              "bank_transfer",
+              "kakao_pay"
+            ],
+            "description": "환불 희망 수단 (예: 'original_payment'는 원결제수단, 'bank_transfer'는 계좌이체, 'kakao_pay'는 카카오페이로 환불)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bookingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyPerformanceBooking",
+      "description": "사용자가 이미 예매한 공연 티켓 정보를 변경할 수 있도록 지원하는 도구입니다. '공연 예매 조회'를 통해 변경할 공연을 선택히며. 공연명, 공연장, 관람 날짜, 관람 시간, 좌석, 관람 인원 유형 등의 예매 정보를 수정할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요청이 모두 포함된 예매 변경 요청 쿼리 (예: '7월 말 뮤지컬 티켓 날짜 바꿔줘', '좌석을 앞쪽으로 바꿀 수 있을까?')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "변경할 대상의 고유 예매 ID. getPerformanceBooking 도구를 사용해 조회한 값이어야 하며, 예매 후 7일 이내 & 상태가 'confirmed'인 경우에만 변경할 수 있습니다. (예: 'PF20250810_103')"
+          },
+          "modifiedPerformanceTitle": {
+            "type": "string",
+            "description": "변경을 원하는 새로운 공연명. (예: '라이온 킹')"
+          },
+          "modifiedVenueName": {
+            "type": "string",
+            "description": "변경을 원하는 공연장 이름. (예: '예술의전당 오페라하우스')"
+          },
+          "modifiedShowDate": {
+            "type": "string",
+            "format": "date",
+            "description": "변경할 관람 날짜. 오늘 또는 미래 날짜여야 하며, 과거 날짜로는 변경할 수 없습니다. (예: '2025-08-17')"
+          },
+          "modifiedShowTime": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "description": "변경할 관람 시작 시간 (24시간 형식, 예: '15:00')."
+          },
+          "modifiedSeatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "변경을 원하는 좌석 번호 배열. 관람 인원 유형(modifiedAudienceTypes)과 동일한 개수여야 합니다. (예: ['D5', 'D6'])"
+          },
+          "modifiedAudienceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "adult",
+                "child",
+                "senior",
+                "student"
+              ]
+            },
+            "description": "변경할 관람객 유형 배열. 좌석 개수와 일치해야 하며, 각 좌석에 맞는 유형을 입력합니다. (예: ['adult', 'student'])"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "예매 변경의 사유 (예: '일정 변경', '좌석 위치 변경', '공연장 변경')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bookingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "searchVideo",
+      "description": "사용자가 원하는 조건에 맞는 영상 콘텐츠를 검색할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요청을 한 번에 반영한 영상 검색 쿼리 (예: '런던 여행 브이로그 중 인기 영상', '2023년 발매된 보이그룹 신곡 뮤직비디오', '김정민이 출연한 요리 콘텐츠')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getMusicInfo",
+      "description": "음악 곡, 아티스트, 차트, 장르, 분위기, 가사 등 다양한 기준으로 음악 정보를 탐색할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "대화 맥락과 사용자 쿼리를 종합한 정제된 음악 검색 쿼리 (예: '최신 팝 발라드', '운동할 때 듣기 좋은 신나는 노래')"
+          },
+          "songTitle": {
+            "type": "string",
+            "description": "검색하려는 곡의 제목 (예: 'Love Dive')"
+          },
+          "artistName": {
+            "type": "string",
+            "description": "아티스트 또는 가수 이름 (예: '세븐틴', 'Taylor Swift')"
+          },
+          "albumTitle": {
+            "type": "string",
+            "description": "앨범 이름 (예: Answer: Love yourself)"
+          },
+          "chartType": {
+            "type": "string",
+            "enum": [
+              "melon",
+              "genie",
+              "billboard",
+              "flo",
+              "youtube_music"
+            ],
+            "description": "음악 차트 종류 - 미입력 시 기본값은 'melon'이 적용됨"
+          },
+          "chartRankRange": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "integer",
+                "description": "차트 순위 시작값 (예: 1)"
+              },
+              "end": {
+                "type": "integer",
+                "description": "차트 순위 끝값 (예: 50)"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "description": "차트 순위 범위로 결과를 제한 (예: {'start': 1, 'end': 50} → 상위 50곡)"
+          },
+          "genre": {
+            "type": "string",
+            "enum": [
+              "kpop",
+              "pop",
+              "rock",
+              "hiphop",
+              "rnb",
+              "ballad",
+              "dance",
+              "jpop",
+              "trot",
+              "remix"
+            ],
+            "description": "음악 장르 카테고리 (예: 'rock')"
+          },
+          "releaseDate": {
+            "type": "string",
+            "description": "검색하려는 곡의 발매일 혹은 기간 (예: '2024-12-01', '2024-07-01~2024-12-31')"
+          },
+          "moodTag": {
+            "type": "string",
+            "description": "필터를 위한 곡 분위기/무드 태그 (예: 'study', 'nostalgic', 'workout')"
+          },
+          "lyricsKeyword": {
+            "type": "string",
+            "description": "가사에 포함되어야 하는 특정 키워드 (예: '희망', '사랑')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "latest",
+              "most_streamed",
+              "most_liked"
+            ],
+            "description": "정렬 기준 (예: 최신순, 많이 들은 순, 좋아요 순)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "chartType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getWebtoonInfo",
+      "description": "웹툰 또는 만화의 내용, 작가, 장르 등 다양한 정보를 찾아주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요청을 반영한 정제된 검색 질문 (예: '최신 판타지 웹툰 중 인기작 추천해줘', '유명한 드라마 만화 작가 목록 알려줘')"
+          },
+          "title": {
+            "type": "string",
+            "description": "정보를 찾고자 하는 작품의 공식 제목 (예: '전지적 독자 시점', '오렌지 마말레이드')"
+          },
+          "authorName": {
+            "type": "string",
+            "description": "선택 사항: 작품의 작가 이름 (예: '손제호', '윤정호')"
+          },
+          "genre": {
+            "type": "string",
+            "enum": [
+              "fantasy",
+              "romance",
+              "action",
+              "drama",
+              "comedy",
+              "slice_of_life",
+              "regression",
+              "BL",
+              "GL",
+              "thriller",
+              "horror",
+              "school_life"
+            ],
+            "description": "선택 사항: 원하는 장르 또는 테마 선택 (예: 'romance', 'slice_of_life', 'thriller' 등)."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

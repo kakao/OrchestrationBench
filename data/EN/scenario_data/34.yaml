@@ -1,0 +1,235 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-08-12
+
+      Current time: 3:33 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I need to watch overseas soccer—what’s the current weather and time in
+      the UK?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"Current\
+      \ weather in the UK\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: life_info_agent\n      refined_query:\
+      \ \"Current time in the UK\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getGlobalWeather\narguments:\n  refinedQuery: \"Current weather\
+      \ in the UK\"\n  location: \"United Kingdom\"\n  date: \"Now\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Current weather in the UK\"\n    location: \"\
+      United Kingdom\"\n    date: \"Now\"\n    weather:\n      temperatureCelsius:\
+      \ 18\n      condition: \"Cloudy\"\n      humidityPercent: 72\n      windSpeedKmh:\
+      \ 20\n      uvIndex: 4\n      sunrise: \"05:52\"\n      sunset: \"20:24\"\n\
+      \      notes: \"Cloudy and a bit cool, so it’s a good idea to bring a light\
+      \ jacket.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getWorldTime\narguments:\n  refinedQuery: \"Current time in the\
+      \ UK\"\n  targetCity: \"UK\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Current time in the UK\"\n    targetCity: \"UK\"\n    currentTime: \"2025-08-12T01:45:00+01:00\"\
+      \n    timeZone: \"British Summer Time (BST)\"\n    utcOffset: \"+01:00\"\n \
+      \   notes: \"The UK observes Daylight Saving Time (BST, UTC+1) from late March\
+      \ to late October, and uses GMT (UTC+0) for the rest of the year.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Here’s the current situation in the UK.
+
+
+      - Weather Information
+
+      -Temperature: 18℃, a bit on the cool side
+
+      -Condition: Cloudy
+
+      -Humidity: 72%
+
+      -Wind: 20 km/h
+
+      -UV Index: 4 (moderate)
+
+      -Sunrise: 5:52 AM
+
+      -Sunset: 8:24 PM
+
+      -Note: Since it’s not very sunny and the temperature is on the lower side, it’s
+      a good idea to bring a light jacket.
+
+
+      ▶ Current Time
+
+
+      -UK Time: August 12, 2025, 1:45 AM
+
+      -Time Zone: British Summer Time (BST, UTC+1)
+
+      -Note: The UK observes Daylight Saving Time from late March to late October,
+      and uses GMT (UTC+0) for the rest of the year.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Show me today's EPL match schedule and league standings.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: weather_agent\n      refined_query: \"Current\
+      \ weather in the UK\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: life_info_agent\n      refined_query:\
+      \ \"Current time in the UK\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: sports_agent\n      refined_query:\
+      \ \"Today's EPL match schedule\"\n\nworkflow_4:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: sports_agent\n \
+      \     refined_query: \"Today's EPL league standings\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"Today's EPL match\
+      \ schedule\"\n  league: \"EPL\"\n  targetDate: \"2025-08-12\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Today's EPL match schedule\"\n    league: \"EPL\"\
+      \n    targetDate: \"2025-08-12\"\n    matches:\n      - homeTeam: \"Liverpool\"\
+      \n        awayTeam: \"Chelsea\"\n        matchTime: \"2025-08-12T20:00:00+01:00\"\
+      \n        venue: \"Anfield\"\n      - homeTeam: \"Arsenal\"\n        awayTeam:\
+      \ \"Manchester United\"\n        matchTime: \"2025-08-12T21:00:00+01:00\"\n\
+      \        venue: \"Emirates Stadium\"\n    notes: \"Match times are based on\
+      \ UK local time and are subject to change.\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportRank\narguments:\n  refinedQuery: \"Today's EPL league\
+      \ standings\"\n  league: \"EPL\"\n  targetDate: \"2025-08-12\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Today's EPL league standings - team names and\
+      \ rankings\"\n    league: \"EPL\"\n    targetDate: \"2025-08-12\"\n    rankings:\n\
+      \      - rank: 1\n        team: \"Manchester City\"\n      - rank: 2\n     \
+      \   team: \"Liverpool\"\n      - rank: 3\n        team: \"Chelsea\"\n      -\
+      \ rank: 4\n        team: \"Manchester United\"\n      - rank: 5\n        team:\
+      \ \"Arsenal\"\n      - rank: 6\n        team: \"Tottenham\"\n      - rank: 7\n\
+      \        team: \"Everton\"\n      - rank: 8\n        team: \"Leicester City\"\
+      \n      - rank: 9\n        team: \"West Ham\"\n      - rank: 10\n        team:\
+      \ \"Newcastle United\"\n      - rank: 11\n        team: \"Southampton\"\n  \
+      \    - rank: 12\n        team: \"Bournemouth\"\n      - rank: 13\n        team:\
+      \ \"Crystal Palace\"\n      - rank: 14\n        team: \"Aston Villa\"\n    \
+      \  - rank: 15\n        team: \"Watford\"\n      - rank: 16\n        team: \"\
+      Leeds United\"\n      - rank: 17\n        team: \"Brighton\"\n      - rank:\
+      \ 18\n        team: \"Norwich City\"\n      - rank: 19\n        team: \"Burnley\"\
+      \n      - rank: 20\n        team: \"Sheffield United\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 'Hello! Here are the English Premier League (EPL) match schedules and
+      league standings as of August 12, 2025.
+
+
+      ▶ Today’s Matches
+
+
+      - 8:00 PM: Liverpool vs Chelsea (Venue: Anfield)
+
+
+      - 9:00 PM: Arsenal vs Manchester United (Venue: Emirates Stadium)
+
+
+      - All match times are based on UK local time and are subject to change.
+
+
+      ----------
+
+
+      ▶ Current EPL League Standings
+
+
+      1. Manchester City
+
+
+      2. Liverpool
+
+
+      3. Chelsea
+
+
+      4. Manchester United
+
+
+      5. Arsenal
+
+
+      6. Tottenham
+
+
+      7. Everton
+
+
+      8. Leicester City
+
+
+      9. West Ham
+
+
+      10. Newcastle United
+
+
+      11. Southampton
+
+
+      12. Bournemouth
+
+
+      13. Crystal Palace
+
+
+      14. Aston Villa
+
+
+      15. Watford
+
+
+      16. Leeds United
+
+
+      17. Brighton
+
+
+      18. Norwich City
+
+
+      19. Burnley
+
+
+      20. Sheffield United
+
+
+      Both fixtures and standings may change as the season progresses. If you’d like
+      more details or other schedules, feel free to ask anytime!'

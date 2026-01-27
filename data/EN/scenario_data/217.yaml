@@ -1,0 +1,100 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-07-01'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Check the calendar for my boss's birthday. Recommend a thoughtful gift
+      under $500 for a man in his mid-40s, and also find a nice wine bar with good
+      ambience in Midtown Manhattan that can be reserved at 7 PM on his birthday.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Check\
+      \ my boss's birthday date\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"Recommend thoughtful birthday gifts under $500 for male boss in his mid-40s\"\
+      \n\nworkflow_3:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Find a nice wine bar in Midtown Manhattan with good ambience that can be\
+      \ reserved at 7 PM on the boss's birthday\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "- tool: getSchedule\n  arguments:\n    refinedQuery: \"Check the boss's\
+      \ birthday date\"\n    keyword: \"Boss's birthday\"\n  tool_call_result:\n \
+      \   data:\n      schedules:\n        - title: \"Boss's Birthday\"\n        \
+      \  startDateTime: \"2025-07-22T00:00\"\n          endDateTime: \"2025-07-22T23:59\"\
+      \n          isAllDay: true\n          calendarType: \"anniversary\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "- tool: recommendGifts\n  arguments:\n    refinedQuery: \"Recommend\
+      \ a thoughtful birthday gift under $500 for my male boss in his mid-40s\"\n\
+      \    recipientType: \"boss\"\n    age: \"mid-40s\"\n    gender: \"male\"\n \
+      \   occasion: \"birthday\"\n    personality: \"thoughtful\"\n  tool_call_result:\n\
+      \    data:\n      - itemName: \"Premium Whiskey\"\n        category: \"Alcohol\"\
+      \n        price: 350\n        reason: \"A sophisticated gift that suits the\
+      \ refined taste of a man in his 40s.\"\n      - itemName: \"Electric Massage\
+      \ Gun\"\n        category: \"Health & Wellness\"\n        price: 250\n     \
+      \   reason: \"A practical gift that helps relieve office fatigue.\"\n      -\
+      \ itemName: \"Luxury Fountain Pen Set\"\n        category: \"Stationery\"\n\
+      \        price: 450\n        reason: \"Useful for work, adds a touch of class\
+      \ to your boss’s image.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "- tool: recommendRestaurants\n  arguments:\n    refinedQuery: \"Find\
+      \ a nice, atmospheric wine bar in Midtown Manhattan that can accept a reservation\
+      \ for July 22, 2025 at 7:00 PM\"\n    location: \"Midtown Manhattan\"\n    cuisineType:\
+      \ \"wine bar\"\n    ambience: \"atmospheric\"\n    reservationTime: \"2025-07-22T19:00\"\
+      \n    sortBy: \"highest_rated\"\n    event: \"birthday\"\n  tool_call_result:\n\
+      \    data:\n      - placeName: \"Vina Grape\"\n        location: \"Midtown Manhattan,\
+      \ New York City\"\n        cuisineType: \"wine bar\"\n        rating: 4.8\n\
+      \        note: \"The atmosphere is warm and quiet, making it perfect for special\
+      \ occasions. A reservation is available for July 22 at 7:00 PM.\"\n      - placeName:\
+      \ \"The Vine\"\n        location: \"Midtown Manhattan, New York City\"\n   \
+      \     cuisineType: \"wine bar\"\n        rating: 4.6\n        note: \"You can\
+      \ enjoy a wide wine list along with fine dining, and reservations are available\
+      \ for your requested time.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "Based on your request, I’ve checked your boss's birthday schedule, suggested\
+      \ some gift ideas, and found dinner spots as well.\n\n■ Manager’s Birthday Information\n\
+      According to the calendar, your boss's birthday is July 22, 2025.\n\n■ Recommended\
+      \ Birthday Gifts\nHere are three thoughtful gift ideas for a male boss in his\
+      \ mid-40s:\n\n1. Premium Whiskey\n    * Price: about $350\n    * Why: A refined\
+      \ gift that matches his sophisticated taste.\n2. Electric Massage Gun\n    *\
+      \ Price: about $250\n    * Why: A practical health gift to help relieve office\
+      \ fatigue.\n3. Luxury Fountain Pen Set\n    * Price: about $450\n    * Why:\
+      \ A classic gift that’s both useful for work and enhances his professional image.\n\
+      \n■ Wine Bars Available for Reservation (July 22, 7 PM, Midtown)\nFor the evening\
+      \ of his birthday, here are some cozy wine bars in Midtown that accept reservations\
+      \ for the requested time:\n\n1. Vina Grape\n    * Location: Midtown Manhattan,\
+      \ New York City\n    * Features: Warm and quiet atmosphere, perfect for special\
+      \ occasions. Reservations available for your requested time.\n2. The Vine\n\
+      \    * Location: Midtown Manhattan, New York City\n    * Features: Offers a\
+      \ wide wine list with upscale dining. Reservations available for the time you\
+      \ want.\n\nI hope this information helps. If you have any other questions, feel\
+      \ free to ask anytime."

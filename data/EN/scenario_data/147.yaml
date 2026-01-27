@@ -1,0 +1,274 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '-Today''s date: April 17, 2026'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'I’m heading to Vancouver, BC, Canada, and since my flight is tomorrow,
+      I want to prepare a playlist to listen to during the trip. Can you recommend
+      the top 20 chill R&B tracks on YouTube Music?
+
+      I’m also planning a solo overnight trip to Victoria on Vancouver Island, BC,
+      Canada. Could you create a 2-day, 1-night itinerary that focuses on beautiful
+      natural scenery, so that I can relax and recharge?'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Recommend the top 20 chill R&B tracks on YouTube Music that are perfect for\
+      \ listening during a flight to Vancouver, BC, Canada\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ travel_agent\n      refined_query: \"Plan a 2-day, 1-night solo trip itinerary\
+      \ in Victoria on Vancouver Island, BC, Canada, focusing on beautiful natural\
+      \ scenery for relaxation and recharging\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMusicInfo\narguments:\n  refinedQuery: \"Recommend the top\
+      \ 20 chill R&B tracks on YouTube Music that are perfect for listening during\
+      \ a flight to Vancouver, BC, Canada\"\n  chartType: \"youtube_music\"\n  chartRankRange:\n\
+      \    start: 1\n    end: 20\n  genre: \"rnb\"\n  moodTag: \"chill\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Recommend the top 20 chill R&B tracks on YouTube\
+      \ Music that are perfect for listening during a flight to Vancouver, BC, Canada\"\
+      \n    chartType: \"youtube_music\"\n    chartRankRange:\n      start: 1\n  \
+      \    end: 20\n    genre: \"rnb\"\n    moodTag: \"chill\"\n    searchResults:\n\
+      \      - trackTitle: \"Peaches by Justin Bieber ft. Daniel Caesar, Giveon\"\n\
+      \      - trackTitle: \"Good Days by SZA\"\n      - trackTitle: \"Leave the Door\
+      \ Open by Bruno Mars, Anderson .Paak\"\n      - trackTitle: \"Heartbreak Anniversary\
+      \ by Giveon\"\n      - trackTitle: \"Pick up Your Feelings by Jazmine Sullivan\"\
+      \n      - trackTitle: \"Damage by H.E.R.\"\n      - trackTitle: \"Save Your\
+      \ Tears (Remix) by The Weeknd & Ariana Grande\"\n      - trackTitle: \"Best\
+      \ Part by Daniel Caesar ft. H.E.R.\"\n      - trackTitle: \"Tadow by Masego\
+      \ & FKJ\"\n      - trackTitle: \"Cuff It by Beyoncé\"\n      - trackTitle: \"\
+      Call Me If by Brent Faiyaz\"\n      - trackTitle: \"Mindset by Yebba ft. A$AP\
+      \ Rocky\"\n      - trackTitle: \"You Right by Doja Cat & The Weeknd\"\n    \
+      \  - trackTitle: \"Lost by Frank Ocean\"\n      - trackTitle: \"Get You by Daniel\
+      \ Caesar ft. Kali Uchis\"\n      - trackTitle: \"Come Through by H.E.R. ft.\
+      \ Chris Brown\"\n      - trackTitle: \"Playing Games by Summer Walker\"\n  \
+      \    - trackTitle: \"Slow Motion by Trey Songz\"\n      - trackTitle: \"On It\
+      \ by Jazmine Sullivan ft. Ari Lennox\"\n      - trackTitle: \"Location by Khalid\"\
+      \n    status: \"Search complete\"\n    notes: \"A curated list of chill R&B\
+      \ tracks perfect for relaxing during a flight\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"Plan a 2-day, 1-night\
+      \ solo trip itinerary in Victoria on Vancouver Island, BC, Canada, focusing\
+      \ on beautiful natural scenery for relaxation and recharging\"\n  destination:\
+      \ \"Victoria on Vancouver Island, BC, Canada\"\n  duration: \"2 days, 1 night\"\
+      \n  theme: \"healing trip\"\n  companionType: \"solo\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Plan a 2-day, 1-night solo trip itinerary in Victoria\
+      \ on Vancouver Island, BC, Canada, focusing on beautiful natural scenery for\
+      \ relaxation and recharging\"\n    destination: \"Victoria on Vancouver Island,\
+      \ BC, Canada\"\n    duration: \"2 days, 1 night\"\n    theme: \"healing trip\"\
+      \n    companionType: \"solo\"\n    itinerary:\n      day1:\n        - time:\
+      \ \"9:00 AM\"\n          activity: \"Visit Butchart Gardens\"\n          description:\
+      \ \"Start the morning with a peaceful stroll through the beautiful gardens.\"\
+      \n        - time: \"12:00 PM\"\n          activity: \"Hike a National Park trail\"\
+      \n          description: \"Enjoy trekking while taking in the local natural\
+      \ scenery.\"\n        - time: \"3:00 PM\"\n          activity: \"Explore the\
+      \ Royal BC Museum\"\n          description: \"Spend time learning about the\
+      \ region’s culture and history.\"\n        - time: \"6:00 PM\"\n          activity:\
+      \ \"Dinner at a waterfront restaurant\"\n          description: \"Enjoy a delicious\
+      \ local meal by the sea.\"\n        - time: \"8:00 PM\"\n          activity:\
+      \ \"Watch the sunset at Inneson Bay\"\n          description: \"End the day\
+      \ peacefully while watching the calm ocean sunset.\"\n      day2:\n        -\
+      \ time: \"8:00 AM\"\n          activity: \"Morning walk at Dau Quadra Point\
+      \ Park\"\n          description: \"Start the day with an energizing morning\
+      \ walk.\"\n        - time: \"11:00 AM\"\n          activity: \"Visit Facing\
+      \ Village\"\n          description: \"Take a leisurely stroll through a quaint\
+      \ local village.\"\n        - time: \"2:00 PM\"\n          activity: \"Shop\
+      \ at a local market\"\n          description: \"Browse and purchase local specialties.\"\
+      \n        - time: \"4:00 PM\"\n          activity: \"Victoria Harbor cruise\"\
+      \n          description: \"Enjoy a relaxing afternoon on a comfortable cruise.\"\
+      \n      notes: \"All plans are flexible depending on the weather and personal\
+      \ preference. The itinerary is designed to allow plenty of rest.\"\n    status:\
+      \ \"Itinerary successfully created\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '◾Relaxing R&B Music Perfect for Listening on a Flight
+
+
+      Here are 20 top R&B tracks on YouTube Music that create a calm, soothing atmosphere.
+      Enjoy these songs to make your flight more comfortable. Have a wonderful trip!
+
+
+      1. Peaches - Justin Bieber ft. Daniel Caesar, Giveon
+
+      2. Good Days - SZA
+
+      3. Leave the Door Open - Bruno Mars, Anderson .Paak
+
+      4. Heartbreak Anniversary - Giveon
+
+      5. Pick up Your Feelings - Jazmine Sullivan
+
+      6. Damage - H.E.R.
+
+      7. Save Your Tears (Remix) - The Weeknd & Ariana Grande
+
+      8. Best Part - Daniel Caesar ft. H.E.R.
+
+      9. Tadow - Masego & FKJ
+
+      10. Cuff It - Beyoncé
+
+      11. Call Me If - Brent Faiyaz
+
+      12. Mindset - Yebba ft. A$AP Rocky
+
+      13. You Right - Doja Cat & The Weeknd
+
+      14. Lost - Frank Ocean
+
+      15. Get You - Daniel Caesar ft. Kali Uchis
+
+      16. Come Through - H.E.R. ft. Chris Brown
+
+      17. Playing Games - Summer Walker
+
+      18. Slow Motion - Trey Songz
+
+      19. On It - Jazmine Sullivan ft. Ari Lennox
+
+      20. Location - Khalid
+
+
+
+      ◾A 2-day, 1-night Solo Healing Trip on Vancouver Island
+
+
+      I’ve prepared a 2-day, 1-night solo itinerary for your trip to Victoria on Vancouver
+      Island, BC, Canada, focusing on beautiful natural scenery so that you can relax
+      and recharge. Here are the details:
+
+
+      Day 1
+
+
+      * 9:00 AM – Visit Butchart Gardens: Start your morning with a peaceful stroll
+      through the beautiful gardens.
+
+      * 12:00 PM – Hike a National Park trail: Enjoy trekking while taking in the
+      local natural scenery.
+
+      * 3:00 PM – Explore the Royal BC Museum: Learn about the region’s culture and
+      history.
+
+      * 6:00 PM – Dinner at a waterfront restaurant: Enjoy a delicious local meal
+      by the sea.
+
+      * 8:00 PM – Watch the sunset at Inneson Bay: End the day peacefully while watching
+      the calm ocean sunset.
+
+
+      Day 2
+
+
+      * 8:00 AM – Morning walk at Dau Quadra Point Park: Start the day with an energizing
+      morning walk.
+
+      * 11:00 AM – Visit Facing Village: Take a leisurely stroll through a quaint
+      local village.
+
+      * 2:00 PM – Shop at a local market: Browse and purchase local specialties.
+
+      * 4:00 PM – Victoria Harbor cruise: Enjoy a relaxing afternoon on a comfortable
+      cruise.
+
+
+      Notes
+
+      All plans are flexible depending on the weather and personal preference. The
+      itinerary is designed to allow plenty of rest and time to recharge.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Oh, you know Giveon? You’ve got great taste in music!
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: I’m glad you enjoyed the music I recommended! Would you like me to suggest
+      some more tracks?
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: That’s already enough. Oh, and by the way, if there are any NHL hockey
+      games in Vancouver this April, I’d really like to go if the timing works out.
+      Can you check the schedule for me?
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Recommend the top 20 chill R&B tracks on YouTube Music that are perfect\
+      \ for listening during a flight to Vancouver, BC, Canada\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: travel_agent\n      refined_query: \"Plan a 2-day, 1-night solo\
+      \ trip itinerary in Victoria on Vancouver Island, BC, Canada, focusing on beautiful\
+      \ natural scenery for relaxation and recharging\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ sports_agent\n      refined_query: \"NHL hockey game schedule in Vancouver\
+      \ this April\""
+- workflow_id: workflow_3
+  step_id: 11
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"NHL hockey game\
+      \ schedule in Vancouver in April 2026\"\n  league: \"NHL\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"NHL hockey game schedule in Vancouver in April\
+      \ 2026\"\n    league: \"NHL\"\n    location: \"Vancouver\"\n    month: \"April\"\
+      \n    gameSchedules:\n      - date: \"April 5\"\n        teams: \"Vancouver\
+      \ Canucks vs. Calgary Flames\"\n        time: \"7:00 PM\"\n        venue: \"\
+      Rogers Arena\"\n      - date: \"April 12\"\n        teams: \"Vancouver Canucks\
+      \ vs. Edmonton Oilers\"\n        time: \"7:00 PM\"\n        venue: \"Rogers\
+      \ Arena\"\n      - date: \"April 20\"\n        teams: \"Vancouver Canucks vs.\
+      \ Winnipeg Jets\"\n        time: \"7:00 PM\"\n        venue: \"Rogers Arena\"\
+      \n    status: \"Schedule search complete\"\n    notes: \"Game schedules are\
+      \ subject to change, so please confirm in advance.\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 'Introducing the NHL hockey games happening in Vancouver in April 2026.
+      Check out the matches you might be interested in. The schedule is as follows:
+
+
+      - April 5: Vancouver Canucks vs. Calgary Flames, 7:00 PM, Rogers Arena
+
+      - April 12: Vancouver Canucks vs. Edmonton Oilers, 7:00 PM, Rogers Arena
+
+      - April 20: Vancouver Canucks vs. Winnipeg Jets, 7:00 PM, Rogers Arena
+
+
+      Please note that game schedules are subject to change, so be sure to check the
+      latest updates in advance. Enjoy the hockey games!'

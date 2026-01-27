@@ -1,0 +1,307 @@
+metadata:
+  total_steps: 19
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-08-04
+
+      - 시간: 14:14'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 피터한테 이번 금요일까지 홍보물 인쇄 업체 2곳 이상 컨택하라고 내일 오전 9시에 카톡 보내주고, 콘텐츠 리드한테 가이드라인
+      새 버전 공유해달라고 지금 당장 이메일 부탁해. 그리고 지금 우리 회사 주가 확인해주고, 제니한테 확인한 주가 카톡으로 공유해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: message_agent\n      refined_query: \"피터에게 이번\
+      \ 금요일까지 홍보물 인쇄 업체 2곳 이상 컨택하라고 내일 오전 9시로 카톡 예약 전송과 콘텐츠 리드에게 가이드라인 새 버전 공유해달라고\
+      \ 지금 바로 이메일 전송\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: finance_agent\n      refined_query: \"지금\
+      \ 우리 회사 주가 확인\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_2\"\n  steps:\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"제니에게 지금 우리 회사 주가 정보를 카톡으로 전송\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수신자 전화번호, 수신자 이메일 주소'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주식 이름 또는 심볼'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '요청하신 작업을 진행하려면 아래 정보들이 필요해요.
+
+
+      • 피터에게 카톡 전송
+
+      : 피터의 연락처
+
+
+      • 콘텐츠 리드에게 이메일 전송
+
+      : 콘텐츠 리드의 이메일 주소
+
+
+      • 회사 주가 확인
+
+      : 회사 주식명 또는 심볼
+
+
+      각 정보 알려주시면 바로 도와드릴게요!'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: '피터: 010-9876-6789, 콘텐츠리드: c.lead@nyangvision.com, 심볼 NYVI 이거야'
+- workflow_id: workflow_1
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: sendMessage\n    arguments:\n      refinedQuery:\
+      \ \"피터에게 이번 금요일까지 홍보물 인쇄 업체 2곳 이상 컨택하라고 내일 오전 9시로 카톡 예약 전송\"\n      phoneNumber:\
+      \ \"010-9876-6789\"\n      channel: \"kakaotalk\"\n      message: \"피터, 이번 금요일까지\
+      \ 홍보물 인쇄 업체 두 곳 이상 컨택해 주세요.\"\n      sendTime: \"2025-08-05T09:00\"\n      repeatRule:\
+      \ \"none\"\n      priority: \"normal\"\n\n  - tool: sendMessage\n    arguments:\n\
+      \      refinedQuery: \"콘텐츠 리드에게 가이드라인 새 버전 공유해달라고 지금 바로 이메일 전송\"\n      email:\
+      \ \"c.lead@nyangvision.com\"\n      channel: \"email\"\n      message: \"안녕하세요,\
+      \ 새로운 가이드라인 버전 공유 부탁드립니다. 감사합니다.\"\n      sendTime: \"2025-08-04T14:14\"\n \
+      \     repeatRule: \"none\"\n      priority: \"normal\"\n\ntool_call_result:\n\
+      \  - tool: sendMessage\n    data:\n      status: \"success\"\n      message:\
+      \ \"카카오톡 메시지가 010-9876-6789 번호로 2025-08-05 오전 9시에 예약 전송되었습니다.\"\n      sendTime:\
+      \ \"2025-08-05T09:00\"\n      channel: \"kakaotalk\"\n      recipient: \"010-9876-6789\"\
+      \n\n  - tool: sendMessage\n    data:\n      status: \"success\"\n      message:\
+      \ \"이메일이 c.lead@nyangvision.com 주소로 2025-08-04 14:14에 성공적으로 전송되었습니다.\"\n   \
+      \   sendTime: \"2025-08-04T14:14\"\n      channel: \"email\"\n      recipient:\
+      \ \"c.lead@nyangvision.com\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"지금 NYVI 주가\"\n  stockName:\
+      \ \"NYVI\"\n  date: \"2025-08-04\"\n  priceType: \"현재가\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"지금 NYVI 주가\"\n    stockName: \"NYVI\"\n    date:\
+      \ \"2025-08-04\"\n    priceType: \"현재가\"\n    stockPrice: \"15.75 USD\"\n  \
+      \  marketType: \"NASDAQ\"\n    currency: \"USD\"\n    lastUpdated: \"2025-08-04T16:00:00\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수신자 전화번호'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '1. 카카오톡 메시지 예약 전송 완료
+
+
+      • 수신자 번호: 010-9876-6789
+
+      • 채널: KakaoTalk
+
+      • 전송 시간: 2025년 8월 5일 오전 9시
+
+      • 내용:
+
+      "피터, 이번 금요일까지 홍보물 인쇄 업체 두 곳 이상 컨택해 주세요."
+
+
+
+      2. 이메일 전송 완료
+
+
+      • 수신자: c.lead@nyangvision.com
+
+      • 채널: Email
+
+      • 전송 시간: 2025년 8월 4일 오후 2시 14분
+
+      • 내용:
+
+      "안녕하세요, 새로운 가이드라인 버전 공유 부탁드립니다. 감사합니다."
+
+
+
+      3. 실시간 주가 정보 조회 결과
+
+
+      • 종목: NYVI
+
+      • 시장: NASDAQ
+
+      • 가격: 15.75 USD
+
+      • 기준일시: 2025-08-04 16:00 기준
+
+      • 조회 항목: 현재가
+
+
+
+      4. 요청하신 작업을 진행하려면, 제니의 연락처(전화번호) 정보가 필요합니다.
+
+      연락처를 알려주시면 바로 도와드릴게요!'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 헐 지금 TYON 주가 엄청 올랐다는 얘길 들었어. 실시간 주가랑 관련 기사 좀 바로 보여줘 아 근데 아까부터 02-8899-4547
+      번호로 전화 계속 오는데 이거 뭐야?
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: message_agent\n      refined_query: \"피터에게\
+      \ 이번 금요일까지 홍보물 인쇄 업체 2곳 이상 컨택하라고 내일 오전 9시로 카톡 예약 전송과 콘텐츠 리드에게 가이드라인 새 버전 공유해달라고\
+      \ 지금 바로 이메일 전송\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: message_agent\n      refined_query:\
+      \ \"지금 우리 회사 주가 확인\"\n\nworkflow_3:\n  status: paused\n  type: dependent\n \
+      \ depend_on: \"workflow_2\"\n  steps:\n    - status: paused\n      name: message_agent\n\
+      \      refined_query: \"제니에게 지금 우리 회사 주가 정보를 카톡으로 전송\"\n\ninterrupted_workflow_3-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: finance_agent\n      refined_query: \"TYON 실시간 주가 확인\"\n\ninterrupted_workflow_3-2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: news_agent\n      refined_query: \"실시간 TYON 주가 상승 관련 기사 조회\"\n\n\
+      interrupted_workflow_3-3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: life_info_agent\n      refined_query: \"\
+      02-8899-4547 전화번호 조회\""
+- workflow_id: workflow_3
+  step_id: 14
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"TYON 실시간 주가\"\n \
+      \ stockName: \"TYON\"\n  date: \"2025-08-04\"\n  priceType: \"현재가\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"TYON 실시간 주가\"\n    stockName: \"TYON\"\n    date:\
+      \ \"2025-08-04\"\n    priceType: \"현재가\"\n    stockPrice: \"120.50 USD\"\n \
+      \   marketType: \"NASDAQ\"\n    currency: \"USD\"\n    lastUpdated: \"2025-08-04T16:00:00\"\
+      \n    note: \"주가가 갑자기 대폭 상승했습니다.\""
+- workflow_id: workflow_3
+  step_id: 15
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"실시간 TYON 주가 상승 관련 기사\"\
+      \n  category: \"economy\"\n  limit: 5\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"실시간 TYON 주가 상승 관련 기사\"\n    category: \"economy\"\n    limit: 5\n    articles:\n\
+      \      - headline: \"TYON, 오늘 주가 대폭 상승… 투자자 관심 집중\"\n        url: \"https://news.example.com/economy/tyon-stock-surge-2025\"\
+      \n      - headline: \"TYON 주가 급등 배경과 전망 분석\"\n        url: \"https://finance.example.com/articles/tyon-price-jump-analysis\"\
+      \n      - headline: \"시장 전문가들, TYON 주가 상승 원인으로 신제품 출시 꼽아\"\n        url: \"\
+      https://marketnews.example.com/tyon-new-product-impact\"\n      - headline:\
+      \ \"TYON, 주가 상승에 힘입어 NASDAQ에서 주목받아\"\n        url: \"https://stocknews.example.com/tyon-nasdaq-highlight\"\
+      \n      - headline: \"TYON 주가 급등, 투자자들의 대응 전략은?\"\n        url: \"https://investment.example.com/tyon-investor-strategy\""
+- workflow_id: workflow_3
+  step_id: 16
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPhoneNumberInfo\narguments:\n  refinedQuery: \"02-8899-4547\"\
+      \n  phoneNumber: \"0288994547\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"02-8899-4547\"\n    phoneNumber: \"0288994547\"\n    isSpam: true\n    spamType:\
+      \ \"대출 광고\"\n    warningMessage: \"이 번호는 대출 광고 관련 스팸 전화로 의심됩니다. 주의하시기 바랍니다.\""
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: '[TYON 실시간 주가]
+
+
+      • 현재가: 120.50 USD
+
+      • 시장: NASDAQ
+
+      • 통화: USD
+
+      • 업데이트 시각: 2025년 8월 4일 16:00 기준
+
+      • 알림: 주가가 갑자기 대폭 상승했습니다.
+
+
+
+      [TYON 주가 관련 속보 (경제 뉴스)]
+
+
+      1. TYON, 오늘 주가 대폭 상승… 투자자 관심 집중
+
+      https://news.example.com/economy/tyon-stock-surge-2025
+
+      2. TYON 주가 급등 배경과 전망 분석
+
+      https://finance.example.com/articles/tyon-price-jump-analysis
+
+      3. 시장 전문가들, TYON 주가 상승 원인으로 신제품 출시 꼽아
+
+      https://marketnews.example.com/tyon-new-product-impact
+
+      4. TYON, 주가 상승에 힘입어 NASDAQ에서 주목받아
+
+      https://stocknews.example.com/tyon-nasdaq-highlight
+
+      5. TYON 주가 급등, 투자자들의 대응 전략은?
+
+      https://investment.example.com/tyon-investor-strategy
+
+
+
+      [전화번호 확인 결과]
+
+
+      • 번호: 02-8899-4547
+
+      • 스팸 여부: 스팸 의심
+
+      • 스팸 유형: 대출 광고
+
+      • 주의사항: 이 번호는 대출 광고 관련 스팸 전화로 의심됩니다. 주의하시기 바랍니다.
+
+
+
+      [제니 전화번호 정보 필요]
+
+
+      요청하신 메시지를 전송하려면 제니의 연락처(전화번호) 정보가 필요합니다.
+
+      연락처를 알려주시면 바로 카카오톡으로 전송해 드릴게요!'
+- workflow_id: null
+  step_id: 18
+  agent: user
+  agent_type: user
+  data:
+    content: 제니? 음 아냐 그냥 안보낼래 알아서 봤겠지 뭐
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: 알겠습니다. 다른 도움 필요하시면 알려주세요!

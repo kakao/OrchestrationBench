@@ -1,0 +1,164 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: August 20, 2025'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I heard the exchange rate has gone up a lot lately. Can you tell me today’s
+      KRW rate? Also, please check the automatic transfer for my daughter’s living
+      expenses this month—the one that usually goes out on the 25th. Depending on
+      the rate, I might adjust the amount a little.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"Check today's\
+      \ KRW exchange rate\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: personal_banking_agent\n     \
+      \ refined_query: \"Check the automatic transfer history of monthly allowance\
+      \ sent to my daughter every 25th of the month\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getExchangeRate\narguments:\n  refinedQuery: \"Check KRW exchange\
+      \ rate on August 20, 2025\"\n  baseCurrency: \"USD\"\n  targetCurrency: \"KRW\"\
+      \n  date: \"2025-08-20\"\n  exchangeType: \"spot\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"Check KRW exchange rate on August 20, 2025\"\n    baseCurrency:\
+      \ \"USD\"\n    targetCurrency: \"KRW\"\n    date: \"2025-08-20\"\n    exchangeType:\
+      \ \"spot\"\n    exchangeRate: 1397.70\n    status: \"Exchange rate lookup complete\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Withdrawal account holder name and account number'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: To check your automatic transfer history, please provide the account
+      holder's name and the account number for the withdrawal account.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Stephen Park, 1234567890123
+- workflow_id: null
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"Check the automatic\
+      \ transfer details for the living expenses sent to my daughter every 25th of\
+      \ the month\"\n  accountHolderName: \"Stephen Park\"\n  fromAccountNumber: \"\
+      1234567890123\"\n  transferDay: \"25\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Check the automatic transfer details for the living expenses sent to my\
+      \ daughter every 25th of the month\"\n    accountHolderName: \"Stephen Park\"\
+      \n    fromAccountNumber: \"1234567890123\"\n    transferDay: \"25\"\n    autoTransferList:\n\
+      \      - autoTransferId: \"AT-20230801-001\"\n        beneficiaryName: \"Sophia\
+      \ Park\"\n        beneficiaryAccountNumber: \"9876543210987\"\n        amount:\
+      \ \"$1,000\"\n        memo: \"Living expenses\"\n    status: \"Automatic transfer\
+      \ details retrieved successfully\"\n    routingNumber: \"111000025\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '◾Exchange Rate Information
+
+
+      The spot exchange rate of the Korean Won (KRW) against the US Dollar (USD) on
+      August 20, 2025, has been retrieved. The rate on that date was 1397.70 KRW.
+
+
+
+      ◾Automatic Transfer Details
+
+
+      The results of checking the automatic transfer from Stephen Park’s account (1234567890123),
+      which occurs every 25th of the month, are as follows:
+
+
+      - Recipient: Sophia Park
+
+      - Recipient Account Number: 9876543210987
+
+      - Routing Number: 111000025
+
+      - Transfer Amount: 1,000 USD
+
+      - Memo: Living expenses
+
+
+      The automatic transfer details have been successfully retrieved.'
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: Please move the date from the 25th to the 30th, and also increase the
+      amount by $500.
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"Check\
+      \ today’s KRW exchange rate\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: personal_banking_agent\n   \
+      \   refined_query: \"View the automatic transfer history of monthly allowance\
+      \ sent to my daughter on the 25th\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"Change the automatic transfer date of my daughter’s\
+      \ allowance from the 25th to the 30th each month and increase the transfer amount\
+      \ by $500\""
+- workflow_id: workflow_3
+  step_id: 12
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyAutoTransfer\narguments:\n  refinedQuery: \"Change the automatic\
+      \ transfer for living expenses to my daughter Sophia Park from the 25th of each\
+      \ month to the 30th, and update the transfer amount to $1,500.\"\n  autoTransferId:\
+      \ \"AT-20230801-001\"\n  amount: 1500\n  transferDay: \"30\"\n  routingNumber:\
+      \ \"111000025\"\ntool_call_result:\n  data:\n    refinedQuery: \"Change the\
+      \ automatic transfer for living expenses to my daughter Sophia Park from the\
+      \ 25th of each month to the 30th, and update the transfer amount to $1,500.\"\
+      \n    autoTransferId: \"AT-20230801-001\"\n    amount: \"$1,500\"\n    transferDay:\
+      \ \"30\"\n    routingNumber: \"111000025\"\n    status: \"Automatic transfer\
+      \ successfully updated\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your automatic transfer details have been successfully updated as follows:
+
+
+      - Recipient: Sophia Park
+
+      - Transfer Amount: $1,500
+
+      - Transfer Date: Every 30th of the month
+
+
+      From now on, $1,500 will be automatically transferred every 30th of the month.
+      Please review the updated details and manage your finances accordingly.'

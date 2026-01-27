@@ -1,0 +1,103 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: date 2025-07-17
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번주 강릉 날씨좀
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"이번 주 강릉\
+      \ 날씨\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool_call: \n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"7월 14일 월요일 강릉 날씨\"\n      date: \" 2025-07-14\"\n      location: \"강릉\"\n\
+      \n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery: \"7월 15일\
+      \ 화요일 강릉 날씨\"\n      date: \" 2025-07-15\"\n      location: \"강릉\"\n\n  - tool:\
+      \ getDomesticWeather\n    arguments:\n      refinedQuery: \"7월 16일 수요일 강릉 날씨\"\
+      \n      date: \" 2025-07-16\"\n      location: \"강릉\"\n\n  - tool: getDomesticWeather\n\
+      \    arguments:\n      refinedQuery: \"7월 17일 목요일 강릉 날씨\"\n      date: \" 2025-07-17\"\
+      \n      location: \"강릉\"\n\n  - tool: getDomesticWeather\n    arguments:\n \
+      \     refinedQuery: \"7월 18일 금요일 강릉 날씨\"\n      date: \" 2025-07-18\"\n    \
+      \  location: \"강릉\"\n\n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"7월 19일 토요일 강릉 날씨\"\n      date: \" 2025-07-19\"\n      location: \"강릉\"\n\
+      \n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery: \"7월 20일\
+      \ 일요일 강릉 날씨\"\n      date: \" 2025-07-20\"\n      location: \"강릉\"\ntool_call_result:\n\
+      \  - tool: getDomesticWeather\n    result:\n      date: \"2025-07-14\"\n   \
+      \   location: \"강릉\"\n      temperature:\n        current: 21.1\n        min:\
+      \ 20.0\n        max: 22.2\n      condition: \"하루 종일 선선하고 쾌적한 날씨\"\n\n  - tool:\
+      \ getDomesticWeather\n    result:\n      date: \"2025-07-15\"\n      location:\
+      \ \"강릉\"\n      temperature:\n        current: 21.4\n        min: 20.0\n   \
+      \     max: 22.8\n      condition: \"전날과 비슷하게 시원한 날씨가 이어짐\"\n\n  - tool: getDomesticWeather\n\
+      \    result:\n      date: \"2025-07-16\"\n      location: \"강릉\"\n      temperature:\n\
+      \        current: 23.6\n        min: 21.1\n        max: 26.1\n      condition:\
+      \ \"전날보다 조금 더 따뜻하고 낮에는 다소 더운 기운\"\n\n  - tool: getDomesticWeather\n    result:\n\
+      \      date: \"2025-07-17\"\n      location: \"강릉\"\n      temperature:\n  \
+      \      current: 21.9\n        min: 21.1\n        max: 22.8\n      condition:\
+      \ \"다시 선선한 기온을 보임\"\n\n  - tool: getDomesticWeather\n    result:\n      date:\
+      \ \"2025-07-18\"\n      location: \"강릉\"\n      temperature:\n        current:\
+      \ 23.1\n        min: 21.1\n        max: 25.0\n      condition: \"낮에 활동하기 좋은\
+      \ 온도\"\n\n  - tool: getDomesticWeather\n    result:\n      date: \"2025-07-19\"\
+      \n      location: \"강릉\"\n      temperature:\n        current: 25.0\n      \
+      \  min: 21.1\n        max: 28.9\n      condition: \"더운 날씨 예상\"\n\n  - tool:\
+      \ getDomesticWeather\n    result:\n      date: \"2025-07-20\"\n      location:\
+      \ \"강릉\"\n      temperature:\n        current: 26.9\n        min: 22.8\n   \
+      \     max: 31.1\n      condition: \"주 중 가장 더운 날, 한여름 더위 절정\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 강릉 주간 날씨 요약 (7.14 ~ 7.20)
+
+
+      - 2025년 7월 14일(월) 강릉 날씨
+
+      평균기온 21.1°C, 최저 20.0°C, 최고 22.2°C로 하루 종일 선선하고 쾌적한 날씨였습니다.
+
+
+      - 2025년 7월 15일(화) 강릉 날씨
+
+      평균기온 21.4°C, 최저 20.0°C, 최고 22.8°C로 전날과 비슷하게 시원한 날씨가 이어졌습니다.
+
+
+      - 2025년 7월 16일(수) 강릉 날씨
+
+      평균기온 23.6°C, 최저 21.1°C, 최고 26.1°C로 전날보다 조금 더 따뜻해졌으며, 낮에는 다소 더운 기운이 느껴졌습니다.
+
+
+      - 2025년 7월 17일(목) 강릉 날씨
+
+      평균기온 21.9°C, 최저 21.1°C, 최고 22.8°C로 다시 선선한 기온을 보였습니다.
+
+
+      - 2025년 7월 18일(금) 강릉 날씨
+
+      평균기온 23.1°C, 최저 21.1°C, 최고 25.0°C로 낮에 활동하기 좋은 온도가 예상됩니다.
+
+
+      - 2025년 7월 19일(토) 강릉 날씨
+
+      평균기온 25.0°C, 최저 21.1°C, 최고 28.9°C로 더운 날씨가 예상됩니다.
+
+
+      - 2025년 7월 20일(일) 강릉 날씨
+
+      평균기온 26.9°C, 최저 22.8°C, 최고 31.1°C로 주 중 가장 더운 날로 예상되며 한여름 더위가 절정에 달할 것으로 예상됩니다.'

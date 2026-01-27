@@ -1,0 +1,78 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '현위치- 여의도 국회의사당
+
+      현시간- 12:33'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 가수 성시경이 추천한 서울 강남의 파스타 맛집을 알려주고, 현재 내 위치에서 그 식당까지 대중교통으로 가장 빨리 가는 길을
+      찾아줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"성시경이 추천한\
+      \ 강남 파스타 맛집\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"성시경이 추천한 강남 파스타 맛집까지 대중교통으로 가장 빠른 길 안내\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"성시경이 추천한 강남\
+      \ 파스타 맛집\"\n  location: \"강남\"\n  cuisineType: \"이탈리안\"\n  specificDishes: \"\
+      파스타\"\n  source: \"성시경\"\n  sortBy: \"highest_rated\"\ntool_call_result:\n \
+      \ data:\n    name: \"뚜또베네\"\n    location: \"서울 강남구 청담동 118-10\"\n    source:\
+      \ \"성시경\"\n    rating: 4.5\n    description: \"수요미식회, 성시경의 먹을텐데 등 다수 미디어에 소개된\
+      \ 청담동의 유명 이탈리안 레스토랑\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"내 위치에서 뚜또베네까지 대중교통으로\
+      \ 가장 빠른 길 안내\"\n  origin: \"여의도 국회의사당\"\n  destination: \"서울 강남구 청담동 118-10\
+      \ 뚜또베네\"\n  transportModes: [\"subway\", \"bus\"]\n  departureTime: \"12:33\"\
+      \n  optimizeBy: \"fastest\"\ntool_call_result:\n  directions:\n    - step: 1\n\
+      \      instruction: \"국회의사당역 6호선 승차 (봉화산 방면)\"\n      station: \"국회의사당역\"\n\
+      \      line: \"지하철 9호선\"\n      time: \"12:35 ~ 12:47 (12분)\"\n    - step: 2\n\
+      \      instruction: \"신논현역 하차 후 3번 출구로 나와 도보 이동\"\n      time: \"도보 약 5분\"\n\
+      \    - step: 3\n      instruction: \"논현역 사거리 정류장에서 421번 버스 승차\"\n      time:\
+      \ \"12:54 ~ 13:09 (15분)\"\n    - step: 4\n      instruction: \"압구정로데오 정류장에서\
+      \ 하차 후 도보 1분 이동\"\n  transferCount: 1\n  trafficCondition: \"원활\"\n  fare: \"\
+      ₩1,350 (카드 기준)\"\n  note: \"버스는 낮 시간대 배차 간격이 길 수 있으니 실시간 도착 정보 참고\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '가수 성시경 님이 추천한 강남의 파스타 맛집은 뚜또베네입니다. 수요미식회, 성시경의 먹을텐데 등 여러 미디어에 소개된 유명한
+      이탈리안 레스토랑으로, 정확한 위치는 서울 강남구 청담동 118-10입니다.
+
+
+      현재 위치인 여의도 국회의사당에서 뚜또베네까지 대중교통으로 가장 빨리 가는 방법은 다음과 같습니다.
+
+
+      1. 9호선 국회의사당역 승차 → 신논현역 하차 (약 12분)
+
+      2. 신논현역 3번 출구 → 도보 이동
+
+      3. 421번 버스 탑승 → 압구정로데오 정류장 하차 (약 15분)
+
+      4. 도보 1분 이동
+
+
+      총 1회 환승, 교통은 원활하며 요금은 약 ₩1,350입니다.'

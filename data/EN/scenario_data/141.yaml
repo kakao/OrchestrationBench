@@ -1,0 +1,284 @@
+metadata:
+  total_steps: 21
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: March 17, 2025
+
+      - User name: Olivia Park
+
+      - userId: U0DK23121'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I'm going to a baseball game this Saturday, and I want to buy a nice
+      Chicago White Sox team jersey if there’s a good one available.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Recommended\
+      \ Chicago White Sox baseball jersey\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: shopping_agent\n      refined_query: \"Buy Chicago White Sox baseball\
+      \ jersey\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Recommended Chicago\
+      \ White Sox baseball jerseys\"\n  productName: \"Chicago White Sox baseball\
+      \ jersey\"\n  sortBy: \"latest\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Recommended Chicago White Sox baseball jerseys\"\n    products:\n      -\
+      \ name: \"Chicago White Sox Retro Jersey\"\n        description: \"A retro design\
+      \ jersey celebrating the glory days of the Chicago White Sox. A special keepsake\
+      \ for fans.\"\n        price: \"$98\"\n      - name: \"Chicago White Sox Fan\
+      \ Edition Jersey\"\n        description: \"A special-edition jersey for fans,\
+      \ customizable with team logos and player names.\"\n        price: \"$113\"\n\
+      \      - name: \"Chicago White Sox Classic Home Jersey\"\n        description:\
+      \ \"The traditional design of the Chicago White Sox classic home jersey. A beloved\
+      \ item among fans.\"\n        price: \"$94\"\n      - name: \"Chicago White\
+      \ Sox Special-Edition Jersey\"\n        description: \"A special-edition jersey\
+      \ created to commemorate a unique event. Released as a limited edition, making\
+      \ it highly collectible.\"\n        price: \"$120\"\n      - name: \"Chicago\
+      \ White Sox Supporter's Jersey\"\n        description: \"An exclusive jersey\
+      \ for die-hard Chicago White Sox supporters. Wearing it adds to the stadium\
+      \ atmosphere.\"\n        price: \"$83\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Confirmation required for items to be ordered'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "Introducing a variety of Chicago White Sox jerseys. These special fan\
+      \ items will make cheering at the game even more exciting:\n\n1. Chicago White\
+      \ Sox Retro Jersey\n   - A retro design celebrating the team’s glory days, bringing\
+      \ back special memories for fans.\n   - Price: $98\n\n2. Chicago White Sox Fan\
+      \ Edition Jersey\n   - A special edition that allows you to customize with the\
+      \ team logo and player names.\n   - Price: $113\n\n3. Chicago White Sox Classic\
+      \ Home Jersey\n   - A timeless home jersey with a traditional design, loved\
+      \ by fans year after year.\n   - Price: $94\n\n4. Chicago White Sox Special-Edition\
+      \ Jersey\n   - A limited-edition jersey released to commemorate special events,\
+      \ making it highly collectible.\n   - Price: $120\n\n5. Chicago White Sox Supporter's\
+      \ Jersey\n   - An exclusive jersey for die-hard fans, designed to boost the\
+      \ energy of cheering in the stadium.\n   - Price: $83\n\nLet me know which one\
+      \ you like, and I’ll help you with the purchase."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Oh, but do you think it’ll rain this Saturday in Chicago? They said the
+      event will be canceled if it rains.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      Recommended Chicago White Sox baseball jersey\"\n\nworkflow_2:\n  status: paused\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: paused\n\
+      \      name: shopping_agent\n      refined_query: \"Buy Chicago White Sox baseball\
+      \ jersey\"\n\ninterrupted_workflow_2-1:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: weather_agent\n      refined_query:\
+      \ \"Weather forecast for this Saturday in Chicago\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"Rain forecast\
+      \ for Saturday, March 22, 2025, Chicago\"\n  date: \"2025-03-22\"\n  location:\
+      \ \"Chicago\"\ntool_call_result:\n  data:\n    refinedQuery: \"Rain forecast\
+      \ for Saturday, March 22, 2025, Chicago\"\n    date: \"2025-03-22\"\n    location:\
+      \ \"Chicago\"\n    weatherForecast:\n      condition: \"Cloudy\"\n      temperatureRange:\
+      \ \"Low 50°F / High 61°F\"\n      precipitationProbability: \"10%\"\n      wind:\
+      \ \"Northwest wind 4 mph\"\n      humidity: \"70%\"\n      additionalInfo: \"\
+      It’s expected to stay cloudy all day, but no rain is likely. It may feel a bit\
+      \ chilly, so bring a light jacket if you’re heading out.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ Weather Forecast for Saturday, March 22, 2025 in the Chicago area
+
+
+      On Saturday, March 22, 2025, the weather is expected to remain cloudy throughout
+      the day, but no rain is forecast. Temperatures will range from a low of 50°F
+      to a high of 61°F, which may feel a bit chilly, so it’s a good idea to bring
+      a light jacket if you’re heading out. The chance of rain is only about 10%,
+      so outdoor activities shouldn’t be affected. Winds will come from the northwest
+      at around 4 mph, and humidity is expected to stay relatively high at about 70%.
+
+
+      If you let me know which of the recommended products you like, I’ll help you
+      with the purchase!'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: That’s a relief. Then could you show me the uniform from the collab with
+      Claire Belton this time? Also, can you tell me what time fans are allowed to
+      enter the Chicago Stadium before the game starts?
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      Recommended Chicago White Sox baseball jersey\"\n\nworkflow_2:\n  status: paused\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: paused\n\
+      \      name: shopping_agent\n      refined_query: \"Buy Chicago White Sox baseball\
+      \ jersey\"\n\ninterrupted_workflow_2-1:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: weather_agent\n      refined_query:\
+      \ \"Weather forecast for this Saturday in Chicago\"\n\nworkflow_1-1:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ shopping_agent\n      refined_query: \"Recommended Chicago White Sox uniforms\
+      \ in collaboration with Claire Belton\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: sports_agent\n\
+      \      refined_query: \"Entry time allowed in the stadium before the Chicago\
+      \ White Sox baseball game this Saturday at Chicago Stadium\""
+- workflow_id: workflow_1
+  step_id: 13
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Recommended Chicago\
+      \ White Sox uniforms in collaboration with Claire Belton\"\n  productName: \"\
+      Chicago White Sox x Claire Belton Collaboration Uniform\"\n  sortBy: \"latest\"\
+      \ntool_call_result:\n  recommendations:\n    - productId: \"lt001\"\n      productName:\
+      \ \"Chicago White Sox x Claire Belton Collaboration Home Uniform\"\n      description:\
+      \ \"A special home uniform created through collaboration with Claire Belton.\
+      \ Offers fans a unique experience with its original design and premium materials.\"\
+      \n      price: \"$135\"\n      imageUrl: \"https://example.com/images/Ch_home.jpg\"\
+      \n      purchaseLink: \"https://store.example.com/product/lt001\"\n    - productId:\
+      \ \"lt002\"\n      productName: \"Chicago White Sox x Claire Belton Collaboration\
+      \ Away Uniform\"\n      description: \"A stylish away uniform featuring Claire\
+      \ Belton’s signature design. Provides comfort when worn.\"\n      price: \"\
+      $130\"\n      imageUrl: \"https://example.com/images/Ch_away.jpg\"\n      purchaseLink:\
+      \ \"https://store.example.com/product/lt002\"\n    - productId: \"lt003\"\n\
+      \      productName: \"Chicago White Sox x Claire Belton Retro Uniform\"\n  \
+      \    description: \"A retro-style collaboration uniform with Claire Belton that\
+      \ brings back nostalgic memories.\"\n      price: \"$145\"\n      imageUrl:\
+      \ \"https://example.com/images/Ch_retro.jpg\"\n      purchaseLink: \"https://store.example.com/product/lt003\"\
+      \n    - productId: \"lt004\"\n      productName: \"Chicago White Sox x Claire\
+      \ Belton Special-Edition Uniform\"\n      description: \"A limited-edition special\
+      \ uniform showcasing Claire Belton’s unique style.\"\n      price: \"$155\"\n\
+      \      imageUrl: \"https://example.com/images/Ch_special.jpg\"\n      purchaseLink:\
+      \ \"https://store.example.com/product/lt004\"\n    - productId: \"lt005\"\n\
+      \      productName: \"Chicago White Sox x Claire Belton Patch Uniform\"\n  \
+      \    description: \"A collaboration uniform featuring various patch designs,\
+      \ offering fans a distinctive choice.\"\n      price: \"$140\"\n      imageUrl:\
+      \ \"https://example.com/images/Ch_patch.jpg\"\n      purchaseLink: \"https://store.example.com/product/lt005\""
+- workflow_id: workflow_3
+  step_id: 14
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"Stadium entry\
+      \ time before the Chicago White Sox baseball game in Chicago on Saturday, March\
+      \ 22, 2025\"\n  targetDate: \"2025-03-22\"\ntool_call_result:\n  data:\n   \
+      \ refinedQuery: \"Stadium entry time before the Chicago White Sox baseball game\
+      \ in Chicago on Saturday, March 22, 2025\"\n    gameDate: \"2025-03-22\"\n \
+      \   location: \"Chicago\"\n    gameStartTime: \"6:30 PM\"\n    entryTime: \"\
+      Entry allowed starting at 3:30 PM\"\n    additionalInfo: \"You can enter Chicago\
+      \ Stadium starting at 3:30 PM, which is three hours before the game begins.\
+      \ There will be various pre-game events and activities, so plan to arrive early\
+      \ and enjoy the experience.\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Stadium Entry Information\n\nAre you excited for the Chicago White\
+      \ Sox baseball game happening on Saturday, March 22, 2025 in Chicago? The game\
+      \ starts at 6:30 PM, and gates will open three hours earlier at 3:30 PM. Arrive\
+      \ early to enjoy pre-game events and activities, and plan some extra time to\
+      \ make the most of your day. I hope you have a fun, exciting game experience!\n\
+      \n\n◾ Recommended Chicago White Sox Uniforms in Collaboration with Claire Belton\n\
+      \nIntroducing the special Chicago White Sox uniforms designed in collaboration\
+      \ with Claire Belton. These uniforms combine Claire’s unique creative style\
+      \ with the Chicago White Sox’s team identity—perfect for making memories on\
+      \ game day!\n\n1. Chicago White Sox x Claire Belton Home Uniform\n   - A special\
+      \ home uniform crafted with premium materials and distinctive design.\n   -\
+      \ Price: $135\n\n2. Chicago White Sox x Claire Belton Away Uniform\n   - A stylish\
+      \ away uniform that highlights Claire’s design.\n   - Price: $130\n\n3. Chicago\
+      \ White Sox x Claire Belton Retro Uniform\n   - A retro-inspired design that\
+      \ brings back nostalgic memories.\n   - Price: $145\n\n4. Chicago White Sox\
+      \ x Claire Belton Special-Edition Uniform\n   - A limited-edition release available\
+      \ in small quantities.\n   - Price: $155\n\n5. Chicago White Sox x Claire Belton\
+      \ Patch Uniform\n   - A uniform featuring a variety of unique patch designs.\n\
+      \   - Price: $140\n\nWhich one do you like best? Let me know your choice, and\
+      \ I’ll help you with the purchase."
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: I want the Claire Belton patch uniform! Get me two in size M, one for
+      me and one for my sister.
+- workflow_id: workflow_2
+  step_id: 17
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient address and phone number'
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: Sure, I can help you with your order. To proceed, I’ll need your phone
+      number and the delivery address.
+- workflow_id: null
+  step_id: 19
+  agent: user
+  agent_type: user
+  data:
+    content: The address is 1234 West Maple Ave, Evanston, IL 60201, USA. The phone
+      number is (220) 220-2200.
+- workflow_id: null
+  step_id: 20
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"Order 2 Chicago White\
+      \ Sox x Claire Belton patch uniforms, size M\"\n  userId: \"U0DK23121\"\n  productItems:\n\
+      \    - productId: \"lt005\"\n      productName: \"Chicago White Sox x Claire\
+      \ Belton Patch Uniform\"\n      size: \"M\"\n      quantity: 2\n      price:\
+      \ 140\n  shippingAddress:\n    recipient: \"Olivia Park\"\n    address: \"1234\
+      \ West Maple Ave, Evanston, IL 60201, USA\"\n    phone: \"(220) 220-2200\"\n\
+      tool_call_result:\n  orderId: \"ORD-20250317002\"\n  status: \"confirmed\"\n\
+      \  estimatedDelivery: \"2025-03-20\"\n  trackingLink: \"https://store.example.com/track/ORD-20250317002\"\
+      \n  message: \"Olivia Park, your order for 2 Chicago White Sox x Claire Belton\
+      \ patch uniforms, size M, has been confirmed. Delivery is expected on March\
+      \ 20, and you can track your shipment using the link above.\""
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: Your order for 2 Medium "Chicago White Sox x Claire Belton Patch Jerseys"
+      has been successfully confirmed! The items are scheduled to ship on March 20.

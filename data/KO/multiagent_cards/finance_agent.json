@@ -1,0 +1,331 @@
+{
+  "agent_card": {
+    "name": "금융 (Finance)",
+    "agent_id": "finance_agent",
+    "description": "실시간 금융 데이터와 관련 정보를 다양한 소스로부터 제공해주는 금융 전문 에이전트입니다. 주식, 환율, 암호화폐, 금리 등 최신 시세와 금융 트렌드를 빠르게 확인하거나, 투자 및 시장 정보, 각종 금융 지식을 손쉽게 얻을 수 있습니다.",
+    "url": "http://localhost:10005/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getStockPrice",
+        "name": "주식 가격 조회",
+        "description": "지정한 주식 종목(한국/해외)의 실시간 혹은 특정 날짜의 시세 및 거래 관련 데이터를 제공합니다. 종목명, 거래소, 날짜, 조회 항목, 통화 단위 등 다양한 검색 옵션이 지원됩니다.",
+        "examples": [
+          "현대차 주가 오늘 얼마야?",
+          "애플 3일 전 종가 알려줘.",
+          "KOSDAQ에 상장된 카카오 현재가 조회해줘.",
+          "삼성전자 최근 거래량 알려줄 수 있어?",
+          "TSLA 고가가 궁금해."
+        ]
+      },
+      {
+        "id": "getCryptoPrice",
+        "name": "암호화폐 가격 조회",
+        "description": "주요 암호화폐의 시세, 변동률, 시가·종가·고가·저가 등 거래 내역을 실시간 또는 과거 기준으로 볼 수 있습니다. 거래소별 시세 비교, 다양한 통화로 변환도 가능합니다.",
+        "examples": [
+          "이더리움 달러 기준으로 현재 얼마야?",
+          "솔라나 오늘 시가 알려줘.",
+          "Upbit에서 DOGE 가장 최근 거래량 보여줘.",
+          "비트코인과 리플의 최근 가격 변동폭 비교해줘.",
+          "지난주에 폴리곤(Polygon) 가격 어떻게 변했어?"
+        ]
+      },
+      {
+        "id": "getExchangeRate",
+        "name": "환율 조회",
+        "description": "주요 통화 간 환율 정보를 제공합니다. 기준·현찰·송금 환율 등 금융기관 실시간 데이터 기반, 기본값은 원화 기준입니다.",
+        "examples": [
+          "유로화 환율 지금 얼마나 해?",
+          "달러에서 엔화로 바꿀 때 현재 환율 알려줄래?",
+          "ttb 기준으로 미국 달러 환율 추세 보여줘.",
+          "어제 위안화 환율이 어떻게 마감됐지?",
+          "유로-달러 환전시 수수료 포함 환율 알아봐줘."
+        ]
+      },
+      {
+        "id": "getInterestRates",
+        "name": "금리 조회",
+        "description": "각국 및 주요 은행의 기준금리, 예금/적금/대출 등 상품별 금리를 조회합니다. 원하는 국가·은행·적용기간 등 상세 조건도 지정할 수 있습니다.",
+        "examples": [
+          "얼마 전 미국 기준금리가 변동됐는지 확인해줘.",
+          "NH농협 1년 예금 금리 알려줘.",
+          "최근 일본의 대출 금리가 어떻게 바뀌었지?",
+          "한국 적금 금리 변동 내역 보여줄래?",
+          "유로존 기준금리 역사적 변동 추이 알려줘."
+        ]
+      },
+      {
+        "id": "getGoldPrice",
+        "name": "금 시세 조회",
+        "description": "국내 금 시세(1g, 1돈, 1온스 등)를 조회하는 도구입니다. ",
+        "examples": [
+          "오늘 금 1돈 가격 얼마야?",
+          "1그램 기준 금값 알려줘",
+          "2024년 12월 1일 금 시세가 어떻게 됐는지 알아봐줘"
+        ]
+      },
+      {
+        "id": "searchFinaceInfo",
+        "name": "금융 정보",
+        "description": "금융 시장·종목(주식, 코인, ETF 등)·상품에 대한 전반적 정보, 트렌드, 전망, 용어 설명, 투자 관련 지식 등 다양한 금융 컨텐츠를 요약·정리해 제공합니다.",
+        "examples": [
+          "아마존 주가 상승 요인 정리해줘.",
+          "메이저 코인과 알트코인의 차이점 설명해줄 수 있어?",
+          "최근 글로벌 ETF 인기종목이 뭐야?",
+          "카카오뱅크 주식 전망 어떻게 봐?",
+          "암호화폐 보안 이슈 뭐가 있어?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getStockPrice",
+      "description": "주식 가격, 시가, 고가, 저가 등 다양한 항목을 특정 날짜와 시장에서 조회할 수 있는 도구입니다. 국내외 종목을 심볼 또는 이름으로 검색 가능하며, 기본적으로 최근 거래일의 현재가를 반환합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락과 사용자 요청을 반영하여 정제된 자연어 쿼리 (예: '네이버 주식 최신 가격 알려줘', 'Apple Inc.의 3월 1일 종가 확인')"
+          },
+          "stockName": {
+            "type": "string",
+            "description": "조회하려는 주식의 이름 또는 심볼, 국문/영문 모두 입력 가능 (예: '카카오', 'KAKAO', 'MSFT', '오토엔씨')"
+          },
+          "marketType": {
+            "type": "string",
+            "enum": [
+              "KOSPI",
+              "KOSDAQ",
+              "NYSE",
+              "NASDAQ",
+              "OTC"
+            ],
+            "description": "주식이 상장된 시장 구분 (예: 'KOSPI', 'NASDAQ')"
+          },
+          "date": {
+            "type": "string",
+            "description": "조회할 날짜, 기본값은 오늘. 'YYYY-MM-DD' 형식 사용. 주말/공휴일 입력 시 최근 거래일로 자동 보정됨."
+          },
+          "priceType": {
+            "type": "string",
+            "enum": [
+              "현재가",
+              "전일대비",
+              "종가",
+              "시가",
+              "고가",
+              "저가",
+              "거래량"
+            ],
+            "description": "조회하고자 하는 항목을 지정 (예: '종가', '시가'). 미입력 시 '현재가'로 조회됨."
+          },
+          "currency": {
+            "type": "string",
+            "description": "표시할 통화 단위 (예: 'KRW', 'USD'). 해외 주식은 환율 변환 여부에 따라 선택 가능."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "date"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getCryptoPrice",
+      "description": "전 세계 주요 암호화폐의 시세, 거래량 및 다양한 가격 정보를 다양한 통화 및 거래소 기준으로 조회할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요청을 반영한 정제된 검색 요청 (예: '이더리움 최근 시가', '2024년 5월 비트코인 고가')"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "조회할 암호화폐의 심볼 또는 이름. 반드시 대문자로 입력 (예: 'BTC', 'ETH', 'SOL')"
+          },
+          "currency": {
+            "type": "string",
+            "description": "가격을 산출할 기준 통화. 반드시 대문자로 입력 (예: 'USD', 'KRW', 'USDT'). 지정하지 않을 경우 기본값은 'KRW' 또는 사용자의 국가 기준 자동 선택"
+          },
+          "exchange": {
+            "type": "string",
+            "description": "선택 사항. 지정 시 해당 거래소의 시세를 제공 (예: 'Binance', 'Upbit', 'Coinbase', 'Bithumb')"
+          },
+          "date": {
+            "type": "string",
+            "description": "조회할 날짜 (예: '2024-07-01'). 미입력 시 오늘 날짜가 기본값"
+          },
+          "priceType": {
+            "type": "string",
+            "enum": [
+              "현재가",
+              "전일대비",
+              "종가",
+              "시가",
+              "고가",
+              "저가",
+              "거래량"
+            ],
+            "description": "조회할 가격 정보 항목, 가능 값: '현재가', '전일대비', '종가', '시가', '고가', '저가', '거래량'"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "symbol",
+          "currency",
+          "date",
+          "priceType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getExchangeRate",
+      "description": "특정 일자의 다양한 통화 환율 정보를 조회할 수 있는 도구입니다. 사용자는 기준 통화, 조회 대상 통화, 날짜, 환율 종류를 선택하여 원하는 환율 정보를 확인할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "전체 맥락과 사용자 요청을 반영한 정제된 환율 조회 쿼리 (예: '오늘 미국 달러 환율 알려줘', '내일 유로 환율 어떻게 될까?')"
+          },
+          "baseCurrency": {
+            "type": "string",
+            "description": "환율의 기준이 되는 통화의 코드(예: 'KRW', 'USD'). 명시하지 않으면 기본값은 'KRW'가 사용됨"
+          },
+          "targetCurrency": {
+            "type": "string",
+            "description": "조회 대상 통화의 코드 (예: 'USD', 'JPY', 'EUR', 'CNY')"
+          },
+          "date": {
+            "type": "string",
+            "description": "조회하고자 하는 날짜 (예: '2024-10-15'). 주말 또는 공휴일 지정 시 자동으로 직전 영업일 환율이 조회됨",
+            "format": "date"
+          },
+          "exchangeType": {
+            "type": "string",
+            "enum": [
+              "spot",
+              "cash_buy",
+              "cash_sell",
+              "ttb",
+              "tts"
+            ],
+            "description": "원하는 환율의 종류. 명시하지 않을 경우 'spot'(기준환율)로 조회됨"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "baseCurrency",
+          "targetCurrency",
+          "date",
+          "exchangeType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getInterestRates",
+      "description": "여러 국가 및 금융기관의 다양한 금리 정보를 조회하는 도구입니다. 사용자는 기준금리, 대출금리, 예금금리, 적금금리 등을 국가, 은행, 날짜, 기간별로 검색할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 흐름과 사용자의 자연어 질문을 포함한 정제된 금리 조회 쿼리 (예: '신규 예금 금리 알려줘', '미국의 대출 금리는 어떤가요?')"
+          },
+          "country": {
+            "type": "string",
+            "description": "조회 대상 국가의 이름을 입력 (예: 'Korea', 'United States', 'Japan', 'Eurozone'). 생략 시 기본값은 'Korea'로 간주합니다."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "base",
+              "loan",
+              "deposit",
+              "savings"
+            ],
+            "description": "조회할 금리 종류. 'base'는 기준금리, 'loan'은 대출금리, 'deposit'은 예금금리, 'savings'는 적금금리를 의미합니다."
+          },
+          "bankName": {
+            "type": "string",
+            "description": "금리 정보를 조회할 특정 금융기관 이름 (예: '우리은행', '미즈호은행', 'Bank of America'). 필요 시 입력"
+          },
+          "date": {
+            "type": "string",
+            "description": "금리의 기준 날짜 (예: '2024-04-30'). 오늘 날짜를 기본 값으로 하며, 미래 날짜 입력 시 최신 데이터를 반환하거나 안내 메시지를 제공합니다.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "term": {
+            "type": "string",
+            "description": "금리에 적용되는 기간 (예: '6개월', '2년', '36개월' 등), 필요할 때 사용"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "rateType",
+          "country",
+          "date"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getGoldPrice",
+      "description": "국내 금 시세(1g, 1돈, 1온스 등)를 조회하는 도구입니다. 현재가 또는 특정 날짜의 시세를 확인할 수 있으며, 원화 기준으로 제공됩니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청을 정제한 쿼리 (예: '오늘 금 1돈 가격 알려줘')"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "g",
+              "don",
+              "oz"
+            ],
+            "description": "조회 단위. 'g': 1그램, 'don': 1돈(3.75g), 'oz': 1온스(31.1035g)"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "조회할 날짜 (선택값, 형식: YYYY-MM-DD). 입력하지 않으면 오늘 기준으로 조회합니다."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "unit"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "searchFinanceInfo",
+      "description": "금융 시장 전반의 동향, 디지털 자산, ETF, 환전, 특정 주식 및 코인, 투자 트렌드 등 다양한 금융 관련 정보를 검색하고 요약 제공하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화의 맥락과 사용자의 자연어 요청을 모두 반영하여 정제된 금융 정보 검색 쿼리입니다. 예를 들어, '올해 비트코인 가격 전망 알려줘', '인공지능 관련 ETF 추천해줘', '달러 환전이 유리한 시기는 언제야?', '메타버스 테마의 주요 코인 정보 알려줘' 등과 같이 구체적인 금융/투자에 대한 질문이 들어갑니다."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+metadata:
+  total_steps: 16
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 보내는 사람 이름: 박두리'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 신한은행 입출금 통장에서 동생한테 20만원 송금해줘. 그리고 방금 보냈다고 카톡으로 메시지도 같이 전송해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"신한은행 입출금 계좌 잔액 조회\"\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"동생에게 20만원 송금\"\n\nworkflow_2:\n  status: pending\n \
+      \ type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: message_agent\n      refined_query: \"동생에게 20만원 송금했다는 내용의 카카오톡\
+      \ 메시지 전송\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 보내는 사람 계좌번호'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 보내시는 분의 계좌번호 정보를 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 111-123-456789 이거야.
+- workflow_id: null
+  step_id: 7
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"박두리의 신한은행 입출금\
+      \ 계좌 잔액 조회\"\n  accountNumber: \"111-123-456789\"\n  accountHolderName: \"박두리\"\
+      \n  bankName: \"신한은행\"\n  accountType: \"checking\"\n  includeTransactions:\
+      \ false\ntool_call_result:\n  data:\n    refinedQuery: \"박두리의 신한은행 입출금 계좌 잔액\
+      \ 조회\"\n    accountHolderName: \"박두리\"\n    bankName: \"신한은행\"\n    accountNumber:\
+      \ \"111-123-456789\"\n    accountType: \"checking\"\n    balance: 1250000\n\
+      \    status: \"성공\"\n    message: \"박두리님의 신한은행 입출금 계좌 잔액은 ₩1,250,000입니다.\"\n\
+      \    sourceAccountId: \"account-20250123-789\""
+- workflow_id: null
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 받는 사람 이름, 계좌번호, 수취 은행명'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 정확하고 안전한 송금을 위해서 받으시는 분의 이름과 계좌번호, 수취 은행명을 알려주세요.
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: 박우리, 계좌번호는 110-123-456789이고 하나은행이야.
+- workflow_id: null
+  step_id: 11
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"박두리의 신한은행 입출금 계좌에서\
+      \ 동생 박우리의 하나은행 계좌로 20만원 송금\"\n  recipientName: \"박우리\"\n  bankName: \"하나은행\"\
+      \n  accountNumber: \"110-123-456789\"\n  sourceAccountId: \"account-20250123-789\"\
+      \n  amount: 200000\ntool_call_result:\n  data:\n    refinedQuery: \"박두리의 신한은행\
+      \ 입출금 계좌에서 동생 박우리의 하나은행 계좌로 20만원 송금\"\n    recipientName: \"박우리\"\n    bankName:\
+      \ \"하나은행\"\n    accountNumber: \"110-123-456789\"\n    amount: 200000\n    sourceAccountId:\
+      \ \"account-20250123-789\"\n    transactionId: \"TX1234567890\"\n    status:\
+      \ \"성공\"\n    message: \"박우리님에게 20만원 송금이 성공적으로 완료되었습니다.\""
+- workflow_id: workflow_2
+  step_id: 12
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 받는 사람 전화번호'
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: 카카오톡 메시지 전송을 위해서는 받으시는 분의 전화번호를 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 14
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1234-5678이야.
+- workflow_id: null
+  step_id: 15
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"동생 박우리에게 20만원 송금했다는\
+      \ 내용을 카카오톡 메시지로 전송\"\n  channel: \"kakaotalk\"\n  phoneNumber: \"010-1234-5678\"\
+      \n  message: \"박두리님이 20만원을 송금하였습니다.\"\n  repeatRule: \"none\"\n  priority: \"\
+      normal\"\ntool_call_result:\n  data:\n    refinedQuery: \"동생 박우리에게 20만원 송금했다는\
+      \ 내용을 카카오톡 메시지로 전송\"\n    channel: \"kakaotalk\"\n    phoneNumber: \"010-1234-5678\"\
+      \n    message: \"박두리님이 20만원을 송금하였습니다.\"\n    repeatRule: \"none\"\n    priority:\
+      \ \"normal\"\n    status: \"전송 성공\"\n    deliveryConfirmation: \"수신 확인됨\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: '- 박두리님의 신한은행 입출금 계좌 잔액 조회 후, 박우리님의 하나은행 계좌로 20만원을 송금 완료하였습니다.
+
+      - 박우리님에게 카카오톡을 통해 아래의 메시지를 전송하였습니다: "박두리님이 20만원을 송금하였습니다."'

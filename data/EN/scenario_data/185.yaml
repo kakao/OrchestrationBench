@@ -1,0 +1,144 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'userId: "USR951031"
+
+      date: 2024-07-18'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Are there any skincare products that help restore skin barrier?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Recommended\
+      \ skincare products that help repair and strengthen facial skin barrier\""
+- workflow_id: null
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Recommended skincare\
+      \ products for strengthening and repairing skin barrier\"\n  productCategory:\
+      \ \"skincare\"\n  sortBy: \"latest\"\ntool_call_result:\n  data:\n    - productId:\
+      \ \"DRG_RBCSC_01\"\n      productName: \"Dr.G Red Blemish Cica Soothing Cream\"\
+      \n      brand: \"Dr.G\"\n      description: \"A moisturizing cream with 5-Cica\
+      \ Complex and plant-derived ingredients that soothes sensitive skin and helps\
+      \ restore weakened skin barrier. Dermatologically tested for acne-prone skin.\"\
+      \n      price: 20\n    - productId: \"AEST_ATB365_02\"\n      productName: \"\
+      Aestura Atobarrier 365 Cream\"\n      brand: \"Aestura\"\n      description:\
+      \ \"Formulated with 'DermaON', a skin lipid-like structure that strengthens\
+      \ the barrier of dry and sensitive skin, and highly concentrated ceramides that\
+      \ provide deep hydration lasting up to 100 hours.\"\n      price: 23\n    -\
+      \ productId: \"PHYS_DMTFC_03\"\n      productName: \"Physiogel DMT Facial Cream\"\
+      \n      brand: \"Physiogel\"\n      description: \"Uses biomimic technology\
+      \ with skin-similar ingredients to strengthen skin barrier and prevent moisture\
+      \ loss. Hypoallergenic tested, making it safe for sensitive skin.\"\n      price:\
+      \ 19"
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "I looked up some skincare products that are highly rated for helping\
+      \ restore skin barrier.\n\n1.  Dr. G Red Blemish Cica Soothing Cream\n    *\
+      \   Feature: A hydrating cream with 5-Cica Complex that calms sensitive skin\
+      \ and strengthens skin barrier.\n\n2.  Aestura Atobarrier365 Cream\n    *  \
+      \ Feature: Packed with concentrated ceramides to reinforce skin barrier and\
+      \ provide deep hydration that lasts up to 100 hours.\n\n3.  Physiogel DMT Facial\
+      \ Cream\n    *   Feature: Formulated with skin-similar ingredients to prevent\
+      \ moisture loss, hypoallergenic-tested, suitable for sensitive skin.\n\nLet\
+      \ me know if you’d like to purchase any of these!"
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: I'll go ahead and buy the Dr.G cream.
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      Recommend skincare products that help repair and strengthen skin barrier\"\n\
+      \nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"Order Dr.G Red\
+      \ Blemish Cica Soothing Cream\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient''s name, contact number, and address'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: Sure, I’ll help you place an order for 'Dr.G Red Blemish Cica Soothing
+      Cream.' Could you please provide the recipient’s name, contact number, and shipping
+      address?
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: 'David Johnny, (202)909-9090, 456 Main Street, Unit 502
+
+      Sunshine Apartments, Building 3
+
+      Downtown District
+
+      Los Angeles, CA 90014
+
+      USA — please send it there'
+- workflow_id: null
+  step_id: 11
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"Order Dr.G Red Blemish\
+      \ Cica Soothing Cream\"\n  userId: \"USR951031\"\n  productItems:\n    productId:\
+      \ \"DRG_RBCSC_01\"\n    productName: \"Dr.G Red Blemish Cica Soothing Cream\"\
+      \n    quantity: 1\n    price: 20\n  shippingAddress:\n    recipient: \"David\
+      \ Johnny\"\n    phone: \"(202)909-9090\"\n    address: \"456 Main Street, Unit\
+      \ 502 Sunshine Apartments, Building 3 Downtown District Los Angeles, CA 90014\
+      \ USA\"\ntool_call_result:\n  data:\n    orderId: \"ORD20240718_001\"\n    status:\
+      \ \"completed\"\n    message: \"Your order has been placed successfully. Shipping\
+      \ will begin to the address you provided. Estimated delivery date: 2024-07-20\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your order has been completed.
+
+
+      *   Order Number: ORD20240718_001
+
+      *   Item: Dr.G Red Blemish Cica Soothing Cream (1 unit)
+
+      *   Payment Amount: $20
+
+      *   Shipping Address: 456 Main Street, Unit 502 Sunshine Apartments, Building
+      3 Downtown District Los Angeles, CA 90014 USA
+
+      *   Estimated Delivery Date: July 20, 2024
+
+
+      Thank you for your purchase!'

@@ -1,0 +1,133 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '현재 날짜(2025년 7월 16일, 수요일)
+
+      현재 시간(10시 10분)'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 다음 주 화요일에 생일인 친구에게 선물로 아이유가 쓰는 향수를 사주고 싶어. 어떤 향수인지 찾아서 카톡으로 선물 보내주고,
+      내 캘린더에 '친구 생일'이라고 일정 등록도 해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"아이유가 사용하는\
+      \ 향수 찾기\"\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"아이유가 사용하는 향수 이름으로 상품 검색\"\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"아이유가 사용하는 향수 친구에게 카톡으로 선물하기\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ calendar_agent\n      refined_query: \"다음주 화요일 '친구 생일' 일정 등록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"아이유가 사용하는 향수\"\n\
+      tool_call_result:\n  data:\n    person: \"아이유\"\n    summary: \"아이유는 평소 '딥디크\
+      \ 오 드 뚜왈렛 롬브르 단 로(L'Ombre Dans L'Eau)' 향수를 자주 사용하는 것으로 알려져 있습니다. 장미와 블랙커런트 잎의\
+      \ 조화로 상큼하면서도 고요한 분위기를 주는 플로럴 계열 향입니다.\"\n    sources:\n      - \"2024년 6월 한\
+      \ 매거진 인터뷰에서 본인이 애용하는 향으로 직접 언급\"\n      - \"아이유 팬 커뮤니티 및 뷰티 유튜브 채널에서 반복 언급됨\"\
+      \n    note: \"공식 광고 모델은 아니며, 개인 사용 기준의 정보입니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"다음 주 화요일에 친구 생일\
+      \ 일정 등록\"\n  title: \"친구 생일\"\n  startDateTime: \"2025-07-22T10:10:00\"\n  endDateTime:\
+      \ \"2025-07-22T11:10:00\"\ntool_call_result:\n  data:\n    scheduleId: \"SCHD20250722_001\"\
+      \n    status: \"created\"\n    title: \"친구 생일\"\n    startDateTime: \"2025-07-22T10:10:00\"\
+      \n    endDateTime: \"2025-07-22T11:10:00\"\n    isAllDay: true"
+- workflow_id: workflow_1
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"아이유가 사용하는 딥디크 오\
+      \ 드 뚜왈렛 롬브르 단 로(L'Ombre Dans L'Eau)\"\n  productCategory: \"향수\"\n  productName:\
+      \ \"오 드 뚜왈렛 롬브르 단 로(L'Ombre Dans L'Eau)\"\n  brand: \"딥티크\"\n  source: \"아이유\"\
+      \n  sortBy: \"latest\"\ntool_call_result:\n  data:\n    products:\n      - productId:\
+      \ \"PRODUCT-DIPTYQUE-LOMBRE-50ML\"\n        name: \"Diptyque 롬브르 단 로 오 드 뚜왈렛\
+      \ 50ml\"\n        brand: \"딥티크\"\n        price: \"₩138,000\"\n        seller:\
+      \ \"딥티크 공식몰\"\n        availability: \"재고 있음\"\n        link: \"https://www.diptyqueparis.com/kr/롬브르단로50\"\
+      \n        notes: \"장미와 블랙커런트 잎 향, 은은하고 세련된 플로럴 계열\"\n\n      - productId: \"\
+      PRODUCT-DIPTYQUE-LOMBRE-100ML\"\n        name: \"Diptyque L'Ombre Dans L'Eau\
+      \ EDT 100ml\"\n        brand: \"딥티크\"\n        price: \"₩198,000\"\n       \
+      \ seller: \"SSG.COM (신세계몰)\"\n        availability: \"재고 있음\"\n        link:\
+      \ \"https://www.ssg.com/item/diptyque-롬브르단로100\"\n        notes: \"풍부한 향 지속력,\
+      \ 아이유 애정템으로 알려짐\"\n\n      - productId: \"PRODUCT-DIPTYQUE-LOMBRE-10ML\"\n \
+      \       name: \"딥디크 롬브르 단 로 EDT 트래블 스프레이 10ml\"\n        brand: \"딥티크\"\n  \
+      \      price: \"₩45,000\"\n        seller: \"카카오메이커스\"\n        availability:\
+      \ \"한정 수량\"\n        link: \"https://makers.kakao.com/items/롬브르단로트래블\"\n   \
+      \     notes: \"선물용으로 인기, 휴대용 사이즈\""
+- workflow_id: null
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 정확한 상품 옵션(용량), 배송 정보'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '아이유가 애용하는 향수로 알려진 딥디크 롬브르 단 로 (L''Ombre Dans L''Eau) 제품은 다음과 같아요!
+
+
+      💐 Diptyque 롬브르 단 로 오 드 뚜왈렛
+
+      1. 50ml – 약 ₩138,000, 딥티크 공식몰
+
+      2. 100ml – 약 ₩198,000, SSG.COM
+
+      3. 10ml 트래블 스프레이 – 약 ₩45,000, 카카오메이커스 (선물용으로 인기)
+
+
+      이 향수는 장미와 블랙커런트 잎의 조화가 특징인 플로럴 계열로, 깔끔하고 고요한 분위기를 선사해요.
+
+      아이유가 실제 인터뷰와 팬 커뮤니티에서 언급한 향수로도 유명합니다.
+
+
+      주문 희망하는 용량과 선물받을 분의 성함과 연락처를 알려주세요.'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 100ml로 하고요. 내 친구 이름은 김민지이고 연락처는 010-9876-5432야.
+- workflow_id: workflow_1
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: sendGifts\narguments:\n  refinedQuery: \"김민지 생일 선물로 딥디크 롬브르 단\
+      \ 로 향수를 카카오톡으로 보내기\"\n  productId: \"PRODUCT-DIPTYQUE-LOMBRE-100ML\"\n  recipientName:\
+      \ \"김민지\"\n  quantity: 1\n  phoneNumber: \"010-9876-5432\"\n  deliveryMethod:\
+      \ \"kakaotalk\"\ntool_call_result:\n  data:\n    status: \"success\"\n    giftLink:\
+      \ \"https://gift.example.com/send/iu_perfume_100ml_abc123\"\n    productName:\
+      \ \"Diptyque L'Ombre Dans L'Eau EDT 100ml\"\n    productId: \"PRODUCT-DIPTYQUE-LOMBRE-100ML\"\
+      \n    recipient: \"김민지\"\n    deliveryMethod: \"kakaotalk\"\n    sentAt: \"\
+      2025-07-16T10:22:00\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "김민지님께 생일 선물로 선택하신 딥디크 롬브르 단 로 오 드 뚜왈렛 100ml 향수가 카카오톡으로 성공적으로 전송되었습니다!\n\
+      \ \n- 상품명: Diptyque L'Ombre Dans L'Eau EDT 100ml\n- 전달 방식: 카카오톡 GiftLink\n-\
+      \ 전송 완료 시각: 2025년 7월 16일 10:22\n\n-----------------------------\n\n캘린더 등록: \n\
+      다음 주 화요일(7월 22일)에 '친구 생일'이라는 이름으로 일정도 등록해 두었어요!\n\n더 필요하신 점이 있으면 언제든지 말씀해 주세요."

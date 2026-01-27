@@ -1,0 +1,735 @@
+{
+  "agent_card": {
+    "name": "Shopping Agent",
+    "agent_id": "shopping_agent",
+    "description": "A shopping assistant that helps users search for products, get personalized gift suggestions, and manage orders including placing, tracking, cancelling, modifying, exchanging, or refunding them.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "searchProducts",
+        "name": "상품 찾기",
+        "description": "다양한 속성(카테고리, 가격, 브랜드, 색상, 사이즈 등)과 키워드를 조합하여 원하는 상품을 쉽고 빠르게 검색해줍니다.",
+        "examples": [
+          "가성비 좋은 노트북 가방 추천해줘",
+          "이효리가 인스타에 올린 신발 찾아줘",
+          "여름에 인기 있는 반팔티 뭐가 있어?",
+          "20만원 이하 남성용 시계 보여줄래?",
+          "요즘 잘나가는 네이비색 셔츠 찾고 싶어"
+        ]
+      },
+      {
+        "id": "recommendGifts",
+        "name": "선물 추천",
+        "description": "수신자 유형, 연령, 예산, 기념일 등 다양한 조건을 반영해 최적의 선물을 추천해줍니다.",
+        "examples": [
+          "스승의 날에 선생님께 드릴만한 선물 추천해줘",
+          "연인에게 줄 실용적인 선물이 있을까요?",
+          "10대 남학생 생일선물로 잘 맞을만한 것 추천해줘"
+        ]
+      },
+      {
+        "id": "sendGifts",
+        "name": "선물하기",
+        "description": "선택한 상품을 친구나 지인에게 문자, 이메일, 카카오톡 등으로 giftlink 형태로 전송하는 도구입니다. 선물 발송을 위해서는 '선물 추천'을 통해 상품을 선택해야 합니다.",
+        "examples": [
+          "이 제품 남친에게 선물로 보내고 싶은데, 카카오톡으로 전달할 수 있을까?",
+          "졸업 축하 메시지랑 함께 이 꽃다발 선물하기"
+        ]
+      },
+      {
+        "id": "orderProducts",
+        "name": "상품 주문",
+        "description": "사용자가 지정한 상품을 주문하는 도구입니다. 여러 상품을 한 번에 주문할 수 있으며, 상품 주문을 위해서는 '상품 찾기'를 통해 상품을 선택해야 합니다.",
+        "examples": [
+          "이 셔츠 두 장이랑 운동화 하나 함께 주문해줘",
+          "받는 사람은 김민수, 주소는 부산 해운대로 58, 주문할게요"
+        ]
+      },
+      {
+        "id": "getOrderStatus",
+        "name": "주문 조회",
+        "description": "주문의 내역, 상태, 일자, 수령인 정보 등을 조회하는 도구입니다. 어떤 주문이 있었는지, 그 상태가 어떤지를 알고 싶을 때 사용됩니다.",
+        "examples": [
+          "이번 달 주문한 상품들 목록 보여줘",
+          "6월 10일에 주문한 게 배송됐는지 궁금해"
+        ]
+      },
+      {
+        "id": "cancelOrder",
+        "name": "주문 취소",
+        "description": "전체 주문 또는 일부 상품만 선택해 취소할 수 있는 도구입니다. 취소 사유와 환불 방식 설정이 가능하며, 주문 취소를 위해서는 먼저 '주문 조회'를 통해 해당 주문을 지정해야 합니다.",
+        "examples": [
+          "주문번호 54321 전체 취소 원해요. 필요 없게 됐어요",
+          "이불만 따로 주문 취소할 수 있을까?",
+          "지난주 결제한 가방 취소 부탁해"
+        ]
+      },
+      {
+        "id": "modifyOrder",
+        "name": "주문 변경",
+        "description": "상품의 색상, 사이즈, 수량 또는 배송지 등 기존 주문의 내용을 수정할 수 있는 도구입니다. 주문 변경을 위해서는 먼저 '주문 조회'를 통해 해당 주문을 지정해야 합니다.",
+        "examples": [
+          "주문번호 7766554433 배송지 주소 바꿔줘",
+          "신발 수량을 2개에서 3개로 변경할 수 있을까?",
+          "구매 옵션에서 색상을 베이지로 바꿔주세요"
+        ]
+      },
+      {
+        "id": "exchangeProducts",
+        "name": "상품 교환",
+        "description": "주문 정보를 기반으로 동일 상품의 사이즈, 색상, 옵션 변경을 요청할 수 있는 도구입니다. 상품 교환을 위해서는 먼저 '주문 조회'를 통해 상품을 지정해야 합니다.",
+        "examples": [
+          "운동화 사이즈 260으로 교환해줘",
+          "블랙 셔츠를 네이비색으로 바꾸고 싶어",
+          "이 상품 같은 모델로 색상만 변경해줘"
+        ]
+      },
+      {
+        "id": "refundProducts",
+        "name": "상품 환불",
+        "description": "주문 정보를 기반으로 환불을 요청하는 도구입니다. 환불을 위해서는 먼저 '주문 조회'를 통해 상품을 지정해야 합니다.",
+        "examples": [
+          "티셔츠 환불하고 싶어요",
+          "배송받은 가방이 불량이라 환불해줘",
+          "마음이 바뀌어서 이 제품 환불할래"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "searchProducts",
+      "description": "상품을 검색하고 다양한 필터를 활용해 사용자의 요구에 맞는 제품을 찾아주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락과 사용자 자연어 쿼리를 모두 반영한 정제된 검색 쿼리입니다. 예: '초경량 방수 백팩', '여름 남성 반팔 티셔츠 추천'"
+          },
+          "productCategory": {
+            "type": "string",
+            "description": "검색하고자 하는 상품의 카테고리를 명시합니다. 예: '지갑', '운동화', '셔츠'"
+          },
+          "productName": {
+            "type": "string",
+            "description": "검색하고자 특정 상품명이나 모델 번호. 예: '에어팟', '그램 노트북'"
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "검색할 상품의 최저 가격입니다. 1,000원 단위로 입력하며, 최소값은 10,000원입니다. 예: 20000"
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "검색할 상품의 최고 가격입니다. 1,000원 단위로 입력합니다. 예: 80000"
+          },
+          "brand": {
+            "type": "string",
+            "description": "특정 브랜드를 설정할 수 있습니다. 예: 'NIKE', '커버낫'"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "low_price",
+              "high_price",
+              "latest",
+              "most_sold",
+              "most_viewed",
+              "highest_rated"
+            ],
+            "description": "상품 목록의 정렬 기준을 선택합니다. 'latest'(기본값), 인기있는 상품 기준은 'most_viewed'"
+          },
+          "color": {
+            "type": "string",
+            "description": "검색할 상품의 색상'"
+          },
+          "size": {
+            "type": "string",
+            "description": "상품의 사이즈를 입력합니다. 예: 'M', 'L', '270'"
+          },
+          "source": {
+            "type": "string",
+            "description": "상품을 언급한 매체(tv 프로그램)나 인물(인기 유투버)을 입력합니다."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "recommendGifts",
+      "description": "받는 사람의 유형, 상황, 예산, 관심사 등을 바탕으로 맞춤형 선물 추천을 제공하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청과 이전 맥락이 통합된 명확하게 정제된 선물 추천 질의 (예: '30대 아버지의 생일에 어울리는 선물')."
+          },
+          "recipientType": {
+            "type": "string",
+            "description": "선물을 받는 사람의 유형 (예: '연인', '부모님', '친구', '아이')."
+          },
+          "occasion": {
+            "type": "string",
+            "description": "선물을 주는 특별한 상황 (예: '생일', '기념일', '승진', '졸업', '출산')."
+          },
+          "age": {
+            "type": "string",
+            "description": "수신자의 연령대 (예: '20대', '50대', '초등학생')."
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "남성",
+              "여성",
+              "기타",
+              "모름"
+            ],
+            "description": "수신자의 성별 ('남성', '여성', '기타', 또는 '모름' 중 선택)."
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "예산의 최소 금액 (단위: 원, 10,000 이상 입력)."
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "예산의 최대 금액 (단위: 원, 5,000,000 이하 입력)."
+          },
+          "interests": {
+            "type": "string",
+            "description": "수신자의 주요 관심사 (예: '패션', '음악 감상', '운동', '요리')."
+          },
+          "personality": {
+            "type": "string",
+            "description": "수신자의 성향 및 취향 (예: '실용적', '감성적', '트렌디', '미니멀리스트')."
+          },
+          "exclude_items": {
+            "type": "string",
+            "description": "추천에서 제외할 품목 또는 카테고리 (예: '꽃', '문구류')."
+          },
+          "items": {
+            "type": "string",
+            "description": "선물하고자 하는 아이템 (예: '신발', '악세서리')."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "sendGifts",
+      "description": "선택한 상품을 친구에게 선물로 전송합니다. 수신자의 이름, 연락처 또는 주소, 축하 메시지, 전달 방식(문자, 이메일, 카카오톡 등) 등을 입력받아 giftlink로 선물 전달을 처리합니다. productId를 특정하기 위해서는 먼저 선물 추천 툴을 실행해야 합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "선물 목적 및 맥락이 포함된 자연어 요청 (예: '친구 생일선물로 이 가방 선물하기')"
+          },
+          "productId": {
+            "type": "string",
+            "description": "선물로 보낼 상품의 ID"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "선물할 상품의 수량, 기본값은 1"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "수신자의 이름"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "수신자의 연락처"
+          },
+          "email": {
+            "type": "string",
+            "description": "수신자의 이메일 주소 (선택값, 이메일 전송 시 사용)"
+          },
+          "message": {
+            "type": "string",
+            "description": "카드나 메시지에 넣을 축하 인사말"
+          },
+          "deliveryMethod": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "kakaotalk",
+              "email"
+            ],
+            "description": "giftlink 전송 방식"
+          },
+          "sendTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "예약 전송 시간 (선택값, 없으면 즉시 전송)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "productId",
+          "quantity",
+          "recipientName",
+          "deliveryMethod"
+        ]
+      }
+    },
+    {
+      "name": "orderProducts",
+      "description": "여러 상품을 주문하고 배송 정보를 입력하여 사용자가 구매를 완료할 수 있는 도구입니다. productItems를 지정하려면 먼저 상품 찾기 툴을 실행해야 합니다. 여러 대상에 대해 반복 호출이 필요한 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요청을 반영한 상품 주문 관련 정제된 쿼리입니다. 예: '남성용 겨울 패딩 주문', '화이트 운동화와 여성용 청바지 결제 원함'"
+          },
+          "userId": {
+            "type": "string",
+            "description": "주문을 진행하는 사용자의 고유 ID"
+          },
+          "productItems": {
+            "type": "object",
+            "description": "주문할 단일 상품 정보",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "주문하는 상품의 고유 ID"
+                },
+                "productName": {
+                  "type": "string",
+                  "description": "구매할 상품의 이름"
+                },
+                "size": {
+                  "type": "string",
+                  "description": "상품에 따라 선택 혹은 필수가 될 수 있는 사이즈 정보 (예: 'M', '250', 'XL')"
+                },
+                "color": {
+                  "type": "string",
+                  "description": "상품에 따라 선택 혹은 필수가 될 수 있는 색상 (예: '네이비', '그레이')"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "구매 수량 (최소 1, 최대 10, 미입력 시 1이 기본값)",
+                  "minimum": 1,
+                  "maximum": 10
+                },
+                "price": {
+                  "type": "integer",
+                  "description": "주문 상품 1개의 가격 (단위: 원)"
+                }
+              },
+              "required": [
+                "productId",
+                "quantity",
+                "price"
+              ]
+            }
+          },
+          "shippingAddress": {
+            "type": "object",
+            "description": "상품 수령인을 위한 배송지 정보",
+            "properties": {
+              "recipient": {
+                "type": "string",
+                "description": "받는 사람의 이름"
+              },
+              "address": {
+                "type": "string",
+                "description": "전체 배송지 주소"
+              },
+              "phone": {
+                "type": "string",
+                "description": "수령인의 연락처 (휴대폰 번호 등)"
+              },
+              "deliveryMemo": {
+                "type": "string",
+                "description": "배송 요청사항 (예: '부재 시 경비실에 맡겨주세요', '문 앞에 놔주세요')"
+              }
+            },
+            "required": [
+              "recipient",
+              "address",
+              "phone"
+            ]
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "userId",
+          "productItems",
+          "shippingAddress"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getOrderStatus",
+      "description": "주문의 내역, 상태, 일자, 수령인 정보 등을 조회하는 도구입니다. 어떤 주문이 있었는지, 그 상태가 어떤지를 알고 싶을 때 사용됩니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 발화와 맥락을 바탕으로 재정리된 주문 조회 목적의 쿼리입니다 (예: '최근 주문 내역을 확인하고 싶어요')."
+          },
+          "orderId": {
+            "type": "string",
+            "description": "특정 주문을 식별하는 주문 번호입니다. 사용자가 주문 번호를 언급한 경우 입력됩니다."
+          },
+          "userId": {
+            "type": "string",
+            "description": "주문자 또는 계정의 고유 ID입니다. 사용자의 계정 정보는 필수입니다."
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "주문 수령인의 이름입니다."
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "주문에 등록된 연락처 번호입니다.(예: '01012345678')"
+          },
+          "orderDate": {
+            "type": "string",
+            "description": "주문한 날짜입니다 (예: '2024-06-10')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "userId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelOrder",
+      "description": "주문 내역에서 전체 또는 일부 상품을 선택하여 취소하고 환불 방식까지 지정할 수 있는 도구입니다. 주문 취소를 위해서는 먼저 주문 조회를 실행해야 합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "현재 사용자의 요청을 반영한 정제된 취소 관련 쿼리 또는 대화 맥락 (예: '어제 주문한 운동화 취소하고 싶어요', '장바구니에서 구매한 일부 의류만 취소 요청')"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "취소하려는 주문의 고유 ID (주문 조회를 통해 확인 필요, 예: 'ORD20240501A')"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "주문 취소 사유 (예: '상품 변경', '단순 변심', '배송 지연')"
+          },
+          "itemIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "전체 주문이 아니라 일부 상품만 취소할 경우 해당 상품의 ID 목록 (부분 취소 시 필수, 예: ['PRD789', 'PRD101'])"
+          },
+          "cancelType": {
+            "type": "string",
+            "enum": [
+              "full",
+              "partial"
+            ],
+            "description": "'full'은 전체 주문 취소, 'partial'은 일부 상품만 선택해 부분 취소 (부분 취소 시 itemIds 필수, 캠페인/세트상품은 전체 취소만 가능)"
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "original_method",
+              "store_credit",
+              "bank_transfer"
+            ],
+            "description": "환불 방식 선택 (선택하지 않을 경우 결제 수단 따라 'original_method'가 기본값으로 처리됨, 포인트/쿠폰 사용 시 환불 정책이 다를 수 있음)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "orderId",
+          "cancelType",
+          "refundMethod"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyOrder",
+      "description": "주문 상품의 배송지, 옵션, 수량, 선물 포장 등을 변경하거나 변경 메모를 남기는 도구입니다. 주문을 조회한 후 배송 전 상태에서만 사용 가능합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 주문 변경 요청에 대한 자연어 쿼리와 이전 맥락을 반영한 정제된 문장 (예: '배송지를 회사로 변경하고 싶어요', '티셔츠 사이즈를 L로 바꿔주세요')"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "변경할 주문의 고유 주문번호 또는 식별자 (주문 조회 결과에서 확인)"
+          },
+          "newShippingAddress": {
+            "type": "object",
+            "properties": {
+              "recipient": {
+                "type": "string",
+                "description": "변경할 수령인 이름"
+              },
+              "address": {
+                "type": "string",
+                "description": "새로운 배송지 주소"
+              },
+              "phone": {
+                "type": "string",
+                "description": "하이픈(-)이 없는 수령인 연락처 (예: '01012345678')"
+              }
+            },
+            "required": [
+              "recipient",
+              "address",
+              "phone"
+            ],
+            "description": "배송지 정보를 변경할 경우 사용되는 필드입니다. 전화번호는 하이픈 없이 입력해야 합니다."
+          },
+          "itemChanges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "주문 내 변경할 상품의 고유 식별자"
+                },
+                "quantity": {
+                  "type": "number",
+                  "description": "변경할 상품 수량 (일부 이벤트 상품은 1개로 제한될 수 있음)"
+                },
+                "size": {
+                  "type": "string",
+                  "description": "변경할 상품의 사이즈 옵션 (예: 'M', 'L', 'XL', '260')"
+                },
+                "color": {
+                  "type": "string",
+                  "description": "변경할 상품의 색상 옵션 (예: '블랙', '아이보리')"
+                }
+              },
+              "required": [
+                "productId"
+              ]
+            },
+            "description": "주문 상품의 옵션(색상, 사이즈) 또는 수량 변경 시 사용됩니다. 일부 상품은 수량 변경이 제한될 수 있습니다."
+          },
+          "newGiftOption": {
+            "type": "object",
+            "properties": {
+              "wrap": {
+                "type": "boolean",
+                "description": "선물 포장 여부 (포장이 가능한 카테고리의 경우에만 true로 설정, 예: 의류는 가능, 가전제품은 불가)"
+              },
+              "message": {
+                "type": "string",
+                "description": "포장 메시지 (최대 100자, 상품이 출고되기 전에만 변경 가능)"
+              }
+            },
+            "description": "선물 포장 및 메시지를 변경하거나 추가하는 경우 사용됩니다."
+          },
+          "changeNote": {
+            "type": "string",
+            "description": "주문 변경에 대한 요청 설명 또는 메모 (예: '수령자 연락처를 잘못 입력해서 변경 요청합니다', '상품 색상 오배송으로 옵션 변경 바랍니다')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "orderId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "exchangeProducts",
+      "description": "상품 교환 요청을 위한 도구입니다. 주문 정보를 기반으로 같은 상품에 대해 사이즈/색상/옵션 변경을 요청할 수 있으며, 구매일로부터 1개월 이내 요청만 가능합니다. 상품 교환를 위해서는 먼저 주문 조회를 실행해야 합니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청과 이전 맥락을 반영한 정제된 교환 요청 쿼리 (예: '운동화 사이즈 교환 원해요')"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "교환을 요청하는 주문의 고유 ID (※ 교환을 위해서는 주문 조회가 필수)"
+          },
+          "itemList": {
+            "type": "array",
+            "description": "교환할 상품 목록 (※ 같은 상품에 한해서만 교환 가능)",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "교환 요청 상품의 ID"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "교환 요청 수량",
+                  "minimum": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "description": "상품별 교환 사유 (선택)"
+                }
+              },
+              "required": [
+                "productId",
+                "quantity"
+              ]
+            }
+          },
+          "exchangeOption": {
+            "type": "object",
+            "description": "교환을 원하는 상품 옵션 (※ 동일 상품 기준)",
+            "properties": {
+              "size": {
+                "type": "string",
+                "description": "변경할 사이즈 (예: 'M', '260')"
+              },
+              "color": {
+                "type": "string",
+                "description": "변경할 색상 (예: '블랙')"
+              },
+              "otherOption": {
+                "type": "string",
+                "description": "기타 옵션 변경 사항 (예: '리미티드 버전')"
+              }
+            }
+          },
+          "reasonCode": {
+            "type": "string",
+            "enum": [
+              "SIZE_ISSUE",
+              "DEFECTIVE",
+              "WRONG_ITEM",
+              "OTHER"
+            ],
+            "description": "교환 사유 코드"
+          },
+          "detailedReason": {
+            "type": "string",
+            "description": "교환 요청에 대한 고객의 구체적인 설명"
+          },
+          "newShippingAddress": {
+            "type": "object",
+            "description": "교환 상품 수령 주소 (기본 배송지 외 변경 시 사용)",
+            "properties": {
+              "recipient": {
+                "type": "string",
+                "description": "수령자 이름"
+              },
+              "address": {
+                "type": "string",
+                "description": "전체 주소"
+              },
+              "phone": {
+                "type": "string",
+                "description": "수령자 연락처 (하이픈 없이 숫자만 입력)"
+              }
+            }
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "orderId",
+          "itemList",
+          "exchangeOption"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "refundProducts",
+      "description": "상품 환불 요청을 위한 도구입니다. 주문 정보를 기반으로 환불 사유와 방식 등을 입력하여 환불 절차를 진행합니다. 상품 환불를 위해서는 먼저 주문 조회를 실행해야 합니다. ※ 주문 조회 필수, 구매일 기준 1개월 이내 요청만 가능. 단순 변심 사유일 경우 고객은 택배비 4,000원을 입금해야 합니다 (대한은행 123-456789-0987 패션왕).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청과 이전 맥락을 반영한 정제된 환불 요청 쿼리 (예: '티셔츠 환불하고 싶어요')"
+          },
+          "orderId": {
+            "type": "string",
+            "description": "환불을 요청하는 주문의 고유 ID (※ 환불을 위해서는 주문 조회가 필수)"
+          },
+          "itemList": {
+            "type": "array",
+            "description": "환불 요청 상품 목록",
+            "items": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "description": "환불 요청 상품의 ID"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "description": "환불 요청 수량",
+                  "minimum": 1
+                },
+                "reason": {
+                  "type": "string",
+                  "description": "상품별 환불 사유 (선택)"
+                }
+              },
+              "required": [
+                "productId",
+                "quantity"
+              ]
+            }
+          },
+          "reasonCode": {
+            "type": "string",
+            "enum": [
+              "DEFECTIVE",
+              "WRONG_ITEM",
+              "CHANGE_OF_MIND",
+              "OTHER"
+            ],
+            "description": "환불 사유 코드 (단순 변심의 경우 배송비 4,000원 별도 입금 필요), 기본값 CHANGE_OF_MIND"
+          },
+          "detailedReason": {
+            "type": "string",
+            "description": "환불 요청에 대한 고객의 상세 사유"
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "ORIGINAL_PAYMENT",
+              "CREDIT_BALANCE",
+              "OTHER"
+            ],
+            "description": "환불 처리 방식, 기본값은 ORIGINAL_PAYMENT임 "
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "orderId",
+          "itemList",
+          "reasonCode",
+          "refundMethod"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

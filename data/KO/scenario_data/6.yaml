@@ -1,0 +1,100 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 연락처: 010-5545-6626
+
+      - 날짜: 2020-07-08'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 명동이나 신사쪽에 청모하기 좋은 브런치 카페 추천해줘 바로 예약하게
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"명동이나 신사에서\
+      \ 청모하기 좋은 브런치 카페 추천\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"명동이나 신사에서 청모하기 좋은 브런치 카페 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: recommendRestaurants\n    arguments:\n      refinedQuery:\
+      \ \"명동에서 청모하기 좋은 브런치 카페 추천\"\n      location: \"명동\"\n      cuisineType: \"\
+      브런치 카페\"\n      sortBy: \"highest_rated\"\n      ambience: \"청모하기 좋은\"\n\n \
+      \ - tool: recommendRestaurants\n    arguments:\n      refinedQuery: \"신사에서 청모하기\
+      \ 좋은 브런치 카페 추천\"\n      location: \"신사\"\n      cuisineType: \"브런치 카페\"\n  \
+      \    sortBy: \"highest_rated\"\n      ambience: \"청모하기 좋은\"\n\ntool_call_result:\n\
+      \  - tool: recommendRestaurants\n    restaurants:\n      - name: \"브런치 하우스\"\
+      \n        address: \"서울 중구 명동길 25\"\n        rating: 4.8\n        contact: \"\
+      02-123-4567\"\n        features:\n          - \"청모 특화\"\n          - \"무료 Wi-Fi\"\
+      \n          - \"채광 좋은 공간\"\n      - name: \"카페 모닝\"\n        address: \"서울 중구\
+      \ 퇴계로 100\"\n        rating: 4.7\n        contact: \"02-987-6543\"\n       \
+      \ features:\n          - \"아늑한 분위기\"\n          - \"차분한 음악\"\n          - \"\
+      테라스 좌석\"\n    note: \"명동 지역에서 청모하기 좋은 브런치 카페 추천 목록입니다.\"\n    source: \"지역 카페\
+      \ 추천 시스템\"\n\n  - tool: recommendRestaurants\n    restaurants:\n      - name:\
+      \ \"신사 브런치 센터\"\n        address: \"서울 강남구 신사동 543-12\"\n        rating: 4.9\n\
+      \        contact: \"02-321-4321\"\n        features:\n          - \"모임 추천\"\n\
+      \          - \"다양한 메뉴\"\n          - \"프라이빗 공간 제공\"\n      - name: \"에코 카페\"\
+      \n        address: \"서울 강남구 도산대로 30길 8\"\n        rating: 4.8\n        contact:\
+      \ \"02-123-9876\"\n        features:\n          - \"녹음이 우거진 테라스\"\n        \
+      \  - \"로컬 재료 사용\"\n          - \"자연 채광\"\n    note: \"신사 지역에서 청모하기 좋은 브런치 카페\
+      \ 추천 목록입니다.\"\n    source: \"지역 카페 추천 시스템\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약 장소명, 예약 날짜, 예약 시간'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "명동과 신사 지역에서 청모하기 좋은 브런치 카페를 추천해드리겠습니다.\n\n◾ 명동 지역 브런치 카페 추천\n\n1. 브런치\
+      \ 하우스\n   - 주소: 서울 중구 명동길 25\n   - 평점: 4.8\n   - 연락처: 02-123-4567\n   - 특징:\
+      \ 청모 특화, 무료 Wi-Fi, 채광 좋은 공간\n\n2. 카페 모닝\n   - 주소: 서울 중구 퇴계로 100\n   - 평점: 4.7\n\
+      \   - 연락처: 02-987-6543\n   - 특징: 아늑한 분위기, 차분한 음악, 테라스 좌석\n\n◾ 신사 지역 브런치 카페 추천\n\
+      \n1. 신사 브런치 센터\n   - 주소: 서울 강남구 신사동 543-12\n   - 평점: 4.9\n   - 연락처: 02-321-4321\n\
+      \   - 특징: 모임 추천, 다양한 메뉴, 프라이빗 공간 제공\n\n2. 에코 카페\n   - 주소: 서울 강남구 도산대로 30길 8\n\
+      \   - 평점: 4.8\n   - 연락처: 02-123-9876\n   - 특징: 녹음이 우거진 테라스, 로컬 재료 사용, 자연 채광\n\
+      \n\n해당 카페들은 모두 청모하기에 적합한 장소로, 원하시는 카페를 말씀해 주시면 예약 진행 도와드리겠습니다.\n예약을 위해 예약 날짜와\
+      \ 시간도 함께 알려주세요.\n예: “8월 10일 오전 11시\""
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 브런치하우스 괜찮은거같은데? 7월 22일이고, 저녁 7시로 해줘
+- workflow_id: null
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"7월 22일 오후 7시 브런치\
+      \ 하우스 예약\"\n  placeName: \"브런치 하우스\"\n  reservationDate: \"2020-07-22\"\n  reservationTime:\
+      \ \"19:00\"\n  contactInfo: \"010-5545-6626\"\ntool_call_result:\n  data:\n\
+      \    placeName: \"브런치 하우스\"\n    reservationDate: \"2020-07-22\"\n    reservationTime:\
+      \ \"19:00\"\n    confirmationNumber: \"RES12345678\"\n    status: \"예약 완료\"\n\
+      \    note: \"브런치 하우스에 2020년 7월 22일 오후 7시 예약이 완료되었습니다.\"\n  source: \"예약 시스템\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "브런치 하우스에 2020년 7월 22일 오후 7시로 예약이 성공적으로 완료되었습니다. \n예약 확인 번호는 RES12345678입니다.\
+      \ \n\n예약에 관련된 추가 요청이나 문의사항이 있으시면 언제든지 알려주세요.\n즐거운 모임 되시길 바랍니다!"

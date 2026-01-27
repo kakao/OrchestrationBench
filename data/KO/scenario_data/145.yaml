@@ -1,0 +1,108 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 시각: 08:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '광교역 근처 방 3개, 화장실 2개 있는 아파트 매매 매물 좀 찾아줘. 올해 10월 이후에 입주 가능한 곳으로 네이버 부동산
+      참고해서 알려줘.
+
+      그 중에서 가장 빨리 입주 가능한 곳에서 회사까지는 차로 얼마나 걸리는지 찾아줘.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"네이버 부동산 기준,\
+      \ 올해 10월 이후 입주 가능한 광교역 근처 방 3개, 화장실 2개 있는 아파트 매매 매물\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: transport_agent\n      refined_query: \"네이버 부동산 기준, 올해\
+      \ 10월 이후 입주 가능한 광교역 근처 방 3개, 화장실 2개 있는 아파트 매매 매물 중 가장 빠르게 입주 가능한 곳에서 회사까지 차로\
+      \ 소요되는 시간\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getRealEstateInfo\narguments:\n  refinedQuery: \"네이버 부동산 기준, 2025년\
+      \ 10월 이후 입주 가능한 광교역 근처 방 3개, 화장실 2개 있는 아파트 매매 매물\"\n  propertyType: \"아파트\"\n\
+      \  transactionType: \"매매\"\n  location: \"광교역\"\n  movingDate: \"2025년 10월 이후\"\
+      \n  source: \"네이버부동산\"\n  options:\n    roomCount: 3\n    bathroomCount: 2\n\
+      tool_call_result:\n  realEstateListings:\n    - listingId: \"APT-001\"\n   \
+      \   title: \"광교 힐스테이트 모던 아파트\"\n      apartmentName: \"힐스테이트 광교\"\n      address:\
+      \ \"경기 수원시 영통구 광교중앙로 123\"\n      price: 850000000\n      currency: \"KRW\"\n\
+      \      roomCount: 3\n      bathroomCount: 2\n      area: \"84m²\"\n      movingDate:\
+      \ \"2025-11-01\"\n      contactNumber: \"031-1234-5678\"\n      source: \"네이버부동산\"\
+      \n    - listingId: \"APT-002\"\n      title: \"광교 e편한세상 아파트\"\n      apartmentName:\
+      \ \"e편한세상 광교\"\n      address: \"경기 수원시 영통구 광교로 456\"\n      price: 920000000\n\
+      \      currency: \"KRW\"\n      roomCount: 3\n      bathroomCount: 2\n     \
+      \ area: \"102m²\"\n      movingDate: \"2025-12-15\"\n      contactNumber: \"\
+      031-2345-6789\"\n      source: \"네이버부동산\"\n    - listingId: \"APT-003\"\n  \
+      \    title: \"광교 자이 테라스 하우스\"\n      apartmentName: \"광교 자이\"\n      address:\
+      \ \"경기 수원시 영통구 광교대로 789\"\n      price: 980000000\n      currency: \"KRW\"\n\
+      \      roomCount: 3\n      bathroomCount: 2\n      area: \"110m²\"\n      movingDate:\
+      \ \"2026-01-10\"\n      contactNumber: \"031-3456-7890\"\n      source: \"네이버부동산\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 도착지 주소'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 소요 시간을 찾기 위해서는 도착지 주소 정보를 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 경기도 수원시 영통구 센트럴타운로 27, 브레인타워 15층 (이의동 1234-5)
+- workflow_id: null
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"광교 힐스테이트 모던 아파트에서\
+      \ 경기도 수원시 영통구 센트럴타운로 27 브레인타워까지 차로 소요되는 시간\"\n  optimizeBy: \"fastest\"\n  transportModes:\
+      \ \"car\"\n  departureTime: \"08:00\"\n  origin: \"경기 수원시 영통구 광교중앙로 123 광교 힐스테이트\
+      \ 모던 아파트\"\n  destination: \"경기도 수원시 영통구 센트럴타운로 27 브레인타워\"\ntool_call_result:\n\
+      \  directions:\n    origin: \"광교 힐스테이트 모던 아파트\"\n    destination: \"경기도 수원시\
+      \ 영통구 센트럴타운로 27 브레인타워\"\n    departureTime: \"08:00\"\n    arrivalTime: \"08:30\"\
+      \n    duration: \"30분\"\n    distance: \"10km\"\n    transportMode: \"car\"\n\
+      \    route:\n      - instruction: \"아파트에서 우회전하여 광교중앙로 진입\"\n        distance:\
+      \ \"2km\"\n        duration: \"5분\"\n      - instruction: \"좌회전하여 광교로로 진입하여\
+      \ 직진\"\n        distance: \"5km\"\n        duration: \"15분\"\n      - instruction:\
+      \ \"교차로에서 좌회전 후 3km 직진하여 목적지 도착\"\n        distance: \"3km\"\n        duration:\
+      \ \"10분\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "◾광교역 근처에 입주 가능한 방 3개, 화장실 2개를 갖춘 아파트 매물 정보를 안내드립니다.\n\n1. 매물 정보:\n-\
+      \ 광교 힐스테이트 모던 아파트\n  - 주소: 경기 수원시 영통구 광교중앙로 123\n  - 가격: 850,000,000₩\n  - 면적:\
+      \ 84m²\n  - 입주 가능일: 2025년 11월 1일\n  - 연락처: 031-1234-5678\n\n- e편한세상 광교\n  -\
+      \ 주소: 경기 수원시 영통구 광교로 456\n  - 가격: 920,000,000₩\n  - 면적: 102m²\n  - 입주 가능일: 2025년\
+      \ 12월 15일\n  - 연락처: 031-2345-6789\n\n- 광교 자이 테라스 하우스\n  - 주소: 경기 수원시 영통구 광교대로\
+      \ 789\n  - 가격: 980,000,000₩\n  - 면적: 110m²\n  - 입주 가능일: 2026년 1월 10일\n  - 연락처:\
+      \ 031-3456-7890\n\n\n◾입주 가능일이 가장 빠른 '광교 힐스테이트 모던 아파트'에서 경기도 수원시 영통구 센트럴타운로 27에\
+      \ 위치한 브레인타워까지 차로 소요되는 시간은 약 30분입니다:\n\n- 출발지: 광교 힐스테이트 모던 아파트\n- 도착지: 경기도 수원시\
+      \ 영통구 센트럴타운로 27 브레인타워\n- 출발 시각: 08:00\n- 예상 도착 시각: 08:30\n- 소요 시간: 30분\n- 거리:\
+      \ 10km\n- 이동 수단: 자동차\n- 경로 안내:\n  1. 아파트에서 우회전하여 광교중앙로 진입 (2km, 5분)\n  2. 좌회전하여\
+      \ 광교로로 진입 후 직진 (5km, 15분)\n  3. 교차로에서 좌회전 후 3km 직진하여 목적지 도착 (3km, 10분)\n\n이\
+      \ 정보들은 광교역 근처 아파트 매물 선택과 출퇴근 경로 계획에 유용하게 활용하실 수 있을 것입니다."

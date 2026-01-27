@@ -1,0 +1,115 @@
+# Opensource (vLLM) Configuration for OrchestrationBench
+# Usage: uv run evaluate config/opensource.yaml
+
+defaults:
+  - base_config/eval_config
+  - _self_
+
+# Use an external vLLM server (already running)
+model:
+  provider: opensource
+  # model_alias: Short name for top-level results directory
+  # model: Actual API model identifier used for calls
+  # If model_alias is omitted, it defaults to model value.
+  model_alias: my-model
+  model: my-model
+  model_url: http://localhost:8000/v1  # External vLLM server URL
+  api_key: EMPTY
+  temperature: 0.2
+
+# Option 2: Start a local vLLM server automatically
+# Uncomment below and comment out Option 1
+# model:
+#   provider: opensource
+#   model_alias: my-model
+#   model: my-model
+#   model_path: /path/to/your/model  # Local model path
+#   temperature: 0.2
+
+benchmark:
+  temperature: 0.2
+  num_iter: 3
+  batch_size: 50
+  max_retries: 10
+
+  # Optional: HuggingFace Hub upload settings
+  # hf_hug_log_args:
+  #   hub_results_org: your-org
+  #   hub_repo_name: orchestration-bench-results
+  #   push_results_to_hub: true
+  #   public_repo: false
+
+# Optional: Override judge model - defaults from base_config/eval_config
+# Uncomment ONE of the following judge configurations:
+
+# --- Judge: OpenAI ---
+# judge:
+#   model:
+#     provider: openai
+#     model: gpt-4.1
+#     base_url: https://api.openai.com/v1
+#     api_key: ${OPENAI_API_KEY}
+#   generation_params:
+#     temperature: 0.3
+#     max_tokens: 12288
+#     top_p: 1.0
+
+# --- Judge: Claude (Anthropic API) ---
+# judge:
+#   model:
+#     provider: claude
+#     model: claude-haiku-4-5-20251001
+#     base_url: https://api.anthropic.com
+#     api_key: ${ANTHROPIC_API_KEY}
+#   generation_params:
+#     temperature: 0.3
+#     max_tokens: 12288
+#     top_p: 1.0
+
+# --- Judge: Gemini ---
+# judge:
+#   model:
+#     provider: gemini
+#     model: gemini-2.5-flash-preview-05-20
+#     api_key: ${GEMINI_API_KEY}
+#   generation_params:
+#     temperature: 0.3
+#     max_tokens: 12288
+#     top_p: 1.0
+
+# --- Judge: AWS Bedrock ---
+# judge:
+#   model:
+#     provider: bedrock
+#     model: claude-sonnet-4
+#     aws_access_key_id: ${AWS_ACCESS_KEY_ID}
+#     aws_secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+#     aws_region: us-east-2
+#   generation_params:
+#     temperature: 0.3
+#     max_tokens: 12288
+#     top_p: 1.0
+
+# --- Judge: Opensource (Local vLLM or compatible API) ---
+# NOTE: Requires vLLM server to be running beforehand (not auto-started)
+# judge:
+#   model:
+#     provider: opensource
+#     model: my-judge-model
+#     base_url: http://localhost:8000/v1
+#     api_key: EMPTY
+#   generation_params:
+#     temperature: 0.3
+#     max_tokens: 12288
+#     top_p: 1.0
+
+# Optional: vLLM server configuration (only used when model_path is specified)
+# vllm:
+#   port: 15142
+#   tensor_parallel_size: 1
+#   gpu_memory_utilization: 0.95
+#   max_model_len: null
+#   reasoning_parser: null
+#   tool_call_parser: null
+#   extra_args:
+#     - --trust-remote-code

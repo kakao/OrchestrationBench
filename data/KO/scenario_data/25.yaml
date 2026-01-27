@@ -1,0 +1,137 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-05-02
+
+      - userId: user_20250805_001
+
+      - 이름: 박다수
+
+      - 연락처: 010-5656-6565'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 어제 주문한 거 취소하려고. 그리고 이제 곧 동창회인데 언제지? 확인해서 알려주고, 내가 5월 25일에 등록해둔 재즈페스티벌
+      일정 취소해줘. 아쉽지만 다음에 가기로 했어
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"어제 주문한\
+      \ 상품 주문 조회\"\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"어제 주문한 상품 주문 취소\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"동창회 일정 조회\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: calendar_agent\n      refined_query: \"\
+      5월 25일로 등록된 재즈페스티벌 일정 조회\"\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"5월 25일로 등록된 재즈페스티벌 일정 취소\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"어제 주문한 상품 주문 조회\"\
+      \n  userId: \"user_20250805_001\"\n  recipientName: \"박다수\"\n  phoneNumber:\
+      \ \"01056566565\"\n  orderDate: \"2025-05-01\"\ntool_call_result:\n  data:\n\
+      \    orderId: \"ORD20250501001\"\n    userId: \"user_20250805_001\"\n    recipientName:\
+      \ \"박다수\"\n    phoneNumber: \"01056566565\"\n    orderDate: \"2025-05-01\"\n\
+      \    orderStatus: \"주문 완료\"\n    items:\n      - productName: \"피크닉매트\"\n  \
+      \      quantity: 1\n        price: 45000\n        options:\n          - \"색상:\
+      \ 그린\"\n          - \"구성: 4인용\"\n    paymentMethod: \"신용카드\"\n    deliveryAddress:\
+      \ \"서울특별시 강남구 테헤란로 123\"\n    estimatedDeliveryDate: \"2025-05-03\"\n    trackingNumber:\
+      \ null\n    notes: \"빠른 배송 요청\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"동창회 일정 조회\"\n  keyword:\
+      \ \"동창회\"\ntool_call_result:\n  data:\n    schedules:\n      - scheduleID: \"\
+      SCH20250503_001\"\n        title: \"동창회 모임\"\n        date: \"2025-05-03\"\n\
+      \        time: \"18:30\"\n        location: \"강남 냥\"\n        memo: \"동창회 모임\
+      \ 일정\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"5월 25일로 등록된 재즈페스티벌\
+      \ 일정 조회\"\n  startDate: \"2025-05-25\"\n  endDate: \"2025-05-25\"\n  keyword:\
+      \ \"재즈페스티벌\"\ntool_call_result:\n  data:\n    schedules:\n      - scheduleID:\
+      \ \"SCH20250525_001\"\n        title: \"재즈페스티벌\"\n        date: \"2025-05-25\"\
+      \n        time: \"19:00\"\n        location: \"서울 올림픽공원\"\n        memo: \"\
+      2025년 5월 25일 개최되는 재즈페스티벌 일정입니다.\""
+- workflow_id: workflow_1
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelOrder\narguments:\n  refinedQuery: \"2025년 5월 1일 주문한 피크닉매트\
+      \ 주문 취소\"\n  orderId: \"ORD20250501001\"\n  cancelType: \"full\"\n  refundMethod:\
+      \ \"original_method\"\ntool_call_result:\n  data:\n    orderId: \"ORD20250501001\"\
+      \n    cancelType: \"full\"\n    refundMethod: \"original_method\"\n    cancelStatus:\
+      \ \"취소 완료\"\n    refundStatus: \"환불 진행 중\"\n    message: \"2025년 5월 1일 주문한 피크닉매트\
+      \ 주문이 정상적으로 취소되었습니다. 환불은 결제하신 원래 방법으로 처리됩니다.\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelSchedule\narguments:\n  refinedQuery: \"5월 25일로 등록된 재즈페스티벌\
+      \ 일정 취소\"\n  scheduleID: \"SCH20250525_001\"\ntool_call_result:\n  data:\n \
+      \   scheduleID: \"SCH20250525_001\"\n    cancelStatus: \"취소 완료\"\n    message:\
+      \ \"2025년 5월 25일로 등록된 재즈페스티벌 일정이 정상적으로 취소되었습니다.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '안녕하세요! 요청하신 내용을 정리해드릴게요.
+
+
+      ■ 주문 취소 내역
+
+
+      • 상품명: 피크닉매트 (색상: 그린 / 구성: 4인용)
+
+      • 주문일자: 2025-05-01
+
+      • 취소 상태: 취소 완료
+
+      • 환불 처리: 결제하신 신용카드로 환불 진행 중
+
+      • 배송지: 서울특별시 강남구 테헤란로 123
+
+      • 비고: 빠른 배송 요청
+
+
+      ■ 다가오는 일정 확인
+
+
+      • 일정명: 동창회 모임
+
+      • 일시: 2025-05-03 (토) 18:30
+
+      • 장소: 강남 냥
+
+      • 메모: 동창회 모임 일정
+
+
+      ■ 일정 취소 내역
+
+
+      • 취소된 일정: 재즈페스티벌
+
+      • 원래 일정: 2025-05-25 19:00, 서울 올림픽공원
+
+      • 취소 상태: 정상적으로 취소 완료'

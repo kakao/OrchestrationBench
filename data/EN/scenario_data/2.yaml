@@ -1,0 +1,245 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Current location: "150 Wythe Ave, Brooklyn, NY 11249"
+
+      Current time: 3:27 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Is there a carrot cake spot in Brooklyn that was featured on YouTube?
+      I’d like it to be under $10.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Carrot cake\
+      \ spots under $10 featured on YouTube in Brooklyn\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Carrot cake\
+      \ spots under $10 featured on YouTube in Brooklyn\"\n  location: \"Brooklyn\"\
+      \n  specificDishes: \"Carrot cake\"\n  source: \"YouTube\"\n  maxPrice: 10\n\
+      \  sortBy: highest_rated\ntool_call_result:\n  data:\n    restaurants:\n   \
+      \   - name: \"Cafe Onion Brooklyn\"\n        address: \"123 Bedford Ave, Brooklyn,\
+      \ NY 11211, USA\"\n        rating: 4.6\n        contact: \"(718)555-0123\"\n\
+      \        features:\n          - \"Popular on YouTube\"\n          - \"Fresh\
+      \ carrot cake\"\n          - \"Cozy interior\"\n        price: 9\n\n      -\
+      \ name: \"Plant Brooklyn\"\n        address: \"456 Myrtle Ave, Brooklyn, NY\
+      \ 11205, USA\"\n        rating: 4.5\n        contact: \"(718)555-0456\"\n  \
+      \      features:\n          - \"Vegan carrot cake\"\n          - \"Eco-friendly\
+      \ ingredients\"\n          - \"Spacious seating\"\n        price: 8.50\n\n \
+      \     - name: \"May’s Carrot\"\n        address: \"789 Flatbush Ave, Brooklyn,\
+      \ NY 11226, USA\"\n        rating: 4.4\n        contact: \"(718)555-0789\"\n\
+      \        features:\n          - \"Homemade carrot cake\"\n          - \"Lots\
+      \ of YouTube reviews\"\n          - \"Relaxed atmosphere\"\n        price: 9.50\n\
+      \n    note: \"Here are recommended carrot cake spots under $10 in Brooklyn that\
+      \ have been featured on YouTube.\"\n    source: \"YouTube-based restaurant data\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 'Let me introduce you to some carrot cake spots under $10 that were featured
+      on YouTube in the Brooklyn area!
+
+
+      1. Cafe Onion Brooklyn
+
+
+      Address: 123 Bedford Ave, Brooklyn, NY 11211, USA
+
+      Contact: (718)555-0123
+
+      Rating: 4.6
+
+      Features: Popular on YouTube, fresh carrot cake, cozy interior
+
+      Price: $9
+
+
+      2. Plant Brooklyn
+
+
+      Address: 456 Myrtle Ave, Brooklyn, NY 11205, USA
+
+      Contact: (718)555-0456
+
+      Rating: 4.5
+
+      Features: Vegan carrot cake, eco-friendly ingredients, spacious seating
+
+      Price: $8.50
+
+
+      3. May’s Carrot
+
+
+      Address: 789 Flatbush Ave, Brooklyn, NY 11226, USA
+
+      Contact: (718)555-0789
+
+      Rating: 4.4
+
+      Features: Homemade carrot cake, many YouTube reviews, relaxed atmosphere
+
+      Price: $9.50
+
+
+      All of these are under $10, so you can enjoy them without breaking the bank.
+      Since they’ve been featured on YouTube, they’re definitely worth checking out.
+      Be sure to stop by when you visit Brooklyn! If you have any questions, feel
+      free to ask. :)'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: I came to Onion Brooklyn but the wait is way too long... Can you suggest
+      one that's somewhere near NYU instead? Also, can you show me how to get there
+      by subway on the map?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: place_agent\n      refined_query: \"Carrot\
+      \ cake spots under $10 featured on YouTube in Brooklyn\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ place_agent\n      refined_query: \"Carrot cake spots under $10 featured on\
+      \ YouTube near NYU\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Google Maps directions from a carrot cake shop in Brooklyn\
+      \ to a famous carrot cake spot near NYU by subway\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Best carrot\
+      \ cake spots under $10 near NYU featured on YouTube\"\n  location: \"New York\
+      \ University\"\n  specificDishes: \"Carrot cake\"\n  source: \"YouTube\"\n \
+      \ maxPrice: 10\n  sortBy: highest_rated\ntool_call_result:\n  data:\n    restaurants:\n\
+      \      - name: \"Cafe The Row\"\n        address: \"15 University Place, New\
+      \ York, NY 10003\"\n        dish: \"Carrot cake\"\n        price: 8.5\n    \
+      \    rating: 4.7\n        source: \"YouTube\"\n        description: \"A cozy\
+      \ cafe near the university known for its handmade carrot cake. Subtle cinnamon\
+      \ flavor with rich cream cheese frosting.\"\n      - name: \"Dessert Lab\"\n\
+      \        address: \"222 Broadway, New York, NY 10038\"\n        dish: \"Carrot\
+      \ cake\"\n        price: 9.5\n        rating: 4.6\n        source: \"YouTube\"\
+      \n        description: \"A YouTube-featured cafe famous for its carrot cake.\
+      \ Dense texture with lightly sweetened cream.\"\n      - name: \"Cafe Overtime\"\
+      \n        address: \"10 East 12th Street, New York, NY 10003\"\n        dish:\
+      \ \"Carrot cake\"\n        price: 9.0\n        rating: 4.5\n        source:\
+      \ \"YouTube\"\n        description: \"Enjoy carrot cake in a warm, inviting\
+      \ atmosphere. Excellent quality for the price and highly praised on YouTube.\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Destination information'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are some YouTube-recommended spots near the university area in
+      New York where you can get carrot cake for under $10:
+
+
+      1. Café The Row
+
+      • Price: $8.50
+
+      • Rating: 4.7
+
+      • Address: 15 University Place, New York, NY 10003
+
+      • Highlight: A cozy café near the university, famous for its handmade carrot
+      cake with gentle cinnamon aroma and rich cream cheese frosting.
+
+
+      2. Dessert Lab
+
+      • Price: $9.50
+
+      • Rating: 4.6
+
+      • Address: 222 Broadway, New York, NY 10038
+
+      • Highlight: A YouTube-featured spot known for its densely textured carrot cake
+      topped with lightly sweetened cream.
+
+
+      3. Café Overtime
+
+      • Price: $9.00
+
+      • Rating: 4.5
+
+      • Address: 10 East 12th Street, New York, NY 10003
+
+      • Highlight: Offers high-quality carrot cake at a reasonable price in a warm,
+      inviting atmosphere. Frequently praised on YouTube.
+
+
+      All three are budget-friendly and popular on YouTube, making them excellent
+      choices for carrot cake lovers.'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: Cafe The Row
+- workflow_id: null
+  step_id: 12
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Guide me to Café\
+      \ The Row by subway using Google Maps\"\n  origin: \"150 Wythe Ave, Brooklyn,\
+      \ NY 11249\"\n  destination: \"15 University Place, New York, NY 10003\"\n \
+      \ departureTime: \"3:27 PM\"\n  transportModes: \"subway\"\n  optimizeBy: \"\
+      fastest\"\n  source: \"Google Maps\"\ntool_call_result:\n  data:\n    tool:\
+      \ \"getDirections\"\n    result:\n      refinedQuery: \"Guide me by subway to\
+      \ the famous carrot cake spot near NYU using Google Maps\"\n      origin: \"\
+      150 Wythe Ave, Brooklyn, NY 11249\"\n      destination: \"15 University Place,\
+      \ New York, NY 10003\"\n      departureTime: \"3:27 PM\"\n      transportModes:\
+      \ \"subway\"\n      optimizeBy: \"fastest\"\n      source: \"Google Maps\"\n\
+      \      directions:\n        steps:\n          - step: \"Walk to Bedford Ave\
+      \ Station (about 5 minutes)\"\n            time: \"3:27 ~ 3:32 PM\"\n      \
+      \    - step: \"Board the L Train toward Manhattan at Bedford Ave Station\"\n\
+      \            time: \"3:35 PM\"\n          - step: \"Get off at 14th Street–Union\
+      \ Square Station (6 stops, about 12 minutes)\"\n            time: \"3:47 PM\"\
+      \n          - step: \"Walk south to 15 University Place near NYU (about 7 minutes)\"\
+      \n            time: \"3:47 ~ 3:54 PM\"\n        totalTime: \"About 27 minutes\"\
+      \n        arrivalTime: \"3:54 PM\"\n        transfer: \"No transfers\"\n   \
+      \     fare: \"$2.90 (with MetroCard)\"\n      url: \"https://maps.google.com/?saddr=150+Wythe+Ave,+Brooklyn,+NY+11249&daddr=15+University+Pl,+New+York,+NY+10003&dirflg=r\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: 'You can check detailed directions through the link below!
+
+      Go to Google Maps Directions (https://maps.google.com/?saddr=150+Wythe+Ave,+Brooklyn,+NY+11249&daddr=15+University+Pl,+New+York,+NY+10003&dirflg=r)
+
+
+      Enjoy your delicious carrot cake and have a wonderful time! '

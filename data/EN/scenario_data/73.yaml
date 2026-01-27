@@ -1,0 +1,236 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2027-08-02
+
+      - Time: 11:56 PM
+
+      - Contact: (917)482-6391
+
+      - Home: 103 Lexington Avenue, Manhattan, New York, NY 10016'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I’m going on a solo trip to Boston on September 7th. Please book me a
+      rental car starting that day for 3 days. Also, can you call a designated driver
+      to take me home? The driver should come in about an hour and a half, to Exit
+      3 of Times Square–42nd Street Station. Oh, and the location for the August 15th
+      Independence Day gathering has changed to Central Park Sports Complex. Please
+      update my schedule accordingly.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Reserve\
+      \ a rental car in Boston for 3 days starting September 7\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: transport_agent\n      refined_query: \"Book a designated driver\
+      \ to pick me up at Exit 3 of Times Square–42nd Street Station in 1 hour and\
+      \ 30 minutes and drive me home\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"Check the schedule for the Korean Independence Day gathering\
+      \ on August 15\"\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"Change the location of the Korean Independence Day gathering on August 15\
+      \ to Central Park Sports Complex\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Vehicle pick-up location, pick-up date and time, return date
+      and time, preferred vehicle type or model, driver''s age, and insurance option
+      (no coverage, partial coverage, or full coverage)'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Detailed information about the scheduled vehicle(car model, color,
+      license plate, etc. Example: ''White Camry, NY ABC-1234'')'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Schedule lookup for\
+      \ Korean Independence Day Gathering on August 15\"\n  startDate: \"2027-08-15\"\
+      \n  endDate: \"2027-08-15\"\n  keyword: \"Korean Independence Day Gathering\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Schedule lookup for Korean\
+      \ Independence Day Gathering on August 15\"\n    startDate: \"2027-08-15\"\n\
+      \    endDate: \"2027-08-15\"\n    keyword: \"Korean Independence Day Gathering\"\
+      \n    status: \"Lookup complete\"\n    message: \"The schedule for 'Korean Independence\
+      \ Day Gathering' on August 15, 2027 has been retrieved successfully.\"\n   \
+      \ schedules:\n      - scheduleID: \"sch20270815_001\"\n        title: \"Korean\
+      \ Independence Day Commemoration Gathering\"\n        date: \"2027-08-15\"\n\
+      \        time: \"6:00 PM\"\n        location: \"Downtown Square, Washington\
+      \ D.C.\"\n        description: \"Family and friends gathering to commemorate\
+      \ Korean Independence Day\"\n  source: \"Calendar System\""
+- workflow_id: null
+  step_id: 7
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: modifySchedule\narguments:\n  refinedQuery: \"Change the location\
+      \ of sch20270815_001 to Central Park Sports Complex\"\n  scheduleID: \"sch20270815_001\"\
+      \n  newLocation: \"Central Park Sports Complex\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"Change the location of sch20270815_001 to Central Park\
+      \ Sports Complex\"\n    scheduleID: \"sch20270815_001\"\n    newLocation: \"\
+      Central Park Sports Complex\"\n    status: \"Change completed\"\n    message:\
+      \ \"The location for the August 15th Korean Independence Day gathering has been\
+      \ successfully updated to Central Park Sports Complex.\"\n  source: \"Calendar\
+      \ System\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'To reserve a rental car or request a designated driver, please provide
+      the following information:
+
+
+      ■ Rental Car
+
+      • Pickup location
+
+      • Pickup date and time
+
+      • Return date and time
+
+      • Preferred car type or model
+
+      • Driver’s age
+
+      • Insurance option (choose from: no coverage / standard coverage / full coverage)
+
+
+      ■ Designated Driver
+
+      • Detailed information about the car to be driven
+
+      (Car type, color, license plate number. Example: White Camry, NY ABC-1234)'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 'Car pickup: Boston South Station (return location is also Boston South
+      Station).
+
+      Pickup time: September 7 at 2:00 PM.
+
+      Return time: September 9 at 5:00 PM.
+
+      Desired vehicle: Tesla Model 3.
+
+      Driver’s age: 35.
+
+      Insurance: Full coverage included.
+
+      Personal vehicle: Blue Nissan Leaf, license plate NY 7BA-7777.'
+- workflow_id: workflow_1
+  step_id: 10
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookRentalCar\narguments:\n  refinedQuery: \"Car rental reservation\
+      \ for a Tesla Model 3 with full insurance, pickup at Boston South Station on\
+      \ September 7 at 2:00 PM and return at Boston South Station on September 9 at\
+      \ 5:00 PM, driver age 35\"\n  pickupLocation: \"Boston South Station\"\n  dropoffLocation:\
+      \ \"Boston South Station\"\n  pickupDateTime: \"2027-09-07T14:00\"\n  returnDateTime:\
+      \ \"2027-09-09T17:00\"\n  carType: \"Tesla Model 3\"\n  driverAge: 35\n  insuranceOption:\
+      \ \"full\"\n  contactInfo: \"(917)482-6391\"\ntool_call_result:\n  data:\n \
+      \   refinedQuery: \"Car rental reservation for a Tesla Model 3 with full insurance,\
+      \ pickup at Boston South Station on September 7 at 2:00 PM and return at Boston\
+      \ South Station on September 9 at 5:00 PM, driver age 35\"\n    pickupLocation:\
+      \ \"Boston South Station\"\n    dropoffLocation: \"Boston South Station\"\n\
+      \    pickupDateTime: \"2027-09-07T14:00\"\n    returnDateTime: \"2027-09-09T17:00\"\
+      \n    carType: \"Tesla Model 3\"\n    driverAge: 35\n    insuranceOption: \"\
+      full\"\n    contactInfo: \"(917)482-6391\"\n    status: \"Reservation Confirmed\"\
+      \n    reservationID: \"RC20270907BOS001\"\n    message: \"Your Tesla Model 3\
+      \ rental has been booked successfully. Pickup at Boston South Station on September\
+      \ 7, 2027 at 2:00 PM and return at Boston South Station on September 9, 2027\
+      \ at 5:00 PM.\"\n  source: \"Car Rental Reservation System\""
+- workflow_id: workflow_2
+  step_id: 11
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callDesignatedDriver\narguments:\n  refinedQuery: \"Reserve a\
+      \ designated driver for a blue Nissan Leaf (plate NY 7BA-7777) from Times Square–42nd\
+      \ Street Station Exit 3 to home in 1 hour and 30 minutes\"\n  pickupLocation:\
+      \ \"Times Square–42nd Street Station Exit 3\"\n  dropoffLocation: \"103 Lexington\
+      \ Avenue, Manhattan, New York, NY 10016\"\n  pickupTime: \"2027-08-03T01:26\"\
+      \n  contactInfo: \"(917)482-6391\"\n  vehicleInfo: \"Blue Nissan Leaf, plate\
+      \ NY 7BA-7777\"\ntool_call_result:\n  data:\n    refinedQuery: \"Reserve a designated\
+      \ driver for a blue Nissan Leaf (plate NY 7BA-7777) from Times Square–42nd Street\
+      \ Station Exit 3 to home in 1 hour and 30 minutes\"\n    pickupLocation: \"\
+      Times Square–42nd Street Station Exit 3\"\n    dropoffLocation: \"103 Lexington\
+      \ Avenue, Manhattan, New York, NY 10016\"\n    pickupTime: \"2027-08-03T01:26\"\
+      \n    contactInfo: \"(917)482-6391\"\n    vehicleInfo: \"Blue Nissan Leaf, plate\
+      \ NY 7BA-7777\"\n    status: \"Reservation Confirmed\"\n    reservationID: \"\
+      DD20270803TSQ001\"\n    message: \"Your designated driver reservation for the\
+      \ blue Nissan Leaf (plate NY 7BA-7777), departing from Times Square–42nd Street\
+      \ Station Exit 3 on August 3, 2027 at 1:26 AM, has been confirmed successfully.\"\
+      \n  source: \"Designated Driver Reservation System\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your requested schedule change, rental car booking, and designated driver
+      service have all been completed.
+
+
+      1. Korean Independence Day Schedule Change
+
+
+      • Date: August 15, 2027
+
+      • Time: 6:00 PM
+
+      • Updated Location: Central Park Sports Complex, New York City
+
+      • Description: Family and friends gathering to commemorate Korean Independence
+      Day
+
+
+      2. Rental Car Reservation
+
+
+      • Vehicle: Tesla Model 3
+
+      • Period: September 7, 2027, 2:00 PM ~ September 9, 2027, 5:00 PM
+
+      • Pickup/Return Location: Boston South Station
+
+      • Driver Age: 35
+
+      • Insurance: Full coverage included
+
+      • Reservation Number: RC20270907BOS001
+
+
+      3. Designated Driver Reservation
+
+
+      • Vehicle: Blue Nissan Leaf (NY 7BA-7777)
+
+      • Departure: August 3, 2027, 1:26 AM — Exit 3, Times Square–42nd Street Station
+
+      • Arrival: 103 Lexington Avenue, Manhattan, New York, NY 10016
+
+      • Reservation Number: DD20270803TSQ001'

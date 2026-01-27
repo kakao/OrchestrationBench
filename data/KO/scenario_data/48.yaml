@@ -1,0 +1,109 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '"date": 2016-01-27
+
+      "location": "서울특별시 서초구"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 요즘 잠을 잘 못 자고 계속 불안해서 그런데, 혹시 불안장애 초기 증상일까? 상담받아보고 싶은데, 근처에 야간에도 진료하는
+      정신건강의학과 병원 있으면 찾아봐 줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"요즘 잠을 잘\
+      \ 못 자고 계속 불안한 증상에 대한 심리 상담\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"야간 진료 가능한 근처 정신건강의학과 탐색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"불안장애 문의\"\ntool_call_result:\n\
+      \  data:\n    symptoms:\n      - \"과도한 걱정과 불안\"\n      - \"쉽게 피로해짐\"\n     \
+      \ - \"집중력 저하\"\n      - \"근육 긴장\"\n      - \"불면증 또는 수면 장애\"\n    recommendation:\
+      \ \"정확한 진단을 위해 전문가의 상담을 받아보는 것을 권장합니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"야간 진료 가능한 근처 정신건강의학과\
+      \ 탐색\"\n  placeCategory: \"정신건강의학과\"\n  location: \"서울특별시 서초구\"\n  availableTime:\
+      \ \"18:00~21:00\"\n  specialCondition: \"야간 진료\"\n  sortBy: \"distance\"\ntool_call_result:\n\
+      \  places:\n    - placeName: \"고요 정신건강의학과\"\n      address: \"서울특별시 서초구 강남대로\
+      \ 456\"\n      contact: \"02-9876-5432\"\n      openingHours: \"10:00~20:00\
+      \ (야간 진료 가능)\"\n      specialties:\n        - \"스트레스\"\n        - \"불안장애\"\n\
+      \        - \"공황장애\"\n      distanceFromLocation: \"1.1 km\"\n\n    - placeName:\
+      \ \"마음편한 정신건강의학과\"\n      address: \"서울특별시 강남구 테헤란로 123\"\n      contact: \"\
+      02-1234-5678\"\n      openingHours: \"09:00~21:00 (야간 진료 가능)\"\n      specialties:\n\
+      \        - \"불안장애\"\n        - \"우울증\"\n        - \"수면장애\"\n      distanceFromLocation:\
+      \ \"2.6 km\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '요즘 잠을 잘 못 주무시고 불안감을 느끼시는군요. 많이 힘드시겠어요.
+
+
+      말씀하신 증상들은 불안장애의 초기 증상일 수 있습니다. 일반적으로 불안장애 초기에는 다음과 같은 증상이 나타날 수 있습니다.
+
+
+      * 과도한 걱정과 불안
+
+      * 쉽게 피로해짐
+
+      * 집중력 저하
+
+      * 근육 긴장
+
+      * 불면증 또는 수면 장애
+
+
+      정확한 진단은 전문가와의 상담을 통해 가능하니, 너무 걱정 마시고 병원에 방문해 보시는 것을 권해드립니다.
+
+
+      문의하신 대로, 근처에서 야간에도 진료하는 정신건강의학과 병원 정보를 찾아봤어요.
+
+
+      1. 마음편한 정신건강의학과
+
+      * 주소: 서울특별시 강남구 테헤란로 123
+
+      * 진료 시간: 09:00 ~ 21:00 (야간 진료 가능)
+
+      * 주요 진료 분야: 불안장애, 우울증, 수면장애
+
+      * 연락처: 02-1234-5678
+
+      * 거리: 2.6 km
+
+
+      2. 고요 정신건강의학과
+
+      * 주소: 서울특별시 서초구 강남대로 456
+
+      * 진료 시간: 10:00 ~ 20:00 (야간 진료 가능)
+
+      * 주요 진료 분야: 스트레스, 불안장애, 공황장애
+
+      * 연락처: 02-9876-5432
+
+      * 거리: 1.1 km
+
+
+      편하신 시간에 방문하셔서 상담받아보시고, 부디 마음의 안정을 찾으시길 바랍니다.'

@@ -1,0 +1,206 @@
+{
+  "agent_card": {
+    "name": "Logistics/Delivery",
+    "agent_id": "delivery_agent",
+    "description": "A smart logistics agent that helps you book and track deliveries. You can handle booking and status checks for various delivery methods all in one place.",
+    "url": "http://localhost:10007/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "bookDeliveryService",
+        "name": "Express/Courier Booking",
+        "description": "Book pickup and delivery services via express/same-day courier, bike messenger, motorcycle courier, freight, or standard parcel (ground/air). Just provide details such as pickup/drop-off locations, time, and item info for fast and easy booking.",
+        "examples": [
+          "Book a quick service to send a laptop from the downtown office to Grand Central Terminal tomorrow at 11am.",
+          "Please arrange a courier to send a fruit box to my mom.",
+          "I want to send a heavy box from the office to my home via freight delivery—can you arrange that?",
+          "I’d like to send a quote from the supplier to my location via motorcycle courier",
+          "Can you deliver a small package to my friend’s house by bike courier today?"
+        ]
+      },
+      {
+        "id": "trackDelivery",
+        "name": "Track Delivery",
+        "description": "Check the real-time delivery status of an item using a tracking number or sender’s contact info. The system automatically detects the courier and provides the current location and estimated arrival time.",
+        "examples": [
+          "Where is the package I sent with tracking number 234567890123?",
+          "Tell me the delivery status of the parcel I sent via FedEx.",
+          "Can you check the current location of the courier delivery I sent under the name John Smith?",
+          "I’d like to know when the delivery driver will arrive.",
+          "The USPS package I sent last week hasn’t arrived yet—can you find out where it is?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "bookDeliveryService",
+      "description": "A tool to help you book quick/courier services. Depending on the delivery type (express, parcel, motorcycle_courier, freight, bike_courier), you can enter pickup time, location, sender/receiver info, and item description to make a customized booking. If booking for multiple recipients, you can provide the data as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined booking request query including the user’s request and prior conversation context (e.g., 'I want to send the original contract by express courier to Union Station tomorrow at 10am')."
+          },
+          "deliveryType": {
+            "type": "string",
+            "enum": [
+              "express",
+              "parcel",
+              "motorcycle_courier",
+              "freight",
+              "bike_courier"
+            ],
+            "description": "Delivery type to use (e.g., 'express': same-day or express, 'parcel': courier, 'motorcycle_courier': motorcycle quick, 'freight': cargo, 'bike_courier': bicycle quick)."
+          },
+          "pickupLocation": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Place to pick up the item (e.g., 'Downtown HQ', 'My location')."
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number",
+                    "description": "Latitude"
+                  },
+                  "lng": {
+                    "type": "number",
+                    "description": "Longitude"
+                  }
+                },
+                "required": [
+                  "lat",
+                  "lng"
+                ],
+                "description": "Coordinates for the pickup location."
+              }
+            ],
+            "description": "Pickup location information (address or coordinates)."
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "description": "Place to deliver the item or destination (e.g., 'Beachside Convention Center', 'Colleague’s house')."
+          },
+          "pickupTime": {
+            "type": "string",
+            "description": "Desired pickup time (e.g., 'now' for immediate, or ISO8601 date-time format '2025-09-12T15:30'). For reservations, this is required. For quick service bookings, must be at least 30 minutes later and no later than 8pm."
+          },
+          "senderInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Sender’s name (e.g., 'John Smith')."
+              },
+              "phone": {
+                "type": "string",
+                "description": "Sender’s phone number (e.g., '(202) 555-0173')",
+                "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+              }
+            },
+            "required": [
+              "name",
+              "phone"
+            ],
+            "description": "Sender’s name and phone number."
+          },
+          "receiverInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Recipient’s name (e.g., 'Jane Lee')."
+              },
+              "phone": {
+                "type": "string",
+                "description": "Recipient’s phone number (e.g., '(202) 555-0199')",
+                "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+              }
+            },
+            "required": [
+              "name",
+              "phone"
+            ],
+            "description": "Recipient’s name and phone number."
+          },
+          "itemDescription": {
+            "type": "string",
+            "description": "Item description (e.g., 'Business documents', 'Gift set of household items', 'Fragile pottery')."
+          },
+          "itemSize": {
+            "type": "string",
+            "enum": [
+              "small",
+              "medium",
+              "large"
+            ],
+            "description": "Item size category ('small', 'medium', 'large')."
+          },
+          "itemWeight": {
+            "type": "number",
+            "description": "Item weight in kg (e.g., 2). For quick bookings, over 10kg is not allowed—you must choose courier instead."
+          },
+          "reservation": {
+            "type": "boolean",
+            "description": "Whether this is an advance booking (true: reserved, false or omitted: immediate delivery). For reservations, pickupTime is required."
+          },
+          "source": {
+            "type": "string",
+            "description": "Delivery service provider platform to use (e.g., 'FedEx', 'USPS', 'UPS', 'DHL Express')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "deliveryType",
+          "pickupLocation",
+          "dropoffLocation",
+          "pickupTime",
+          "senderInfo",
+          "receiverInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "trackDelivery",
+      "description": "A tool that tracks the current delivery status and location of a package based on the tracking number, carrier, or sender information. If you need to call it repeatedly for multiple items, you can structure the input as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query that reflects the previous context and the user's natural language question (e.g., 'Tell me where my coffee bean delivery is now', 'Check my UPS delivery status.', 'Track my FedEx package.')"
+          },
+          "trackingNumber": {
+            "type": "string",
+            "description": "The tracking number to use for delivery tracking. If a tracking number is provided, tracking can be done based on it. (e.g., '198765432109', 'EP23456789KR')"
+          },
+          "carrier": {
+            "type": "string",
+            "description": "Carrier code or name (can be auto-detected). (e.g., \"UPS\", \"FedEx\", \"USPS\", \"DHL Express\")"
+          },
+          "senderName": {
+            "type": "string",
+            "description": "Sender's name. Used for tracking when the tracking number is not available."
+          },
+          "senderPhone": {
+            "type": "string",
+            "description": "Sender's contact number (phone). Used for tracking when the tracking number is not available. (e.g., '(202) 555-0173')",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

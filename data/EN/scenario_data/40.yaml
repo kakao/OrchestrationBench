@@ -1,0 +1,180 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Contact: (202)554-6626
+
+      - Date: 2020-07-08'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you recommend a nice brunch café around Soho or Williamsburg for
+      a pre-wedding brunch, where I can make a reservation right away?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Recommend\
+      \ a good brunch café for a pre-wedding brunch in Soho or Williamsburg\"\n\n\
+      workflow_2:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Book a brunch café for a pre-wedding brunch in Soho or Williamsburg\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: recommendRestaurants\n    arguments:\n      refinedQuery:\
+      \ \"Recommend a brunch café in Soho that’s great for a pre-wedding brunch\"\n\
+      \      location: \"Soho\"\n      cuisineType: \"brunch café\"\n      sortBy:\
+      \ \"highest_rated\"\n      ambience: \"pre-wedding brunch\"\n\n  - tool: recommendRestaurants\n\
+      \    arguments:\n      refinedQuery: \"Recommend a brunch café in Williamsburg\
+      \ that’s great for a pre-wedding brunch\"\n      location: \"Williamsburg\"\n\
+      \      cuisineType: \"brunch café\"\n      sortBy: \"highest_rated\"\n     \
+      \ ambience: \"pre-wedding brunch\"\n\ntool_call_result:\n  - tool: recommendRestaurants\n\
+      \    restaurants:\n      - name: \"Soho Brunch Loft\"\n        address: \"120\
+      \ Prince St, Soho, New York, NY\"\n        rating: 4.9\n        contact: \"\
+      (212)555-0192\"\n        features:\n          - \"Spacious loft-style interior\"\
+      \n          - \"Perfect for pre-wedding brunches\"\n          - \"Customizable\
+      \ group menus\"\n      - name: \"The Morning Table\"\n        address: \"85\
+      \ Spring St, Soho, New York, NY\"\n        rating: 4.8\n        contact: \"\
+      (212)555-3478\"\n        features:\n          - \"Cozy, modern atmosphere\"\n\
+      \          - \"Group reservation-friendly\"\n          - \"Outdoor seating available\"\
+      \n    note: \"Here’s a list of highly rated brunch cafés in Soho that are ideal\
+      \ for pre-wedding brunch gatherings.\"\n    source: \"Local café recommendation\
+      \ system\"\n\n  - tool: recommendRestaurants\n    restaurants:\n      - name:\
+      \ \"Williamsburg Garden Café\"\n        address: \"233 Bedford Ave, Brooklyn,\
+      \ NY\"\n        rating: 4.9\n        contact: \"(718)555-9823\"\n        features:\n\
+      \          - \"Leafy terrace perfect for gatherings\"\n          - \"Locally\
+      \ sourced brunch menu\"\n          - \"Private group space available\"\n   \
+      \   - name: \"Brunch & Co.\"\n        address: \"77 Wythe Ave, Brooklyn, NY\"\
+      \n        rating: 4.8\n        contact: \"(718)555-7766\"\n        features:\n\
+      \          - \"Trendy, casual vibe\"\n          - \"Group-friendly tables\"\n\
+      \          - \"Perfect for pre-wedding brunches\"\n    note: \"Here’s a list\
+      \ of highly rated brunch cafés in Williamsburg that are ideal for pre-wedding\
+      \ brunch gatherings.\"\n    source: \"Local café recommendation system\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reservation location, reservation date, and reservation time
+      are required'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are some recommended brunch cafés that are great for meetings in
+      the Soho and Williamsburg areas.
+
+
+      ◾ Soho Brunch Café Recommendations
+
+
+      Soho Brunch Loft
+
+
+      Address: 120 Prince St, Soho, New York, NY
+
+      Rating: 4.9
+
+      Contact: (212)555-0192
+
+      Features: Spacious loft-style interior, perfect for pre-wedding brunches, customizable
+      group menus
+
+
+      The Morning Table
+
+
+      Address: 85 Spring St, Soho, New York, NY
+
+      Rating: 4.8
+
+      Contact: (212)555-3478
+
+      Features: Cozy, modern atmosphere, group reservation-friendly, outdoor seating
+      available
+
+
+      ◾ Williamsburg Brunch Café Recommendations
+
+
+      Williamsburg Garden Café
+
+
+      Address: 233 Bedford Ave, Brooklyn, NY
+
+      Rating: 4.9
+
+      Contact: (718)555-9823
+
+      Features: Leafy terrace perfect for gatherings, locally sourced brunch menu,
+      private group space available
+
+
+      Brunch & Co.
+
+
+      Address: 77 Wythe Ave, Brooklyn, NY
+
+      Rating: 4.8
+
+      Contact: (718)555-7766
+
+      Features: Trendy, casual vibe, group-friendly tables, Perfect for pre-wedding
+      brunches
+
+
+      All of these cafés are well-suited for meetings. If you let me know which one
+      you prefer, I can help you with the reservation.
+
+      Please provide the reservation date and time as well.
+
+      Example: “August 10th at 11:00 AM”'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Brunch & Co. sounds good. Let’s set it for July 22 at 7 PM.
+- workflow_id: null
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"Reservation at Brunch\
+      \ & Co. on July 22 at 7 PM\"\n  placeName: \"Brunch & Co.\"\n  reservationDate:\
+      \ \"2020-07-22\"\n  reservationTime: \"19:00\"\n  contactInfo: \"(202)554-6626\"\
+      \ntool_call_result:\n  data:\n    placeName: \"Brunch & Co.\"\n    reservationDate:\
+      \ \"2020-07-22\"\n    reservationTime: \"19:00\"\n    confirmationNumber: \"\
+      RES12345678\"\n    status: \"Reservation Confirmed\"\n    note: \"Your reservation\
+      \ at Brunch & Co. for July 22, 2020 at 7 PM has been confirmed.\"\n  source:\
+      \ \"Reservation System\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your reservation at Brunch & Co. has been successfully confirmed for
+      July 22, 2020 at 7:00 PM.
+
+      Your confirmation number is RES12345678.
+
+
+      If you have any additional requests or questions regarding your reservation,
+      please don’t hesitate to let me know.
+
+      I hope you have a wonderful pre-wedding brunch!'

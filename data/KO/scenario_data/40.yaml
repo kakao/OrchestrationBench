@@ -1,0 +1,109 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 연락처: 010-4298-5236
+
+      - 날짜: 2025-01-13
+
+      - 이름: 김지방'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 예약해둔 미용실 취소할래. 찾아보니 후기가 좋지 않아. 영화 예매한 것도 취소할래. 영화 볼 기분 아냐
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"미용실 예약 내역\
+      \ 조회\"\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"후기가 좋지 않아 미용실 예약 취소\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"영화 예매 내역 조회\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"영화 예매 취소\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"미용실 예약\
+      \ 내역 조회\"\n  contactInfo: \"010-4298-5236\"\n  placeCategory: \"미용실\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"미용실 예약 내역 조회\"\n    contactInfo: \"010-4298-5236\"\
+      \n    placeCategory: \"미용실\"\n    status: \"조회 완료\"\n    reservations:\n   \
+      \   - reservationID: \"RSV20250113_001\"\n        placeName: \"헤어살롱 아름다움\"\n\
+      \        date: \"2025-01-14\"\n        time: \"15:00\"\n        service: \"\
+      커트 및 스타일링\"\n        status: \"확정\"\n  source: \"장소 예약 시스템\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieBooking\narguments:\n  refinedQuery: \"영화 예매 내역 조회\"\n\
+      \  contactNumber: \"010-4298-5236\"\n  name: \"김지방\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"영화 예매 내역 조회\"\n    name: \"김지방\"\n    contactNumber: \"\
+      010-4298-5236\"\n    status: \"조회 완료\"\n    bookings:\n      - bookingID: \"\
+      MOV20250112_002\"\n        movieTitle: \"라라랜드\"\n        theaterName: \"롯데시네마\
+      \ 홍대\"\n        showDate: \"2025-01-14\"\n        showTime: \"11:00\"\n    \
+      \    seat: \"B7\"\n        status: \"확정\"\n  source: \"영화 예매 시스템\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelPlaceReservation\narguments:\n  refinedQuery: \"후기가 좋지 않아\
+      \ RSV20250113_001 예약 취소\"\n  reservationId: \"RSV20250113_001\"\n  cancelReason:\
+      \ \"후기가 좋지 않음\"\ntool_call_result:\n  data:\n    refinedQuery: \"후기가 좋지 않아 RSV20250113_001\
+      \ 예약 취소\"\n    reservationId: \"RSV20250113_001\"\n    status: \"취소 완료\"\n \
+      \   message: \"헤어살롱 아름다움의 2025년 1월 14일 15:00 예약이 성공적으로 취소되었습니다.\"\n  source:\
+      \ \"장소 예약 시스템\""
+- workflow_id: workflow_2
+  step_id: 7
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelMovieBooking\narguments:\n  refinedQuery: \"MOV20250112_002\
+      \ 예매 취소\"\n  bookingId: \"MOV20250112_002\"\ntool_call_result:\n  data:\n  \
+      \  refinedQuery: \"MOV20250112_002 예매 취소\"\n    bookingId: \"MOV20250112_002\"\
+      \n    status: \"취소 완료\"\n    message: \"롯데시네마 홍대에서 2025년 1월 14일 11:00에 상영되는\
+      \ '라라랜드' 영화 예매가 성공적으로 취소되었습니다. 환불은 원결제 수단으로 진행됩니다.\"\n  source: \"영화 예매 시스템\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '요청하신 예약 취소가 모두 완료되었습니다.
+
+
+      1. 미용실 예약 취소
+
+
+      • 장소: 헤어살롱 아름다움
+
+      • 예약일시: 2025년 1월 14일 15:00
+
+      • 서비스: 커트 및 스타일링
+
+      • 상태: 취소 완료
+
+
+      2. 영화 예매 취소
+
+
+      • 영화: 라라랜드
+
+      • 극장: 롯데시네마 홍대
+
+      • 상영일시: 2025년 1월 14일 11:00
+
+      • 좌석: B7
+
+      • 상태: 취소 완료 (환불은 원결제 수단으로 진행)'

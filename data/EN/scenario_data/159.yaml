@@ -1,0 +1,142 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: March 21, 2025'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'Cancel the ticket I booked for Monday at Hirshhorn Museum and Sculpture
+      Garden Art for the exhibition <Watercolors: Painting with Water>. Also, cancel
+      the calendar event I added for lunch with my friend that day.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Check reservation details for Monday at Hirshhorn Museum and Sculpture Garden\
+      \ Art exhibition <Watercolors: Painting with Water>\"\n    - status: pending\n\
+      \      name: entertainment_agent\n      refined_query: \"Cancel reservation\
+      \ for Monday's Hirshhorn Museum and Sculpture Garden Art exhibition <Watercolor:\
+      \ Painting with Water>\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"Check Monday lunch appointment with a friend\"\n    - status: pending\n\
+      \      name: calendar_agent\n      refined_query: \"Cancel Monday lunch appointment\
+      \ with a friend\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reserver’s contact information'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check lunch appointment\
+      \ with a friend on Monday, March 24, 2025\"\n  startDate: \"2025-03-24\"\n \
+      \ endDate: \"2025-03-24\"\n  keyword: \"lunch appointment\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Check lunch appointment with a friend on Monday,\
+      \ March 24, 2025\"\n    startDate: \"2025-03-24\"\n    endDate: \"2025-03-24\"\
+      \n    keyword: \"lunch appointment\"\n    scheduleDetails:\n      - scheduleID:\
+      \ \"schedule-20250324-001\"\n        time: \"12:00 PM\"\n        location: \"\
+      Cafe near Bedford Ave Station\"\n        participant: \"Friend\"\n    status:\
+      \ \"Lookup complete\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: To look up your reservation details for cancellation, I’ll need the contact
+      information of the person who made the booking.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: (220) 232-2323
+- workflow_id: workflow_1
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionReservationInfo\narguments:\n  refinedQuery: \"Check\
+      \ reservation details for Hirshhorn Museum and Sculpture Garden Art exhibition\
+      \ <Watercolors: Painting with Water> on Monday, March 24, 2025\"\n  contactInfo:\
+      \ \"(220) 232-2323\"\n  date: \"2025-03-24\"\n  exhibitionTitle: \"Watercolors:\
+      \ Painting with Water\"\ntool_call_result:\n  data:\n    refinedQuery: \"Check\
+      \ reservation details for Hirshhorn Museum and Sculpture Garden Art exhibition\
+      \ <Watercolors: Painting with Water> on Monday, March 24, 2025\"\n    contactInfo:\
+      \ \"(220) 232-2323\"\n    date: \"2025-03-24\"\n    exhibitionTitle: \"Watercolors:\
+      \ Painting with Water\"\n    reservationDetails:\n      reservationID: \"reservation-20250324-789\"\
+      \n      reservationNumber: \"EX20250324-456\"\n      entryTime: \"10:00 AM\"\
+      \n      tickets: 2\n      location: \"Hirshhorn Museum and Sculpture Garden\
+      \ Art\"\n    status: \"Lookup complete\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelSchedule\narguments:\n  refinedQuery: \"Cancel lunch appointment\
+      \ with a friend on Monday, March 24, 2025\"\n  scheduleID: \"schedule-20250324-001\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Cancel lunch appointment with\
+      \ a friend on Monday, March 24, 2025\"\n    scheduleID: \"schedule-20250324-001\"\
+      \n    status: \"Canceled successfully\""
+- workflow_id: workflow_1
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelExhibitionTicket\narguments:\n  refinedQuery: \"Cancel reservation\
+      \ for Hirshhorn Museum and Sculpture Garden Art exhibition <Watercolors: Painting\
+      \ with Water> on Monday, March 24, 2025\"\n  reservationId: \"reservation-20250324-789\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Cancel reservation for Hirshhorn\
+      \ Museum and Sculpture Garden Art exhibition <Watercolors: Painting with Water>\
+      \ on Monday, March 24, 2025\"\n    reservationID: \"reservation-20250324-789\"\
+      \n    status: \"Cancellation completed\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '◾Exhibition Ticket Cancellation Notice
+
+
+      - Exhibition Title:Watercolors: Painting with Water
+
+      - Venue: Hirshhorn Museum and Sculpture Garden Art
+
+      - Reservation Date: March 24, 2025
+
+      - Reservation ID: reservation-20250324-789
+
+      - Cancellation Status: Completed
+
+
+      Your reservation for this exhibition has been successfully canceled. I hope
+      you’ll have another chance to enjoy it in the future.
+
+
+
+      ◾Lunch Appointment Cancellation Notice
+
+
+      - Appointment Date: March 24, 2025
+
+      - Cancellation Status: Completed
+
+
+      Your lunch appointment with your friend has been successfully canceled. If you’d
+      like to set up a new time, just let me know anytime.'

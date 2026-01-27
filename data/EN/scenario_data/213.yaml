@@ -1,0 +1,108 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2016-01-27'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: What's the most popular crime investigation drama right now? And can
+      you also find the profile of the male lead from that show?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Search for the most popular crime investigation dramas right now\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: person_agent\n      refined_query: \"Search\
+      \ for the profile of the male lead in the most popular crime investigation drama\
+      \ right now\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"Search for the\
+      \ most popular crime investigation dramas right now\"\n  genre: \"Crime Drama\"\
+      \ntool_call_result:\n  data:\n    programTitle: \"Mindhunter\"\n    genre:\n\
+      \      - \"Drama\"\n      - \"Crime\"\n      - \"Thriller\"\n    synopsis: \"\
+      In the late 1970s, two FBI agents explore the psychology of serial killers,\
+      \ studying their motives and behavior to solve unsolved cases and prevent future\
+      \ crimes.\"\n    cast:\n      - \"Jonathan Groff\"\n      - \"Holt McCallany\"\
+      \n    airDate: \"2016-01-22\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"Search profile of the\
+      \ main actor from Mindhunter, Jonathan Groff\"\n  personName: \"Jonathan Groff\"\
+      \n  roleType: \"Actor\"\ntool_call_result:\n  data:\n    personName: \"Jonathan\
+      \ Groff\"\n    roleType: \"Actor\"\n    birthDate: \"1985-03-26\"\n    nationality:\
+      \ \"American\"\n    agency: \"Creative Artists Agency\"\n    knownFor:\n   \
+      \   - \"Mindhunter\"\n      - \"Glee\"\n      - \"Looking\"\n    filmography:\n\
+      \      - title: \"Glee\"\n        type: \"TV Drama\"\n        year: 2009\n \
+      \     - title: \"Looking\"\n        type: \"TV Drama\"\n        year: 2014"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Sure, let me organize the answer for you based on your request.
+
+
+      One of the most popular crime investigation dramas these days is Mindhunter.
+
+
+      Drama Information (Mindhunter)
+
+
+      - Overview: In the late 1970s, two FBI agents explore the psychology of serial
+      killers, studying their motives and behavior to solve unsolved cases and prevent
+      future crimes.
+
+      - Genre: Drama, Crime, Thriller
+
+      - Main Cast: Jonathan Groff, Holt McCallany
+
+      - Air Date: 2016-01-22
+
+
+      Next, here’s a profile of the lead actor, Jonathan Groff.
+
+
+      Actor Information (Jonathan Groff)
+
+      -Occupation: Actor
+
+      -Born: 1985-03-26
+
+      -Nationality: American
+
+      -Agency: Creative Artists Agency
+
+
+      Known for:
+
+      - Mindhunter
+
+      - Glee
+
+      - Looking
+
+
+      Filmography:
+
+      - Glee (TV Drama, 2009)
+
+      - Looking (TV Drama, 2014)'

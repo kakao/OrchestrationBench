@@ -1,0 +1,86 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 연락처: 010-2223-3332
+
+      - 날짜: 2025-07-30'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 1991년 6월 7일에 태어난 여사친의 띠랑 별자리 궁금해 그리고 지난 번에 본 전시 이름이 뭐더라? 유튜버 언더월드가 그
+      전시 다녀온 영상 올렸다는데 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"1991년 6월\
+      \ 7일에 태어난 여사친의 띠 확인\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: counsel_agent\n      refined_query:\
+      \ \"1991년 6월 7일에 태어난 여사친의 별자리 확인\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"지난 번에 본 전시 이름 조회\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n\
+      \      name: entertainment_agent\n      refined_query: \"지난 번에 본 전시를 유튜버 언더월드가\
+      \ 다녀온 영상 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getZodiacInfo\narguments:\n  refinedQuery: \"1991년 6월 7일에 태어난\
+      \ 여사친의 띠 확인\"\n  year: 1991\ntool_call_result:\n  data:\n    refinedQuery: \"\
+      1991년 6월 7일에 태어난 여사친의 띠 확인\"\n    year: 1991\n    zodiacSign: \"양띠\"\n    description:\
+      \ \"1991년은 음력 기준으로 양의 해에 해당하며, 양띠는 온화하고 친절한 성격으로 알려져 있습니다.\"\n    source: \"\
+      띠 정보 시스템\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getStarSignInfo\narguments:\n  refinedQuery: \"1991년 6월 7일에 태어난\
+      \ 여사친의 별자리 확인\"\n  birthDate: \"1991-06-07\"\ntool_call_result:\n  data:\n \
+      \   refinedQuery: \"1991년 6월 7일에 태어난 여사친의 별자리 확인\"\n    birthDate: \"1991-06-07\"\
+      \n    starSign: \"쌍둥이자리\"\n    description: \"쌍둥이자리는 지적이고 사교성이 뛰어나며 변화와 새로운\
+      \ 경험을 즐기는 성격으로 알려져 있습니다.\"\n    source: \"별자리 정보 시스템\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionReservationInfo\narguments:\n  refinedQuery: \"지난\
+      \ 번에 본 전시 이름 조회\"\n  contactInfo: \"010-2223-3332\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"지난 번에 본 전시 이름 조회\"\n    contactInfo: \"010-2223-3332\"\n\
+      \    exhibitions:\n      - title: \"고양이의 세계\"\n        dateVisited: \"2025-04-20\"\
+      \n        location: \"대구 미술관\"\n        theme: \"고양이\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"유튜버 언더월드의 고양이의 세계 전시\
+      \ 방문 영상\"\ntool_call_result:\n  result:\n    title: \"춘봉첨지와 다녀온 고양이의 세계 전시 방문기\"\
+      \n    url: \"https://www.youtube.com/watch?v=example_cat_world\"\n    channel:\
+      \ \"언더월드\"\n    uploadDate: \"2025-05-20\"\n    description: \"언더월드 유튜버가 고양이의\
+      \ 세계 전시를 방문하여 다양한 고양이 작품과 전시를 소개하는 영상입니다.\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "◾1991년 6월 7일에 태어난 여사친의 띠와 별자리\n• 띠: 양띠\n→ 1991년은 음력 기준으로 양의 해에 해당합니다.\n\
+      → 양띠는 온화하고 친절한 성격으로 알려져 있습니다.\n\n• 별자리: 쌍둥이자리\n→ 쌍둥이자리는 지적이고 사교성이 뛰어나며,\n변화와\
+      \ 새로운 경험을 즐기는 성격으로 알려져 있습니다.\n\n\n◾최근 전시 내역 조회 결과\n최근 관람하신 전시 확인되었어요.\n\n1.\
+      \ 고양이의 세계\n  • 2025년 4월 20일, 대구 미술관\n  • 고양이 테마\n\n\n◾유튜버 언더월드 전시 방문 영상\n언더월드\
+      \ 유튜버가 다녀온 〈고양이의 세계〉 전시 영상을 찾았어요!\n\n• 영상 제목: 춘봉첨지와 다녀온 고양이의 세계 전시 방문기\n• 채널명:\
+      \ 언더월드\n• 업로드 날짜: 2025년 5월 20일\n• 영상 설명: 언더월드 유튜버가 전시장을 직접 방문해 다양한 고양이 작품과 전시\
+      \ 내용을 소개한 영상입니다.\n\n영상 링크: https://www.youtube.com/watch?v=example1"

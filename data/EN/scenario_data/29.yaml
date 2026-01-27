@@ -1,0 +1,107 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-08-15
+
+      Current time: 3:11 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I need to enter my address on an international shopping site. Please
+      find the ZIP code, and check as well if the phone number (202)555-0123 is a
+      scam call.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n  - status:\
+      \ pending\n    name: life_info_agent\n    refined_query: \"Find the ZIP code\
+      \ for my home address in the United States\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: life_info_agent\n\
+      \      refined_query: \"Check if the phone number (202)555-0123 is a scam call\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Address'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPhoneNumberInfo\narguments:\n  refinedQuery: \"Check if the\
+      \ phone number (202-555-0123) is a scam call\"\n  phoneNumber: \"2025550123\"\
+      \ntool_call_result:\n  data:\n    phoneNumber: \"202-555-0123\"\n    isSpam:\
+      \ true\n    spamType: \"Scam call\"\n    reportCount: 256\n    lastReported:\
+      \ \"2025-08-07\"\n    description: \"This number has been reported for impersonating\
+      \ IRS agents and demanding fraudulent payments. Exercise caution.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: Please provide your address if you’d like me to find the ZIP code.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 101 Oakwood Apartments, Apt 101, Brooklyn, NY, USA
+- workflow_id: workflow_1
+  step_id: 8
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPostalCode\narguments:\n  refinedQuery: \"Find my home address\
+      \ postal code\"\n  addressQuery: \"101 Oakwood Apartments, Apt 101, Brooklyn,\
+      \ NY, USA\"\ntool_call_result:\n  data:\n    originalAddress: \"101 Oakwood\
+      \ Apartments, Apt 101, Brooklyn, NY, USA\"\n    postalCode: \"11211\"\n    status:\
+      \ \"found\"\n    notes: \"This ZIP code was retrieved according to the USPS\
+      \ address system.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Postal Code
+
+
+      The postal code for this address is 11211.
+
+
+      This result is based on the USPS address system.
+
+
+      ▶ Phone Number Information
+
+
+      - The phone number (202)555-0123 has been identified as a scam call.
+
+
+      - Spam Type: Scam call (IRS impersonation)
+
+
+      - Number of Reports: 256 total
+
+
+      - Most Recent Report Date: August 7, 2025
+
+
+      - Description: This number has been reported for impersonating IRS agents and
+      demanding fraudulent payments.
+
+
+      → Caution is advised. Do not provide any personal or financial information if
+      contacted by this number.'

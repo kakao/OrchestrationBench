@@ -1,0 +1,102 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-05-16'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘을 기준으로 KBL 순위 어때? KBL 안양 정관장 김영현 선수 기록 알려주고, 이분이 드라마에 특별 출연했다는데 특별
+      출연한 내용 포함해서 이 선수 정보도 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"오늘 기준 KBL\
+      \ 순위 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: sports_agent\n      refined_query: \"KBL\
+      \ 안양 정관장 김영현 선수 기록 조회\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: person_agent\n      refined_query:\
+      \ \"KBL 안양 정관장 김영현 선수 인물 정보 및 드라마 특별 출연 내용 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportRank\narguments:\n  refinedQuery: \"오늘 기준 KBL 순위 조회\"\n\
+      \  league: \"KBL\"\n  targetDate: \"2025-05-16\"\ntool_call_result:\n  data:\n\
+      \    league: \"KBL\"\n    date: \"2025-05-16\"\n    rankings:\n      - rank:\
+      \ 1\n        team: \"서울 SK 나이츠\"\n        wins: 32\n        losses: 10\n   \
+      \     win_rate: 0.762\n        games_behind: 0.0\n      - rank: 2\n        team:\
+      \ \"안양 KGC 인삼공사\"\n        wins: 29\n        losses: 13\n        win_rate: 0.690\n\
+      \        games_behind: 3.0\n      - rank: 3\n        team: \"울산 현대모비스 피버스\"\n\
+      \        wins: 27\n        losses: 15\n        win_rate: 0.642\n        games_behind:\
+      \ 5.0\n      - rank: 4\n        team: \"창원 LG 세이커스\"\n        wins: 24\n   \
+      \     losses: 18\n        win_rate: 0.571\n        games_behind: 8.0\n     \
+      \ - rank: 5\n        team: \"원주 DB 프로미\"\n        wins: 22\n        losses:\
+      \ 20\n        win_rate: 0.524\n        games_behind: 10.0\n      - rank: 6\n\
+      \        team: \"고양 오리온 오리온스\"\n        wins: 20\n        losses: 22\n     \
+      \   win_rate: 0.476\n        games_behind: 12.0\n      - rank: 7\n        team:\
+      \ \"부산 KT 소닉붐\"\n        wins: 18\n        losses: 24\n        win_rate: 0.429\n\
+      \        games_behind: 14.0\n      - rank: 8\n        team: \"서울 삼성 썬더스\"\n\
+      \        wins: 15\n        losses: 27\n        win_rate: 0.357\n        games_behind:\
+      \ 17.0\n      - rank: 9\n        team: \"인천 전자랜드 엘리펀츠\"\n        wins: 13\n\
+      \        losses: 29\n        win_rate: 0.310\n        games_behind: 19.0\n \
+      \     - rank: 10\n        team: \"서울 동부 프로미\"\n        wins: 10\n        losses:\
+      \ 32\n        win_rate: 0.238\n        games_behind: 22.0"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"KBL 안양 정관장 김영현\
+      \ 선수 기록 조회\"\n  teamName: \"안양 정관장\"\n  league: \"KBL\"\n  playerName: \"김영현\"\
+      \ntool_call_result:\n  data:\n    league: \"KBL\"\n    teamName: \"안양 정관장\"\n\
+      \    playerName: \"김영현\"\n    date: \"2025-05-16\"\n    playerStats:\n     \
+      \ points: 24\n      rebounds: 7\n      assists: 5\n      steals: 2\n      blocks:\
+      \ 1\n      turnovers: 3\n      minutesPlayed: \"35:12\"\n      fieldGoalPercentage:\
+      \ 0.52\n      threePointPercentage: 0.38\n      freeThrowPercentage: 0.85\n\
+      \    gameInfo:\n      opponent: \"서울 SK 나이츠\"\n      gameDate: \"2025-05-16\"\
+      \n      result: \"승리\"\n      score: \"89-78\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"KBL 안양 정관장 김영현 선수 인물\
+      \ 정보 및 드라마 특별 출연 내용 검색\"\n  personName: \"김영현\"\n  groupName: \"안양 정관장\"\n \
+      \ roleType: \"운동선수\"\ntool_call_result:\n  data:\n    personName: \"김영현\"\n\
+      \    groupName: \"안양 정관장\"\n    roleType: \"운동선수\"\n    profile:\n      fullName:\
+      \ \"김영현\"\n      birthDate: \"1995-03-12\"\n      nationality: \"대한민국\"\n  \
+      \    position: \"가드\"\n      height: \"188cm\"\n      weight: \"85kg\"\n   \
+      \   careerStart: \"2014년\"\n      teams:\n        - \"안양 정관장\"\n      achievements:\n\
+      \        - \"2023 KBL 올스타 선정\"\n        - \"2022 시즌 평균 득점 15.3점\"\n      dramaAppearances:\n\
+      \        - title: \"스포츠 스타의 일상\"\n          year: 2024\n          role: \"본인\
+      \ 역 출연\"\n          description: \"스포츠 스타들의 일상을 다룬 다큐멘터리 드라마 특별 출연\"\n     \
+      \   - title: \"새가족\"\n          year: 2025\n          role: \"카메오 출연\"\n   \
+      \       description: \"인기 시트콤에 카메오로 특별 출연하여 팬들에게 큰 호응을 얻음\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "■ 오늘 기준 KBL 순위 (2025-05-16)\n\n1위: 서울 SK 나이츠 (32승 10패, 승률 0.762)\n2위:\
+      \ 안양 KGC 인삼공사 (29승 13패, 승률 0.690)\n3위: 울산 현대모비스 피버스 (27승 15패, 승률 0.642)\n4위:\
+      \ 창원 LG 세이커스 (24승 18패)\n5위: 원주 DB 프로미 (22승 20패)\n6위: 고양 오리온 오리온스 (20승 22패, 승률\
+      \ 0.476)\n7위: 부산 KT 소닉붐 (18승 24패, 승률 0.429)\n8위: 서울 삼성 썬더스 (15승 27패, 승률 0.357)\n\
+      9위: 인천 전자랜드 엘리펀츠 (13승 29패, 승률 0.310)\n10위: 서울 동부 프로미 (10승 32패, 승률 0.238)\n\n\
+      ■ 김영현 선수 경기 기록 (2025-05-16 vs 서울 SK 나이츠)\n\n• 득점: 24점\n• 리바운드: 7\n• 어시스트: 5\n\
+      • 스틸: 2\n• 블록: 1\n• 턴오버: 3\n• 출전 시간: 35분 12초\n• 야투율: 52%\n• 3점슛 성공률: 38%\n•\
+      \ 자유투 성공률: 85%\n• 경기 결과: 89-78 승리\n\n■ 김영현 선수 프로필\n\n• 생년월일: 1995년 3월 12\n•\
+      \ 국적: 대한민국\n• 포지션: 가드\n• 신체: 188cm / 85kg\n• 데뷔: 2014년 (안양 정관장 소속)\n• 주요 수상:\n\
+      \  - 2023 KBL 올스타 선정\n  - 2022 시즌 평균 득점 15.3점\n• 드라마 특별 출연 이력\n  - 2024년 스포츠\
+      \ 스타의 일상 – 본인 역 (다큐멘터리 형식의 드라마\n  - 2025년 새가족 – 인기 시트콤 카메오 출연, 팬들 사이 큰 화제"

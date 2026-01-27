@@ -1,0 +1,59 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 02-123-4567로 전화 자꾸 오는데 이거 스팸이야? 광고나 스팸 문자 한번에 차단하는 법 정리된 영상 없나?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"02-123-4567이\
+      \ 스팸 번호인지 여부\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"광고나 스팸 문자 한번에 차단하는 법 정리된 영상\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPhoneNumberInfo\narguments:\n  refinedQuery: \"02-123-4567이\
+      \ 스팸 번호인지 여부\"\n  phoneNumber: \"021234567\"\ntool_call_result:\n  data:\n \
+      \   phoneNumber: \"02-123-4567\"\n    isSpam: true\n    reportCount: 150\n \
+      \   categories: [\"Telemarketing\", \"Fraud\"]\n    additionalInfo: \"이 번호는\
+      \ 여러 사용자에 의해 스팸으로 보고되었습니다. 주의가 필요합니다.\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"광고나 스팸 문자 한번에 차단하는\
+      \ 법 정리된 영상\"\ntool_call_result:\n  data:\n    videos:\n      - title: \"스팸 문자와\
+      \ 광고 차단 완벽 가이드\"\n        url: \"https://www.example.com/video123\"\n      \
+      \  duration: \"15:32\"\n        uploader: \"Tech Guru\"\n        viewCount:\
+      \ 150,000\n        uploadDate: \"2025-05-10\"\n        description: \"이 영상은\
+      \ 광고 및 스팸 문자를 효과적으로 차단하는 방법을 단계별로 설명합니다.\"\n      - title: \"스마트폰에서 스팸 차단 설정하는\
+      \ 방법\"\n        url: \"https://www.example.com/video456\"\n        duration:\
+      \ \"10:45\"\n        uploader: \"Phone Master\"\n        viewCount: 250,000\n\
+      \        uploadDate: \"2025-03-22\"\n        description: \"이 비디오는 스마트폰에서 스팸\
+      \ 메시지 및 광고를 차단하는 설정 방법을 자세히 다룹니다.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "◾전화번호 스팸 여부 확인\n\n- 전화번호: 02-123-4567\n- 스팸 여부: 스팸으로 확인됨\n- 리포트 수: 150건\n\
+      - 카테고리: 텔레마케팅, 사기\n- 추가 정보: 이 번호는 여러 사용자에 의해 스팸으로 보고되었습니다! 주의가 필요합니다.\n\n◾광고\
+      \ 및 스팸 문자 차단 방법 영상 추천\n\n1. 스팸 문자와 광고 차단 완벽 가이드\n   - 링크: [https://www.example.com/video123](https://www.example.com/video123)\n\
+      \   - 길이: 15분 32초\n   - 업로더: Tech Guru\n   - 조회수: 150,000회\n   - 업로드 날짜: 2025년\
+      \ 5월 10일\n   - 설명: 이 영상은 광고 및 스팸 문자를 효과적으로 차단하는 방법을 단계별로 설명합니다.\n\n2. 스마트폰에서\
+      \ 스팸 차단 설정하는 방법\n   - 링크: [https://www.example.com/video456](https://www.example.com/video456)\n\
+      \   - 길이: 10분 45초\n   - 업로더: Phone Master\n   - 조회수: 250,000회\n   - 업로드 날짜:\
+      \ 2025년 3월 22일\n   - 설명: 스마트폰에서 스팸 메시지 및 광고를 차단하는 설정 방법을 자세히 다룹니다.\n\n이 정보를\
+      \ 활용하여 스팸 번호에 대한 경각심을 가지시고, 영상 자료를 통해 광고 및 스팸 차단 방법을 익히시기 바랍니다."

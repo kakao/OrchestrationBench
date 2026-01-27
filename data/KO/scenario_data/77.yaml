@@ -1,0 +1,39 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: date 2025-07-17
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 비트코인 오늘 고가 얼마야?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"오늘 비트코인\
+      \ 고가\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getCryptoPrice\narguments:\n  refinedQuery: \"오늘 비트코인 고가\"\n \
+      \ symbol: \"BTC\"\n  priceType: \"고가\"\n  date: \"2025-07-17\"\n  currency:\
+      \ \"KRW\"\ntool_call_result:\n  data:\n    symbol: \"BTC\"\n    date: \"2025-07-17\"\
+      \n    highPrice: \"72,840,000\"\n    currency: \"KRW\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: ▶오늘 비트코인 고가는 72,840,000원이에요.

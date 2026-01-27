@@ -1,0 +1,127 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '현재 날짜: 2025-07-09
+
+      현재 시간: 15:00
+
+      장소: 경기도 성남시 삼평동'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 내일 고객사 미팅 일정 후에 바로 볼만한 인기 영화 뭐가 있을까? 예매하고 싶어.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"내일 고객사\
+      \ 미팅 일정 시간 조회\"\n\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"고객사 미팅 이후 근처에서 볼 수 있는 인기 상영 영화 추천\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"고객사 미팅 일정 이후 볼만한 인기 영화 예매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"내일 고객사 미팅 일정\"\n  startDate:\
+      \ \"2025-07-10\"\n  endDate: \"2025-07-10\"\n  keyword: \"고객사 미팅\"\ntool_call_result:\n\
+      \  data:\n    scheduleID: \"evt_30711\"\n    title: \"고객사 미팅\"\n    startDateTime:\
+      \ \"2025-07-10T14:00\"\n    endDateTime: \"2025-07-10T17:30\"\n    location:\
+      \ \"강남역 5번 출구 근처 위워크\""
+- workflow_id: null
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"강남역 근처에서 7월 10일 오후\
+      \ 5시 이후 관람 가능한 인기 영화 추천\"\n  isReleased: true\n  theaterLocation: \"강남역\"\n\
+      \  releaseDate: \"2025-07-10\"\n  sortBy: \"popularity\"\n  screeningDate: \"\
+      2025-07-10\"\ntool_call_result:\n  data:\n    movies:\n      - title: \"파묘\"\
+      \n        genre: \"스릴러\"\n        duration: \"120분\"\n        rating: 4.5\n\
+      \        showtimes:\n          - time: \"18:20\"\n            theater: \"롯데시네마\
+      \ 강남\"\n          - time: \"20:45\"\n            theater: \"CGV 강남\"\n\n   \
+      \   - title: \"인사이드 아웃 2\"\n        genre: \"애니메이션\"\n        duration: \"105분\"\
+      \n        rating: 4.7\n        showtimes:\n          - time: \"18:00\"\n   \
+      \         theater: \"CGV 강남\"\n          - time: \"19:40\"\n            theater:\
+      \ \"메가박스 코엑스\"\n\n      - title: \"범죄도시 4\"\n        genre: \"액션\"\n       \
+      \ duration: \"110분\"\n        rating: 4.2\n        showtimes:\n          - time:\
+      \ \"17:50\"\n            theater: \"롯데시네마 강남\"\n          - time: \"20:10\"\n\
+      \            theater: \"메가박스 코엑스\"\n\n      - title: \"쿵푸팬더 5\"\n        genre:\
+      \ \"애니메이션/코미디\"\n        duration: \"95분\"\n        rating: 4.4\n        showtimes:\n\
+      \          - time: \"18:30\"\n            theater: \"CGV 강남\"\n          - time:\
+      \ \"20:00\"\n            theater: \"메가박스 강남\"\n\n      - title: \"듄: 파트2\"\n\
+      \        genre: \"SF\"\n        duration: \"150분\"\n        rating: 4.6\n  \
+      \      showtimes:\n          - time: \"19:00\"\n            theater: \"메가박스\
+      \ 코엑스\"\n          - time: \"21:20\"\n            theater: \"CGV 강남\""
+- workflow_id: workflow_2
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 영화이름, 상영관 이름, 시간, 예매자 이름, 연락처, 인원 수, 관람객 구분(성인/어린이)required_info:'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "아래는 추천 영화와 상영 스케줄입니다. \n\n1. 파묘 (스릴러, 120분, ★4.5)\n- 롯데시네마 강남: 오후 6시\
+      \ 20분\n- CGV 강남: 오후 8시 45분\n\n2. 인사이드 아웃 2 (애니메이션, 105분, ★4.7)\n- CGV 강남: 오후\
+      \ 6시\n- 메가박스 코엑스: 오후 7시 40분\n\n3. 범죄도시 4 (액션, 110분, ★4.2)\n- 롯데시네마 강남: 오후 5시\
+      \ 50분\n- 메가박스 코엑스: 오후 8시 10분\n\n4. 쿵푸팬더 5 (애니메이션/코미디, 95분, ★4.4)\n- CGV 강남:\
+      \ 오후 6시 30분\n- 메가박스 강남: 오후 8시\n\n5. 듄: 파트2 (SF, 150분, ★4.6)\n- 메가박스 코엑스: 오후\
+      \ 7시\n- CGV 강남: 오후 9시 20분\n\n어떤 영화의 어느 상영관, 몇 시 영화를 예매할까요? 예매자 이름, 연락처와 예매를\
+      \ 원하는 인원 수, 관람객 구분(성인/어린이)을 함께 말씀해 주세요."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: '인사이드 아웃 2 CGV 강남 6시로 할게.
+
+      이름은 박지나, 010-1222-2222야. 성인이고, 혼자 볼 거야.'
+- workflow_id: null
+  step_id: 9
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookMovieTicket\narguments:\n  refinedQuery: \"7월 10일 18:00 CGV\
+      \ 강남 인사이드 아웃 2 성인 1명 예매\"\n  movieTitle: \"인사이드 아웃 2\"\n  theaterName: \"CGV\
+      \ 강남\"\n  showDate: \"2025-07-10\"\n  showTime: \"18:00\"\n  audienceCount:\
+      \ 1\n  audienceTypes: \"adult\"\n  userInfo:\n    name: \"박지나\"\n    contactNumber:\
+      \ \"010-1222-2222\"\ntool_call_result:\n  data:\n    bookingId: \"MOV20250710_142\"\
+      \n    movieTitle: \"인사이드 아웃 2\"\n    theater: \"CGV 강남\"\n    showTime: \"2025-07-10T18:00\"\
+      \n    seat: \"E7\"\n    status: \"confirmed\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '예매 완료!
+
+
+      - 영화: 인사이드 아웃 2
+
+      - 장소: CGV 강남
+
+      - 시간: 7월 10일 오후 6시
+
+      - 좌석: E7
+
+      - 예약번호: MOV20250710_142
+
+
+      즐거운 관람되세요.'

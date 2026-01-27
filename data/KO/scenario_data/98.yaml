@@ -1,0 +1,164 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2028/02/20'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '이번 3월 1일부터 2박3일 동안 20명정도 강릉으로
+
+      회사 워크숍 가는데, 내가 일정 계획 담당이 됬어
+
+      평소에 여행도 잘 안가고 잘 모르는데 가있는 3일동안 날씨좀 알려주고 2박3일 추천 계획좀 짜줘'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"3월 1일부터\
+      \ 3일까지 강릉 날씨 검색\"\n\nworkflow_2:\n  status: pending\n  type: independent\n \
+      \ steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"3월 1일부터 3일까지 강릉 20명 정도 인원의 회사 워크숍 일정 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool_call: \n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"2028년 3월 1일 강릉 날씨\"\n      date: \"2028-03-01\"\n      location: \"강릉\"\n\
+      \n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery: \"2028년\
+      \ 3월 2일 강릉 날씨\"\n      date: \"2028-03-02\"\n      location: \"강릉\"\n\n  - tool:\
+      \ getDomesticWeather\n    arguments:\n      refinedQuery: \"2028년 3월 3일 강릉 날씨\"\
+      \n      date: \"2028-03-03\"\n      location: \"강릉\"\n\ntool_call_result:\n\
+      \  - tool: getDomesticWeather\n    result:\n      date: \"2028-03-01\"\n   \
+      \   location: \"강릉\"\n      condition: \"맑음\"\n      highTemp: \"7°C\"\n   \
+      \   lowTemp: \"-1°C\"\n      precipitation: \"0mm\"\n      wind: \"서풍, 3m/s\"\
+      \n      humidity: \"45%\"\n\n  - tool: getDomesticWeather\n    result:\n   \
+      \   date: \"2028-03-02\"\n      location: \"강릉\"\n      condition: \"흐림 후 눈\"\
+      \n      highTemp: \"3°C\"\n      lowTemp: \"-2°C\"\n      precipitation: \"\
+      2.5mm\"\n      wind: \"북동풍, 4m/s\"\n      humidity: \"60%\"\n\n  - tool: getDomesticWeather\n\
+      \    result:\n      date: \"2028-03-03\"\n      location: \"강릉\"\n      condition:\
+      \ \"맑음\"\n      highTemp: \"6°C\"\n      lowTemp: \"-2°C\"\n      precipitation:\
+      \ \"0mm\"\n      wind: \"남서풍, 2m/s\"\n      humidity: \"50%\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"3월 1일부터 3일까지 강릉 20명정도\
+      \ 인원의 회사 워크숍 일정 추천\"\n  destination: \"강릉\"\n  theme: \"워크숍\"\n  startDate:\
+      \ \"2028-03-01\"\n  endDate: \"2028-03-03\"\n  duration: \"2박 3일\"\ntool_call_result:\n\
+      \  itinerary:\n    destination: \"강릉\"\n    duration: \"2박 3일\"\n    participants:\
+      \ 20\n    theme: \"회사 워크숍\"\n    period: \"2028-03-01 ~ 2028-03-03\"\n    schedule:\n\
+      \      - day: \"Day 1\"\n        date: \"2028-03-01\"\n        activities:\n\
+      \          - \"11:00 - 강릉역 도착 및 전용 버스로 이동\"\n          - \"12:00 - 점심식사 (강릉\
+      \ 초당 순두부 거리)\"\n          - \"14:00 - 숙소 체크인 (경포 비치 리조트)\"\n          - \"15:00\
+      \ - 아이스브레이킹 & 팀빌딩 레크리에이션\"\n          - \"18:00 - 단체 저녁식사 (회식)\"\n         \
+      \ - \"20:00 - 강릉 바다 산책 or 자유시간\"\n\n      - day: \"Day 2\"\n        date: \"\
+      2028-03-02\"\n        activities:\n          - \"08:00 - 조식 제공\"\n         \
+      \ - \"09:30 - 세미나 1 (회의실 대여)\"\n          - \"11:00 - 그룹별 워크숍 과제 수행\"\n    \
+      \      - \"12:30 - 점심식사 (강릉 중앙시장 자유식)\"\n          - \"14:00 - 액티비티: 경포호 자전거\
+      \ 투어 또는 커피박물관 견학\"\n          - \"17:00 - 휴식 및 피드백 공유\"\n          - \"19:00\
+      \ - 바비큐 파티 & 레크리에이션 (리조트 내 시설)\"\n\n      - day: \"Day 3\"\n        date: \"\
+      2028-03-03\"\n        activities:\n          - \"08:00 - 조식 및 퇴실 준비\"\n    \
+      \      - \"10:00 - 마무리 워크숍: 회고 및 향후 계획 공유\"\n          - \"12:00 - 점심식사 후 강릉역\
+      \ 이동\"\n          - \"13:30 - 강릉역 출발\"\n    accommodation: \"경포 비치 리조트 (세미나실,\
+      \ 단체 숙소, 바비큐장 보유)\"\n    transportRecommendation: \"KTX 서울역 ↔ 강릉역, 전용버스 대절\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "2028년 3월 1일 ~ 3일, 강릉 워크숍 안내\n\n총 20명의 인원이 참여하는 2박 3일 워크숍 일정입니다.\n각 날짜별\
+      \ 날씨 정보도 함께 확인해 주세요.\n\n\n■ Day 1 - 3월 1일 (수)\n\n날씨: 맑음 / 최고 7°C, 최저 -1°C /\
+      \ 강수량 0mm\n\n일정 요약\n  * 11:00 강릉역 도착 및 전용 버스 이동\n  * 12:00 점심식사 (초당 순두부 거리)\n\
+      \  * 14:00 숙소 체크인\n  * 15:00 아이스브레이킹 & 팀빌딩\n  * 18:00 단체 저녁 회식\n  * 20:00 바다\
+      \ 산책 or 자유시간\n\n\n■ Day 2 - 3월 2일 (목)\n\n날씨: 흐림 후 눈 / 최고 3°C, 최저 -2°C / 강수량\
+      \ 2.5mm\n\n일정 요약\n  * 08:00 조식\n  * 09:30 세미나 (회의실 이용)\n  * 11:00 그룹 워크숍\n \
+      \ * 12:30 점심식사 (중앙시장 자유식)\n  * 14:00 경포호 자전거 투어 또는 커피박물관 견학\n  * 17:00 휴식 및\
+      \ 피드백\n  * 19:00 바비큐 파티 및 레크리에이션\n\n\n■ Day 3 - 3월 3일 (금)\n\n날씨: 맑음 / 최고 6°C,\
+      \ 최저 -2°C / 강수량 0mm\n\n일정 요약:**\n  * 08:00 조식 및 퇴실 준비\n  * 10:00 마무리 워크숍 (회고\
+      \ 및 계획 공유)\n  * 12:00 점심식사 후 강릉역 이동\n  * 13:30 강릉역 출발"
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 'day2 좋은데 경포호 자전거 투어하고 바베큐파티 전까지 너무 시간이 비어,
+
+      자전거 반납하고 경포호 근처에서 다같이 간단하게 마른안주에 맥주 한잔 할 수 있는 호프 몇개만 추천해줘봐.'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: weather_agent\n      refined_query: \"3월\
+      \ 1일부터 3일까지 강릉 날씨 검색\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: travel_agent\n      refined_query:\
+      \ \"3월 1일부터 3일까지 강릉 20명 정도 인원의 회사 워크숍 일정 제작\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"경포호 근처 20명 정도 인원이 간단하게 맥주 마실 수 있는 호프 몇개 추천\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"경포호 근처 20명\
+      \ 정도 인원이 간단하게 맥주 마시고 마른안주 먹을 수 있는 호프 추천\"\n  location: \"경포호\"\n  cuisineType:\
+      \ \"호프\"\n  specificDishes: \"맥주\"\n  sortBy: \"highest_rated\"\n  partySize:\
+      \ \"20명\"\ntool_call_result:\n  data:\n    recommendations:\n      - name: \"\
+      경포비어하우스\"\n        address: \"강원 강릉시 해안로 417\"\n        openHours: \"17:00~02:00\"\
+      \n        contact: \"033-123-4567\"\n        cuisineType: \"호프\"\n        capacity:\
+      \ \"최대 30명 수용 가능\"\n        popularDishes: [\"생맥주\", \"오징어 마른안주\", \"치즈볼\"]\n\
+      \        reservationRequired: \"단체는 사전 예약 권장\"\n\n      - name: \"호수맥주\"\n \
+      \       address: \"강원 강릉시 경포로 333\"\n        openHours: \"16:00~01:00\"\n  \
+      \      contact: \"033-234-5678\"\n        cuisineType: \"호프\"\n        capacity:\
+      \ \"단체석 보유 / 최대 25명\"\n        popularDishes: [\"수제맥주\", \"황도\", \"육포\"]\n \
+      \       reservationRequired: \"전화 예약 필수\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '경포호 인근에서 단체로 간단히 맥주를 즐기기 좋은 장소 추천
+
+
+      1. 경포비어하우스
+
+
+      * 주소: 강원 강릉시 해안로 417
+
+      * 영업시간: 17:00 \~ 02:00
+
+      * 수용 인원: 최대 30명
+
+      * 인기 메뉴: 생맥주, 오징어 마른안주, 치즈볼
+
+      * 안내사항: 단체 방문 시 사전 예약 권장
+
+
+      2. 호수맥주
+
+
+      * 주소: 강원 강릉시 경포로 333
+
+      * 영업시간: 16:00 \~ 01:00
+
+      * 수용 인원: 최대 25명 (단체석 보유)
+
+      * 인기 메뉴: 수제맥주, 황도, 육포
+
+      * 안내사항: 전화 예약 필수
+
+
+      더 자세한 정보가 필요하시면 말씀해주세요.'

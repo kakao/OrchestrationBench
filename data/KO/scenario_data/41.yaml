@@ -1,0 +1,117 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2023-02-03'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 1984년 3월 8일에 태어난 소상식! 남자고, 내 친구인데 이친구 올해 사주 좀 봐줘. 그리고 얘랑 나와의 궁합도 봐줘.
+      그리고 내가 어제 택배 하나 보낸 거 있는데 지금 어디쯤이야? GS Postbox 361466758922
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"1984년 3월\
+      \ 8일에 태어난 남자인 소상식의 올해 사주\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: counsel_agent\n      refined_query:\
+      \ \"1984년 3월 8일에 태어난 남자인 소상식과 나와의 궁합\"\n\nworkflow_3:\n  status: pending\n \
+      \ type: independent\n  steps:\n    - status: pending\n      name: delivery_agent\n\
+      \      refined_query: \"어제 보낸 GS Postbox 361466758922 택배 위치 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getSajuInfo\narguments:\n  refinedQuery: \"1984년 3월 8일에 태어난 남자인\
+      \ 소상식의 올해 사주\"\n  birthDate: \"1984-03-08\"\n  calendarType: \"solar\"\n  gender:\
+      \ \"male\"\ntool_call_result:\n  data:\n    refinedQuery: \"1984년 3월 8일에 태어난\
+      \ 남자인 소상식의 올해 사주\"\n    birthDate: \"1984-03-08\"\n    calendarType: \"solar\"\
+      \n    gender: \"male\"\n    sajuDetails:\n      yearPillar: \"갑자년\"\n      monthPillar:\
+      \ \"을묘월\"\n      dayPillar: \"병인일\"\n      hourPillar: \"정축시\"\n      fiveElements:\
+      \ \"목(木), 화(火), 토(土), 금(金), 수(水) 균형\"\n      personalityTraits: \"성실하고 책임감 강하며,\
+      \ 대인관계가 원만함\"\n      health: \"올해는 큰 건강 문제 없이 안정적인 상태\"\n      career: \"올해는\
+      \ 새로운 기회가 찾아오며 성과가 기대됨\"\n      wealth: \"재정적으로 안정적인 흐름, 투자에 신중할 필요 있음\"\n \
+      \     loveAndMarriage: \"올해 결혼운이 좋아 중요한 인연을 만날 가능성이 높음\"\n    message: \"소상식님의\
+      \ 올해 사주를 바탕으로 한 운세 분석입니다. 특히 올해는 결혼운이 좋아 인연과 관련된 좋은 기회가 있을 것으로 보입니다.\"\n  source:\
+      \ \"사주 분석 시스템\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 사용자의 생년월일, 성별 정보'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"어제 보낸 GS Postbox\
+      \ 361466758922 택배 위치 조회\"\n  trackingNumber: \"361466758922\"\n  carrier: \"\
+      GS Postbox\"\ntool_call_result:\n  data:\n    refinedQuery: \"어제 보낸 GS Postbox\
+      \ 361466758922 택배 위치 조회\"\n    trackingNumber: \"361466758922\"\n    carrier:\
+      \ \"GS Postbox\"\n    status: \"배송 중\"\n    currentLocation: \"서울 물류센터\"\n \
+      \   estimatedDeliveryDate: \"2023-02-05\"\n    lastUpdated: \"2023-02-03T14:30\"\
+      \n    message: \"GS Postbox 361466758922 택배가 현재 서울 물류센터에 있으며, 예상 도착일은 2023년\
+      \ 2월 5일입니다.\"\n  source: \"택배 배송 추적 시스템\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '궁합 확인을 위해 아래 정보가 필요합니다.
+
+
+      사용자 본인 정보
+
+      • 생년월일 (예: 1990-05-12)
+
+      • 성별 (남 / 여)'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 1990년 10월 4일, 여자야!
+- workflow_id: workflow_2
+  step_id: 9
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCompatibilityInfo\narguments:\n  refinedQuery: \"1984년 3월 8일에\
+      \ 태어난 남자인 소상식과 1990년 10월 4일생 여자인 나와의 궁합\"\n  personA:\n    birthDate: \"1984-03-08\"\
+      \n    gender: \"남자\"\n  personB:\n    birthDate: \"1990-10-04\"\n    gender:\
+      \ \"여자\"\ntool_call_result:\n  data:\n    refinedQuery: \"1984년 3월 8일에 태어난 남자인\
+      \ 소상식과 1990년 10월 4일생 여자인 나와의 궁합\"\n    personA:\n      birthDate: \"1984-03-08\"\
+      \n      gender: \"남자\"\n    personB:\n      birthDate: \"1990-10-04\"\n    \
+      \  gender: \"여자\"\n    compatibility:\n      overallScore: 85\n      summary:\
+      \ \"소상식님과 사용자는 서로 보완적인 성격으로 조화로운 관계를 유지할 수 있습니다. 의사소통이 원활하며, 서로의 장점을 살려 좋은 협력과\
+      \ 이해가 기대됩니다.\"\n      strengths:\n        - \"서로의 감정을 잘 이해하고 배려함\"\n       \
+      \ - \"공동 목표에 대한 협력 의지 강함\"\n        - \"서로의 성장과 발전을 지원함\"\n      challenges:\n\
+      \        - \"가끔 의견 차이로 갈등이 발생할 수 있음\"\n        - \"서로의 독립성을 존중하는 노력이 필요함\"\n\
+      \    message: \"두 분의 궁합은 전반적으로 매우 긍정적이며, 서로 노력한다면 더욱 깊은 관계를 만들어 갈 수 있습니다.\"\n\
+      \  source: \"궁합 분석 시스템\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "요청하신 사주, 궁합, 택배 조회 결과입니다.\n\n1. 소상식님의 올해 사주\n\n• 사주 기둥: 갑자년 / 을묘월 /\
+      \ 병인일 / 정축시\n• 오행: 목, 화, 토, 금, 수 균형\n• 성격: 성실하고 책임감 강하며 대인관계 원만\n• 건강: 큰 문제\
+      \ 없이 안정적\n• 직업/사업: 새로운 기회가 찾아오고 성과 기대\n• 재물: 안정적이지만 투자 시 신중 필요\n• 연애/결혼: 결혼운\
+      \ 상승, 좋은 인연 가능성 높음\n\n2. 소상식님과의 궁합\n\n• 종합 점수: 85점\n• 궁합 요약: 보완적인 성격으로 조화로움,\
+      \ 의사소통 원활\n• 장점:\n  - 서로의 감정을 잘 이해하고 배려\n  - 공동 목표에 대한 협력 의지 강함\n  - 서로의 성장과\
+      \ 발전을 지원\n• 주의점:\n  - 의견 차이로 갈등 가능성 있음\n  - 독립성 존중 필요\n\n3. 택배 배송 현황\n\n• 운송장:\
+      \ GS Postbox 361466758922\n• 현재 위치: 서울 물류센터\n• 상태: 배송 중\n• 예상 도착일: 2023년 2월\
+      \ 5일\n• 마지막 갱신: 2023년 2월 3일 14:30"

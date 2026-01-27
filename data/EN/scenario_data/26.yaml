@@ -1,0 +1,186 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-08-09
+
+      Current time: 11:19 AM
+
+      userid: U0DK23111'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: These days I’m working with younger colleagues, and they use a lot of
+      new slang. Can you give me 10 examples of slang that people in their 20s often
+      use, and also find 3 news articles about the main concerns that people in their
+      20s have?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"10 slang\
+      \ terms commonly used by people in their 20s\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: news_agent\n\
+      \      refined_query: \"Find 3 news articles about the concerns of people in\
+      \ their 20s\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"10 slang terms commonly\
+      \ used by people in their 20s in English-speaking countries\"\ntool_call_result:\n\
+      \  data:\n    keywords:\n      - term: \"Lit\"\n        meaning: \"Amazing,\
+      \ exciting, or really fun.\"\n      - term: \"Flex\"\n        meaning: \"To\
+      \ show off or brag about something.\"\n      - term: \"Ghost\"\n        meaning:\
+      \ \"To stop communicating with someone all of a sudden, usually in dating contexts.\"\
+      \n      - term: \"Salty\"\n        meaning: \"Being bitter, upset, or irritated\
+      \ about something trivial.\"\n      - term: \"Lowkey\"\n        meaning: \"\
+      Something you want to keep discreet or not too obvious.\"\n      - term: \"\
+      Highkey\"\n        meaning: \"The opposite of lowkey; something you want to\
+      \ emphasize openly.\"\n      - term: \"Extra\"\n        meaning: \"Over the\
+      \ top, dramatic, or doing too much.\"\n      - term: \"Slay\"\n        meaning:\
+      \ \"To do something really well, especially in style or performance.\"\n   \
+      \   - term: \"Shook\"\n        meaning: \"Shocked, surprised, or emotionally\
+      \ affected.\"\n      - term: \"FOMO\"\n        meaning: \"Fear Of Missing Out;\
+      \ anxiety about missing fun or important events.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"Search for 3 articles\
+      \ about the concerns of people in their 20s\"\n  limit: 3\ntool_call_result:\n\
+      \  data:\n    articles:\n      - title: \"Young Adults in Their 20s Struggle\
+      \ with Jobs and Relationships\"\n        source: \"The New York Times\"\n  \
+      \      url: \"https://www.nytimes.com/2025/08/05/20s-jobs-relationships.html\"\
+      \n        publishedOn: \"2025-08-05\"\n        summary: \"Rising unemployment\
+      \ and temporary positions leave people in their 20s anxious about financial\
+      \ independence, dating, and future stability.\"\n\n      - title: \"Social Media\
+      \ Comparison Adds Stress for Twentysomethings\"\n        source: \"The Guardian\"\
+      \n        url: \"https://www.theguardian.com/lifeandstyle/2025/aug/04/social-media-stress-20s\"\
+      \n        publishedOn: \"2025-08-04\"\n        summary: \"Many young adults\
+      \ suffer from low self-esteem as they compare themselves to friends on social\
+      \ media, leading to emotional exhaustion and pressure to appear successful.\"\
+      \n\n      - title: \"Finding Identity and Purpose in a Fast-Paced World\"\n\
+      \        source: \"BBC News\"\n        url: \"https://www.bbc.com/news/2025/08/03/young-adults-identity-purpose\"\
+      \n        publishedOn: \"2025-08-03\"\n        summary: \"Young adults in their\
+      \ 20s are grappling with questions about identity and career paths while navigating\
+      \ a rapidly changing society, according to recent interviews.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "### 10 Popular Slang Terms Among People in Their 20s\n\nHere are some\
+      \ commonly used slang terms among people in their 20s in English-speaking contexts,\
+      \ reflecting how they express emotions, humor, and social dynamics:\n\n1. Lit\
+      \ – Amazing, exciting, or really fun.\n2. Flex – To show off or brag about something.\n\
+      3. Ghost – To stop communicating with someone all of a sudden, usually in dating\
+      \ contexts.\n4. Salty – Being bitter, upset, or irritated about something trivial.\n\
+      5. Lowkey – Something you want to keep discreet or not too obvious.\n6. Highkey\
+      \ – The opposite of lowkey; something you want to emphasize openly.\n7. Extra\
+      \ – Over the top, dramatic, or doing too much.\n8. Slay – To do something really\
+      \ well, especially in style or performance.\n9. Shook – Shocked, surprised,\
+      \ or emotionally affected.\n10. FOMO – Fear Of Missing Out; anxiety about missing\
+      \ fun or important events.\n\nThese terms are widely used in social media, texting,\
+      \ and everyday conversations among young adults.\n\n---\n\n### 3 Recent Articles\
+      \ About the Concerns of People in Their 20s\n\n1. Young Adults in Their 20s\
+      \ Struggle with Jobs and Relationships\n   Source: The New York Times, 2025-08-05\n\
+      \   Rising unemployment and temporary positions leave people in their 20s anxious\
+      \ about financial independence, dating, and future stability.\n   [Read Article](https://www.nytimes.com/2025/08/05/20s-jobs-relationships.html)\n\
+      \n2. Social Media Comparison Adds Stress for Twentysomethings\n   Source: The\
+      \ Guardian, 2025-08-04\n   Many young adults suffer from low self-esteem as\
+      \ they compare themselves to friends on social media, leading to emotional exhaustion\
+      \ and pressure to appear successful.\n   [Read Article](https://www.theguardian.com/lifeandstyle/2025/aug/04/social-media-stress-20s)\n\
+      \n3. Finding Identity and Purpose in a Fast-Paced World\n   Source: BBC News,\
+      \ 2025-08-03\n   Young adults in their 20s are grappling with questions about\
+      \ identity and career paths while navigating a rapidly changing society, according\
+      \ to recent interviews.\n   [Read Article](https://www.bbc.com/news/2025/08/03/young-adults-identity-purpose)\n\
+      \n---\n\nIn summary, people in their 20s commonly face challenges related to\
+      \ employment, relationships, social comparison, identity, and future uncertainty.\
+      \ At the same time, they communicate and express themselves through dynamic\
+      \ slang that keeps interactions fast, humorous, and expressive."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Then send a high-priority text to Ethan Brooks, the new hire who joined
+      three weeks ago, saying "FOMO!"
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: search_agent\n      refined_query: \"10\
+      \ slang terms commonly used by people in their 20s\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ news_agent\n      refined_query: \"Find 3 news articles about the concerns\
+      \ of people in their 20s\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: message_agent\n      refined_query:\
+      \ \"Send a high-priority text to new employee Ethan Brooks saying 'FOMO!'\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient''s contact information'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: The recipient's phone number is required
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: (202)555-6789
+- workflow_id: null
+  step_id: 12
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Send a high-priority\
+      \ text to new employee Ethan Brooks saying 'FOMO!'\"\n  phoneNumber: \"(202)555-6789\"\
+      \n  channel: \"sms\"\n  message: \"FOMO!\"\n  repeatRule: \"none\"\n  priority:\
+      \ \"high\"\ntool_call_result:\n  status: success\n  data:\n    recipient: \"\
+      Ethan Brooks\"\n    phoneNumber: \"(202)555-6789\"\n    channel: \"sms\"\n \
+      \   message: \"FOMO!\"\n    priority: \"high\"\n    deliveryStatus: \"delivered\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your high-priority text has been sent successfully. Here are the details:
+
+
+      * Recipient: Ethan Brooks
+
+      * Phone Number: (202)555-6789
+
+      * Channel: SMS
+
+      * Message: FOMO!
+
+      * Priority: High
+
+      * Delivery Status: Delivered
+
+
+      This message reflects a casual, 20-something slang style, addressed to the new
+      employee in a friendly, attention-grabbing manner.'

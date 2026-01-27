@@ -1,0 +1,150 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2026-07-16
+
+      Time: 09:14'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 스케쥴 확인해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"오늘 등록된\
+      \ 모든 일정 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"오늘 등록된 모든 일정 조회\"\n\
+      \  startDate: \"2026-07-16\"\n  endDate: \"2026-07-16\"\ntool_call_result:\n\
+      \  data:\n    - scheduleId: \"SCHD20260716_001\"\n      title: \"주간 업무 보고\"\n\
+      \      startDateTime: \"2026-07-16T14:00:00+09:00\"\n      endDateTime: \"2026-07-16T15:00:00+09:00\"\
+      \n      location: \"본사 3층 회의실\"\n      calendarType: \"work\"\n    - scheduleId:\
+      \ \"SCHD20260716_002\"\n      title: \"김민수와 저녁 약속\"\n      startDateTime: \"\
+      2026-07-16T19:00:00+09:00\"\n      endDateTime: \"2026-07-16T21:00:00+09:00\"\
+      \n      location: \"강남역\"\n      calendarType: \"personal\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '네, 오늘 두 개의 일정이 있습니다.
+
+
+      * 오후 2시: 주간 업무 보고 (본사 3층 회의실)
+
+      * 오후 7시: 김민수님과 저녁 약속 (강남역)'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 저녁 약속때 강남역 근처 먹으러 갈만한 곳 추천해주고 예약도 바로 해줘
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: calendar_agent\n      refined_query: \"\
+      오늘 등록된 모든 일정 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n \
+      \ steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"강남역 근처 오후 7시 김민수님과 저녁 식사하기 좋은 맛집 추천\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"강남역 근처 오후 7시 김민수님과 저녁 식사하기\
+      \ 좋은 맛집 예약\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"강남역 근처 오후\
+      \ 7시에 2명 저녁 식사 장소 추천\"\n  location: \"강남역\"\n  partySize: \"2명\"\n  reservationTime:\
+      \ \"오후 7시\"\n  sortBy: \"highest_rated\"\ntool_call_result:\n  data:\n    -\
+      \ restaurantId: \"REST_GN_004\"\n      name: \"리스토란테 에오\"\n      cuisineType:\
+      \ \"이탈리안\"\n      location: \"서울 강남구 역삼동 823-1\"\n      rating: 4.8\n      description:\
+      \ \"정통 이탈리안 코스 요리를 프라이빗한 분위기에서 즐길 수 있는 파인 다이닝 레스토랑입니다. 기념일에 방문하기 좋습니다.\"\n \
+      \   - restaurantId: \"REST_GN_005\"\n      name: \"삼원가든\"\n      cuisineType:\
+      \ \"한우 구이\"\n      location: \"서울 강남구 언주로 835\"\n      rating: 4.6\n      description:\
+      \ \"최상급 한우 갈비로 유명하며, 넓고 고급스러운 공간에서 식사할 수 있어 중요한 접대나 가족 모임에 적합합니다.\"\n    - restaurantId:\
+      \ \"REST_GN_006\"\n      name: \"밍글스\"\n      cuisineType: \"모던 한식\"\n     \
+      \ location: \"서울 강남구 도산대로67길 19\"\n      rating: 4.9\n      description: \"\
+      한식을 현대적으로 재해석한 창의적인 요리를 선보이는 미쉐린 2스타 레스토랑입니다. 특별한 미식 경험을 원할 때 추천합니다.\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 장소 선택, 연락처'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '네, 강남역 근처 분위기 좋은 맛집 세 곳을 추천해 드릴게요.
+
+
+      1.  리스토란테 에오: 정통 이탈리안 파인 다이닝 레스토랑으로, 기념일에 어울리는 프라이빗한 분위기입니다.
+
+      2.  삼원가든: 최상급 한우 갈비로 유명한 곳으로, 중요한 분과의 식사 자리에 좋습니다.
+
+      3.  밍글스: 한식을 현대적으로 재해석한 미쉐린 2스타 레스토랑으로, 특별한 미식 경험을 선사합니다.
+
+
+      어떤 곳으로 예약을 도와드릴까요? 연락처도 함께 알려주세요.'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 1번으로 해주고 010-1234-5678이야
+- workflow_id: null
+  step_id: 12
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"2026년 7월 16일 오후 7시에\
+      \ 강남역 근처 '리스토란테 에오'에 2명 저녁 식사 예약\"\n  placeId: \"REST_GN_004\"\n  placeName:\
+      \ \"리스토란테 에오\"\n  placeCategory: \"레스토랑\"\n  reservationDate: \"2026-07-16\"\
+      \n  reservationTime: \"19:00\"\n  partySize: 2\n  contactInfo: \"010-1234-5678\"\
+      \ntool_call_result:\n  data:\n    reservationId: \"RES_GN_12345\"\n    status:\
+      \ \"confirmed\"\n    placeName: \"리스토란테 에오\"\n    reservationDate: \"2026-07-16\"\
+      \n    reservationTime: \"19:00\"\n    partySize: 2\n    message: \"예약이 성공적으로\
+      \ 완료되었습니다.\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: '리스토란테 에오''에 오늘 저녁 7시, 2인으로 예약 완료했습니다.
+
+
+      예약 내역을 다시 한번 확인해 주세요.
+
+
+      *   식당: 리스토란테 에오
+
+      *   날짜 및 시간: 오늘, 저녁 7시
+
+      *   인원: 2명
+
+      *   예약번호: RES_GN_12345
+
+
+      즐거운 저녁 시간 보내세요!'

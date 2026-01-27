@@ -1,0 +1,209 @@
+metadata:
+  total_steps: 15
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '현재 날짜 : 2025/08/11'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 부모님 결혼기념일에 두 분이 오붓하게 갈 오키나와 2박 3일 여행 계획 좀 짜줘. 괜찮은 항공권이랑 숙소도 알아보고, 기념일에
+      갈만한 분위기 좋은 맛집 반영해서 짜야해. 마지막으로 확정된 일정을 내 캘린더에 등록해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"부모님 결혼기념일\
+      \ 날짜 조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"부모님 결혼기념일에 맞춰 두 분이 다녀올 오키나와 2박 3일 왕복 항공권 검색\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: travel_agent\n      refined_query: \"부모님\
+      \ 두 분이 묵을 만한 오키나와 2박 3일 숙소 추천\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"오키나와에서 부모님 결혼기념일에 갈 만한 분위기 좋은 맛집 추천\"\n\nworkflow_5:\n\
+      \  status: pending\n  type: dependent\n  depend_on: [\"workflow_2\", \"workflow_3\"\
+      , \"workflow_4\"]\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"항공권, 숙소, 레스토랑 정보를 바탕으로 오키나와 2박 3일 부모님 여행 일정 계획\"\n\n\
+      workflow_6:\n  status: pending\n  type: dependent\n  depend_on: [\"workflow_5\"\
+      ]\n  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"확정된 오키나와 2박 3일 부모님 결혼기념일 여행 일정 등록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"부모님 결혼기념일 일정 조회\"\n\
+      \  keyword: \"결혼기념일\"\ntool_call_result:\n  status: success\n  data: []\n  message:\
+      \ \"해당 조건으로 조회된 결혼기념일 일정이 없습니다.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 등록된 일정에서 부모님 결혼기념일 일정이 확인되지 않아 여행 계획을 진행할 수 없습니다. 기념일 날짜를 알고 계신다면 직접
+      입력해 주세요.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 10월 18일이야.
+- workflow_id: workflow_2
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"10월 18일에 출발해서 2박\
+      \ 3일 일정으로 오키나와 가는 성인 2명 왕복 항공권\"\n  departure: \"ICN\"\n  destination: \"오키나와\"\
+      \n  departureDate: \"2025-10-18\"\n  returnDate: \"2025-10-20\"\n  adultPassengerCount:\
+      \ 2\ntool_call_result:\n  data:\n    flights:\n      - tripID: \"TRIP-KE785-KE786\"\
+      \n        airline: \"대한항공\"\n        departureFlight:\n          flightNumber:\
+      \ \"KE785\"\n          departureTime: \"2025-10-18T09:10\"\n          arrivalTime:\
+      \ \"2025-10-18T11:50\"\n        returnFlight:\n          flightNumber: \"KE786\"\
+      \n          departureTime: \"2025-10-20T13:20\"\n          arrivalTime: \"2025-10-20T15:55\"\
+      \n        seatClass: \"economy\"\n        isDirect: true\n        totalPrice:\
+      \ \"₩782,000\"\n        baggage: \"위탁 1개(23kg) 포함\"\n\n      - tripID: \"TRIP-OZ172-OZ171\"\
+      \n        airline: \"아시아나항공\"\n        departureFlight:\n          flightNumber:\
+      \ \"OZ172\"\n          departureTime: \"2025-10-18T14:30\"\n          arrivalTime:\
+      \ \"2025-10-18T17:15\"\n        returnFlight:\n          flightNumber: \"OZ171\"\
+      \n          departureTime: \"2025-10-20T18:40\"\n          arrivalTime: \"2025-10-20T21:20\"\
+      \n        seatClass: \"economy\"\n        isDirect: true\n        totalPrice:\
+      \ \"₩748,000\"\n        baggage: \"기내 10kg + 위탁 23kg\"\n\n      - tripID: \"\
+      TRIP-JJ230-JJ231\"\n        airline: \"제주항공\"\n        departureFlight:\n  \
+      \        flightNumber: \"7C230\"\n          departureTime: \"2025-10-18T07:50\"\
+      \n          arrivalTime: \"2025-10-18T10:25\"\n        returnFlight:\n     \
+      \     flightNumber: \"7C231\"\n          departureTime: \"2025-10-20T11:15\"\
+      \n          arrivalTime: \"2025-10-20T13:55\"\n        seatClass: \"economy\"\
+      \n        isDirect: true\n        totalPrice: \"₩582,000\"\n        baggage:\
+      \ \"수하물 별도 구매 필요\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"10월 18일부터\
+      \ 2박 3일간 부모님 두 분이 묵으실 오키나와 숙소 검색\"\n  location: \"오키나와\"\n  checkInDate: \"\
+      2025-10-18\"\n  checkOutDate: \"2025-10-20\"\n  guestCount: 2\n  sortBy: \"\
+      highest_rating\"\ntool_call_result:\n  data:\n    accommodations:\n      - id:\
+      \ \"HOTEL-OKI001\"\n        name: \"하얏트 리젠시 세라가키 아일랜드 오키나와\"\n        location:\
+      \ \"세라가키, 오키나와\"\n        rating: 4.8\n        pricePerNight: \"₩280,000\"\n\
+      \        totalPrice: \"₩560,000\"\n        roomType: \"오션뷰 디럭스 트윈\"\n      \
+      \  amenities:\n          - 조식 포함\n          - 실내/야외 수영장\n          - 무료 주차\n\
+      \          - 해변 도보 접근\n        note: \"부모님 숙소로 조용하고 경치 좋은 리조트\"\n\n      - id:\
+      \ \"HOTEL-OKI002\"\n        name: \"리츠칼튼 오키나와\"\n        location: \"나고, 오키나와\"\
+      \n        rating: 4.7\n        pricePerNight: \"₩420,000\"\n        totalPrice:\
+      \ \"₩840,000\"\n        roomType: \"스위트 트윈 (정원 전망)\"\n        amenities:\n \
+      \         - 스파 & 사우나\n          - 조용한 프라이빗 환경\n          - 컨시어지 서비스\n      \
+      \  note: \"자연 속 휴식에 적합, 고급스러운 분위기\"\n\n      - id: \"HOTEL-OKI003\"\n      \
+      \  name: \"오키나와 나하 메리어트 호텔\"\n        location: \"나하 시내\"\n        rating: 4.6\n\
+      \        pricePerNight: \"₩190,000\"\n        totalPrice: \"₩380,000\"\n   \
+      \     roomType: \"슈페리어 트윈\"\n        amenities:\n          - 시내 접근성 우수\n   \
+      \       - 공항 셔틀 제공\n          - 조식 뷔페\n        note: \"대중교통 중심지에 위치, 편리한 이동\""
+- workflow_id: workflow_4
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"2025년 10월\
+      \ 18일 오키나와에서 분위기 좋은 부모님 결혼기념일 식사 장소\"\n  location: \"오키나와\"\n  sortBy: \"highest_rated\"\
+      \n  ambience: \"분위기 좋은\"\n  event: \"결혼기념일\"\n  partySize: \"2명\"\ntool_call_result:\n\
+      \  data:\n    recommendations:\n      - name: \"카페 카이수이\"\n        category:\
+      \ \"프렌치 / 창의적 코스요리\"\n        rating: 4.9\n        distance: \"차로 15분\"\n  \
+      \      address: \"오키나와현 나고시 아자 야마노 256\"\n        priceRange: \"₩₩₩₩\"\n   \
+      \     ambience: \"조용하고 로맨틱한 바닷가 전망\"\n        special: \"디너 코스에 와인 페어링 가능, 사전\
+      \ 예약 추천\"\n\n      - name: \"류큐 모던 카이세키 나미\"\n        category: \"일본 전통 가이세키\"\
+      \n        rating: 4.8\n        distance: \"차로 10분\"\n        address: \"오키나와현\
+      \ 나하시 국제거리 인근\"\n        priceRange: \"₩₩₩\"\n        ambience: \"은은한 조명, 전통\
+      \ 정원과 함께하는 다다미 룸\"\n        special: \"특별 기념일 플레이트 제공 가능 (요청 시)\"\n\n      -\
+      \ name: \"더 테라스 클럽 앳 부세나 레스토랑 파인\"\n        category: \"지중해 / 시푸드\"\n      \
+      \  rating: 4.7\n        distance: \"차로 20분\"\n        address: \"오키나와현 나고시 키세\
+      \ 1750\"\n        priceRange: \"₩₩₩₩\"\n        ambience: \"해질녘 바다 뷰가 아름다운 고급\
+      \ 리조트 레스토랑\"\n        special: \"디너 예약 시 창가석 우선 배정 가능\""
+- workflow_id: workflow_5
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 사용자가 최종 선택한 항공, 숙소, 맛집'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "부모님의 오키나와 여행을 위해 항공권, 숙소, 그리고 기념일에 방문하실 맛집 몇 군데를 찾아보았어요. \n\n* 오키나와\
+      \ 항공권:\n\n10월 18일 출발, 성인 2명 기준 오키나와 왕복 항공권을 아래와 같이 추천드립니다:\n1. 제주항공 – ₩582,000,\
+      \ 07:50 출발 / 13:55 도착, 수하물 별도 구매 필요\n2. 아시아나항공 – ₩748,000, 14:30 출발 / 21:20\
+      \ 도착, 기내 10kg + 위탁 23kg 포함\n3. 대한항공 – ₩782,000. 09:10 출발 / 15:55 도착, 위탁 수하물\
+      \ 1개 포함\n\n가장 저렴한 항공편은 제주항공이며, 수하물 포함 여부를 참고해 선택해 주세요\n\n* 오키나와 숙소 추천 (성인 2인,\
+      \ 평점 높은 순)\n\n1. 하얏트 리젠시 세라가키 – ₩560,000 (2박 기준), 오션뷰 디럭스 트윈, 조식 포함, 해변 도보 접근,\
+      \ 수영장 보유\n2. 리츠칼튼 오키나와 – ₩840,000, 스위트 트윈, 프라이빗하고 조용한 환경, 스파 & 컨시어지 서비스 제공\n\
+      3. 오키나와 나하 메리어트 – ₩380,000, 시내 접근성 좋고, 공항 셔틀/조식 뷔페 제공\n\n가성비를 중시하면 메리어트, 휴양\
+      \ 중심이면 하얏트나 리츠칼튼을 추천드립니다.\n \n* 오키나와 맛집 추천\n\n부모님 결혼기념일을 위한 오키나와의 분위기 좋은 레스토랑을\
+      \ 추천드릴게요:\n1. 카페 카이수이 (★4.9)\n바닷가 전망이 멋진 프렌치 코스 레스토랑입니다.\n와인 페어링이 가능하며, 조용하고\
+      \ 로맨틱한 분위기로 기념일 저녁에 제격이에요.\n2. 류큐 모던 카이세키 나미 (★4.8)\n전통 가이세키 요리를 현대적으로 해석한 공간으로,\
+      \ 다다미 룸과 정원이 매력적입니다.\n요청 시 기념일 디저트 플레이트도 제공해요.\n3. 더 테라스 클럽 앳 부세나 - 레스토랑 파인\
+      \ (★4.7)\n해질 무렵 창가에서 즐기는 지중해식 해산물 요리가 일품입니다.\n고급 리조트 내 위치로, 특별한 날에 잘 어울려요.\n\
+      \n어떤 항공편과 숙소, 맛집을 기준으로 일정을 짜드릴까요?"
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 대한항공이 스케쥴이 좋은 거 같고, 리츠칼튼 오키나와를 숙소로 하고 오키나와 맛집을 모두 넣어 일정을 짜줘.
+- workflow_id: null
+  step_id: 13
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"10월 18일부터 2박 3일간 오키나와\
+      \ 일정. 대한항공 10월 18일 오전 9시 출발 인천 출발, 10월 20일 오후 1시 오키나와 출발 항공편, 리츠칼튼 오키나와 숙소,\
+      \ 맛집인 카페 카이수이, 류큐 모던 카이세키 나미, 더 테라스 클럽 앳 부세나를 모두 일정에 반영\"\n  destination: \"\
+      오키나와\"\n  startDate: \"2025-10-18\"\n  endDate: \"2025-10-20\"\n  duration:\
+      \ \"2박 3일\"\n  companionType: \"couple\"\n  theme: \"결혼기념일\"\ntool_call_result:\n\
+      \  itinerary:\n    - date: \"2025-10-18\"\n      activities:\n        - 09:10\
+      \ 인천공항 출발 (대한항공 KE785)\n        - 11:50 오키나와 나하공항 도착\n        - 13:00 리츠칼튼 오키나와\
+      \ 체크인\n        - 14:00~17:00 호텔 휴식 및 스파/산책\n        - 18:30 저녁식사: 카페 카이수이 (프렌치\
+      \ 오션뷰 레스토랑)\n\n    - date: \"2025-10-19\"\n      activities:\n        - 08:00\
+      \ 호텔 조식\n        - 10:00~13:00 리조트 내 여유 시간 (수영장, 사우나)\n        - 14:00 오키나와\
+      \ 북부 관광 (선택: 추라우미 수족관 또는 코우리섬)\n        - 18:00 결혼기념일 디너: 류큐 모던 카이세키 나미\n\n\
+      \    - date: \"2025-10-20\"\n      activities:\n        - 08:30 호텔 조식 및 체크아웃\n\
+      \        - 10:30 나하 시내 쇼핑 또는 산책\n        - 12:00 점심식사: 더 테라스 클럽 앳 부세나 - 레스토랑\
+      \ 파인\n        - 13:20 공항 이동 및 탑승 수속\n        - 13:20 오키나와 출발 (대한항공 KE786)\n\
+      \        - 15:55 인천공항 도착"
+- workflow_id: workflow_6
+  step_id: 14
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"2025년 10월 18일부터\
+      \ 2박 3일 동안 부모님 오키나와 결혼기념일 여행 일정 저장\"\n  title: \"부모님 오키나와 결혼기념일 여행\"\n  startDateTime:\
+      \ \"2025-10-18T09:10\"\n  endDateTime: \"2025-10-20T15:55\"\n  location: \"\
+      오키나와\"\ntool_call_result:\n  data:\n    scheduleId: \"SCHD20251018_001\"\n \
+      \   status: \"created\"\n    title: \"부모님 오키나와 결혼기념일 여행\"\n    startDateTime:\
+      \ \"2025-10-18T09:10\"\n    endDateTime: \"2025-10-20T15:55\"\n    location:\
+      \ \"오키나와\"\n    message: \"캘린더에 일정이 성공적으로 등록되었습니다.\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "부모님의 오키나와 2박 3일 여행 일정을 아래와 같이 준비해봤어요:\n\n■ 오키나와 2박 3일 여행 일정 (2025.10.18\
+      \ ~ 10.20)\n\n* 1일차 – 10월 18일 (토)\n09:10 인천공항 출발 (대한항공 KE785)\n11:50 오키나와 나하공항\
+      \ 도착\n13:00 리츠칼튼 오키나와 체크인\n14:00 ~ 17:00 호텔 휴식 및 스파 / 산책\n18:30 저녁식사: 카페 카이수이\n\
+      \n* 2일차 – 10월 19일 (일)\n08:00 호텔 조식\n10:00 ~ 13:00 리조트 내 여유 시간 (수영장, 사우나 등)\n\
+      14:00 오키나와 북부 관광\n선택지: 추라우미 수족관, 코우리섬 드라이브 코스\n18:00 결혼기념일 디너: 류큐 모던 카이세키 나미\
+      \ \n\n* 3일차 – 10월 20일 (월)\n08:30 호텔 조식 및 체크아웃\n10:30 나하 시내 쇼핑 또는 산책\n12:00 점심식사:\
+      \ 더 테라스 클럽 앳 부세나 – 레스토랑 파인\n13:20 공항 이동 및 탑승 수속\n13:20 오키나와 출발 (대한항공 KE786)\n\
+      15:55 인천공항 도착\n⸻\n\n해당 일정은 ‘부모님 오키나와 결혼기념일 여행’이라는 제목으로 고객님의 캘린더에도 등록해두었습니다.\n\
+      부모님께서 오래도록 기억에 남을 아름다운 시간을 보내시길 진심으로 바랍니다.\n추가로 필요한 것이 있으시면 언제든지 말씀해 주세요."

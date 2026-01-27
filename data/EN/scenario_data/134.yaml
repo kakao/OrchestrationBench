@@ -1,0 +1,101 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: Tuesday, July 15, 2025
+
+      - Current time in California: 10:00 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I remember the time difference between Korea and California being pretty
+      big... If I want to have a Google Meet with my friends at 6 PM Korea time on
+      Saturday, can you tell me what time that would be in California and also add
+      it to my calendar?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"Current\
+      \ time in Korea\"\n    - status: pending\n      name: calendar_agent\n     \
+      \ refined_query: \"Check what time Saturday 6 PM Korea time is in California,\
+      \ then schedule a Google Meet with friends\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getWorldTime\narguments:\n  refinedQuery: \"current time in Korea\"\
+      \n  targetCity: \"Korea\"\ntool_call_result:\n  data:\n    currentTimeInKorea:\
+      \ \"July 16, 2025, 2:00 PM\"\n    currentTimeInCalifornia: \"July 15, 2025,\
+      \ 10:00 PM\"\n    timezoneInKorea: \"KST (Korea Standard Time)\"\n    timeDifference:\
+      \ \"Korea is 16 hours ahead of California\"\n    additionalInfo: \"Korea does\
+      \ not observe Daylight Saving Time\""
+- workflow_id: null
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Register a Google\
+      \ Meet with friends on Friday, July 18 at 2:00 AM California time\"\n  title:\
+      \ \"Google Meet with Friends\"\n  startDateTime: \"2025-07-18T02:00\"  \n  endDateTime:\
+      \ \"2025-07-18T03:00\"\ntool_call_result:\n  data:\n    eventTitle: \"Google\
+      \ Meet with Friends\"\n    startDateTimeInKorea: \"2025-07-19T18:00 KST\"\n\
+      \    endDateTimeInKorea:   \"2025-07-19T19:00 KST\"\n    startDateTimeInCalifornia:\
+      \ \"2025-07-18T02:00 PDT\"\n    endDateTimeInCalifornia:   \"2025-07-18T03:00\
+      \ PDT\"\n    timezoneInKorea: \"KST (Korea Standard Time)\"\n    timezoneInCalifornia:\
+      \ \"PDT (Pacific Daylight Time)\"\n    scheduleStatus: \"Registration complete\"\
+      \n    note: \"The Google Meet is scheduled for Saturday, July 19 from 6:00 PM\
+      \ to 7:00 PM Korea time. This corresponds to Friday, July 18 from 2:00 AM to\
+      \ 3:00 AM California time.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '1. Time Difference Information
+
+
+      Current time in Korea: July 16, 2025, 2:00 PM (KST)
+
+      Current time in California: July 15, 2025, 10:00 PM (PDT)
+
+      Timezone difference: Korea is 16 hours ahead of California
+
+      Note: Korea does not observe Daylight Saving Time
+
+
+      ---
+
+
+      2. Scheduled Event Information
+
+
+      Your Google Meet with friends has been scheduled.
+
+
+      Event Title: Google Meet with Friends
+
+      Korea Time: Saturday, July 19, 2025, 6:00 PM – 7:00 PM (KST)
+
+      California Time: Friday, July 18, 2025, 2:00 AM – 3:00 AM (PDT)
+
+      Timezones: Korea (KST), California (PDT)
+
+      Status: Registration complete
+
+
+      Note:
+
+      This Google Meet is scheduled for Saturday, July 19 from 6:00 PM to 7:00 PM
+      Korea time, which corresponds to Friday, July 18 from 2:00 AM to 3:00 AM California
+      time.'

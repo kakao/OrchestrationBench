@@ -1,0 +1,294 @@
+metadata:
+  total_steps: 20
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2027/12/23
+
+      userId: OISM1991'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '아버지 생신이 올해 음력 12월 8일 성도재일 인데 음력으로만 계산해서 매년 달라지는것 때문에
+
+      스트레스야, 올해 성도재일을 양력날짜로 알려주고 그날 오후 6시를 ''아버지 생신'' 으로 일정등록 해줘, 그날 당일배송 되는 꽃 상품
+      몇개만 추천해주고 주문좀 도와줘.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"아버지 생신인\
+      \ 2027년 음력 12월 8일 성도재일의 날짜를 양력으로 변경 후 안내\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: calendar_agent\n      refined_query: \"2027년 음력 12월 8일을 양력 날짜로\
+      \ 바꾼 뒤 오후 6시 아버지 생신으로 일정에 등록\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"올해 성도재일 양력 날짜에 당일 배송 가능한 꽃 상품 추천\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n\
+      \    - status: pending\n      name: shopping_agent\n      refined_query: \"\
+      올해 성도재일 양력 날짜에 당일배송 가능한 꽃 상품 주문\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getCalendar\narguments:\n  refinedQuery: \"아버지 생신인 2027년 음력 12월\
+      \ 8일 성도재일의 날짜를 양력으로 변경 후 안내\"\n  year: 2027\n  date: \"2027-12-08\"\n  calendarType:\
+      \ \"lunar\"\n  convertedCalendarType: \"solar\"\n  targetEvent: \"성도재일\"\ntool_call_result:\n\
+      \  targetEvent: \"성도재일\"\n  lunarDate: \"2027-12-08\"\n  solarDate: \"2028-01-06\"\
+      \n  year: \"2027\"\n  note: \"2027년 성도재일은 음력 12월 8일이며, 양력으로는 2028년 1월 6일입니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"올해 아버지 생신인 2027년\
+      \ 음력 12월 8일을 양력 날짜 2028 1월 6일 오후 6시 아버지 생신으로 일정에 등록\"\n  title: \"아버지 생신\"\n\
+      \  startDateTime: \"2028-01-06T18:00\"\n  endDateTime: \"2028-01-06T19:00\"\n\
+      \  repeatRule: \"none\"\ntool_call_result:\n  title: \"아버지 생신\"\n  scheduledDateTime:\
+      \ \"2028-01-06T18:00\"\n  repeatRule: \"none\"\n  note: \"일정이 정상적으로 등록되었습니다.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"양력 2028년 1월 6일 당일\
+      \ 배송 가능한 꽃 상품 추천\"\n  productCategory: \"꽃\"\n  sortBy: \"latest\"\ntool_call_result:\n\
+      \  products:\n    - productId: \"fl-20280106-001\"\n      productName: \"생일축하\
+      \ 핑크 장미 꽃다발\"\n      price: 49000\n      deliveryDate: \"2028-01-06\"\n    \
+      \  deliveryType: \"당일배송\"\n      seller: \"플라워위크\"\n      link: \"https://flower.example.com/product/001\"\
+      \n\n    - productId: \"fl-20280106-002\"\n      productName: \"프리미엄 백합+장미 혼합\
+      \ 꽃바구니\"\n      price: 69000\n      deliveryDate: \"2028-01-06\"\n      deliveryType:\
+      \ \"당일배송\"\n      seller: \"오늘꽃배달\"\n      link: \"https://flower.example.com/product/002\"\
+      \n\n    - productId: \"fl-20280106-003\"\n      productName: \"심플 클래식 국화+리시안\
+      \ 꽃다발\"\n      price: 42000\n      deliveryDate: \"2028-01-06\"\n      deliveryType:\
+      \ \"당일배송\"\n      seller: \"꽃마당\"\n      link: \"https://flower.example.com/product/003\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주소, 이름, 연락처'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '2028년 1월 6일 오후 6시 아버지 생신 일정 등록이 완료되었습니다.
+
+
+      ▶ 생일축하 핑크 장미 꽃다발
+
+
+      가격: 49,000원
+
+      판매처: 플라워위크
+
+
+      상품 보기
+
+
+      ▶ 프리미엄 백합+장미 혼합 꽃바구니
+
+
+      가격: 69,000원
+
+      판매처: 오늘꽃배달
+
+
+      상품 보기
+
+
+      ▶ 심플 클래식 국화+리시안 꽃다발
+
+
+      가격: 42,000원
+
+      판매처: 꽃마당
+
+
+      상품 보기
+
+
+      상품을 고르셨나요?
+
+      상품주문을 위해 주문자의 주소, 성함, 연락처가 필요해요.'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 아 근데 성도재일이 뭐야?
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: calendar_agent\n      refined_query: \"\
+      아버지 생신인 2027년 음력 12월 8일 성도재일의 날짜를 양력으로 변경 후 안내\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n\
+      \      name: calendar_agent\n      refined_query: \"올해 성도재일 양력 날짜와 해당 양력 날짜\
+      \ 오후6시 아버지 생신 으로 일정에 등록\"\n\nworkflow_3:\n  status: completed\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n      name:\
+      \ shopping_agent\n      refined_query: \"올해 성도재일에 당일배송 되는 꽃 상품 추천\"\n\nworkflow_4:\n\
+      \  status: paused\n  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n\
+      \    - status: paused\n      name: shopping_agent\n      refined_query: \"올해\
+      \ 성도재일에 당일배송 되는 꽃 상품 주문\"\n\ninterrupted_workflow_4-1:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: search_agent\n\
+      \      refined_query: \"성도재일 정보\""
+- workflow_id: workflow_4
+  step_id: 11
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"2027년 음력 12월 8일 성도재일\
+      \ 정보\"\ntool_call_result:\n  query: \"성도재일 정보\"\n  result:\n    title: \"성도재일이란?\"\
+      \n    summary: \"성도재일(成道齋日)은 불교에서 석가모니 부처님이 깨달음을 얻은 날을 기념하는 날로, 음력 12월 8일에 해당합니다.\
+      \ 석가모니는 보리수 아래에서 7일간 명상 끝에 이 날 깨달음을 얻어 부처가 되었으며, 이를 '성도'라 부릅니다. 성도재일은 불교 수행의\
+      \ 핵심 가치인 '깨달음'의 의미를 되새기는 날로, 전국의 사찰에서는 철야정진, 참선, 108배 수행, 법회, 독경 등의 다양한 수행 행사가\
+      \ 열립니다. 불자들은 이날을 맞아 재를 올리거나 마음을 다잡는 기도를 하며, 특히 스님들은 새벽까지 좌선을 하며 부처님의 성도를 기립니다.\"\
+      \n    lunarDate: \"2027년 음력 12월 8일\"\n    celebrationType: \"불교 기념일\"\n    customs:\n\
+      \      - \"사찰에서는 철야정진 및 참선 진행\"\n      - \"불자들은 재를 올리거나 108배 수행\"\n      - \"\
+      법회, 독경, 다라니 독송 등 진행\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '✅ 성도재일 (음력 12월 8일)
+
+
+      성도재일(成道齋日)은 불교에서 석가모니 부처님이 깨달음을 얻은 날을 기념하는 날로, 음력 12월 8일에 해당합니다. 석가모니는 보리수 아래에서
+      7일간 명상 끝에 이 날 깨달음을 얻어 부처가 되었으며, 이를 ''성도''라 부릅니다. 성도재일은 불교 수행의 핵심 가치인 ''깨달음''의
+      의미를 되새기는 날로, 전국의 사찰에서는 철야정진, 참선, 108배 수행, 법회, 독경 등의 다양한 수행 행사가 열립니다. 불자들은 이날을
+      맞아 재를 올리거나 마음을 다잡는 기도를 하며, 특히 스님들은 새벽까지 좌선을 하며 부처님의 성도를 기립니다.
+
+
+      이날에는 사찰에서 철야정진과 참선, 108배 수행 등이 이루어지며, 불자들은 부처님의 가르침을 되새기며 수행에 임합니다.
+
+      2027년 성도재일은 양력으로 2028년 1월 6일 입니다.'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: '아 불교날이었구나? 아버지도 불교인데 그럼 꽃 말고 절 가실때 입을 편한 개량한복을 선물해드리는게 좋겠어,
+
+      색갈은 진한 갈색으로 해줘 사이즈는 라지로!'
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: calendar_agent\n      refined_query: \"\
+      아버지 생신인 2027년 음력 12월 8일 성도재일의 날짜를 양력으로 변경 후 안내\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n\
+      \      name: calendar_agent\n      refined_query: \"올해 성도재일 양력 날짜와 해당 양력 날짜\
+      \ 오후6시 아버지 생신 으로 일정에 등록\"\n\nworkflow_3:\n  status: completed\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n      name:\
+      \ shopping_agent\n      refined_query: \"올해 성도재일에 당일배송 되는 꽃 상품 추천\"\n\nworkflow_4:\n\
+      \  status: cancelled\n  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n\
+      \    - status: cancelled\n      name: shopping_agent\n      refined_query: \"\
+      올해 성도재일에 당일배송 되는 꽃 상품 주문\"\n\ninterrupted_workflow_4-1:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: search_agent\n\
+      \      refined_query: \"성도재일 정보\"\n\nworkflow_5:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"성도재일 양력 2028/01/06 아버지 생신에 선물드릴 진한 갈색 라지사이즈 개량한복 추천\"\
+      \n\nworkflow_6:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_5\"\
+      \n  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"성도재일 양력 2028/01/06 아버지 생신에 선물드릴 진한 갈색 라지사이즈 개량한복 주문\""
+- workflow_id: workflow_5
+  step_id: 15
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"성도재일 양력 2028/01/06\
+      \ 아버지 생신에 선물드릴 진한 갈색 라지사이즈 개량한복 추천\"\n  productCategory: \"한복\"\n  sortBy: \"\
+      latest\"\n  color: \"갈색\"\n  size: \"L\"\ntool_call_result:\n  products:\n \
+      \   - productId: \"hb-20280106-001\"\n      productName: \"전통감성 남성용 개량한복 세트\
+      \ (갈색, L)\"\n      price: 79000\n      size: \"L\"\n      color: \"갈색\"\n  \
+      \    seller: \"한빛한복\"\n      link: \"https://hanbok.example.com/product/001\"\
+      \n    - productId: \"hb-20280106-002\"\n      productName: \"솔잎무늬 통한복 저고리+바지\
+      \ 세트 (L, 브라운톤)\"\n      price: 85000\n      size: \"L\"\n      color: \"갈색\"\
+      \n      seller: \"예인한복\"\n      link: \"https://hanbok.example.com/product/002\"\
+      \n    - productId: \"hb-20280106-003\"\n      productName: \"모던개량한복 남성용 겨울용\
+      \ (L, 딥브라운)\"\n      price: 92000\n      size: \"L\"\n      color: \"갈색\"\n\
+      \      seller: \"한복마을\"\n      link: \"https://hanbok.example.com/product/003\"\
+      \n    - productId: \"hb-20280106-004\"\n      productName: \"심플한 디자인의 개량한복 상하의\
+      \ 세트 (L, 고동색)\"\n      price: 68000\n      size: \"L\"\n      color: \"갈색\"\n\
+      \      seller: \"우리옷방\"\n      link: \"https://hanbok.example.com/product/004\""
+- workflow_id: workflow_6
+  step_id: 16
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주소, 이름, 연락처'
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "2028년 1월 6일 아버지 생신에 드릴 갈색 개량한복(L사이즈) 추천 상품입니다.\n아래 옵션 중에서 선택해 주세요.\n\
+      \n1. 전통감성 남성용 개량한복 세트\n\n   * 가격: 79,000원 / 판매처: 한빛한복\n   * [상품 보기](https://hanbok.example.com/product/001)\n\
+      \n2. 솔잎무늬 통한복 저고리+바지 세트\n\n   * 가격: 85,000원 / 판매처: 예인한복\n   * [상품 보기](https://hanbok.example.com/product/002)\n\
+      \n3. 모던개량한복 남성용 겨울용\n\n   * 가격: 92,000원 / 판매처: 한복마을\n   * [상품 보기](https://hanbok.example.com/product/003)\n\
+      \n4. 심플한 디자인의 개량한복 상하의 세트\n\n   * 가격: 68,000원 / 판매처: 우리옷방\n   * [상품 보기](https://hanbok.example.com/product/004)\n\
+      \n\n주문을 위해 상품명과 주소, 이름, 연락처가 필요합니다."
+- workflow_id: null
+  step_id: 18
+  agent: user
+  agent_type: user
+  data:
+    content: '모던개량한복으로 주문해줘
+
+      박준오/010-0000-0000/ 서울시 서대문구 연희동 432-1 1층이야'
+- workflow_id: workflow_6
+  step_id: 19
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"2028/01/06 아버지 생신에\
+      \ 선물드릴 갈색 라지사이즈 개량한복 주문\"\n  userId: \"OISM1991\"\n  productItems:\n    - productId:\
+      \ \"hb-20280106-003\"\n      productName: \"모던개량한복 남성용 겨울용\"\n      size: \"\
+      L\"\n      color: \"갈색\" \n      quantity: 1\n      price: 92000\n  shippingAddress:\n\
+      \    recipient: \"박준오\"\n    address: \"서울시 서대문구 연희동 432-1 1층\"\n    phone:\
+      \ \"010-0000-0000\"\ntool_call_result:\n  status: \"success\"\n  orderId: \"\
+      ORD-20280106-0001\"\n  userId: \"OISM1991\"\n  productSummary:\n    - productId:\
+      \ \"hb-20280106-003\"\n      productName: \"모던개량한복 남성용 겨울용\"\n      size: \"\
+      L\"\n      color: \"갈색\"\n      quantity: 1\n      price: 92000\n  totalPrice:\
+      \ 92000\n  shippingAddress:\n    recipient: \"박준오\"\n    address: \"서울시 서대문구\
+      \ 연희동 432-1 1층\"\n    phone: \"010-0000-0000\"\n  estimatedDelivery: \"2028-01-06\"\
+      \n  detailLink: \"https://hanbok.example.com/order/ORD-2\""
+- workflow_id: null
+  step_id: 20
+  agent: main
+  agent_type: main
+  data:
+    content: '모던개량한복 남성용 겨울용 (갈색, L사이즈) 주문이 완료되었습니다.
+
+      수령인: 박준오
+
+      배송지: 서울시 서대문구 연희동 432-1 1층
+
+      총 결제금액: 92,000원
+
+      예상 배송일: 2028년 1월 6일
+
+      주문번호: ORD-20280106-0001
+
+
+      주문 상세정보 보기'

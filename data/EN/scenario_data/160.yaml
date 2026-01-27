@@ -1,0 +1,99 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: January 10, 2025'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Is the heavy snow causing delivery delays? Can you check if there's a
+      chance of snow in New York tomorrow? Also, please look up the delivery status
+      of the care package with snacks that my parents sent. The courier is USPS, and
+      the tracking number is 123765432235.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"Check the\
+      \ chance of snow in New York tomorrow\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: delivery_agent\n\
+      \      refined_query: \"Check the delivery status of the care package with snacks\
+      \ that my parents sent via USPS, tracking number 123765432235\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"Check the chance\
+      \ of snow in New York on January 11, 2025\"\n  location: \"New York\"\n  date:\
+      \ \"2025-01-11\"\ntool_call_result:\n  data:\n    refinedQuery: \"Check the\
+      \ chance of snow in New York on January 11, 2025\"\n    location: \"New York\"\
+      \n    date: \"2025-01-11\"\n    snowProbability: \"80%\"\n    status: \"Lookup\
+      \ complete\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"Check delivery status\
+      \ of the care package with snacks that my parents sent via USPS, tracking number\
+      \ 123765432235\"\n  trackingNumber: \"123765432235\"\n  carrier: \"USPS\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"Check delivery status of the\
+      \ care package with snacks that my parents sent via USPS, tracking number 123765432235\"\
+      \n    trackingNumber: \"123765432235\"\n    carrier: \"USPS\"\n    currentStatus:\
+      \ \"In transit\"\n    estimatedDelivery: \"2025-01-10\"\n    lastLocation: \"\
+      New York Distribution Center\"\n    status: \"Lookup complete\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ Weather Update
+
+      The chance of snow in New York on January 11, 2025 is 80%.
+
+
+      ◾ Delivery Status
+
+      The care package with snacks that your parents sent via USPS is currently in
+      transit. Here are the details:
+
+
+      * Tracking Number: 123765432235
+
+      * Carrier: USPS
+
+      * Current Status: In transit
+
+      * Estimated Delivery Date: January 10, 2025
+
+      * Last Location: New York Distribution Center
+
+
+      Your package is on its way and is expected to arrive on the scheduled date.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Oh, what a relief. It's arriving today!
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'Yes, that’s right. It’s such great news that the care package with snacks
+      is scheduled to arrive today! Hope you enjoy it, and don’t forget to thank your
+      parents.
+
+      If you need further help with the delivery or have additional questions, just
+      let me know anytime!'

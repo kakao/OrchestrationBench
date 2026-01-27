@@ -1,0 +1,72 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-08-12'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 9월 3일의 인천 날씨랑 9월4일~8일까지의 뉴욕 날씨 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"9월 3일 인천\
+      \ 날씨\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n  \
+      \  - status: pending\n      name: weather_agent\n      refined_query: \"9월 4일부터\
+      \ 8일까지의 뉴욕 날씨\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"9월 3일 인천 날씨\"\
+      \n  location: \"인천\"\n  date: \"2025-09-03\"\ntool_call_result:\n  data:\n \
+      \   date: \"2025-09-03\"\n    location: \"인천\"\n    weather:\n      temperature:\
+      \ \"25°C\"\n      condition: \"맑음\"\n      humidity: \"60%\"\n      windSpeed:\
+      \ \"5 km/h\"\n      precipitation: \"0 mm\"\n    note: \"2025년 9월 3일 인천 날씨 정보입니다.\"\
+      \n  source: \"기상청\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getGlobalWeather\narguments:\n  refinedQuery: \"9월 4일부터 8일까지의\
+      \ 뉴욕 날씨\"\n  location: \"New York\"\n  date: \"2025-09-04 ~ 2025-09-08\"\ntool_call_result:\n\
+      \  data:\n    date: \"2025-09-04 ~ 2025-09-08\"\n    location: \"New York\"\n\
+      \    weather:\n      - date: \"2025-09-04\"\n        temperature: \"22°C\"\n\
+      \        condition: \"구름 많음\"\n        humidity: \"70%\"\n        windSpeed:\
+      \ \"10 km/h\"\n        precipitation: \"2 mm\"\n      - date: \"2025-09-05\"\
+      \n        temperature: \"24°C\"\n        condition: \"맑음\"\n        humidity:\
+      \ \"65%\"\n        windSpeed: \"8 km/h\"\n        precipitation: \"0 mm\"\n\
+      \      - date: \"2025-09-06\"\n        temperature: \"23°C\"\n        condition:\
+      \ \"비\"\n        humidity: \"80%\"\n        windSpeed: \"15 km/h\"\n       \
+      \ precipitation: \"10 mm\"\n      - date: \"2025-09-07\"\n        temperature:\
+      \ \"21°C\"\n        condition: \"비\"\n        humidity: \"85%\"\n        windSpeed:\
+      \ \"20 km/h\"\n        precipitation: \"15 mm\"\n      - date: \"2025-09-08\"\
+      \n        temperature: \"20°C\"\n        condition: \"구름 많음\"\n        humidity:\
+      \ \"75%\"\n        windSpeed: \"12 km/h\"\n        precipitation: \"0 mm\"\n\
+      \    note: \"2025년 9월 4일부터 8일까지 뉴욕의 날씨 정보입니다.\"\n  source: \"글로벌 날씨 시스템\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "9월 3일 인천과 9월 4일부터 8일까지 뉴욕의 날씨를 알려드리겠습니다.\n\n◾인천 날씨 (2025년 9월 3일):\n\
+      - 온도: 25°C\n- 날씨: 맑음\n- 습도: 60%\n- 풍속: 5 km/h\n- 강수량: 0 mm\n\n◾뉴욕 날씨:\n- 2025년\
+      \ 9월 4일:\n  - 온도: 22°C\n  - 날씨: 구름 많음\n  - 습도: 70%\n  - 풍속: 10 km/h\n  - 강수량:\
+      \ 2 mm\n\n- 2025년 9월 5일:\n  - 온도: 24°C\n  - 날씨: 맑음\n  - 습도: 65%\n  - 풍속: 8 km/h\n\
+      \  - 강수량: 0 mm\n\n- 2025년 9월 6일:\n  - 온도: 23°C\n  - 날씨: 비\n  - 습도: 80%\n  -\
+      \ 풍속: 15 km/h\n  - 강수량: 10 mm\n\n- 2025년 9월 7일:\n  - 온도: 21°C\n  - 날씨: 비\n \
+      \ - 습도: 85%\n  - 풍속: 20 km/h\n  - 강수량: 15 mm\n\n- 2025년 9월 8일:\n  - 온도: 20°C\n\
+      \  - 날씨: 구름 많음\n  - 습도: 75%\n  - 풍속: 12 km/h\n  - 강수량: 0 mm\n\n인천과 뉴욕 모두 다양한\
+      \ 날씨 조건이 예상되므로 일정 계획에 참고하시기 바랍니다!"

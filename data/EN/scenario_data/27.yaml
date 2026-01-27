@@ -1,0 +1,198 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-08-10
+
+      Current time: 01:11 AM
+
+      Current location: 4150 Maplewood Rd, Austin, TX 78704, United States'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I suddenly feel the urge to see the ocean at night! I’m going to grab
+      a cab to The Boardwalk at Lady Bird Lake—can you tell me how much the taxi fare
+      would be and approximately how long it’ll take?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Taxi\
+      \ fare to The Boardwalk at Lady Bird Lake\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Estimated travel time to The Boardwalk at Lady Bird\
+      \ Lake\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransportInfo\narguments:\n  refinedQuery: \"Taxi fare from\
+      \ 4150 Maplewood Rd, Austin, TX 78704 to The Boardwalk at Lady Bird Lake\"\n\
+      \  location: \"4150 Maplewood Rd, Austin, TX 78704\"\n  destination: \"Boardwalk\
+      \ at Lady Bird Lake\"\n  departureTime: \"2025-08-10T01:11\"\n  includeModes:\
+      \ \"taxi\"\ntool_call_result:\n  data:\n    refinedQuery: \"Taxi fare to The\
+      \ Boardwalk at Lady Bird Lake\"\n    location: \"4150 Maplewood Rd, Austin,\
+      \ TX 78704\"\n    destination: \"Boardwalk at Lady Bird Lake\"\n    departureTime:\
+      \ \"2025-08-10T01:11\"\n    includeModes: \"taxi\"\n    taxiFareEstimate:\n\
+      \      distanceMiles: 12.43\n      estimatedFareUSD: 35\n      fareDetails:\n\
+      \        baseFare: 5\n        distanceFare: 25\n        timeFare: 5\n      notes:\
+      \ \"Actual fare may vary depending on traffic conditions.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Estimated travel\
+      \ time from 4150 Maplewood Rd, Austin, TX 78704 to The Boardwalk at Lady Bird\
+      \ Lake\"\n  origin: \"4150 Maplewood Rd, Austin, TX 78704\"\n  destination:\
+      \ \"Boardwalk at Lady Bird Lake\"\n  departureTime: \"2025-08-10T01:11\"\n \
+      \ transportModes: \"car\"\n  optimizeBy: \"fastest\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"Estimated travel time from 4150 Maplewood Rd, Austin, TX\
+      \ 78704 to The Boardwalk at Lady Bird Lake\"\n    origin: \"4150 Maplewood Rd,\
+      \ Austin, TX 78704\"\n    destination: \"Boardwalk at Lady Bird Lake\"\n   \
+      \ departureTime: \"2025-08-10T01:11\"\n    transportMode: \"car\"\n    optimizeBy:\
+      \ \"fastest\"\n    route:\n      duration: \"About 25 minutes\"\n      distance:\
+      \ \"20 km\"\n      summary: |\n        Fastest late-night route\n        1)\
+      \ Head north on Maplewood Rd and turn left onto S Lamar Blvd.\n        2) Continue\
+      \ on S Lamar Blvd; pass Barton Springs Rd and stay on S Lamar.\n        3) Use\
+      \ the right lanes to turn onto Riverside Dr heading east.\n        4) Follow\
+      \ Riverside Dr along the lake; keep right toward the E Riverside Dr/Lakeshore\
+      \ Blvd split.\n        5) Turn right onto Lakeshore Blvd; Boardwalk at Lady\
+      \ Bird Lake trailhead/parking will be on the right.\n        Alternate route\
+      \ if there’s construction on S Lamar: S 1st St → W Riverside Dr → Lakeshore\
+      \ Blvd.\n      routeUrl: \"https://www.google.com/maps/dir/4150 Maplewood Rd,\
+      \ Austin, TX 78704/Boardwalk at Lady Bird Lake\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "▶  Taxi Information Guide\n\n- Here are the estimated taxi fare and\
+      \ travel time from 4150 Maplewood Rd, Austin, TX 78704 to The Boardwalk at Lady\
+      \ Bird Lake.\n\n- Estimated details to The Boardwalk at Lady Bird Lake:\n- Estimated\
+      \ travel time: about 25 minutes\n- Estimated taxi fare: about $35\n- Travel\
+      \ distance: about 12.43 miles\n- Recommended route: Fastest late-night route\n\
+      \        1) Head north on Maplewood Rd and turn left onto S Lamar Blvd.\n  \
+      \      2) Continue on S Lamar Blvd; pass Barton Springs Rd and stay on S Lamar.\n\
+      \        3) Use the right lanes to turn onto Riverside Dr heading east.\n  \
+      \      4) Follow Riverside Dr along the lake; keep right toward the E Riverside\
+      \ Dr/Lakeshore Blvd split.\n        5) Turn right onto Lakeshore Blvd; Boardwalk\
+      \ at Lady Bird Lake trailhead/parking will be on the right.\n        Alternate\
+      \ route if there’s construction on S Lamar: S 1st St → W Riverside Dr → Lakeshore\
+      \ Blvd.\n- Please note: The fare may vary depending on traffic conditions."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Since I agreed with the driver to go to the boardwalk for $30, please
+      transfer the money from my checking account to Farmers Bank, John Legend, account
+      number 123-123456-789.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: transport_agent\n      refined_query: \"\
+      Taxi fare to The Boardwalk at Lady Bird Lake\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: transport_agent\n\
+      \      refined_query: \"Estimated travel time to The Boardwalk at Lady Bird\
+      \ Lake\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"Check my checking account balance\"\n    - status: pending\n      name:\
+      \ personal_banking_agent\n      refined_query: \"Transfer $30 from my checking\
+      \ account to Farmers Bank account under John Legend 123123456789\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Bank name, account number, name'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ For transfer to a regular account, please provide the following information
+      so that I can verify the account before sending the funds:
+
+
+      - Bank name (e.g., Chase, Bank of America)
+
+
+      - Account number (e.g., 11012345678)
+
+
+      - Account holder’s full name (e.g., John Smith)'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: Chase Bank, 9879876543, Jude Parker
+- workflow_id: workflow_3
+  step_id: 12
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"Check my checking\
+      \ account balance\"\n  accountNumber: \"9879876543\"\n  accountHolderName: \"\
+      Jude Parker\"\n  bankName: \"Chase Bank\"\n  accountType: \"checking\"\n  includeTransactions:\
+      \ false\ntool_call_result:\n  status: success\n  data:\n    sourceAccountId:\
+      \ \"Chase Bank-9879876543\"\n    bankName: \"Chase Bank\"\n    accountHolderName:\
+      \ \"Jude Parker\"\n    accountNumber: \"9879876543\"\n    accountType: \"Checking\
+      \ Account\"\n    balance: \"$1,245.00\"\n    currency: \"USD\""
+- workflow_id: null
+  step_id: 13
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"Transfer $30 from\
+      \ my checking account to John Legend at Farmers Bank, account 123123456789\"\
+      \n  recipientName: \"John Legend\"\n  bankName: \"Farmers Bank\"\n  accountNumber:\
+      \ \"123123456789\"\n  amount: 30\n  sourceAccountId: \"Chase Bank 9879876543\"\
+      \ntool_call_result:\n  status: success\n  data:\n    transactionId: \"TX20250807123500123\"\
+      \n    sourceAccountId: \"Chase Bank 9879876543\"\n    sourceBankName: \"Chase\
+      \ Bank\"\n    recipientName: \"John Legend\"\n    recipientBankName: \"Farmers\
+      \ Bank\"\n    recipientAccountNumber: \"123123456789\"\n    amount: 30\n   \
+      \ currency: \"USD\"\n    status: \"completed\"\n    message: \"The transfer\
+      \ has been completed.\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your transfer of $30.00 to John Legend’s account (123123456789) at Farmers
+      Bank has been completed successfully.
+
+
+      - From account: Chase Bank 9879876543
+
+      - Recipient: John Legend
+
+      - Receiving bank: Farmers Bank
+
+      - Recipient account number: 123123456789
+
+      - Transfer amount: $30.00
+
+      - Transaction status: Completed
+
+      - Transaction ID: TX20250807123500123
+
+
+      If needed, you can verify this transaction using the Transaction ID or by checking
+      your account history.'

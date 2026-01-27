@@ -1,0 +1,71 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-07-07'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 동생이랑 8월 3일부터 후쿠오카 2박 3일 여행 가려고 하는데, 우리 성인 둘이고, 후쿠오카 가는 비행기표랑 숙소 추천 좀
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"8월 3일부터\
+      \ 2박 3일 후쿠오카 가는 성인 2명 비행기 표 조회\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: travel_agent\n \
+      \     refined_query: \"8월 3일부터 2박 3일 2명 후쿠오카 숙소 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"8월 3일부터 2박 3일 후쿠오카\
+      \ 가는 성인 2명 비행기 표 조회\"\n  departure: \"ICN\"\n  destination: \"후쿠오카\"\n  departureDate:\
+      \ \"2025-08-03\"\n  adultPassengerCount : 2\ntool_call_result:\n  data:\n  \
+      \  flights:\n      - flightNumber: \"KE123\"\n        airline: \"Korean Air\"\
+      \n        departureTime: \"2025-08-03T10:00+09:00\"\n        arrivalTime: \"\
+      2025-08-03T12:30+09:00\"\n        seatClass: \"economy\"\n        price: \"\
+      ₩300,000\"\n      - flightNumber: \"JL456\"\n        airline: \"Japan Airlines\"\
+      \n        departureTime: \"2025-08-03T14:00+09:00\"\n        arrivalTime: \"\
+      2025-08-03T16:30+09:00\"\n        seatClass: \"economy\"\n        price: \"\
+      ₩320,000\"\n    note: \"8월 3일부터 5일까지 2명을 위한 후쿠오카행 항공편 정보.\"\n  source: \"항공편\
+      \ 예약 시스템\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"8월 3일부터 2박\
+      \ 3일 후쿠오카 2명 숙소 추천\"\n  location: \"후쿠오카\"\n  checkInDate: \"2025-08-03\"\n\
+      \  checkOutDate: \"2025-08-05\"\n  guestCount: 2\n  sortBy: \"highest_rating\"\
+      \ntool_call_result:\n  data:\n    accommodations:\n      - hotelName: \"후쿠오카\
+      \ 그랜드 호텔\"\n        rating: \"4.8\"\n        address: \"후쿠오카 시내 중심가 123번지\"\n\
+      \        pricePerNight: \"₩150,000\"\n        amenities:\n          - \"Free\
+      \ Wi-Fi\"\n          - \"조식 포함\"\n          - \"수영장\"\n      - hotelName: \"\
+      스마일 호텔 후쿠오카\"\n        rating: \"4.5\"\n        address: \"후쿠오카 기차역 근처 456번지\"\
+      \n        pricePerNight: \"₩130,000\"\n        amenities:\n          - \"Free\
+      \ Wi-Fi\"\n          - \"피트니스 센터\"\n    note: \"8월 3일부터 5일까지 2명을 위한 후쿠오카 숙소\
+      \ 추천 목록입니다.\"\n  source: \"숙소 예약 시스템\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "8월 3일부터 5일까지 후쿠오카 여행을 위한 항공편과 숙소를 추천해드리겠습니다.\n\n◾항공편 추천:\n\n1. 대한항공\
+      \ (KE123)\n   - 출발: 2025년 8월 3일, 10:00 (인천공항)\n   - 도착: 2025년 8월 3일, 12:30 (후쿠오카)\n\
+      \   - 좌석 등급: 이코노미\n   - 요금: ₩300,000\n\n2. 일본항공 (JL456)\n   - 출발: 2025년 8월 3일,\
+      \ 14:00 (인천공항)\n   - 도착: 2025년 8월 3일, 16:30 (후쿠오카)\n   - 좌석 등급: 이코노미\n   - 요금:\
+      \ ₩320,000\n\n◾숙소 추천:\n\n1. 후쿠오카 그랜드 호텔\n   - 평점: 4.8\n   - 위치: 후쿠오카 시내 중심가\
+      \ 123번지\n   - 1박 요금: ₩150,000\n   - 편의시설: Free Wi-Fi, 조식 포함, 수영장\n\n2. 스마일 호텔\
+      \ 후쿠오카\n   - 평점: 4.5\n   - 위치: 후쿠오카 기차역 근처 456번지\n   - 1박 요금: ₩130,000\n   -\
+      \ 편의시설: Free Wi-Fi, 피트니스 센터\n\n필요 시 항공편 예약 및 숙소 상세 정보도 도와드릴 수 있습니다. 즐거운 여행 되세요!"

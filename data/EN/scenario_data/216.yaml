@@ -1,0 +1,192 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'dateTime: 2026-09-21T17:30:00-04:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Find me the nearest fast-charging EV station. Give me directions there,
+      and also recommend a place where I can eat while the car is charging.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Find the\
+      \ nearest fast-charging EV station\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"Get directions to the located\
+      \ EV charging station\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Recommend good restaurants near the EV charging station\""
+- workflow_id: null
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Current location'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: If you share your current location, I can guide you to the nearest EV
+      charging station.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: I’m at the Courtyard by Marriott Hotel in the Silicon Alley area of New
+      York City right now.
+- workflow_id: workflow_1
+  step_id: 7
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Search for the nearest\
+      \ fast-charging EV station from Courtyard by Marriott Hotel, Silicon Alley,\
+      \ NYC\"\n  placeCategory: \"EV charging station\"\n  location: \"Courtyard by\
+      \ Marriott Hotel, Silicon Alley, New York, NY\"\n  sortBy: \"distance\"\n  specialCondition:\
+      \ \"fast charging\"\ntool_call_result:\n  data:\n    - placeName: \"Silicon\
+      \ Alley Garage\"\n      category: \"Parking Garage\"\n      address: \"123 Tech\
+      \ Street, Manhattan, New York, NY 10005\"\n      distance: \"0.2 miles\"\n \
+      \     specialInfo: \"Fast EV charging available\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Directions to the\
+      \ nearest fast-charging EV station from Courtyard by Marriott Hotel, Silicon\
+      \ Alley\"\n  origin: \"Courtyard by Marriott Hotel, Silicon Alley, New York,\
+      \ NY\"\n  destination: \"Silicon Alley Garage\"\n  departureTime: \"5:30 PM\"\
+      \n  transportModes: \"car\"\n  optimizeBy: \"fastest\"\ntool_call_result:\n\
+      \  data:\n    origin: \"Courtyard by Marriott Hotel, Silicon Alley, New York,\
+      \ NY\"\n    destination: \"Silicon Alley Garage\"\n    departureTime: \"5:30\
+      \ PM\"\n    transportMode: \"car\"\n    duration: \"5 minutes\"\n    distance:\
+      \ \"0.2 miles\"\n    estimatedArrivalTime: \"5:35 PM\"\n    directions:\n  \
+      \    - step: 1\n        instruction: \"Exit the hotel and turn right onto Tech\
+      \ Street\"\n        distance: \"0.05 miles\"\n      - step: 2\n        instruction:\
+      \ \"At the first intersection, turn left onto Innovation Avenue\"\n        distance:\
+      \ \"0.1 miles\"\n      - step: 3\n        instruction: \"Continue straight past\
+      \ the coworking spaces, then turn right to Silicon Alley Garage entrance\"\n\
+      \        distance: \"0.05 miles\"\n    trafficCondition: \"Moderate\"\n    toll:\
+      \ \"None\"\n    note: \"Use the main entrance on Tech Street to enter the parking\
+      \ garage\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Recommend\
+      \ good restaurants near Silicon Alley Garage\"\n  location: \"Silicon Alley\
+      \ Garage, Brooklyn, NY\"\n  sortBy: \"highest_rated\"\ntool_call_result:\n \
+      \ data:\n    location: \"Silicon Alley Garage, Brooklyn, NY\"\n    sortBy: \"\
+      highest_rated\"\n    recommendations:\n      - name: \"Manhattan Craft Sushi\"\
+      \n        category: \"Japanese / Sushi & Omakase\"\n        rating: 4.8\n  \
+      \      distance: \"3 min walk (0.1 miles)\"\n        address: \"15 Stone St,\
+      \ Manhattan, New York, NY 10004\"\n        openingHours: \"11:30 AM–10:00 PM\"\
+      \n        priceRange: \"$$$$\"\n        note: \"High-quality sushi and omakase\
+      \ experience. Reservations recommended.\"\n      - name: \"K-Town BBQ & Noodles\"\
+      \n        category: \"Korean / BBQ & Noodles\"\n        rating: 4.7\n      \
+      \  distance: \"5 min walk (0.2 miles)\"\n        address: \"75 Pearl St, Manhattan,\
+      \ New York, NY 10004\"\n        openingHours: \"11:00 AM–9:30 PM\"\n       \
+      \ priceRange: \"$$$\"\n        note: \"Famous for Korean-style BBQ and cold\
+      \ noodle dishes. Casual dining spot.\"\n      - name: \"Empire Wok\"\n     \
+      \   category: \"Asian Fusion / Chinese & Pan-Asian\"\n        rating: 4.6\n\
+      \        distance: \"6 min walk (0.25 miles)\"\n        address: \"80 Broad\
+      \ St, Manhattan, New York, NY 10004\"\n        openingHours: \"11:00 AM–10:00\
+      \ PM\"\n        priceRange: \"$$$\"\n        note: \"Popular American-style\
+      \ Chinese and Pan-Asian cuisine, great for family or group dining.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'I’ve found the nearest EV charging station for you, along with directions
+      and some great dining options you can enjoy while your car charges.
+
+
+      1. Nearest EV Charging Station
+
+
+      Station: Silicon Alley Garage
+
+      Address: 123 Tech Street, Manhattan, New York, NY 10005
+
+      Info: About 0.2 miles from your current location, with fast charging available.
+
+
+      2. Directions to the Charging Station
+
+
+      From Courtyard by Marriott Hotel, Silicon Alley to Silicon Alley Garage, it
+      takes about 5 minutes by car (0.2 miles).
+
+      Departure time: 5:30 PM → Expected arrival: 5:35 PM
+
+      Route summary: Exit the hotel → Turn right onto Tech Street → Turn left onto
+      Innovation Avenue → Continue straight past the coworking spaces → Turn right
+      into Silicon Alley Garage entrance
+
+
+      Traffic: Moderate
+
+      Toll: None
+
+      Note: Use the main entrance on Tech Street to enter the parking garage.
+
+
+      3. Recommended Nearby Restaurants
+
+
+      Here are 3 highly rated restaurants near Silicon Alley Garage:
+
+
+      1) Manhattan Craft Sushi – Japanese / Sushi & Omakase (3 min walk, ★4.8)
+
+      - Address: 15 Stone St, Manhattan, New York, NY 10004
+
+      - Opening Hours: 11:30 AM–10:00 PM
+
+      - Price Range: $$$$
+
+      Note: High-quality sushi and omakase experience. Reservations recommended.
+
+
+      2) K-Town BBQ & Noodles – Korean / BBQ & Noodles (5 min walk, ★4.7)
+
+      - Address: 75 Pearl St, Manhattan, New York, NY 10004
+
+      - Opening Hours: 11:00 AM–9:30 PM
+
+      - Price Range: $$$
+
+      Note: Famous for Korean-style BBQ and cold noodle dishes. Casual dining spot.
+
+
+      3) Empire Wok – Asian Fusion / Chinese & Pan-Asian (6 min walk, ★4.6)
+
+      - Address: 80 Broad St, Manhattan, New York, NY 10004
+
+      -Opening Hours: 11:00 AM–10:00 PM
+
+      - Price Range: $$$
+
+      Note: Popular American-style Chinese and Pan-Asian cuisine, great for family
+      or group dining.
+
+
+      Enjoy a smooth charging experience and a delicious meal!'

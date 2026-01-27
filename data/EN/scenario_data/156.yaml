@@ -1,0 +1,128 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: April 1, 2025
+
+      - userId: U0DK230134'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I think I've been doing way too much impulse shopping lately. Please
+      cancel the sunglasses order I just placed. Oh, and since I'll probably be working
+      late tonight, cancel my evening nail salon appointment at TomorrowAgain as well.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Check\
+      \ the order history for the sunglasses I ordered earlier\"\n    - status: pending\n\
+      \      name: shopping_agent\n      refined_query: \"Cancel the sunglasses order\
+      \ I placed earlier\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Check my reservation for this evening at TomorrowAgain Nail Salon\"\n  \
+      \  - status: pending\n      name: place_agent\n      refined_query: \"Cancel\
+      \ my reservation for this evening at TomorrowAgain Nail Salon\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check the order\
+      \ details for the sunglasses I ordered earlier\"\n  userId: \"U0DK230134\"\n\
+      \  orderDate: \"2025-04-01\"\ntool_call_result:\n  orderDetails:\n    orderId:\
+      \ \"ORD-987654\"\n    userId: \"U0DK230134\"\n    orderDate: \"2025-04-01\"\n\
+      \    product: \"Sunglasses\"\n    status: \"Order Completed\"\n    cancelAvailable:\
+      \ true\n    estimatedDelivery: \"2025-04-07\"\n    shippingAddress: \"123 Main\
+      \ St, Midtown, New York, NY\"\n    price: 100\n    currency: \"USD\"\n    refundMethod:\
+      \ \"original_method\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reserver’s contact information'
+- workflow_id: workflow_1
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelOrder\narguments:\n  refinedQuery: \"Cancel the sunglasses\
+      \ I ordered earlier\"\n  orderId: \"ORD-987654\"\n  cancelType: \"full\"\n \
+      \ refundMethod: \"original_method\"\ntool_call_result:\n  cancellationDetails:\n\
+      \    orderId: \"ORD-987654\"\n    status: \"Cancellation completed\"\n    cancelType:\
+      \ \"full\"\n    refundMethod: \"original_method\"\n    refundAmount: 100\n \
+      \   currency: \"USD\"\n    message: \"Your sunglasses order has been successfully\
+      \ canceled. The refund will be processed using your original payment method.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: To look up a reservation, I need the contact information of the person
+      who booked it.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: (220) 220-2200 This is it.
+- workflow_id: workflow_2
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"Check reservation\
+      \ details for April 1, 2025 evening at Tomorrow Again Nail Salon\"\n  date:\
+      \ \"2025-04-01\"\n  contactInfo: \"(220) 220-2200\"\n  placeName: \"Tomorrow\
+      \ Again Nail Salon\"\n  placeCategory: \"Nail Salon\"\ntool_call_result:\n \
+      \ reservationInfo:\n    reservationId: \"RESV-20230401-001\"\n    placeName:\
+      \ \"Tomorrow Again Nail Salon\"\n    placeCategory: \"Nail Salon\"\n    date:\
+      \ \"2025-04-01\"\n    time: \"18:00\"\n    contactInfo: \"(220) 220-2200\"\n\
+      \    customerName: \"Cindy Park\"\n    serviceType: \"Gel Nails\"\n    price:\
+      \ 30\n    currency: \"USD\"\n    status: \"Confirmed\"\n    message: \"Your\
+      \ reservation has been found. The appointment is scheduled for April 1, 2025\
+      \ at 6:00 PM.\""
+- workflow_id: null
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: Cancellations are not allowed on the day of the reservation'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 'It is difficult to cancel appointments at TomorrowAgain Nail Salon.
+      Please note that cancellations are not allowed on the day of the appointment.
+
+
+
+      ◾Order Cancellation Completed
+
+      - Your sunglasses order has been successfully canceled.
+
+
+      - Order Number: ORD-987654
+
+      - Canceled Amount: $ 100.00
+
+      - Refund Method: Refund will be issued using the original payment method.
+
+
+      If you have further questions regarding your refund, please contact our customer
+      service center.'

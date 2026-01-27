@@ -1,0 +1,232 @@
+{
+  "agent_card": {
+    "name": "생활정보(life)",
+    "agent_id": "life_info_agent",
+    "description": "일상생활에서 필요한 정보(복권, 세계시간, 우편번호, 영문주소, 전화번호 등)를 손쉽게 제공하는 스마트 도우미입니다.",
+    "url": "http://localhost:10006/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getLotteryInfo",
+        "name": "복권 정보",
+        "description": "로또, 연금복권, 파워볼, 스피드키노 등 다양한 복권의 당첨번호 및 관련 정보를 회차 또는 날짜 기반으로 제공합니다.",
+        "examples": [
+          "이번주 파워볼 번호 알려줘.",
+          "마지막으로 발표된 연금복권 결과 알려줘.",
+          "정확히 1120회차 로또 번호가 어떻게 돼?",
+          "지난 일요일 스피드키노 당첨 결과 알려줄 수 있어?"
+        ]
+      },
+      {
+        "id": "getWorldTime",
+        "name": "세계시간",
+        "description": "전 세계 주요 도시 또는 국가의 현재 시각과 서울과의 시차 정보를 안내합니다.",
+        "examples": [
+          "도쿄는 지금 몇 시니?",
+          "파리 기준으로 현재 시각 알려줘.",
+          "밴쿠버와 우리나라 시차가 얼마나 차이나?",
+          "런던과 서울의 시차 알려줘."
+        ]
+      },
+      {
+        "id": "getPostalCode",
+        "name": "우편번호 찾기",
+        "description": "주소를 입력하면 해당 위치의 우편번호를 빠르게 조회합니다.",
+        "examples": [
+          "해운대 센텀시티 우편번호 좀 찾아줘.",
+          "제주 서귀포시 신시가지 쪽 우편번호는 뭐야?",
+          "서울 중구 을지로6가 18의 우편번호 알려줄래?"
+        ]
+      },
+      {
+        "id": "convertToEnglishAddress",
+        "name": "영문 주소 변환",
+        "description": "한글로 입력된 주소를 국제적으로 통용되는 영문 주소로 변환해줍니다.",
+        "examples": [
+          "광화문광장 주소를 영어로 바꿔봐.",
+          "마포구 월드컵북로 400 영문주소는 어떻게 써?",
+          "인천 연수구 송도동 23의 영문 표기 알려줘."
+        ]
+      },
+      {
+        "id": "convertToRoadAddress",
+        "name": "도로명 주소 변환",
+        "description": "지번 주소, 건물명, 지역 키워드 등을 입력받아 도로명 주소로 변환해주는 도구입니다. 도로명 주소에서 지번 주소로의 역변환도 지원합니다.",
+        "examples": [
+          "서울시 강남구 역삼동 123-45 도로명 주소로 알려줘",
+          "서울시청 주소를 지번 형식으로 바꿔줘",
+          "카카오 본사 주소를 도로명으로 변환해줘"
+        ]
+      },
+      {
+        "id": "getPhoneNumberInfo",
+        "name": "전화번호 정보",
+        "description": "입력한 전화번호 또는 번호 앞자리를 기반으로 지역 정보나 스팸 여부 등 다양한 정보를 안내합니다.",
+        "examples": [
+          "031은 어떤 지역 번호야?",
+          "01012345678 이 번호 신뢰해도 될까?",
+          "07082004567이 스팸전화인지 알려줘.",
+          "053은 어디 지역에서 쓰이는 번호야?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getLotteryInfo",
+      "description": "복권의 종류, 회차, 날짜 등 다양한 조건에 따라 당첨 번호, 결과 및 정보를 조회할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 질의를 반영한 정제된 자연어 쿼리 (예: '어제 발표된 파워볼 결과 알려줘', '최근 연금복권 당첨 결과 확인')"
+          },
+          "lotteryType": {
+            "type": "string",
+            "enum": [
+              "lotto",
+              "pension_lottery",
+              "powerball",
+              "speed_keno"
+            ],
+            "description": "조회할 복권의 종류. 반드시 다음 중 하나여야 합니다: 'lotto'(로또), 'pension_lottery'(연금복권), 'powerball'(파워볼), 'speed_keno'(스피드키노) 중 선택"
+          },
+          "drawNumber": {
+            "type": "integer",
+            "description": "조회할 복권 회차 번호 (예: 1104, 130) - 옵션 필드"
+          },
+          "drawDate": {
+            "type": "string",
+            "description": "조회할 복권 추첨일이나 원하는 날짜 (예: '2026-01-09') - ISO 8601 날짜 형식 사용, 옵션 필드"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "lotteryType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getWorldTime",
+      "description": "세계 각 도시 또는 국가의 현재 시간 정보를 조회하는 툴입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 질의를 모두 반영하여 재구성된 시간/시차 관련 쿼리 (예: '파리 현재 시각 알려줘', '런던과 내 위치의 시차가 궁금해')"
+          },
+          "targetCity": {
+            "type": "string",
+            "description": "조회하고자 하는 도시 또는 국가명 (예: '시드니', '방콕', '로스앤젤레스'). 만약 입력되지 않으면 '도시명을 입력해주세요'라고 안내해야 합니다."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPostalCode",
+      "description": "사용자가 입력한 주소 정보로 해당 위치의 우편번호를 찾아주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 주소 관련 자연어 쿼리를 조합한 정제된 요청 문장 (예: '인천광역시 연수구 동춘동에 있는 도서관 우편번호', '서울 서초구 언남동 카페 우편번호 알려줘')"
+          },
+          "addressQuery": {
+            "type": "string",
+            "description": "전체 주소 또는 일부 주소를 포함해야 하며, 사용자가 우편번호를 찾고 싶은 위치(도로명, 건물명, 또는 동/리 명칭 포함)를 입력합니다. (예: '서울특별시 마포구 월드컵북로 396', '부산 해운대구 좌동순환로 473')"
+          }
+        },
+        "required": [
+          "addressQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "convertToEnglishAddress",
+      "description": "한국어로 입력된 주소를 영문 표기로 변환해주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "상황 맥락과 사용자의 자연어 요청이 모두 반영된 정제된 주소 변환 요청 (예: '서울 광진구 능동로 120 영문 주소로 바꿔줘', '오산시 동부대로 82를 영어로 변환')"
+          },
+          "addressQuery": {
+            "type": "string",
+            "description": "사용자가 입력한 전체 또는 일부 주소. 도로명 주소, 동/읍/면, 상세 주소 등 다양한 표현이 포함될 수 있습니다. 예시: '부산 해운대구 센텀중앙로 97', '인천 연수구 송도동 174-6'"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "addressQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "convertToRoadAddress",
+      "description": "지번 주소, 건물명, 지역 키워드 등을 입력받아 도로명 주소로 변환해주는 도구입니다. 도로명 주소에서 지번 주소로의 역변환도 지원합니다. 주소 형태가 불완전해도 가능한 범위 내에서 정확하게 보완하여 변환 결과를 제공합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 요청을 기반으로 정제된 주소 변환 요청 문장 (예: '서울시 강남구 역삼동 123-45를 도로명 주소로 바꿔줘')"
+          },
+          "originalAddress": {
+            "type": "string",
+            "description": "사용자가 입력한 원본 주소 또는 장소명 (예: '서울특별시 강남구 삼성로 508' 또는 '강남역 인근 카카오 판교오피스')"
+          },
+          "conversionType": {
+            "type": "string",
+            "enum": [
+              "toRoad",
+              "toJibun"
+            ],
+            "description": "'toRoad'는 지번 주소 → 도로명 주소, 'toJibun'은 도로명 주소 → 지번 주소로 변환합니다."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "originalAddress",
+          "conversionType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPhoneNumberInfo",
+      "description": "입력된 전화번호 또는 지역 번호를 분석하여 관련 정보를 확인할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락 및 사용자의 자연어 질문을 포함하는 정제된 질의 (예: '032 지역 번호 정보 알려줘', '수원에서 오는 031 번호가 뭔지 궁금해')"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "사용자가 입력한 전체 또는 일부 전화번호 (하이픈 없이 입력, 예: '031', '01055553333')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "phoneNumber"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

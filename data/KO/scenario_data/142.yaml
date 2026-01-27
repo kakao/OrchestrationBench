@@ -1,0 +1,109 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '-오늘 날짜: 2028년 1월 3일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 삼성전자 주식 얼마야?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"오늘 삼성전자\
+      \ 주가 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"2028년 1월 3일 삼성전자\
+      \ 주가 조회\"\n  date: \"2028-01-03\"\n  stockName: \"삼성전자\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"2028년 1월 3일 삼성전자 주가 조회\"\n    date: \"2028-01-03\"\
+      \n    stockName: \"삼성전자\"\n    stockPrice: \"100,000\"\n    currency: \"KRW\"\
+      \n    status: \"주가 조회 완료\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 2028년 1월 3일에 삼성전자의 주가가 성공적으로 조회되었습니다. 해당 날짜의 삼성전자 주가는 100,000원입니다.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 10만 전자의 꿈이 이뤄지다니! 수익 나서 기분 좋은데 기념으로 여자친구랑 데이트할 때 맛있는 거 사줘야겠다. 강동역에 한우
+      구워주는 분위기 좋은 식당 추천해주고 강동역 근처 공영 주차장 정보도 같이 찾아줘. 전기차 충전 가능한 곳이면 좋겠어.
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"오늘\
+      \ 삼성전자 주가 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"여자친구와\
+      \ 데이트하는 날 방문할 강동역 근처 고기 구워주는 서비스가 있는 한우 고깃집 추천\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"강동역 근처 전기차 충전 가능한 공영 주차장\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"여자친구와 데이트하는\
+      \ 날 방문할 강동역 근처 고기 구워주는 서비스가 있는 한우 고깃집 추천\"\n  sortBy: \"highest_rated\"\n  location:\
+      \ \"강동역\"\n  specificDishes: \"한우 고기\"\n  cuisineType: \"한식\"\n  ambience: \"\
+      데이트용\"\n  partySize: \"2\"\ntool_call_result:\n  data:\n    refinedQuery: \"\
+      여자친구와 데이트하는 날 방문할 강동역 근처 고기 구워주는 서비스가 있는 한우 고깃집 추천\"\n    sortBy: \"highest_rated\"\
+      \n    location: \"강동역\"\n    specificDishes: \"한우 고기\"\n    cuisineType: \"\
+      한식\"\n    ambience: \"데이트용\"\n    partySize: \"2\"\n    recommendedRestaurants:\n\
+      \      - restaurantName: \"청정한우\"\n        rating: 4.9\n        address: \"\
+      서울특별시 강동구 강동로 123\"\n        description: \"최고급 한우와 친절한 구워주는 서비스로 유명한 데이트 장소\"\
+      \n        popularDishes: \n          - \"한우 등심\"\n          - \"한우 갈비\"\n  \
+      \      specialFeatures: \"직접 고기를 구워주는 서비스 제공\"\n      - restaurantName: \"한우와\
+      \ 고기\"\n        rating: 4.8\n        address: \"서울특별시 강동구 풍성로 456\"\n      \
+      \  description: \"아늑한 분위기의 고품질 한우 전문점\"\n        popularDishes:\n          -\
+      \ \"한우 안심\"\n          - \"불고기\"\n        specialFeatures: \"로맨틱한 분위기와 전문적인\
+      \ 서비스\"\n    status: \"추천 완료\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"강동역 근처 전기차 충전 가능한\
+      \ 공영 주차장\"\n  searchRadius: 500\n  sortBy: \"nearest\"\n  location: \"강동역\"\n\
+      \  parkingType: \"public\"\n  vehicleType: \"EV\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"강동역 근처 전기차 충전 가능한 공영 주차장\"\n    searchRadius: 500\n   \
+      \ sortBy: \"nearest\"\n    location: \"강동역\"\n    parkingType: \"public\"\n\
+      \    vehicleType: \"EV\"\n    parkingLots:\n      - name: \"강동 공영 주차장\"\n  \
+      \      address: \"서울 강동구 천호대로 123\"\n        distance: 200\n        availableEVChargers:\
+      \ 5\n        totalSpots: 50\n        rate: \"1,000원/30분\"\n      - name: \"\
+      강동역 남측 주차장\"\n        address: \"서울 강동구 강동대로 456\"\n        distance: 350\n\
+      \        availableEVChargers: 3\n        totalSpots: 30\n        rate: \"2,000원/1시간\"\
+      \n    status: \"검색 완료\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "<강동역 근처 데이트하기 좋은 한우 고깃집 추천>\n\n강동역 근처에서 여자친구와 데이트할 때 방문하기 좋은 한우 고깃집을\
+      \ 추천드립니다. 고기를 구워주는 서비스가 가능한 두 곳의 식당을 소개합니다:\n\n1. 청정한우\n   - 평점: 4.9\n   - 주소:\
+      \ 서울특별시 강동구 강동로 123\n   - 설명: 최고급 한우와 친절한 구워주는 서비스로 유명한 데이트 장소입니다.\n   - 인기\
+      \ 메뉴: 한우 등심, 한우 갈비\n   - 특별 서비스: 직접 고기를 구워주는 서비스 제공\n\n2. 한우와 고기\n   - 평점: 4.8\n\
+      \   - 주소: 서울특별시 강동구 풍성로 456\n   - 설명: 아늑한 분위기의 고품질 한우 전문점입니다.\n   - 인기 메뉴: 한우\
+      \ 안심, 불고기\n   - 특별 서비스: 로맨틱한 분위기와 전문적인 서비스\n\n\n<강동역 근처 전기차 충전이 가능한 공영 주차장 정보\
+      \ >\n\n1. 강동 공영 주차장: 총 50대 주차 가능하며, 전기차 충전기는 5대가 있습니다. 요금은 30분에 1,000원입니다. 주소는\
+      \ 서울 강동구 천호대로 123이며, 거리 200m입니다.  \n2. 강동역 남측 주차장: 총 30대 주차 가능하며, 전기차 충전기는 3대가\
+      \ 있습니다. 요금은 1시간에 2,000원입니다. 주소는 서울 강동구 강동대로 456이며, 거리 350m입니다."

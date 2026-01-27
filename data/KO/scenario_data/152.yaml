@@ -1,0 +1,117 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '-오늘 날짜: 2025-09-02'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 연금복권 당첨 결과 나왔어?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"오늘 연금복권\
+      \ 당첨 결과\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getLotteryInfo\narguments:\n  refinedQuery: \"2025년 9월 2일 연금복권\
+      \ 당첨 결과\"\n  lotteryType: \"pension_lottery\"\n  drawDate: \"2025-09-02\"\n\
+      tool_call_result:\n  drawDate: \"2025-09-02\"\n  lotteryType: \"pension_lottery\"\
+      \n  results:\n    first_prize: \"123456\"\n    second_prize: [\"123455\", \"\
+      123457\"]\n    third_prize: \"234567\"\n    fourth_prize: \"345678\"\n    fifth_prize:\
+      \ \"456789\"\n    additional_prizes:\n      - prize_name: \"Special Prize\"\n\
+      \        numbers: [\"567890\", \"678901\"]\n  status: \"completed\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '2025년 9월 2일 연금복권 추첨 결과가 발표되었습니다. 다음은 당첨 번호입니다:
+
+
+      - 1등 당첨 번호: 123456
+
+      - 2등 당첨 번호: 123455, 123457
+
+      - 3등 당첨 번호: 234567
+
+      - 4등 당첨 번호: 345678
+
+      - 5등 당첨 번호: 456789
+
+
+      추가 특별 상도 있습니다:
+
+
+      - 특별 상: 567890, 678901
+
+
+      모든 당첨을 축하드리며, 당첨되신 분께서는 해당 복권 기관에서 절차를 확인하시기 바랍니다.'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 이번에도 떨어졌네. 다른 곳에서 사봐야겠다. 하남시 덕풍3동 로또 판매점 좀 찾아주고, 오늘 당첨 소식 기사도 하나만 같이
+      보여줘봐.
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      오늘 연금복권 당첨 결과\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"하남시\
+      \ 덕풍3동에 위치한 로또 판매점\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: news_agent\n      refined_query:\
+      \ \"오늘 연금복권 당첨 소식 기사 1건\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"하남시 덕풍3동에 위치한 로또 판매점\"\
+      \n  sortBy: \"distance\"\n  placeCategory: \"로또 판매점\"\n  location: \"하남시 덕풍3동\"\
+      \ntool_call_result:\n  location: \"하남시 덕풍3동\"\n  sortBy: \"distance\"\n  placeCategory:\
+      \ \"로또 판매점\"\n  results:\n    - shop_name: \"행운복권방\"\n      address: \"하남시 덕풍3동\
+      \ 111-222\"\n      distance: \"100m\"\n    - shop_name: \"로또명당\"\n      address:\
+      \ \"하남시 덕풍3동 333-444\"\n      distance: \"200m\"\n    - shop_name: \"행복드림\"\n\
+      \      address: \"하남시 덕풍3동 555-666\"\n      distance: \"350m\"\n  status: \"\
+      completed\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"2025년 9월 2일 연금복권 당첨\
+      \ 소식 기사 1건\"\n  limit: 1\ntool_call_result:\n  query: \"2025년 9월 2일 연금복권 당첨\
+      \ 소식\"\n  limit: 1\n  articles:\n    - title: \"2025년 9월 2일 연금복권, 1등 당첨자는?\"\
+      \n      description: \"2025년 9월 2일 연금복권 추첨 결과가 발표되었으며 1등 당첨 번호와 당첨자 이야기가 화제입니다.\"\
+      \n      url: \"http://news.example.com/article-20250902\"\n      source: \"\
+      연합뉴스\"\n      published_at: \"2025-09-02T20:00:00+09:00\"\n  status: \"completed\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "◾하남시 덕풍3동 로또 판매점 안내\n\n하남시 덕풍3동에 위치한 가장 가까운 판매점은 다음과 같습니다:\n\n1. 행운복권방\n\
+      \   - 주소: 하남시 덕풍3동 111-222\n   - 거리: 100m\n\n2. 로또명당\n   - 주소: 하남시 덕풍3동 333-444\n\
+      \   - 거리: 200m\n\n3. 행복드림\n   - 주소: 하남시 덕풍3동 555-666\n   - 거리: 350m\n\n이 주소들을\
+      \ 통해 가까운 로또 판매점을 방문해보세요.\n\n\n◾2025년 9월 2일 연금복권 당첨 소식 기사\n\n- 제목: 2025년 9월 2일\
+      \ 연금복권, 1등 당첨자는?\n- 설명: 2025년 9월 2일 연금복권 추첨 결과가 발표되었으며 1등 당첨 번호와 당첨자 이야기가 화제입니다.\n\
+      - 출처: 연합뉴스\n- 발행일: 2025-09-02\n- 링크: [기사 읽기](http://news.example.com/article-20250902)\n\
+      \n이 기사를 통해 더 많은 정보를 확인해 보세요."

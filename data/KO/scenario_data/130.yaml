@@ -1,0 +1,147 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- date: 2025-12-21'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 개인형 퇴직 연금 들려고 하는데 뭐가 좋아? 어떤 것들이 있는지 알려줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"개인형 퇴직연금(IRP)\
+      \ 상품 종류와 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: searchFinanceInfo\narguments:\n  refinedQuery: \"개인형 퇴직연금(IRP)\
+      \ 상품 종류와 추천\"\ntool_call_result:\n  data:\n    refinedQuery: \"개인형 퇴직연금(IRP)\
+      \ 상품 종류와 추천\"\n    products:\n      - name: \"신한금융투자 IRP\"\n        description:\
+      \ \"다양한 투자상품을 제공하며, 세제 혜택이 뛰어난 IRP 상품입니다. 이 상품은 ETF(상장지수펀드)와 같은 다양한 자산에 투자할\
+      \ 수 있습니다.\"\n        interestRate: \"연 3.5%\"\n        fees: \"연 0.5%\"\n  \
+      \      minimumInvestment: \"100,000 원\"\n      - name: \"NH 농협 IRP\"\n     \
+      \   description: \"안정적인 수익을 추구하며, 다양한 포트폴리오를 설정할 수 있습니다. ETF를 포함한 다양한 투자 옵션이\
+      \ 존재합니다.\"\n        interestRate: \"연 3.0%\"\n        fees: \"연 0.3%\"\n   \
+      \     minimumInvestment: \"50,000 원\"\n      - name: \"KB 국민은행 IRP\"\n     \
+      \   description: \"안정성과 수익성을 겸비한 IRP 상품으로 장기 투자에 적합합니다. ETF를 활용한 투자도 가능합니다.\"\
+      \n        interestRate: \"연 3.2%\"\n        fees: \"연 0.4%\"\n        minimumInvestment:\
+      \ \"100,000 원\"\n      - name: \"하나금융 IRP\"\n        description: \"투자자 맞춤형\
+      \ 상품으로 다양한 투자 옵션을 제공하며, ETF를 포함하여 여러 자산군에 투자할 수 있습니다.\"\n        interestRate:\
+      \ \"연 3.7%\"\n        fees: \"연 0.6%\"\n        minimumInvestment: \"150,000\
+      \ 원\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "개인형 퇴직연금(IRP) 상품에 대한 추천 목록입니다. 각 상품은 ETF(상장지수펀드)를 포함한 다양한 투자 옵션을 제공하여\
+      \ 더욱 유연한 투자가 가능합니다.\n\n1. 신한금융투자 IRP\n   - 설명: 다양한 투자상품을 제공하며, 세제 혜택이 뛰어난 IRP\
+      \ 상품입니다. 이 상품은 ETF와 같은 다양한 자산에 투자할 수 있습니다.\n   - 이자율: 연 3.5%\n   - 수수료: 연 0.5%\n\
+      \   - 최소 투자금: 100,000 원\n\n2. NH 농협 IRP\n   - 설명: 안정적인 수익을 추구하며, 다양한 포트폴리오를\
+      \ 설정할 수 있습니다. ETF를 포함한 다양한 투자 옵션이 존재합니다.\n   - 이자율: 연 3.0%\n   - 수수료: 연 0.3%\n\
+      \   - 최소 투자금: 50,000 원\n\n3. KB 국민은행 IRP\n   - 설명: 안정성과 수익성을 겸비한 IRP 상품으로 장기\
+      \ 투자에 적합합니다. ETF를 활용한 투자도 가능합니다.\n   - 이자율: 연 3.2%\n   - 수수료: 연 0.4%\n   - 최소\
+      \ 투자금: 100,000 원\n\n4. 하나금융 IRP\n   - 설명: 투자자 맞춤형 상품으로 다양한 투자 옵션을 제공하며, ETF를\
+      \ 포함하여 여러 자산군에 투자할 수 있습니다.\n   - 이자율: 연 3.7%\n   - 수수료: 연 0.6%\n   - 최소 투자금:\
+      \ 150,000 원\n\n이 정보를 바탕으로 개인의 투자 성향과 목표에 맞는 IRP 상품을 선택하시길 추천드립니다. IRP 상품을 통해\
+      \ 세제 혜택을 누리면서 안정적인 노후 준비를 할 수 있습니다."
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 그래? ETF에 대해 좀 더 구체적으로 알려줘. 요즘 시장이 어떤지도 궁금한데, 오늘 ETF 관련 뉴스 헤드라인 중심으로 브리핑
+      해볼래?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"개인형\
+      \ 퇴직연금(IRP) 상품 종류와 추천\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: finance_agent\n      refined_query:\
+      \ \"ETF에 대해 구체적으로 설명\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: news_agent\n      refined_query:\
+      \ \"오늘 ETF 시장 관련 뉴스 헤드라인 중심으로 브리핑\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: searchFinanceInfo\narguments:\n  refinedQuery: \"ETF에 대해 구체적으로\
+      \ 설명\"\ntool_call_result:\n  data:\n    searchQuery: \"ETF에 대해 구체적으로 설명\"\n\
+      \    issue: \"ETF의 정의, 특징 및 투자 전략\"\n    description: \"ETF(상장지수펀드)는 특정 지수의\
+      \ 성과를 추종하는 것을 목표로 하는 투자 상품입니다. 주식 시장에 상장되어 있어 주식처럼 실시간으로 거래할 수 있으며, 낮은 비용 구조와\
+      \ 높은 유동성을 제공합니다. ETF는 주식, 채권, 원자재 등 다양한 자산에 분산투자할 수 있는 장점이 있어, 개인 투자자들이 부담 없는\
+      \ 비용으로 분산투자 효과를 누릴 수 있습니다. IRP(개인형 퇴직 연금) 계좌에서도 이러한 ETF의 특성을 활용하여, 장기적인 포트폴리오\
+      \ 다변화와 안정적인 수익을 추구할 수 있도록 하는 전략적 투자 수단으로 활용될 수 있습니다.\"\n    additionalDetails:\n\
+      \      - indexTracking: \"다양한 시장 지수(ex. S&P 500, KOSPI 200 등)를 기준으로 하며, 포트폴리오의\
+      \ 성과를 이러한 지수에 맞춰 조정합니다.\"\n      - taxEfficiency: \"ETF는 특정한 조건 하에서 세금 효율성이\
+      \ 높아, 세제 혜택을 통해 양도소득세 부담을 줄일 수 있는 장점이 있습니다.\"\n      - transparency: \"ETF는\
+      \ 매일 보유 자산 목록이 공개되어, 투자자들이 자신의 투자 상품이 어떻게 구성되어 있는지를 쉽게 파악할 수 있습니다.\"\n     \
+      \ - risks: \"시장 변동성에 따라 가격이 변동할 수 있으며, 추적 오류(tracking error)가 발생할 수 있습니다. 투자\
+      \ 시 이러한 위험 요소를 고려해야 합니다.\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: summarizeNews\narguments:\n  refinedQuery: \"오늘 ETF 시장 관련 뉴스 헤드라인\
+      \ 중심으로 브리핑\"\n  topic: \"오늘 ETF 시장\"\n  category: \"economy\"\n  date: \"2025-12-21\"\
+      \n  style: \"headlines\"\ntool_call_result:\n  data:\n    refinedQuery: \"오늘\
+      \ ETF 시장 관련 뉴스 헤드라인 중심으로 브리핑\"\n    date: \"2025년 12월 21일\"\n    headlines:\n\
+      \      - \"ETF 시장 2025년 전망: 기술 발전과 친환경 테마가 주도\"\n      - \"미국 ETF, 금리 변동 속에서도\
+      \ 강세 유지\"\n      - \"한국 ETF 업계, 녹색 금융 상품 증가의 영향으로 확대\"\n      - \"AI 기술 혁명이\
+      \ ETF 시장에 미치는 장기적 영향 분석\"\n      - \"인플레이션 우려 속 금 ETF와 원자재 ETF의 투자 매력 재조명\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ETF(상장지수펀드)란?
+
+
+      ETF(상장지수펀드)는 특정 지수의 성과를 추종하는 것을 목표로 하는 투자 상품으로, 주식 시장에 상장되어 주식처럼 실시간 거래가 가능합니다.
+      낮은 비용 구조와 높은 유동성을 제공하며, 주식, 채권, 원자재 등 다양한 자산에 분산투자할 수 있는 장점이 있습니다. 이러한 특성 덕분에
+      개인 투자자들은 부담 없이 분산투자 효과를 누릴 수 있습니다. 또한, ETF는 IRP(개인형 퇴직 연금) 계좌에서도 장기적인 포트폴리오
+      다변화와 안정적인 수익을 목표로 하는 전략적 투자 수단으로 활용될 수 있습니다.
+
+
+      ETF는 다양한 시장 지수를 기준으로 하며, 포트폴리오의 성과를 이러한 지수에 맞춰 조정합니다. 특정 조건 하에서는 세금 효율성이 높아
+      세제 혜택을 통해 양도소득세 부담을 줄일 수 있습니다. ETF는 매일 보유 자산 목록이 공개되므로, 투자자들은 자신의 투자 상품 구성 상태를
+      쉽게 파악할 수 있습니다. 하지만 시장 변동성에 따라 가격이 변동할 수 있고, 추적 오류가 발생할 수 있는 위험이 있으므로 투자 시 이러한
+      요소를 신중히 고려해야 합니다.
+
+
+      ◾ETF 시장 주요 뉴스 헤드라인 중심 브리핑
+
+
+      오늘의 ETF 시장 관련 주요 뉴스 헤드라인 브리핑 내용입니다
+
+
+      1. ETF 시장 2025년 전망: 기술 발전과 친환경 테마가 주도 - 기술 발전과 친환경 테마가 ETF 시장의 주요 동력으로 작용하고
+      있습니다.
+
+      2. 미국 ETF, 금리 변동 속에서도 강세 유지 - 금리 변동에도 불구하고 미국 ETF 시장은 여전히 강세를 보입니다.
+
+      3. 한국 ETF 업계, 녹색 금융 상품 증가의 영향으로 확대 - 한국의 ETF 시장은 녹색 금융 상품의 증가에 따라 확대되고 있습니다.
+
+      4. AI 기술 혁명이 ETF 시장에 미치는 장기적 영향 분석 - AI 기술 발전이 ETF 시장에 미치는 장기적 영향에 대한 분석이 진행
+      중입니다.
+
+      5. 인플레이션 우려 속 금 ETF와 원자재 ETF의 투자 매력 재조명 - 인플레이션 우려가 커지는 가운데, 금과 원자재 관련 ETF의
+      투자 매력이 다시 주목받고 있습니다.'

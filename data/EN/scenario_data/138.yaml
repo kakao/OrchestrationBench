@@ -1,0 +1,149 @@
+metadata:
+  total_steps: 16
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Sender''s name: Julie Morgan'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Transfer $200 from my checking account at Chase Bank to my brother and
+      send him a text to notify him that I’ve sent the money.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"Check balance of checking account at Chase Bank\"\n    - status: pending\n\
+      \      name: personal_banking_agent\n      refined_query: \"Transfer $200 to\
+      \ my brother\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"Send a text to my brother notifying him that I’ve transferred\
+      \ $200\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Sender''s account number'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: Please provide the sender's account number information.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 1111234567. This is my account number.
+- workflow_id: null
+  step_id: 7
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"Please check\
+      \ the balance of Julie Morgan's checking account at Chase Bank\"\n  accountNumber:\
+      \ \"1111234567\"\n  accountHolderName: \"Julie Morgan\"\n  bankName: \"Chase\
+      \ Bank\"\n  accountType: \"checking\"\n  includeTransactions: false\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Please check the balance of Julie Morgan's checking\
+      \ account at Chase Bank\"\n    accountHolderName: \"Julie Morgan\"\n    bankName:\
+      \ \"Chase Bank\"\n    accountNumber: \"1111234567\"\n    accountType: \"checking\"\
+      \n    balance: 1000\n    status: \"Success\"\n    message: \"The balance of\
+      \ Julie Morgan's checking account at Chase Bank is $1,000.\"\n    sourceAccountId:\
+      \ \"account-20250123-789\""
+- workflow_id: null
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient''s name, account number, and receiving bank name'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: For accurate and secure transfer, please provide the recipient's name,
+      account number, and bank name.
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: My brother's name is Ethan Morgan. His account number is 110123456789,
+      and his bank is Chase Bank.
+- workflow_id: null
+  step_id: 11
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"Transfer $200 from\
+      \ Julie Morgan’s checking account at Chase Bank to brother Ethan Morgan’s account\
+      \ at Chase Bank\"\n  recipientName: \"Ethan Morgan\"\n  bankName: \"Chase Bank\"\
+      \n  accountNumber: \"110123456789\"\n  sourceAccountId: \"account-20250123-789\"\
+      \n  amount: 200\ntool_call_result:\n  data:\n    refinedQuery: \"Transfer $200\
+      \ from Julie Morgan’s checking account at Chase Bank to younger brother Ethan\
+      \ Morgan’s account at Chase Bank\"\n    recipientName: \"Ethan Morgan\"\n  \
+      \  bankName: \"Chase Bank\"\n    accountNumber: \"110123456789\"\n    amount:\
+      \ 200\n    sourceAccountId: \"account-20250123-789\"\n    transactionId: \"\
+      TX1234567890\"\n    status: \"Success\"\n    message: \"Successfully transferred\
+      \ $200 to Ethan Morgan.\""
+- workflow_id: workflow_2
+  step_id: 12
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient''s phone number'
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: To send a message via WhatsApp, please provide the recipient's phone
+      number.
+- workflow_id: null
+  step_id: 14
+  agent: user
+  agent_type: user
+  data:
+    content: My brother's WhatsApp number is (202) 555-0173.
+- workflow_id: null
+  step_id: 15
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Send a message via\
+      \ WhatsApp saying I transferred $200 to my brother Ethan Morgan\"\n  channel:\
+      \ \"whatsapp\"\n  phoneNumber: \"(202) 555-0173\"\n  message: \"Julie Morgan\
+      \ has transferred $200.\"\n  repeatRule: \"none\"\n  priority: \"normal\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"Send a message via WhatsApp\
+      \ saying I transferred $200 to my brother Ethan Morgan\"\n    channel: \"whatsapp\"\
+      \n    phoneNumber: \"(202) 555-0173\"\n    message: \"Julie Morgan has transferred\
+      \ $200.\"\n    repeatRule: \"none\"\n    priority: \"normal\"\n    status: \"\
+      Sent successfully\"\n    deliveryConfirmation: \"Delivery confirmed\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: '* After checking Julie Morgan’s checking account balance at Chase Bank,
+      a transfer of $200 was successfully made to Ethan Morgan’s account at Chase
+      Bank.
+
+      * The following message was sent to Ethan Morgan via WhatsApp: "Julie Morgan
+      has transferred $200."'

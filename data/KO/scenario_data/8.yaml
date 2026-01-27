@@ -1,0 +1,80 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-09-16
+
+      - 연락처: 010-3333-3121
+
+      - 이름: 김또띠'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 내가 연극 수상한 미용실을 예매했었는데 이거 날짜 변경 좀 해야할거같아
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      연극 수상한 미용실 예매 내역 조회\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"연극 수상한 미용실 날짜 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceBooking\narguments:\n  refinedQuery: \"연극 수상한 미용실\
+      \ 예매 내역 조회\"\n  contactNumber: \"010-3333-3121\"\n  name: \"김또띠\"\ntool_call_result:\n\
+      \  bookings:\n    - performance_name: \"수상한 미용실\"\n      bookingId: \"BKG123456\"\
+      \n      bookingDate: \"2025-09-11\"\n      theater: \"예술의 전당\"\n      date:\
+      \ \"2025-09-17\"\n      time: \"19:00\"\n      seat: \"A12\"\n      price: 50000\n\
+      \      currency: KRW\n      status: \"confirmed\""
+- workflow_id: null
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 변경할 관람 날짜'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 연극 "수상한 미용실"의 관람 날짜를 변경하고 싶으신가요? 변경을 원하시는 새로운 날짜와 시간을 알려주시면, 예매 날짜 변경을
+      도와드리겠습니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 9월 25일!
+- workflow_id: null
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyPerformanceBooking\narguments:\n  refinedQuery: \"연극 수상한\
+      \ 미용실 관람 날짜를 9월 25일로 변경\"\n  bookingId: \"BKG123456\"\n  modifiedShowDate: \"\
+      2025-09-25\"\ntool_call_result:\n  data:\n    bookingId: \"BKG123456\"\n   \
+      \ originalShowDate: \"2025-09-17\"\n    modifiedShowDate: \"2025-09-25\"\n \
+      \   status: \"변경 완료\"\n    note: \"연극 '수상한 미용실'의 예매 날짜가 2025년 9월 25일로 성공적으로\
+      \ 변경되었습니다.\"\n  source: \"공연 예약 시스템\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "연극 \"수상한 미용실\"의 예매 날짜가 2025년 9월 25일로 성공적으로 변경되었습니다!\n\n공연은 예술의 전당에서\
+      \ 진행되며, 기존에 예약된 좌석(A12)에서 관람하실 수 있습니다. \n변경 사항과 관련하여 추가로 도움이 필요하신 경우 언제든지 문의해\
+      \ 주세요. \n\n즐거운 관람 되시기 바랍니다!"

@@ -1,0 +1,66 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 최근 3개월 간 KOSPI 지수 변동 추이를 알려주고, 요즘 뜨는 판교 지역에 10억 이하로 투자할 만한 오피스텔 매물이 있는지
+      찾아봐줘.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"최근 3개월\
+      \ KOSPI 지수 변동 추이 요약\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"판교 지역 10억 이하 투자용 오피스텔 매물 검색\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: searchFinanceInfo\narguments:\n  refinedQuery: \"최근 3개월 KOSPI\
+      \ 지수 변동 추이 요약\"\ntool_call_result:\n  data:\n    summary: \"최근 3개월간 KOSPI 지수는\
+      \ 글로벌 인플레이션 압력과 국내 금리 인상 기조의 영향으로 전반적인 하락세를 보였습니다. 월별로 살펴보면, 첫 달에는 대외 불확실성 증대로\
+      \ 4% 하락했으며, 두 번째 달에는 정부의 증시 안정화 정책 발표에 힘입어 소폭 반등하는 모습을 보였습니다. 하지만 마지막 달에 다시\
+      \ 주요 기업들의 실적 부진 우려가 커지며 추가 하락으로 마감하는 등 전체적으로 변동성이 높은 모습이었습니다.\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getRealEstateInfo\narguments:\n  refinedQuery: \"판교 지역 10억 이하\
+      \ 투자용 오피스텔 매물 검색\"\n  propertyType: \"오피스텔\"\n  transactionType: \"매매\"\n  location:\
+      \ \"판교\"\n  maxPrice: 1000000000\ntool_call_result:\n  data:\n    properties:\n\
+      \      - buildingName: \"판교역 푸르지오 시티\"\n        location: \"경기도 성남시 분당구 삼평동\"\
+      \n        price: 980000000\n        area: \"전용 84㎡\"\n        description: \"\
+      판교역 초역세권에 위치한 인기 오피스텔로, 교통이 편리하고 주변 인프라가 우수하여 안정적인 투자 수익을 기대할 수 있습니다.\"\n\n\
+      \      - buildingName: \"힐스테이트 판교역\"\n        location: \"경기도 성남시 분당구 백현동\"\n\
+      \        price: 950000000\n        area: \"전용 82㎡\"\n        description: \"\
+      신분당선 판교역과 직접 연결되어 있으며, 현대백화점 등 편의시설 접근성이 뛰어납니다. 주거 및 업무용으로 모두 적합하여 공실률이 낮습니다.\"\
+      \n\n      - buildingName: \"판교 알파돔타워\"\n        location: \"경기도 성남시 분당구 백현동\"\
+      \n        price: 890000000\n        area: \"전용 78㎡\"\n        description: \"\
+      최신 신축 오피스텔로, IT 기업이 밀집한 판교테크노밸리 인근에 위치해 직장인 임차 수요가 풍부합니다. 스마트홈 시스템과 커뮤니티 시설이\
+      \ 잘 갖춰져 있습니다.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "네, 요청하신 KOSPI 지수 변동 추이와 판교 지역의 투자용 오피스텔 정보를 정리해 드릴게요.\n\n*\n\n### \U0001F4C8\
+      \ 최근 3개월 KOSPI 지수 동향\n\n최근 3개월간 KOSPI 지수는 글로벌 인플레이션 압력과 국내 금리 인상 기조의 영향으로 전반적인\
+      \ 하락세를 보였어요. 첫 달에는 대외 불확실성이 커지며 하락했지만, 둘째 달에는 정부의 증시 안정화 정책 발표에 힘입어 잠시 반등하기도\
+      \ 했습니다. 하지만 마지막 달에 다시 주요 기업들의 실적 부진 우려가 커지면서 추가 하락으로 마감하는 등, 전체적으로 변동성이 높은 모습이었습니다.\n\
+      \n*\n\n### \U0001F3E2 10억 이하 판교 투자용 오피스텔 추천\n\n현재 판교 지역에서 10억 이하로 투자하기 좋은 오피스텔\
+      \ 매물 세 곳을 찾아봤어요.\n\n* 판교역 푸르지오 시티 (경기도 성남시 분당구 삼평동)\n    * 가격: 9억 8,000만 원\n\
+      \    * 면적: 전용 84㎡\n    * 특징: 판교역 초역세권이라 교통이 편리하고 주변 인프라가 우수해 안정적인 투자 수익을 기대할\
+      \ 수 있어요.\n\n* 힐스테이트 판교역 (경기도 성남시 분당구 백현동)\n    * 가격: 9억 5,000만 원\n    * 면적:\
+      \ 전용 82㎡\n    * 특징: 신분당선 판교역과 직접 연결되고 현대백화점 등 편의시설 접근성이 뛰어나요. 주거 및 업무용으로 모두\
+      \ 인기가 많습니다.\n\n* 판교 알파돔타워 (경기도 성남시 분당구 백현동)\n    * 가격: 8억 9,000만 원\n    * 면적:\
+      \ 전용 78㎡\n    * 특징: 최신 신축 오피스텔로, 판교테크노밸리 인근에 있어 직장인 임차 수요가 풍부해요.\n\n추가로 궁금한\
+      \ 점이 있으시면 언제든지 다시 문의해 주세요."

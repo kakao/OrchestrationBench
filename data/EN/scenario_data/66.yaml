@@ -1,0 +1,131 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2024-07-07
+
+      - Contact: (412)454-8513'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I’m looking for a 2-bedroom apartment for a long-term lease near Schenley
+      Park in Pittsburgh, built within the last 10 years, and priced between $300,000
+      and $650,000. Also, please cancel my reservation at Summit Realty and update
+      my calendar accordingly.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Near Schenley\
+      \ Park, apartments built within the last 10 years, 2 bedrooms, for long-term\
+      \ lease, priced between $300,000 and $650,000\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Check reservations at Summit Realty\"\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"Cancel reservation\
+      \ at Summit Realty\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"Check visit schedule at Summit Realty\"\n    - status: pending\n      name:\
+      \ calendar_agent\n      refined_query: \"Cancel visit schedule at Summit Realty\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getRealEstateInfo\narguments:\n  refinedQuery: \"Near Schenley\
+      \ Park, apartments built within the last 10 years, 2 bedrooms, for long-term\
+      \ lease, priced between $300,000 and $650,000\"\n  propertyType: \"apartment\"\
+      \n  transactionType: \"long-term lease\"\n  location: \"Schenley Park, Pittsburgh\"\
+      \n  minPrice: 300000\n  maxPrice: 650000\n  options: \n      rooms: 2\n    \
+      \  builtYearFrom: 2014\ntool_call_result:\n  data:\n    refinedQuery: \"Near\
+      \ Schenley Park, apartments built within the last 10 years, 2 bedrooms, for\
+      \ long-term lease, priced between $300,000 and $650,000\"\n    propertyType:\
+      \ \"apartment\"\n    transactionType: \"long-term lease\"\n    location: \"\
+      Schenley Park, Pittsburgh\"\n    minPrice: 300000\n    maxPrice: 650000\n  \
+      \  options:\n      rooms: 2\n      builtYearFrom: 2014\n    listings:\n    \
+      \  - id: \"RE20231101\"\n        title: \"M Tower Apartment\"\n        address:\
+      \ \"123 Liberty Street, Pittsburgh, PA 15213\"\n        price: 450000\n    \
+      \    area: \"Approx. 890 sq ft\"\n        rooms: 2\n        builtYear: 2018\n\
+      \        contact: \"(412)123-4567\"\n        description: \"Modern, well-maintained\
+      \ apartment, just a 5-minute walk to Schenley Park, with easy access to public\
+      \ transport and local shops\"\n      - id: \"RE20231102\"\n        title: \"\
+      Winners Avenue Residences\"\n        address: \"456 Market Street, Pittsburgh,\
+      \ PA 15213\"\n        price: 620000\n        area: \"Approx. 960 sq ft\"\n \
+      \       rooms: 2\n        builtYear: 2015\n        contact: \"(412)234-5678\"\
+      \n        description: \"Spacious 2-bedroom apartment with scenic views, close\
+      \ to Schenley Park, shopping centers, and dining options\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"Summit\
+      \ Realty reservation lookup\"\n  contactInfo: \"(412)454-8513\"\n  placeName:\
+      \ \"Summit Realty\"\n  placeCategory: \"Real Estate\"\ntool_call_result:\n \
+      \ data:\n    refinedQuery: \"Summit Realty reservation lookup\"\n    contactInfo:\
+      \ \"(412)454-8513\"\n    placeName: \"Summit Realty\"\n    placeCategory: \"\
+      Real Estate\"\n    reservations:\n      - reservationId: \"RSV20240710\"\n \
+      \       date: \"2024-07-10\"\n        time: \"15:00\"\n        status: \"Confirmed\"\
+      \n        guests: 2\n        notes: \"Real estate consultation appointment\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check schedule for\
+      \ visiting Summit Realty\"\n  keyword: \"Summit Realty\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Check schedule for visiting Summit Realty\"\n\
+      \    keyword: \"Summit Realty\"\n    schedules:\n      - scheduleID: \"SCH20240710\"\
+      \n        date: \"2024-07-10\"\n        time: \"15:00\"\n        title: \"Visit\
+      \ Summit Realty\"\n        status: \"Confirmed\"\n        participants: 2\n\
+      \        notes: \"Real estate consultation appointment\""
+- workflow_id: workflow_2
+  step_id: 7
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelPlaceReservation\narguments:\n  refinedQuery: \"Cancel reservation\
+      \ at Summit Realty\"\n  reservationId: \"RSV20240710\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Cancel reservation at Summit Realty\"\n    reservationId:\
+      \ \"RSV20240710\"\n    status: \"Cancellation Complete\"\n    message: \"Your\
+      \ reservation at Summit Realty has been canceled successfully.\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelSchedule\narguments:\n  refinedQuery: \"Cancel appointment\
+      \ with Summit Realty\"\n  scheduleID: \"SCH20240710\"\ntool_call_result:\n \
+      \ data:\n    refinedQuery: \"Cancel appointment with Summit Realty\"\n    scheduleID:\
+      \ \"SCH20240710\"\n    status: \"Cancellation complete\"\n    message: \"Your\
+      \ appointment with Summit Realty has been canceled successfully.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "Here are the requested real estate listings and the results of your\
+      \ reservation cancellation:\n\n■ Apartment listings near Schenley Park (built\
+      \ within the last 10 years, 2 bedrooms, $300,000–$650,000)\n\n1. M Tower Apartment\n\
+      • Price: $450,000\n• Address: 123 Liberty Street, Pittsburgh, PA 15213\n• Size:\
+      \ Approx. 890 sq ft\n• Year Built: 2018\n• Contact: (412)123-4567\n• Features:\
+      \ Modern, well-maintained apartment, just a 5-minute walk to Schenley Park,\
+      \ with easy access to public transport and local shops\n\n2. Winners Avenue\
+      \ Residences\n• Price: $620,000\n• Address: 456 Market Street, Pittsburgh, PA\
+      \ 15213\n• Size: Approx. 960 sq ft\n• Year Built: 2015\n• Contact: (412)234-5678\n\
+      • Features: Spacious 2-bedroom apartment with scenic views, close to Schenley\
+      \ Park, shopping centers, and dining options\n\n■ Summit Realty Reservation\
+      \ and Schedule Cancellation Results\n\n• Reservation Info:\n - Date: July 10,\
+      \ 2024\n - Time: 3:00 PM\n - Guests: 2\n - Purpose: Real estate consultation\
+      \ appointment\n• Cancellation Status:\n - Reservation: Canceled successfully\n\
+      \ - Calendar Event: Canceled successfully (also removed from calendar)\n\nI\
+      \ can also help you schedule a visit for any property you’re interested in or\
+      \ search for listings that meet other criteria."

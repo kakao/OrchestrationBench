@@ -1,0 +1,147 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 보내는 사람 이름: 박온유'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: PT 선생님한테 "오늘 저녁은 닭가슴살 먹었어요."라고 카톡 보내줘. 그리고 헬스장 연장 결제는 내 토스뱅크 입출금 계좌에서
+      매월 15일에 12만원씩 자동이체로 빠져나가게 등록해줘. 이체 메모에는 '헬스장'이라고 적어주고.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: message_agent\n      refined_query: \"PT 선생님에게\
+      \ '오늘 저녁은 닭가슴살 먹었어요.'라고 카톡 전송\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: personal_banking_agent\n     \
+      \ refined_query: \"내 토스뱅크 입출금 계좌 조회\"\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"내 토스뱅크 입출금 계좌에서 매월 15일에 헬스장 비용 12만원씩 자동이체 등록하고, 이체 메모는\
+      \ '헬스장'으로 지정\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수신자 연락처'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 입출금 계좌 계좌번호'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 카카오톡 메시지 전송을 위해서는 수신자 연락처 정보를 알려주시기 바랍니다. 자동이체 등록을 위해 입출금 계좌번호를 알려주세요.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: PT 선생님 번호는 010-1234-5678이고, 토스뱅크 입출금 계좌는 110-123-456789이야.
+- workflow_id: workflow_1
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"PT 선생님에게 '오늘 저녁은 닭가슴살\
+      \ 먹었어요.'라고 카톡 전송\"\n  channel: \"kakaotalk\"\n  phoneNumber: \"010-1234-5678\"\
+      \n  message: \"오늘 저녁은 닭가슴살 먹었어요.\"\n  repeatRule: \"none\"\n  priority: \"normal\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"PT 선생님에게 '오늘 저녁은 닭가슴살 먹었어요.'라고\
+      \ 카톡 전송\"\n    channel: \"kakaotalk\"\n    phoneNumber: \"010-1234-5678\"\n\
+      \    message: \"오늘 저녁은 닭가슴살 먹었어요.\"\n    repeatRule: \"none\"\n    priority:\
+      \ \"normal\"\n    status: \"메시지 전송 완료\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"박온유의 토스뱅크 입출금\
+      \ 계좌 조회\"\n  bankName: \"토스뱅크\"\n  accountNumber: \"110-123-456789\"\n  accountHolderName:\
+      \ \"박온유\"\n  accountType: \"checking\"\n  includeTransactions: false\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"박온유의 토스뱅크 입출금 계좌 조회\"\n    bankName: \"토스뱅크\"\n\
+      \    accountNumber: \"110-123-456789\"\n    accountHolderName: \"박온유\"\n   \
+      \ accountType: \"checking\"\n    includeTransactions: false\n    sourceAccountId:\
+      \ \"account-20250123-789\"\n    balance: \"2,500,000\"\n    currency: \"KRW\"\
+      \n    status: \"계좌 조회 완료\""
+- workflow_id: null
+  step_id: 10
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수취인 이름, 수취 은행명, 수취 계좌번호'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 수취인 이름, 수취인 은행명, 수취 계좌번호를 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 이동우, 카카오뱅크, 110-111-123456
+- workflow_id: null
+  step_id: 13
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: createAutoTransfer\narguments:\n  refinedQuery: \"내 토스뱅크 입출금 계좌에서\
+      \ 이동우 카카오뱅크 계좌로 매월 15일에 헬스장 비용 12만원씩 자동이체 등록하고, 이체 메모는 '헬스장'으로 지정\"\n  recipientName:\
+      \ \"이동우\"\n  bankName: \"카카오뱅크\"\n  accountNumber: \"110-111-123456\"\n  amount:\
+      \ 120000\n  frequency: \"monthly\"\n  transferDay: \"15\"\n  memo: \"헬스장\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"내 토스뱅크 입출금 계좌에서 이동우 카카오뱅크 계좌로\
+      \ 매월 15일에 헬스장 비용 12만원씩 자동이체 등록하고, 이체 메모는 '헬스장'으로 지정\"\n    recipientName: \"\
+      이동우\"\n    bankName: \"카카오뱅크\"\n    accountNumber: \"110-111-123456\"\n    amount:\
+      \ 120000\n    frequency: \"monthly\"\n    transferDay: \"15\"\n    memo: \"\
+      헬스장\"\n    status: \"자동이체 등록 완료\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: '◾메시지 전송 알림:
+
+
+      - 수신자: PT 선생님
+
+      - 메시지 내용: "오늘 저녁은 닭가슴살 먹었어요."
+
+      - 전송 상태: 완료
+
+
+
+      ◾자동이체 등록 알림:
+
+
+      - 이체 대상: 이동우 님 (카카오뱅크)
+
+      - 이체 금액: 120,000원
+
+      - 이체 주기: 매월 15일
+
+      - 이체 메모: "헬스장"
+
+      - 등록 상태: 완료
+
+
+      요청하신 메시지 전송과 자동이체 등록이 성공적으로 완료되었습니다.'

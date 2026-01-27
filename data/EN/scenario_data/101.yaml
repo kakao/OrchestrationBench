@@ -1,0 +1,151 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: Friday, 2029/04/27'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'Can you find some DIY kitchen tile replacement videos on YouTube?
+
+      Also, what supplies do I need?'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Recommended YouTube DIY videos on replacing kitchen tiles\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: search_agent\n      refined_query: \"Supplies needed for DIY kitchen\
+      \ tile replacement\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"YouTube DIY kitchen\
+      \ tile replacement video recommendations\"\ntool_call_result:\n  videos:\n \
+      \   - title: \"Replacing Kitchen Tiles by Yourself | Easy DIY for Beginners\"\
+      \n      channel: \"Home Repair Rookie\"\n      uploadDate: \"2024-08-12\"\n\
+      \      views: \"12K views\"\n      link: \"https://www.youtube.com/watch?v=DIYTILE001\"\
+      \n\n    - title: \"DIY Kitchen Tile Installation in Just 3 Hours! | Tile Replacement\
+      \ A to Z\"\n      channel: \"Interior Addict\"\n      uploadDate: \"2024-06-30\"\
+      \n      views: \"35K views\"\n      link: \"https://www.youtube.com/watch?v=DIYTILE002\"\
+      \n\n    - title: \"Pro Tips for DIY Tile Replacement from a Tile Expert\"\n\
+      \      channel: \"DIY Interior Master\"\n      uploadDate: \"2023-11-05\"\n\
+      \      views: \"28K views\"\n      link: \"https://www.youtube.com/watch?v=DIYTILE003\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"DIY kitchen tile replacement\
+      \ supplies\"\ntool_call_result:\n  info:\n    title: \"DIY Kitchen Tile Replacement\
+      \ Supply List\"\n    summary: \"To replace your kitchen tiles yourself, you’ll\
+      \ need the following supplies.\"\n    items:\n      - Tiles (design and size\
+      \ of your choice)\n      - Tile adhesive (bond or mortar)\n      - Tile cutter\
+      \ or saw\n      - Grout (to fill the gaps between tiles)\n      - Spreader and\
+      \ rubber trowel\n      - Level and measuring tape\n      - Sponge and bucket\
+      \ (for cleaning grout)\n      - Safety gear (gloves, goggles, knee pads)\n \
+      \     - Rubber mallet (for securing tiles)\n      - Masking tape and protective\
+      \ covering sheets (to protect surrounding areas)\n    source: \"DIY Home Improvement\
+      \ Guidebook / Tile Replacement Blogs Collection\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "If you're planning to replace your kitchen tiles, here’s some helpful\
+      \ information:\n\n1. Recommended DIY Video List\n\n- [Replacing Kitchen Tiles\
+      \ Yourself | Beginner-Friendly DIY Method](https://www.youtube.com/watch?v=DIYTILE001)\
+      \  \n  (Channel: Home Repair Rookie)\n\n- [DIY Kitchen Tile Installation in\
+      \ Just 3 Hours! | Step-by-Step Guide](https://www.youtube.com/watch?v=DIYTILE002)\
+      \  \n  (Channel: Interior Addict)\n\n- [Pro Tips for DIY Tile Replacement](https://www.youtube.com/watch?v=DIYTILE003)\
+      \  \n  (Channel: DIY Interior Master)\n\n2. List of Required Materials\n\n-\
+      \ Replacement tiles (in the design/size of your choice)\n- Thinset mortar or\
+      \ tile adhesive\n- Tile cutter or wet saw\n- Grout (to fill the gaps between\
+      \ tiles)\n- Notched trowel and grout float\n- Level and measuring tape\n- Sponge\
+      \ and bucket (for grout cleanup)\n- Safety gear (gloves, goggles, knee pads)\n\
+      - Rubber mallet (for securing tiles)\n- Painter’s tape and drop cloths (to protect\
+      \ surrounding areas)\n\nFor more detailed guidance, check out DIY home improvement\
+      \ blogs or YouTube channels."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 'Please add an event for next Friday at 11 AM when my mom is coming over.
+
+      Also, I need to get it done before then, so remind me tomorrow night at around
+      10 PM not to forget to go buy DIY tile materials the day after tomorrow.'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Recommended YouTube DIY videos on replacing kitchen tiles\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: search_agent\n      refined_query: \"Supplies needed for DIY kitchen\
+      \ tile replacement\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"Add an event for next Friday morning when Mom is visiting\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: calendar_agent\n      refined_query: \"Set a reminder for 10 PM\
+      \ tomorrow so that I don’t forget to buy DIY tile materials the day after tomorrow\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Schedule 'Mom’s\
+      \ Visit' for next Friday at 11 AM\"\n  title: \"Mom’s Visit\"\n  startDateTime:\
+      \ \"2029-05-04T11:00\"\n  endDateTime: \"2029-05-04T12:00\"\n  repeatRule: \"\
+      none\"\ntool_call_result:\n  event:\n    title: \"Mom’s Visit\"\n    startDateTime:\
+      \ \"2029-05-04T11:00\"\n    endDateTime: \"2029-05-04T12:00\"\n    calendarType:\
+      \ \"personal\"\n    repeatRule: \"none\"\n    status: \"Successfully added\"\
+      \n    eventId: \"event-20290504-1100\"\n    description: \"Your 'Mom’s Visit'\
+      \ event has been scheduled for next Friday at 11 AM.\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"Set a reminder for\
+      \ tomorrow 10:00 PM, so that I don’t forget to buy materials for the kitchen\
+      \ tile DIY project the day after tomorrow\"\n  reminderContent: \"Buy materials\
+      \ for kitchen tile DIY project\"\n  reminderTime: \"2029-04-28T22:00\"\n  repeatRule:\
+      \ \"none\"\n  priority: \"normal\"\n  deliveryMethod: \"push\"\ntool_call_result:\n\
+      \  reminder:\n    reminderContent: \"Buy materials for kitchen tile DIY project\"\
+      \n    reminderTime: \"2029-04-28T22:00\"\n    repeatRule: \"none\"\n    priority:\
+      \ \"normal\"\n    deliveryMethod: \"push\"\n    status: \"Reminder successfully\
+      \ registered\"\n    reminderId: \"reminder-20290428-2200\"\n    message: \"\
+      Your reminder has been set. A push notification will be sent at the scheduled\
+      \ time.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Schedule Registration Complete
+
+      The "Mom’s Visit" event has been successfully added to your personal calendar
+      for Friday, May 4, 2029 from 11:00 AM to 12:00 PM.
+
+
+      ▶ Notification Setup Complete
+
+      A reminder for "Buy materials for kitchen tile DIY project" has been scheduled
+      to be sent as push notification on April 28, 2029 at 10:00 PM.
+
+      You’ll receive the alert at the set time so that you don’t forget.'

@@ -1,0 +1,202 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2026-10-13
+
+      - Name: Evelyn Yu'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'My Certificate of Deposit matures this month. On the 1st of next month,
+      schedule a transfer of $12,500 from my checking account at Chase Bank to my
+      mom, and also schedule a text message that day saying: "Gift~"'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"Check if my certificate of deposit (CD) matures this month\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"If the certificate of deposit (CD) matures this month, check my Chase Bank\
+      \ checking account for transfers\"\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"If the certificate of deposit (CD) matures this month,\
+      \ schedule a transfer of $12,500 to Mom on the 1st of next month\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: message_agent\n      refined_query: \"If\
+      \ the certificate of deposit (CD) matures this month, schedule a text to Mom\
+      \ on the 1st of next month saying 'Gift~'\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Account number and receiving bank'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 'To check the maturity of your certificate of deposit (CD), please provide
+      the issuing bank name and your CD account number.
+
+      Once I have that information, I can look it up for you right away!'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: Chase Bank 110487654321
+- workflow_id: null
+  step_id: 7
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"Check maturity\
+      \ of certificate of deposit\"\n  bankName: \"Chase Bank\"\n  accountNumber:\
+      \ \"110487654321\"\n  accountHolderName: \"Evelyn Yu\"\n  accountType: \"CD\"\
+      \n  includeTransactions: false\ntool_call_result:\n  status: \"success\"\n \
+      \ data:\n    bankName: \"Chase Bank\"\n    accountNumber: \"110487654321\"\n\
+      \    accountHolderName: \"Evelyn Yu\"\n    accountType: \"CD\"\n    balance:\
+      \ 38500\n    maturityDate: \"2026-10-18\"\n    interestRate: 4.35\n    currency:\
+      \ \"USD\"\n  source: \"Chase Bank System\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Account number'
+- workflow_id: workflow_3
+  step_id: 9
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient''s phone number and scheduled delivery time'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your certificate of deposit (CD) is scheduled to mature on October 18,
+      2026.
+
+
+      To proceed with the transfer and schedule a text message, please provide the
+      following information:
+
+
+      1. The bank account number to use for the transfer (e.g., Chase Bank)
+
+      2. The recipient’s phone number for the text message
+
+      3. The scheduled time to send the text message'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: Chase Bank 12345678901234, (555)555-6707, set the time for 6:00 AM
+- workflow_id: workflow_2
+  step_id: 12
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"Check balance\
+      \ for Chase Bank account 12345678901234\"\n  bankName: \"Chase Bank\"\n  accountNumber:\
+      \ \"12345678901234\"\n  accountHolderName: \"Evelyn Yu\"\n  includeTransactions:\
+      \ false\n  accountType: \"checking\"\ntool_call_result:\n  status: \"success\"\
+      \n  data:\n    bankName: \"Chase Bank\"\n    accountNumber: \"12345678901234\"\
+      \n    accountHolderName: \"Evelyn Yu\"\n    accountType: \"checking\"\n    balance:\
+      \ 50000\n    currency: \"USD\"\n    sourceAccountId: \"acc-20261013-001\""
+- workflow_id: workflow_3
+  step_id: 13
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Schedule a text message\
+      \ saying 'Gift~' to Mom at 6:00 AM on the 1st of next month\"\n  channel: \"\
+      sms\"\n  phoneNumber: \"(555)555-6707\"\n  message: \"Gift~\"\n  sendTime: \"\
+      2026-11-01T06:00\"\n  repeatRule: \"none\"\n  priority: \"normal\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    channel: \"sms\"\n    phoneNumber: \"(555)555-6707\"\
+      \n    message: \"Gift~\"\n    sendTime: \"2026-11-01T06:00\"\n    repeatRule:\
+      \ \"none\"\n    priority: \"normal\"\n    messageStatus: \"Scheduled\"\n   \
+      \ messageId: \"MSG202611010600001\"\n  source: \"Message Delivery System\""
+- workflow_id: workflow_2
+  step_id: 14
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient account holder name, receiving bank name, recipient
+      account number, and scheduled transfer time.'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: 'To schedule a transfer, please provide the following details:
+
+
+      1. Name of recipient account holder
+
+      2. Recipient bank name
+
+      3. Account number to transfer to
+
+      4. Scheduled transfer time (e.g., 9:00 AM)
+
+
+      Once you share the information, I’ll help set up the transfer right away!'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: Yu Monley, Bank of America, 35691065412345, same time as before
+- workflow_id: null
+  step_id: 17
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"Schedule a transfer\
+      \ of $12,500 USD to Yu Monley's Bank of America account 35691065412345 on November\
+      \ 1st at 6:00 AM\"\n  recipientName: \"Yu Monley\"\n  bankName: \"Bank of America\"\
+      \n  accountNumber: \"35691065412345\"\n  amount: 12500\n  scheduledAt: \"2026-11-01T06:00\"\
+      \n  sourceAccountId: \"acc-20261013-001\"\ntool_call_result:\n  status: \"scheduled\"\
+      \n  data:\n    recipientName: \"Yu Monley\"\n    bankName: \"Bank of America\"\
+      \n    accountNumber: \"35691065412345\"\n    amount: 12500\n    scheduledAt:\
+      \ \"2026-11-01T06:00\"\n    sourceAccountId: \"acc-20261013-001\"\n    transactionId:\
+      \ \"txn-20261101-0001\"\n  message: \"A transfer of 12,500 USD has been scheduled\
+      \ from your Chase checking account to Yu Monley’s Bank of America account on\
+      \ November 1, 2026 at 6:00 AM.\"\n  source: \"Financial Transfer System\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: 'Both the scheduled transfer and the scheduled message are all set!
+
+
+      • A transfer of USD 12,500 will be sent from your Chase checking account to
+      Yu Monley’s Bank of America account (35691065412345) on November 1, 2026 at
+      6:00 AM.
+
+
+      • At the same time, a text message saying "Gift~" will be sent to (555)555-6707.'

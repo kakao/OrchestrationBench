@@ -1,0 +1,147 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2026-01-01
+
+      - userId: user_3f9b8a72c4
+
+      - Name: Sarah Kang
+
+      - Contact: (202)445-5544'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I need to exchange the hat delivered yesterday for one in a different
+      color. Also, I need to adjust the hotel booking dates I have for February.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Check\
+      \ order details for the hat delivered yesterday\"\n    - status: pending\n \
+      \     name: shopping_agent\n      refined_query: \"Exchange the hat delivered\
+      \ yesterday for one in a different color\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"Check reservation details for accommodations booked\
+      \ in February\"\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"Change the dates for accommodations booked in February\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check the order\
+      \ details for the hat delivered yesterday\"\n  userId: \"user_3f9b8a72c4\"\n\
+      \  recipientName: \"Sarah Kang\"\n  phoneNumber: \"(202)445-5544\"\ntool_call_result:\n\
+      \  data:\n    query: \"Check the order details for the hat delivered yesterday\"\
+      \n    userId: \"user_3f9b8a72c4\"\n    recipientName: \"Sarah Kang\"\n    phoneNumber:\
+      \ \"(202)445-5544\"\n    orders:\n      - orderId: \"order_789654123\"\n   \
+      \     productId: \"emis_cap_001\"\n        productName: \"emis baseball cap\"\
+      \n        option: \"gray\"\n        orderDate: \"2025-12-28\"\n        deliveryDate:\
+      \ \"2025-12-31\"\n        status: \"Delivered\"\n        quantity: 1\n     \
+      \   price: 25\n        paymentMethod: \"Credit Card\"\n    status: \"Lookup\
+      \ complete\"\n  source: \"Order Management System\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationReservation\narguments:\n  refinedQuery: \"Check\
+      \ accommodation reservations for February\"\n  userId: \"user_3f9b8a72c4\"\n\
+      \  name: \"Sarah Kang\"\n  contactNumber: \"(202)445-5544\"\ntool_call_result:\n\
+      \  data:\n    query: \"Check accommodation reservations for February\"\n   \
+      \ userId: \"user_3f9b8a72c4\"\n    name: \"Sarah Kang\"\n    contactNumber:\
+      \ \"(202)445-5544\"\n    reservations:\n      - reservationId: \"resv_20260215_001\"\
+      \n        accommodationName: \"Lotte Hotel Seoul\"\n        location: \"Seoul,\
+      \ Korea\"\n        checkInDate: \"2026-02-15\"\n        checkOutDate: \"2026-02-20\"\
+      \n        status: \"confirmed\"\n        guests: 1\n        roomType: \"Standard\
+      \ Double Room\"\n        price: 346\n        currency: \"USD\"\n        paymentMethod:\
+      \ \"Credit Card\"\n        reservationDate: \"2025-12-20\"\n    status: \"Lookup\
+      \ complete\"\n  source: \"Accommodation Reservation System\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Color information to be changed'
+- workflow_id: workflow_2
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Check-in and check-out dates of the accommodation to be changed'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "To help you with exchanging the hat for one in a different color and\
+      \ modifying your hotel reservation, I’ll need the following details:\n\n1. Hat\
+      \ Exchange  \n: Your current order shows that the \"emis baseball cap (color:\
+      \ gray)\" was delivered on December 31, 2025.  \nPlease let me know which color\
+      \ you would like it in instead.\n\n2. Hotel Reservation Change  \n: Your current\
+      \ booking is from February 15 to February 20, 2026 at Lotte Hotel Seoul.  \n\
+      Please provide the new check-in and check-out dates you’d like, and I’ll assist\
+      \ you with updating the reservation.\n\nOnce you share these details, I’ll proceed\
+      \ with the changes right away!"
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: Blue. I'm going to change the hotel dates to February 17th through 22nd.
+- workflow_id: workflow_1
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: exchangeProducts\narguments:\n  refinedQuery: \"Exchange emis\
+      \ cap for a blue one\"\n  orderId: \"order_789654123\"\n  itemList:\n    - productId:\
+      \ \"emis_cap_001\"\n      quantity: 1\n  exchangeOption:\n    color: \"blue\"\
+      \ntool_call_result:\n  data:\n    query: \"Exchange emis cap for a blue one\"\
+      \n    orderId: \"order_789654123\"\n    itemList:\n      - productId: \"emis_cap_001\"\
+      \n        quantity: 1\n    exchangeOption:\n      color: \"blue\"\n    exchangeStatus:\
+      \ \"Request received\"\n    message: \"Your request to exchange the emis baseball\
+      \ cap (gray) for a blue one has been submitted successfully. I will process\
+      \ it promptly.\"\n  source: \"Order Exchange System\""
+- workflow_id: workflow_2
+  step_id: 11
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyAccommodation\narguments:\n  refinedQuery: \"Change the\
+      \ reservation dates for Lotte Hotel Seoul to February 17–22\"\n  reservationId:\
+      \ \"resv_20260215_001\"\n  modifiedCheckInDate: \"2026-02-17\"\n  modifiedCheckOutDate:\
+      \ \"2026-02-22\"\ntool_call_result:\n  data:\n    query: \"Change the reservation\
+      \ dates for Lotte Hotel Seoul to February 17–22\"\n    reservationId: \"resv_20260215_001\"\
+      \n    modifiedCheckInDate: \"2026-02-17\"\n    modifiedCheckOutDate: \"2026-02-22\"\
+      \n    status: \"Change completed\"\n    message: \"Your reservation at Lotte\
+      \ Hotel Seoul has been successfully updated to February 17–22.\"\n  source:\
+      \ \"Accommodation Booking System\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "The hat exchange and hotel reservation change have been processed successfully.\n\
+      \n1. Product Exchange Information\n\n• Product: emis baseball cap  \n• Processing\
+      \ details: Your request to exchange the gray cap for a blue one has been submitted\
+      \ successfully.  \n• Status: Request received\n\n2. Hotel Reservation Change\
+      \ Information\n\n• Hotel: Lotte Hotel Seoul  \n• Before the change: February\
+      \ 15, 2026 ~ February 20, 2026  \n• After the change: February 17, 2026 ~ February\
+      \ 22, 2026  \n• Status: Change completed\n\nYour reservation dates have been\
+      \ updated successfully."

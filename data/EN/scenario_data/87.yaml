@@ -1,0 +1,247 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-01-28'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'Can you give me some information about Jason from Too Hot to Handle
+      Season 3? I’m curious about what he did before the show.
+
+      Also, could you show me some online news articles about him?
+
+      And were there other seasons featuring someone as popular as Jason?'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"Profile\
+      \ information of Jason from Too Hot to Handle Season 3\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ person_agent\n      refined_query: \"Online news articles related to Jason\
+      \ from Too Hot to Handle Season 3\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"Recommend other seasons of Too Hot to Handle featuring\
+      \ someone as popular as Jason from Season 3\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"Profile information\
+      \ of Jason from Too Hot to Handle Season 3\"\n  personName: \"Jason\"\ntool_call_result:\n\
+      \  profile:\n    name: \"Jason\"\n    featuredIn: \"Too Hot to Handle Season\
+      \ 3\"\n    occupation: \"Reality TV Personality / Model\"\n    age: \"29\"\n\
+      \    education: \"Graduated from UCLA, Department of Kinesiology\"\n    instagram:\
+      \ \"https://www.instagram.com/jason_official\"\n    knownFor: [\"Appearing on\
+      \ Too Hot to Handle Season 3\", \"Fashion and lifestyle content on social media\"\
+      , \"Fitness modeling\"]\n    keywords: [\"Calm\", \"Great physique\", \"Strong\
+      \ leadership qualities\"]"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"Online news articles\
+      \ related to Jason from Too Hot to Handle Season 3\"\ntool_call_result:\n  news:\n\
+      \    - title: \"Jason from 'Too Hot to Handle 3' captivates viewers with quiet\
+      \ charisma\"\n      publisher: \"Entertainment Weekly\"\n      date: \"2025-01-10\"\
+      \n      summary: \"Jason, who stood out with his calm yet strong presence, has\
+      \ emerged as one of the most popular contestants of Season 3. His athletic build\
+      \ and sincere attitude, reflective of his sports background, have earned him\
+      \ positive reactions from viewers.\"\n      link: \"https://www.ew.com/news/jason-toohottohandle3\"\
+      \n\n    - title: \"Jason expands to modeling after the show—now making waves\
+      \ in fashion\"\n      publisher: \"Variety\"\n      date: \"2025-01-22\"\n \
+      \     summary: \"After appearing on Too Hot to Handle, Jason broadened his reach\
+      \ as a social media influencer and recently got chosen as a campaign model for\
+      \ a major fashion brand, drawing significant attention.\"\n      link: \"https://variety.com/news/jason-model\"\
+      \n\n    - title: \"'Leader type' Jason—what’s behind his popularity on Too Hot\
+      \ to Handle?\"\n      publisher: \"People\"\n      date: \"2025-01-18\"\n  \
+      \    summary: \"Analysts note that his ability to stay grounded in group settings\
+      \ and his calm leadership left a strong impression not only on the female contestants\
+      \ but also on the audience.\"\n      link: \"https://people.com/news/jason-leadertype\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"Recommend other\
+      \ seasons of *Too Hot to Handle* featuring popular contestants like Jason from\
+      \ Season 3\"\n  programTitle: \"Too Hot to Handle\"\ntool_call_result:\n  recommendations:\n\
+      \    - season: \"Season 2\"\n      notableCast: [\"Chloe\", \"Harry\"]\n   \
+      \   reason: \"Contestants with quiet but captivating charm, similar to Jason,\
+      \ became the talk of the season.\"\n      highlightClip: \"https://www.youtube.com/watch?v=toohottohandle_s2_highlight\"\
+      \n\n    - season: \"Season 1\"\n      notableCast: [\"Francesca\", \"Kelz\"\
+      ]\n      reason: \"In the very first season, the strong chemistry between contestants\
+      \ and the popularity of several standout personalities made it a breakout hit.\"\
+      \n      highlightClip: \"https://www.youtube.com/watch?v=toohottohandle_s1_highlight\"\
+      \n\n    - season: \"Season 4\"\n      notableCast: [\"Seb\", \"Kayla\"]\n  \
+      \    reason: \"Frequently compared to Jason on social media, these contestants\
+      \ quickly gained popularity among fans.\"\n      highlightClip: \"https://www.youtube.com/watch?v=toohottohandle_s4_highlight\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s a profile of Jason, a contestant from *Too Hot to Handle* Season\
+      \ 3, along with related news articles and recommendations for other seasons\
+      \ featuring contestants with similar vibe.\n\n1 - Jason’s Profile\n- Name: Jason\n\
+      - Show: *Too Hot to Handle* Season 3\n- Occupation: Reality TV Personality /\
+      \ Model\n- Age: 29\n- Education: Graduated with a degree in Kinesiology from\
+      \ UCLA\n- Instagram: https://www.instagram.com/jason_official\n- Main Activities:\
+      \ Appeared on *Too Hot to Handle* Season 3, creates fashion and lifestyle content\
+      \ on social media, works as a fitness model\n- Keywords: Calm, great physique,\
+      \ strong leadership qualities\n\n----------\n\n2 - Recent News Articles About\
+      \ Jason from *Too Hot to Handle* Season 3\n- \"Jason from ‘Too Hot to Handle\
+      \ 3’ Captivates Viewers with Quiet Charisma\"\n  • Source: Entertainment Weekly\n\
+      \  • Link: https://www.ew.com/news/jason-toohottohandle3\n\n- \"Jason Expands\
+      \ to Modeling After the Show—Now Making Waves in Fashion\"\n  • Source: Variety\n\
+      \  • Link: https://variety.com/news/jason-model\n\n- \"‘Leader Type’ Jason—What’s\
+      \ Behind His Popularity on *Too Hot to Handle*?\"\n  • Source: People\n  • Link:\
+      \ https://people.com/news/jason-leadertype\n\n----------\n\n3 - Recommended\
+      \ Seasons Featuring Contestants Similar to Jason\n- Season 2\n  • Notable Contestants:\
+      \ Chloe, Harry\n  • Why They were Recommended: Like Jason, they had a quiet\
+      \ but magnetic presence that captured attention.\n  • Highlight Clip: https://www.youtube.com/watch?v=toohottohandle_s2_highlight\n\
+      \n- Season 1\n  • Notable Contestants: Francesca, Kelz\n  • Why They were Recommended:\
+      \ In the very first season, the strong chemistry and the standout personalities\
+      \ made it a breakout hit.\n  • Highlight Clip: https://www.youtube.com/watch?v=toohottohandle_s1_highlight\n\
+      \n- Season 4\n  • Notable Contestants: Seb, Kayla\n  • Why They were Recommended:\
+      \ Frequently compared to Jason on social media, they quickly became fan favorites.\n\
+      \  • Highlight Clip: https://www.youtube.com/watch?v=toohottohandle_s4_highlight"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: Can you give me the details on the black cardigan that Emily wore in
+      Episode 3 of Too Hot to Handle Season 3 when she was with Daniel? It was from
+      Acne Studios. Also, could you tell me the location of the nearest Acne Studios
+      store to Grand Central Station?
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: person_agent\n      refined_query: \"Profile\
+      \ information of Jason from Too Hot to Handle Season 3\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ person_agent\n      refined_query: \"Online news articles related to Jason\
+      \ from Too Hot to Handle Season 3\"\n\nworkflow_3:\n  status: completed\n  type:\
+      \ independent\n  steps:\n    - status: completed\n      name: entertainment_agent\n\
+      \      refined_query: \"Recommend other seasons of Too Hot to Handle featuring\
+      \ someone as popular as Jason from Season 3\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"Information on the black Acne Studios cardigan worn\
+      \ by Emily in Episode 3 of *Too Hot to Handle* Season 3\"\n\nworkflow_5:\n \
+      \ status: pending\n  type: independent\n  steps:\n    - status: pending\n  \
+      \    name: place_agent \n      refined_query: \"Nearest Acne Studios offline\
+      \ store to Grand Central Station\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Information on the\
+      \ black Acne Studios cardigan worn by Emily in Episode 3 of *Too Hot to Handle*\
+      \ Season 3\"\n  brand: \"Acne Studios\"\n  color: \"Black\"\n  productCategory:\
+      \ \"cardigan\"\n  source: \"Too Hot to Handle Season 3 Episode 3 – Emily\"\n\
+      \  sortBy: \"latest\"\ntool_call_result:\n  products:\n    - name: \"Acne Studios\
+      \ Mohair Wool Cardigan\"\n      brand: \"Acne Studios\"\n      color: \"Black\"\
+      \n      price: \"$390\"\n      sizeOptions: [\"XS\", \"S\", \"M\", \"L\"]\n\
+      \      productLink: \"https://www.acnestudios.com/us/en/product/black-cardigan\"\
+      \n      available: true\n      image: \"https://images.acnestudios.com/cardigan-black.jpg\"\
+      \n\n    - name: \"Acne Studios Oversized V-Neck Knit\"\n      brand: \"Acne\
+      \ Studios\"\n      color: \"Black\"\n      price: \"$350\"\n      sizeOptions:\
+      \ [\"S\", \"M\", \"L\"]\n      productLink: \"https://www.acnestudios.com/us/en/product/oversized-knit-black\"\
+      \n      available: true\n      image: \"https://images.acnestudios.com/oversized-black.jpg\""
+- workflow_id: workflow_5
+  step_id: 11
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Nearest Acne Studios\
+      \ offline store to Grand Central Station\"\n  location: \"Grand Central Station,\
+      \ New York, NY\"\n  sortBy: \"distance\"\n  placeCategory: \"clothing store\"\
+      \n  placeName: \"Acne Studios\"\ntool_call_result:\n  places:\n    - name: \"\
+      Acne Studios Madison Avenue\"\n      address: \"926 Madison Ave, New York, NY\
+      \ 10021\"\n      distanceFromQueryLocation: \"Approx. 1.2 miles\"\n      operatingHours:\
+      \ \"11:00 AM – 7:00 PM\"\n      contact: \"(212)555-0196\"\n      mapLink: \"\
+      https://maps.google.com/?q=Acne+Studios+926+Madison+Ave+New+York\"\n\n    -\
+      \ name: \"Acne Studios Greene Street (SoHo)\"\n      address: \"33 Greene St,\
+      \ New York, NY 10013\"\n      distanceFromQueryLocation: \"Approx. 3.3 miles\"\
+      \n      operatingHours: \"11:00 AM – 7:00 PM\"\n      contact: \"(212)555-0142\"\
+      \n      mapLink: \"https://maps.google.com/?q=Acne+Studios+33+Greene+St+New+York\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Here’s the information on the black cardigan from **Acne Studios**
+      that appears to have been worn by **Emily** in Episode 3 of *Too Hot to Handle*
+      Season 3.
+
+
+      1 - Acne Studios Mohair Wool Cardigan
+
+      - Color: Black
+
+      - Price: $390
+
+      - Sizes: XS, S, M, L
+
+      - Purchase link: https://www.acnestudios.com/us/en/product/black-cardigan
+
+
+      2 - Acne Studios Oversized V-Neck Knit
+
+      - Color: Black
+
+      - Price: $350
+
+      - Sizes: S, M, L
+
+      - Purchase link: https://www.acnestudios.com/us/en/product/oversized-knit-black
+
+
+      You can check live availability directly on each product page.
+
+
+      ▶ If you’re near **Grand Central Station (NYC)**, here are nearby **Acne Studios**
+      offline stores:
+
+
+      1 - Acne Studios Madison Avenue
+
+      - Address: 926 Madison Ave, New York, NY 10021
+
+      - Distance: Approx. 1.2 miles from Grand Central
+
+      - Hours: 11:00 AM – 7:00 PM
+
+      - Contact: (212)555-0196
+
+      - Map: https://maps.google.com/?q=Acne+Studios+926+Madison+Ave+New+York
+
+
+      2 - Acne Studios Greene Street (SoHo)
+
+      - Address: 33 Greene St, New York, NY 10013
+
+      - Distance: Approx. 3.3 miles from Grand Central
+
+      - Hours: 11:00 AM – 7:00 PM
+
+      - Contact: (212)555-0142
+
+      - Map: https://maps.google.com/?q=Acne+Studios+33+Greene+St+New+York'

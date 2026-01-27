@@ -1,0 +1,86 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2022-06-09'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: What's the weather like in Miami this weekend? If it rains, please find
+      me the most popular women's rain boots in size 7.5 from Puma.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"Check the\
+      \ weather in Miami this weekend\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: shopping_agent\n      refined_query: \"If it rains, search for\
+      \ the most popular women's rain boots in size 7.5 from Puma\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"What will the weather be like in Miami on June 11, 2022?\"\n      location:\
+      \ \"Miami\"\n      date: \"2022-06-11\"\n\n  - tool: getDomesticWeather\n  \
+      \  arguments:\n      refinedQuery: \"What will the weather be like in Miami\
+      \ on June 12, 2022?\"\n      location: \"Miami\"\n      date: \"2022-06-12\"\
+      \n\ntool_call_result:\n  - forecast:\n      date: \"2022-06-11\"\n      dayOfWeek:\
+      \ \"Saturday\"\n      weather: \"Sunny\"\n      highTemp: \"86°F\"\n      lowTemp:\
+      \ \"75°F\"\n      precipitation: \"10%\"\n      wind: \"Southwest wind, 3m/s\"\
+      \n      humidity: \"60%\"\n      uvIndex: \"High\"\n      fineDust: \"Moderate\"\
+      \n\n  - forecast:\n      date: \"2022-06-12\"\n      dayOfWeek: \"Sunday\"\n\
+      \      weather: \"Mostly cloudy, with showers in the afternoon\"\n      highTemp:\
+      \ \"82°F\"\n      lowTemp: \"73°F\"\n      precipitation: \"60%\"\n      wind:\
+      \ \"South wind, 4m/s\"\n      humidity: \"75%\"\n      uvIndex: \"Moderate\"\
+      \n      fineDust: \"Good\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Most popular women's\
+      \ rain boots in size 7.5 from Puma\"\n  productCategory: \"rain boots\"\n  brand:\
+      \ \"Puma\"\n  sortBy: \"most_viewed\"\n  size: \"7.5\"\ntool_call_result:\n\
+      \  products:\n    - productName: \"Women's Chelsea Rain Boots\"\n      brand:\
+      \ \"Puma\"\n      price: 59"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Sure, let me give you the weekend weather forecast for Miami along with
+      the product information you requested.
+
+
+      ■ Miami Weather This Weekend
+
+
+      - Saturday, June 11, 2022: Sunny and hot. (High 86°F / Low 75°F, 10% chance
+      of rain)
+
+      - Sunday, June 12, 2022: Mostly cloudy with likelihood of afternoon showers.
+      (High 82°F / Low 73°F, 60% chance of rain)
+
+
+      Since rain is likely on Sunday, I searched for popular women’s rain boots (size
+      7.5) from Puma.
+
+
+      I recommend the "Puma Women’s Chelsea Rain Boots."
+
+      Price: about $59
+
+
+      If you have any questions, feel free to ask anytime!'

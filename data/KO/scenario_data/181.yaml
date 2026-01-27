@@ -1,0 +1,121 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜: 2025-07-15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '이번주 일요일에 서울에서 볼만한 뮤지컬 있어?
+
+      예매도 할거야'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      이번 일요일 서울에서 볼만한 뮤지컬 조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"이번 일요일 서울에서 볼만한 뮤지컬 예매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"이번 일요일 서울에서\
+      \ 볼만한 뮤지컬 조회\"\n  genre: \"뮤지컬\"\n  location: \"서울\"\n  sortBy: \"soonest\"\n\
+      \  date: \"2025-07-20\"\ntool_call_result:\n  data:\n    genre: \"뮤지컬\"\n  \
+      \  location: \"서울\"\n    date: \"2025-07-20\"\n    performances:\n      - title:\
+      \ \"레미제라블\"\n        theater: \"블루스퀘어 신한카드홀\"\n        time: \"2025-07-20T19:00:00+09:00\"\
+      \n        priceRange: \"₩60,000 ~ ₩150,000\"\n      - title: \"시카고\"\n     \
+      \   theater: \"디큐브아트센터\"\n        time: \"2025-07-20T14:00:00+09:00\"\n    \
+      \    priceRange: \"₩50,000 ~ ₩140,000\"\n      - title: \"지킬 앤 하이드\"\n     \
+      \   theater: \"예술의전당 오페라극장\"\n        time: \"2025-07-20T18:30:00+09:00\"\n\
+      \        priceRange: \"₩70,000 ~ ₩160,000\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 공연 제목, 성함, 연락처, 인원수, 좌석 등급, 관람자별 유형 목록'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "이번 주말, 2025년 7월 20일 일요일에 서울에서 관람할 수 있는 추천 뮤지컬은 다음과 같습니다:\n\n1. 레미제라블\n\
+      \n공연장소: 블루스퀘어 신한카드홀\n\n공연시간: 7월 20일 일요일 오후 7시\n\n티켓 가격: 60,000원부터 150,000원까지\n\
+      \n추천 이유: 프랑스 혁명기를 배경으로 펼쳐지는 감동적인 스토리와 웅장한 음악이 어우러진 뮤지컬 명작입니다.\n\n2. 시카고\n\n\
+      공연장소: 디큐브아트센터\n\n공연시간: 7월 20일 일요일 오후 2시\n\n티켓 가격: 50,000원부터 140,000원까지\n\n추천\
+      \ 이유: 재즈 스타일의 음악과 세련된 연출로 꾸준한 사랑을 받고 있는 브로드웨이 대표작입니다.\n\n3. 지킬 앤 하이드\n\n공연장소:\
+      \ 예술의전당 오페라극장\n\n공연시간: 7월 20일 일요일 오후 6시 30분\n\n티켓 가격: 70,000원부터 160,000원까지\n\
+      \n추천 이유: 선과 악의 갈등을 흥미롭게 풀어낸 스토리와 배우들의 뛰어난 가창력이 인상적인 공연입니다.\n\n----------\n\n\
+      \  예매를 위해 아래 정보를 알려주세요.  \n  - 공연 제목 (예: 오페라의 유령)  \n  - 성함 (예: 홍길동)  \n  -\
+      \ 연락처 (예: 010-1234-5678)  \n  - 인원 수 (예: 3)  \n  - 좌석 등급 (예: VIP, R석, S석 등)\
+      \  \n  - 관람자별 유형 목록 (예: 성인, 어린이, 경로, 장애인)"
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: '그럼 지킬 앤 하이드 예매해줘
+
+      조운 ,010-1234-1234, 성인 3명, R석'
+- workflow_id: null
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookPerformance\narguments:\n  refinedQuery: \"뮤지컬 지킬 앤 하이드 성인\
+      \ 3명 R석 예매\"\n  performanceTitle: \"지킬 앤 하이드\"\n  venueName: \"예술의전당 오페라극장\"\
+      \n  showDate: \"2025-07-20\"\n  showTime: \"18:30\"\n  audienceCount: 3\n  seatGrade:\
+      \ \"R석\"\n  audienceTypes: [\"adult\", \"adult\", \"adult\"]\n  userInfo:\n\
+      \    name: \"조운\"\n    contactNumber: \"010-1234-1234\"\ntool_call_result:\n\
+      \  data:\n    bookingId: \"PERF20250720_381\"\n    performanceTitle: \"지킬 앤\
+      \ 하이드\"\n    venue: \"예술의전당 오페라극장\"\n    showTime: \"2025-07-20T18:30:00+09:00\"\
+      \n    seatGrade: \"R석\"\n    seatNumbers:\n      - \"R12\"\n      - \"R13\"\n\
+      \      - \"R14\"\n    audienceCount: 3\n    status: \"confirmed\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '예매가 완료되었습니다.
+
+
+      공연명: 지킬 앤 하이드
+
+
+      공연장: 예술의전당 오페라극장
+
+
+      일시: 2025년 7월 20일(일) 18:30
+
+
+      좌석: R석 - R12, R13, R14번
+
+
+      인원: 성인 3명
+
+
+      예매자: 조운 (010-1234-1234)
+
+
+      예매번호: PERF20250720_381
+
+
+      상태: 예매 확정
+
+
+      즐거운 공연 관람 되시기 바랍니다!'

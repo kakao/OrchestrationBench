@@ -1,0 +1,90 @@
+{
+  "agent_card": {
+    "name": "메시지(message)",
+    "agent_id": "message_agent",
+    "description": "이메일, 문자(SMS), 메신저 등을 통해 원하는 메시지를 즉시 또는 예약 전송하는 커뮤니케이션 에이전트입니다. 알림, 공지, 안내 등 다양한 목적의 전송을 지원하며, 반복 예약과 중요도 설정도 가능합니다.",
+    "url": "http://localhost:10003/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": true
+    },
+    "skills": [
+      {
+        "id": "sendMessage",
+        "name": "메시지 전송",
+        "description": "수신자의 이메일 또는 전화번호를 입력받아 메시지를 전송합니다. 즉시 전송은 물론 특정 시간 예약 전송과 반복 설정도 지원합니다.",
+        "examples": [
+          "지금 김대리한테 프로젝트 자료 메일로 보내줘",
+          "01012345678 번호로 오늘 약속 알림 문자 보내줘",
+          "내일 오전 9시에 고객에게 방문 안내 메시지 예약해줘"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "sendMessage",
+      "description": "입력된 수신자(email 또는 휴대폰 번호), 채널(SMS, 이메일 등), 메시지 내용을 바탕으로 즉시 전송하거나 예약 전송합니다. 반복 예약 및 우선순위 설정도 지원됩니다.  여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "정제된 메시지 요청 문장 (예: '내일 오전 9시에 고객에게 안내 문자 보내줘')"
+          },
+          "email": {
+            "type": "string",
+            "description": "수신자의 이메일 주소 (channel이 'email'일 때 필수)"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "수신자의 전화번호 (channel이 'sms' 또는 'kakaotalk'일 때 필수)"
+          },
+          "channel": {
+            "type": "string",
+            "enum": [
+              "email",
+              "sms",
+              "kakaotalk"
+            ],
+            "description": "메시지 전송 방식 (예: 'email', 'sms')"
+          },
+          "message": {
+            "type": "string",
+            "description": "전송할 메시지 본문 내용"
+          },
+          "sendTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "예약 전송 시간 (ISO 8601 형식, 없으면 즉시 전송)"
+          },
+          "repeatRule": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "description": "'none'(기본값): 반복 없음, 반복 예약 시 선택"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "high"
+            ],
+            "description": "메시지 중요도 (기본값은 'normal')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "channel",
+          "message",
+          "repeatRule",
+          "priority"
+        ]
+      }
+    }
+  ]
+}

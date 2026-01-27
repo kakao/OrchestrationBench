@@ -1,0 +1,173 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Sender''s Name: Olivia Park'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Send a WhatsApp message to my trainer saying "I had chicken breast for
+      dinner tonight." Also, set up my gym membership renewal so that $120 is scheduled
+      as a recurring payment from my checking account at Ally Bank every 15th of the
+      month. For the payment memo, write "Gym"
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: message_agent\n      refined_query: \"Send a\
+      \ WhatsApp message to my trainer saying 'I had chicken breast for dinner tonight.'\"\
+      \n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: personal_banking_agent\n      refined_query: \"Check\
+      \ my checking account balance at Ally Bank\"\n    - status: pending\n      name:\
+      \ personal_banking_agent\n      refined_query: \"Set up a recurring payment\
+      \ of $120 from my Ally Bank checking account every 15th of the month for my\
+      \ gym membership, with the payment memo labeled 'Gym'\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient contact information'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Account number information'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: To send a message via WhatsApp, please provide the recipient’s phone
+      number. To set up a recurring payment, please provide your Ally Bank routing
+      number and checking account number.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 'My personal trainer’s number is (202) 555-0123, and my Ally Bank checking
+      account details are:
+
+      Routing number: 021000021
+
+      Account number: 123456789'
+- workflow_id: workflow_1
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Send a WhatsApp message\
+      \ to my trainer saying 'I had chicken breast for dinner tonight.'\"\n  channel:\
+      \ \"whatsapp\"\n  phoneNumber: \"(202) 555-0123\"\n  message: \"I had chicken\
+      \ breast for dinner tonight.\"\n  repeatRule: \"none\"\n  priority: \"normal\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Send a WhatsApp message to\
+      \ my trainer saying 'I had chicken breast for dinner tonight.'\"\n    channel:\
+      \ \"whatsapp\"\n    phoneNumber: \"(202) 555-0123\"\n    message: \"I had chicken\
+      \ breast for dinner tonight.\"\n    repeatRule: \"none\"\n    priority: \"normal\"\
+      \n    status: \"Message sent successfully\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"Check Olivia\
+      \ Park's checking account at Ally Bank\"\n  bankName: \"Ally Bank\"\n  accountNumber:\
+      \ \"123456789\"\n  accountHolderName: \"Olivia Park\"\n  accountType: \"checking\"\
+      \n  includeTransactions: false\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Check Olivia Park's checking account at Ally Bank\"\n    bankName: \"Ally\
+      \ Bank\"\n    accountNumber: \"123456789\"\n    accountHolderName: \"Olivia\
+      \ Park\"\n    accountType: \"checking\"\n    includeTransactions: false\n  \
+      \  sourceAccountId: \"account-20250123-789\"\n    balance: \"2,500.00\"\n  \
+      \  currency: \"USD\"\n    status: \"Account lookup complete\""
+- workflow_id: null
+  step_id: 10
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient name, recipient bank name, and recipient account number'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: Please provide the recipient’s name, bank name, routing number, and checking
+      account number in order to set up the recurring payment.
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 'Recipient’s name: David Lee
+
+      Bank name: Ally Bank
+
+      Routing number: 021000021
+
+      Account number: 111123456'
+- workflow_id: null
+  step_id: 13
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: createAutoTransfer\narguments:\n  refinedQuery: \"Set up a recurring\
+      \ payment from my Ally Bank checking account to David Lee's Ally Bank account\
+      \ every 15th of the month for $120 gym fee, with the transfer memo labeled 'Gym'.\"\
+      \n  recipientName: \"David Lee\"\n  bankName: \"Ally Bank\"\n  accountNumber:\
+      \ \"111123456\"\n  amount: 120\n  frequency: \"monthly\"\n  transferDay: \"\
+      15\"\n  routingNumber: \"021000021\"\n  memo: \"Gym\"\ntool_call_result:\n \
+      \ data:\n    refinedQuery: \"Set up a recurring payment from my Ally Bank checking\
+      \ account to David Lee's Ally Bank account every 15th of the month for $120\
+      \ gym fee, with the transfer memo labeled 'Gym'.\"\n    recipientName: \"David\
+      \ Lee\"\n    bankName: \"Ally Bank\"\n    accountNumber: \"111123456\"\n   \
+      \ amount: 120\n    frequency: \"monthly\"\n    transferDay: \"15\"\n    routingNumber:\
+      \ \"021000021\"\n    memo: \"Gym\"\n    status: \"Automatic transfer successfully\
+      \ registered\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: '◾Message Sent Notification:
+
+
+      - Recipient: PT Coach
+
+      - Message Content: "I had chicken breast for dinner tonight."
+
+      - Delivery Status: Completed
+
+
+
+      ◾Auto-Payment Registration Notification:
+
+
+      - Transfer To: David Lee (Ally Bank)
+
+      - Transfer Amount: $120
+
+      - Transfer Cycle: Every 15th of the month
+
+      - Transfer Memo: "Gym"
+
+      - Registration Status: Completed
+
+
+      The requested message delivery and auto-payment registration have been successfully
+      completed.'

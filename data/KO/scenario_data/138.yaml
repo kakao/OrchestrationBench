@@ -1,0 +1,182 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 11월 11일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 금쪽같은 내새끼 다음주 방송 놓치지 않게 당일에 한시간 전쯤 리마인드 알림 설정해줘. 우리 아이랑 비슷해서 꼭 챙겨보려고.
+      오은영 박사님은 어떤 분이야? 이분이 한 말이 되게 와닿더라고. 출연하는 다른 방송이나 저서 알려줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      '금쪽같은 내새끼' 다음 주 방송 날짜와 시간 확인\"\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"'금쪽같은 내새끼' 다음 주 방송 날짜와 시간을 확인하고 방송 당일 한 시간 전에 리마인드 알림\
+      \ 설정\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n  \
+      \  - status: pending\n      name: person_agent\n      refined_query: \"오은영 박사의\
+      \ 인물 정보와 출연 중인 방송 및 저서 목록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"'금쪽같은 내새끼' 다음\
+      \ 주 방송 날짜와 시간 확인\"\n  programTitle: \"금쪽같은 내새끼\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"'금쪽같은 내새끼' 다음 주 방송 날짜와 시간 확인\"\n    programTitle: \"금쪽같은\
+      \ 내새끼\"\n    broadcastSchedule:\n      - date: \"11월 18일\"\n        day: \"\
+      화요일\"\n        time: \"오후 8시\"\n    status: \"방송 일정 검색 완료\"\n    notes: \"방송\
+      \ 일정은 변경될 수 있으니 사전에 확인 바랍니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"오은영 박사의 인물 정보와 출연 중인\
+      \ 방송 및 저서 목록\"\n  personName: \"오은영\"\n  roleType: \"의사\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"오은영 박사의 인물 정보와 출연 중인 방송 및 저서 목록\"\n    personName:\
+      \ \"오은영\"\n    roleType: \"의사\"\n    profile:\n      personalInfo:\n       \
+      \ name: \"오은영\"\n        occupation: \"의사, 정신건강의학과 전문의\"\n        knownFor:\
+      \ \"아동 및 가족 상담 전문가\"\n      tvAppearances:\n        - programTitle: \"금쪽같은 내새끼\"\
+      \n          role: \"전문가 패널\"\n          description: \"가족 문제 해결 및 자문 제공\"\n\
+      \        - programTitle: \"우리 아이가 달라졌어요\"\n          role: \"주요 전문가\"\n    \
+      \      description: \"아동 행동 교정 및 부모 지도\"\n        - programTitle: \"금쪽상담소\"\n\
+      \          role: \"호스트\"\n          description: \"심도 있는 상담과 솔루션 제공\"\n    \
+      \  publications:\n        - bookTitle: \"어쩌다 어른 - 오은영의 육아 상담실\"\n          year:\
+      \ 2020\n          description: \"육아와 관련된 현실적인 조언 제공\"\n        - bookTitle:\
+      \ \"불안한 아이들 건강하게 키우기\"\n          year: 2018\n          description: \"아이들의\
+      \ 정신 건강과 양육 방법 탐구\"\n    status: \"정보 검색 완료\"\n    notes: \"오은영 박사는 다양한 방송 및\
+      \ 저술 활동을 통해 많은 부모들과 가족들에게 도움을 주고 있습니다.\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"11월 18일 오후 8시에 방영하는\
+      \ '금쪽같은 내새끼' 시청을 위해, 당일 오후 7시에 리마인드 알림 설정\"\n  reminderContent: \"'금쪽같은 내새끼'\
+      \ 시청하기\"\n  reminderTime: \"2025-11-18T19:00\"\n  repeatRule: \"none\"\n  priority:\
+      \ \"normal\"\n  deliveryMethod: \"chat\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"11월 18일 오후 8시에 방영하는 '금쪽같은 내새끼' 시청을 위해, 당일 오후 7시에 리마인드 알림 설정\"\n    reminderContent:\
+      \ \"'금쪽같은 내새끼' 시청하기\"\n    reminderTime: \"2025-11-18T19:00\"\n    repeatRule:\
+      \ \"none\"\n    priority: \"normal\"\n    deliveryMethod: \"chat\"\n    status:\
+      \ \"리마인드 설정 완료\"\n    notes: \"11월 18일 오후 7시에 '금쪽같은 내새끼' 시청을 위한 알림이 채팅으로 전송됩니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "◾리마인더 알림 설정 완료\n\n다음 주에 방영하는 '금쪽같은 내새끼' 시청을 잊지 않도록 알림을 설정해드렸습니다.\n\n\
+      - 방송일: 11월 18일\n- 방송시간: 오후 8시\n- 리마인드 시간: 11월 18일 오후 7시\n- 알림 내용: '금쪽같은 내새끼'\
+      \ 시청하기\n\n방송 당일 설정된 시간에 리마인드 알림이 채팅을 통해 전송됩니다. 즐거운 시청 되세요!\n\n\n◾오은영 박사의 인물\
+      \ 정보와 활동 내역\n\n- 인물 정보:\n  - 이름: 오은영\n  - 직업: 의사, 정신건강의학과 전문의\n  - 전문 분야: 아동\
+      \ 및 가족 상담 전문가\n\n- 출연 중인 방송:\n  - '금쪽같은 내새끼': 가족 문제 해결 및 자문을 제공하는 전문가 패널로 활동\n\
+      \  - '우리 아이가 달라졌어요': 아동 행동 교정과 부모 지도에 대한 주요 전문가로 출연\n  - '금쪽상담소': 심도 있는 상담과\
+      \ 솔루션을 제공하는 호스트로 활약\n\n- 저서 목록:\n  - \"어쩌다 어른 - 오은영의 육아 상담실\" (2020): 육아와 관련된\
+      \ 현실적인 조언 제공\n  - \"불안한 아이들 건강하게 키우기\" (2018): 아이들의 정신 건강과 양육 방법 탐구\n\n오은영 박사는\
+      \ 다양한 방송과 저술을 통해 많은 부모들과 가족들에게 도움을 주고 있습니다."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 금쪽상담소는 뭐야? 금쪽같은 내새끼랑 다른거야? 아무튼 나도 사춘기 자녀를 키우며 생기는 갈등 때문에 스트레스가 심해서 상담
+      좀 받고 싶네.
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"'금쪽같은 내새끼' 다음 주 방송 날짜와 시간 확인\"\n    - status: completed\n      name: calendar_agent\n\
+      \      refined_query: \"'금쪽같은 내새끼' 다음 주 방송 날짜와 시간을 확인하고 방송 당일 한 시간 전에 리마인드 알림\
+      \ 설정\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: person_agent\n      refined_query: \"\
+      오은영 박사의 인물 정보와 출연 중인 방송 및 저서 목록\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"'금쪽상담소' 프로그램 소개와 '금쪽같은 내새끼'와의 차이점 비교\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: counsel_agent\n      refined_query: \"사춘기 자녀를 키우며 생기는 갈등으로 인한 스트레스에\
+      \ 대해 상담 요청\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"'금쪽상담소' 프로그램 소개와\
+      \ '금쪽같은 내새끼'와의 차이점 비교\"\n  programTitle: \"금쪽상담소\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"'금쪽상담소' 프로그램 소개와 '금쪽같은 내새끼'와의 차이점 비교\"\n    programTitle:\
+      \ \"금쪽상담소\"\n    programInfo:\n      introduction: \"금쪽상담소는 심도 있는 상담과 솔루션을 제공하는\
+      \ 프로그램으로, 다양한 고민을 가진 사람들에게 전문가의 조언과 지침을 제공합니다.\"\n      differences:\n     \
+      \   - aspect: \"포맷\"\n          금쪽상담소: \"개인적인 고민과 문제를 중심으로 상담을 진행\"\n      \
+      \    금쪽같은 내새끼: \"가족과 자녀의 관계 문제를 중심으로 솔루션 제공\"\n        - aspect: \"대상\"\n  \
+      \        금쪽상담소: \"모든 연령층을 대상으로 한 다양한 상담\"\n          금쪽같은 내새끼: \"가족 및 자녀와 관련된\
+      \ 문제를 가진 부모 대상\"\n    status: \"정보 검색 완료\"\n    notes: \"두 프로그램 모두 오은영 박사가 출연하여\
+      \ 다양한 문제 해결을 돕고 있습니다.\""
+- workflow_id: workflow_4
+  step_id: 11
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"사춘기 자녀를 키우며 생기는 갈등으로\
+      \ 인한 스트레스에 대해 상담 요청\"\ntool_call_result:\n  data:\n    refinedQuery: \"사춘기 자녀를\
+      \ 키우며 생기는 갈등으로 인한 스트레스에 대해 상담 요청\"\n    advice:\n      message: \"사춘기 자녀와의 갈등은\
+      \ 많은 부모들이 겪는 자연스러운 과정입니다. 스트레스를 줄이기 위해 다음과 같은 방법을 시도해 볼 수 있습니다:\"\n      tips:\n\
+      \        - \"자녀의 입장에서 생각해 보기: 사춘기는 많은 변화가 있는 시기이므로 그들의 입장을 이해하려 노력합니다.\"\n \
+      \       - \"열린 대화: 자녀와 솔직하게 대화할 수 있는 분위기를 조성합니다.\"\n        - \"일관된 규칙 설정: 가정\
+      \ 내의 규칙과 기대를 명확하게 하고 일관되게 적용합니다.\"\n        - \"자기 돌봄: 부모 자신이 스트레스를 관리할 수 있는\
+      \ 시간을 가져야 합니다.\"\n        - \"전문가 상담 고려: 필요하다면 가족 상담 전문가의 도움을 받는 것도 좋은 방법입니다.\"\
+      \n    status: \"상담 조언 제공 완료\"\n    notes: \"사춘기의 갈등은 자연스러운 과정이며, 적절한 소통과 이해가\
+      \ 중요합니다.\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '◾금쪽상담소 프로그램 소개
+
+
+      금쪽상담소는 심도 있는 상담과 솔루션을 제공하는 프로그램으로, 다양한 고민을 가진 사람들에게 전문가의 조언과 지침을 제공합니다. 이 프로그램은
+      다음과 같은 차이점이 있습니다:
+
+
+      - 포맷: 금쪽상담소는 개인적인 고민과 문제를 중심으로 상담을 진행하는 반면, 금쪽같은 내새끼는 가족과 자녀의 관계 문제를 중심으로 솔루션을
+      제공합니다.
+
+      - 대상: 금쪽상담소는 모든 연령층을 대상으로 한 다양한 상담을 진행하지만, 금쪽같은 내새끼는 가족 및 자녀와 관련된 문제를 가진 부모를
+      대상으로 합니다.
+
+
+      두 프로그램 모두에서 오은영 박사가 출연하여 다양한 문제 해결을 돕고 있습니다.
+
+
+
+      ◾심리 상담 및 조언 제공
+
+
+      사춘기 자녀와의 갈등으로 인한 스트레스는 많은 부모들이 경험하는 자연스러운 과정입니다. 이를 관리하는 데 도움이 되는 몇 가지 조언을 드립니다:
+
+
+      - 자녀의 입장에서 생각해 보기: 사춘기는 많은 변화가 있는 시기이므로 그들의 입장을 이해하려 노력합니다.
+
+      - 열린 대화: 자녀와 솔직하게 대화할 수 있는 분위기를 조성합니다.
+
+      - 일관된 규칙 설정: 가정 내의 규칙과 기대를 명확하게 하고 일관되게 적용합니다.
+
+      - 자기 돌봄: 부모 자신이 스트레스를 관리할 수 있는 시간을 가져야 합니다.
+
+      - 전문가 상담 고려: 필요하다면 가족 상담 전문가의 도움을 받는 것도 좋은 방법입니다.
+
+
+      이러한 방법을 시도하여 스트레스를 줄이시길 바라며, 필요할 경우 전문가의 상담을 고려해 보시는 것도 좋습니다.'

@@ -1,0 +1,151 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'userId: USR123331123'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I ordered some raw dog food yesterday, but it has cabbage in it and my
+      dog is allergic. Please cancel that order and show me products without cabbage
+      so that I can buy again.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Check\
+      \ the raw dog food I ordered yesterday\"\n    - status: pending\n      name:\
+      \ shopping_agent\n      refined_query: \"Cancel the raw dog food I ordered yesterday\"\
+      \n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"Recommend raw\
+      \ dog food without cabbage\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"Buy raw dog food without cabbage\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check the raw dog\
+      \ food I ordered yesterday\"\n  userId: \"USR123331123\"\ntool_call_result:\n\
+      \  data:\n    userId: \"USR123331123\"\n    productName: \"Natural Table Duck\
+      \ Raw Food 2kg (Duck + Pumpkin)\"\n    orderDate: \"2025-07-16\"\n    orderId:\
+      \ \"20250423\"\n    deliveryStatus: \"Preparing for shipment\"\n    estimatedArrival:\
+      \ \"2025-07-18\"\n    paymentMethod: \"PayPal\"\n    quantity: 1\n    totalPrice:\
+      \ \"$32.00\"\n    deliveryAddress: \"123 Main St, Apt 0, Los Angeles, CA 90001\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Recommended Natural\
+      \ Table brand raw dog food without cabbage\"\n  productCategory: \"raw dog food\"\
+      \n  brand: \"Natural Table\"\n  sortBy: \"latest\"\ntool_call_result:\n  products:\n\
+      \    - name: \"Natural Table Chicken Raw Food 200g\"\n      brand: \"Natural\
+      \ Table\"\n      description: \"Chicken-based raw food recipe without cabbage\"\
+      \n      price: \"$7.50\"\n      availability: \"Available\"\n      purchaseLink:\
+      \ \"https://example.com/product/1\"\n      productId: \"ID7903\"\n\n    - name:\
+      \ \"Natural Table Salmon Raw Food 200g\"\n      brand: \"Natural Table\"\n \
+      \     description: \"Rich in Omega-3 with salmon and vegetables, no cabbage\"\
+      \n      price: \"$8.00\"\n      availability: \"Available\"\n      purchaseLink:\
+      \ \"https://example.com/product/2\"\n      productId: \"ID7902\"\n\n    - name:\
+      \ \"Natural Table Duck Raw Food 200g\"\n      brand: \"Natural Table\"\n   \
+      \   description: \"Duck with pumpkin and sweet potato. No cabbage added\"\n\
+      \      price: \"$7.80\"\n      availability: \"Available\"\n      purchaseLink:\
+      \ \"https://example.com/product/3\"\n      productId: \"ID7901\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelOrder\narguments:\n  refinedQuery: \"Cancel the raw dog\
+      \ food I ordered yesterday\"\n  orderId: \"20250423\"\n  cancelType: \"full\"\
+      \n  refundMethod: \"original_method\"\ntool_call_result:\n  data:\n    orderId:\
+      \ \"20250423\"\n    cancelType: \"full\"\n    productName: \"Natural Raw Duck\
+      \ Food 2kg (Duck + Pumpkin)\"\n    cancelDate: \"2025-07-18\"\n    refundAmount:\
+      \ \"$32\"\n    refundMethod: \"PayPal\"\n    status: \"Cancellation Completed\""
+- workflow_id: workflow_3
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Product name, delivery address, recipient name, and phone number'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Your order for \"Natural Table Duck Raw Food 2kg (Duck + Pumpkin)\"\
+      \ has been canceled successfully.\n\n▶ From the Natural Table brand, here are\
+      \ some cabbage-free raw dog food options that we recommend:\n\n1. Natural Table\
+      \ Chicken Raw Food 200g\n   * Description: Chicken-based raw food recipe without\
+      \ cabbage\n   * Price: $7.50\n   * Purchase link: [https://example.com/product/1](https://example.com/product/1)\n\
+      \n2. Natural Table Salmon Raw Food 200g\n   * Description: Salmon-based raw\
+      \ food recipe with vegetables, no cabbage\n   * Price: $8.00\n   * Purchase\
+      \ link: [https://example.com/product/2](https://example.com/product/2)\n\n3.\
+      \ Natural Table Duck Raw Food 200g\n   * Description: Duck with pumpkin and\
+      \ sweet potato, no cabbage added\n   * Price: $7.80\n   * Purchase link: [https://example.com/product/3](https://example.com/product/3)\n\
+      \nHave you decided which product you’d like? Please provide the product name\
+      \ and your full name, phone number, and shipping address, and I’ll help you\
+      \ place the order."
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 'I''d like to order 5 items with duck, pumpkin, and sweet potato.
+
+      123 Main St, Apt 0, Los Angeles, CA 90001
+
+      Alex Lee (202)555-0100'
+- workflow_id: null
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"Order 5 packs of\
+      \ Natural Table Duck Raw Food 200g\"\n  productItems:\n    - productName: \"\
+      Natural Table Duck Raw Food 200g\"\n      productId: \"ID7901\"\n      quantity:\
+      \ 5\n      price: 7.80\n  userId: \"USR123331123\"\n  shippingAddress:\n   \
+      \ recipient: \"Alex Lee\"\n    address: \"123 Main St, Apt 0, Los Angeles, CA\
+      \ 90001\"\n    phone: \"(202)555-0100\"\ntool_call_result:\n  productName: \"\
+      Natural Table Duck Raw Food 200g\"\n  quantity: 5\n  totalPrice: \"$39.00\"\n\
+      \  estimatedDelivery: \"2025-07-24\"\n  shippingAddress: \"123 Main St, Apt\
+      \ 0, Los Angeles, CA 90001\"\n  paymentMethod: \"PayPal\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 'Based on your input, your order has been placed successfully:
+
+
+      * Product: Natural Table Duck Raw Food 200g
+
+      * Quantity: 5 packs
+
+      * Shipping Address: 123 Main St, Apt 0, Los Angeles, CA 90001
+
+      * Recipient: Alex Lee
+
+      * Phone: (202)555-0100
+
+      * Total Price: \$39.00
+
+      * Estimated Delivery: 2025-07-24
+
+      * Payment Method: PayPal
+
+
+      Your order is confirmed and it will arrive by the estimated delivery date.'

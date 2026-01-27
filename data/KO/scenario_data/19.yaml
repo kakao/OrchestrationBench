@@ -1,0 +1,129 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2026-01-01
+
+      - userId: user_3f9b8a72c4
+
+      - 이름: 강수령
+
+      - 연락처: 010-4455-5544'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 어제 배송 온 모자 색상을 좀 바꾸려고. 그리구 2월에 잡혀있는 숙소 날짜도 바꿔야해
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"어제 배송\
+      \ 온 모자 주문 내역 조회\"\n    - status: pending\n      name: shopping_agent\n     \
+      \ refined_query: \"어제 배송 온 모자 색상 교환\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: travel_agent\n \
+      \     refined_query: \"2월에 예약된 숙소 내역 조회\"\n    - status: pending\n      name:\
+      \ travel_agent\n      refined_query: \"2월에 예약된 숙소 날짜 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"어제 배송 온 모자 주문 내역\
+      \ 조회\"\n  userId: \"user_3f9b8a72c4\"\n  recipientName: \"강수령\"\n  phoneNumber:\
+      \ \"010-4455-5544\"\ntool_call_result:\n  data:\n    query: \"어제 배송 온 모자 주문\
+      \ 내역 조회\"\n    userId: \"user_3f9b8a72c4\"\n    recipientName: \"강수령\"\n   \
+      \ phoneNumber: \"010-4455-5544\"\n    orders:\n      - orderId: \"order_789654123\"\
+      \n        productId: \"emis_cap_001\"\n        productName: \"emis 캡모자\"\n \
+      \       option: \"gray\"\n        orderDate: \"2025-12-28\"\n        deliveryDate:\
+      \ \"2025-12-31\"\n        status: \"배송 완료\"\n        quantity: 1\n        price:\
+      \ 25000\n        paymentMethod: \"신용카드\"\n    status: \"조회 완료\"\n  source: \"\
+      주문 관리 시스템\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationReservation\narguments:\n  refinedQuery: \"2월에\
+      \ 예약된 숙소 내역 조회\"\n  userId: \"user_3f9b8a72c4\"\n  name: \"강수령\"\n  contactNumber:\
+      \ \"010-4455-5544\"\ntool_call_result:\n  data:\n    query: \"2월 예약된 숙소 내역 조회\"\
+      \n    userId: \"user_3f9b8a72c4\"\n    name: \"강수령\"\n    contactNumber: \"\
+      010-4455-5544\"\n    reservations:\n      - reservationId: \"resv_20260215_001\"\
+      \n        accommodationName: \"삿포로 그랜드 호텔\"\n        location: \"삿포로\"\n   \
+      \     checkInDate: \"2026-02-15\"\n        checkOutDate: \"2026-02-20\"\n  \
+      \      status: \"confirmed\"\n        guests: 1\n        roomType: \"스탠다드 더블룸\"\
+      \n        price: 450000\n        paymentMethod: \"신용카드\"\n        reservationDate:\
+      \ \"2025-12-20\"\n    status: \"조회 완료\"\n  source: \"숙박 예약 시스템\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 변경할 색상 정보'
+- workflow_id: workflow_2
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 변경하려는 숙소 체크인 날짜, 체크아웃 날짜'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "모자 색상 교환과 숙소 예약 변경을 도와드리기 위해서는 아래 정보가 필요해요.\n\n1. 모자 교환\n: 현재 주문 내역에는\
+      \ ‘emis 캡모자 (색상: gray)’가 배송 완료된 상태로 확인돼요. \n교환하실 원하는 색상을 알려주세요.\n\n2. 숙소 예약\
+      \ 변경\n: 예약된 일정은 2026년 2월 15일 ~ 2월 20일, 삿포로 그랜드 호텔입니다. \n변경하실 체크인·체크아웃 날짜를 알려주시면\
+      \ 도와드릴게요.\n\n필요한 정보를 주시면 바로 변경해 드리겠습니다!"
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: blue. 호텔은 2월 17일부터 22일까지로 변경할거야
+- workflow_id: workflow_1
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: exchangeProducts\narguments:\n  refinedQuery: \"emis 캡모자를 blue로\
+      \ 색상 교환\"\n  orderId: \"order_789654123\"\n  itemList:\n    - productId: \"\
+      emis_cap_001\"\n      quantity: 1\n  exchangeOption:\n    color: \"blue\"\n\
+      tool_call_result:\n  data:\n    query: \"emis 캡모자를 blue로 색상 교환\"\n    orderId:\
+      \ \"order_789654123\"\n    itemList:\n      - productId: \"emis_cap_001\"\n\
+      \        quantity: 1\n    exchangeOption:\n      color: \"blue\"\n    exchangeStatus:\
+      \ \"접수 완료\"\n    message: \"emis 캡모자 색상 교환 요청이 정상 접수되었습니다. 빠른 처리 진행하겠습니다.\"\n\
+      \  source: \"주문 교환 시스템\""
+- workflow_id: workflow_2
+  step_id: 11
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyAccommodation\narguments:\n  refinedQuery: \"삿포로 그랜드 호텔을\
+      \ 2월 17일부터 22일까지로 예약 날짜 변경\"\n  reservationId: \"resv_20260215_001\"\n  modifiedCheckInDate:\
+      \ \"2026-02-17\"\n  modifiedCheckOutDate: \"2026-02-22\"\ntool_call_result:\n\
+      \  data:\n    query: \"삿포로 그랜드 호텔을 2월 17일부터 22일까지로 예약 날짜 변경\"\n    reservationId:\
+      \ \"resv_20260215_001\"\n    modifiedCheckInDate: \"2026-02-17\"\n    modifiedCheckOutDate:\
+      \ \"2026-02-22\"\n    status: \"변경 완료\"\n    message: \"삿포로 그랜드 호텔 예약이 2월 17일부터\
+      \ 22일까지로 성공적으로 변경되었습니다.\"\n  source: \"숙박 예약 시스템\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "모자 교환 및 숙소 예약 변경이 정상적으로 처리되었습니다.\n\n1. 상품 교환 안내\n\n• 상품명: emis 캡모자\n\
+      • 처리 내용: 요청하신 blue 색상으로 교환이 접수되었습니다.  \n• 상태: 접수 완료\n\n2. 숙소 예약 변경 안내\n\n• 숙소:\
+      \ 삿포로 그랜드 호텔\n• 변경 전: 2026년 2월 15일 ~ 2월 20일\n• 변경 후: 2026년 2월 17일 ~ 2월 22일\n\
+      \n예약 일정이 성공적으로 변경되었습니다."

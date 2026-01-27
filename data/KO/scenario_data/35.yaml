@@ -1,0 +1,113 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-08-08
+
+      - userId: user_987654
+
+      - 이름: 이바우
+
+      - 연락처: 010-1717-7171
+
+      - 시간: 10:10'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 아까 티셔츠 2개 주문한거랑 어제 지갑 주문한 거 있잖아~ 티셔츠 2개 중 핑크색만 취소하고, 지갑은 포장 옵션 추가하고,
+      내용은 '추카포카'로 메시지도 추가하는 걸로 주문 변경해줘. 아 이번 주 토요일 수지 생일인거 내 캘린더에  '선물 챙기기' 메모와 함께
+      등록해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"오늘 주문한\
+      \ 티셔츠 2개 주문 조회\"\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"오늘 주문한 티셔츠 2개 중 핑크색만 주문 취소\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"어제 주문한 지갑 주문 조회\"\n    - status: pending\n      name:\
+      \ shopping_agent\n      refined_query: \"포장 옵션과 '추카포카' 메시지를 추가하여 어제 주문한 지갑 주문\
+      \ 변경\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n  \
+      \  - status: pending\n      name: calendar_agent\n      refined_query: \"이번\
+      \ 주 토요일 '선물 챙기기' 메모와 함께 수지 생일 일정 등록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"오늘 주문한 티셔츠 2개 주문\
+      \ 조회\"\n  userId: \"user_987654\"\n  recipientName: \"이바우\"\n  phoneNumber:\
+      \ \"010-1717-7171\"\n  orderDate: \"2025-08-08\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"오늘 주문한 티셔츠 2개 주문 조회\"\n    userId: \"user_987654\"\n  \
+      \  recipientName: \"이바우\"\n    phoneNumber: \"010-1717-7171\"\n    orderDate:\
+      \ \"2025-08-08\"\n    orders:\n      - orderId: \"ORD20250808-1001\"\n     \
+      \   productName: \"여름용 반팔 티셔츠\"\n        quantity: 2\n        itemIds:\n   \
+      \       - \"ITEM1001\"  # 핑크색 옵션\n          - \"ITEM1002\"  # 화이트색 옵션\n    \
+      \    status: \"주문 완료\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"어제 주문한 지갑 주문 조회\"\
+      \n  userId: \"user_987654\"\n  recipientName: \"이바우\"\n  phoneNumber: \"010-1717-7171\"\
+      \n  orderDate: \"2025-08-07\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"어제 주문한 지갑 주문 조회\"\n    userId: \"user_987654\"\n    recipientName: \"이바우\"\
+      \n    phoneNumber: \"010-1717-7171\"\n    orderDate: \"2025-08-07\"\n    orders:\n\
+      \      - orderId: \"ORD20250807-3001\"\n        productName: \"클래식 가죽 반지갑\"\n\
+      \        color: \"블랙\"\n        quantity: 1\n        status: \"주문 완료\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"이번 주 토요일 '선물 챙기기'\
+      \ 메모와 함께 수지 생일 일정 등록\"\n  title: \"수지 생일\"\n  startDateTime: \"2025-08-09T10:10\"\
+      \n  endDateTime: \"2025-08-09T11:10\"\n  memo: \"선물 챙기기\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"이번 주 토요일 '선물 챙기기' 메모와 함께 수지 생일 일정 등록\"\n    title:\
+      \ \"수지 생일\"\n    startDateTime: \"2025-08-09T10:10\"\n    endDateTime: \"2025-08-09T11:10\"\
+      \n    memo: \"선물 챙기기\"\n    scheduleId: \"SCH20250809-001\"\n    status: \"\
+      일정 등록 완료\""
+- workflow_id: workflow_1
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelOrder\narguments:\n  refinedQuery: \"핑크색 여름용 반팔 티셔츠만 일부\
+      \ 주문 취소\"\n  orderId: \"ORD20250808-1001\"\n  itemIds: \"ITEM1001\"\n  cancelType:\
+      \ \"partial\"\n  refundMethod: \"original_method\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"핑크색 여름용 반팔 티셔츠만 일부 주문 취소\"\n    orderId: \"ORD20250808-1001\"\
+      \n    itemIds: \"ITEM1001\"\n    cancelType: \"partial\"\n    refundMethod:\
+      \ \"original_method\"\n    cancelStatus: \"부분 취소 완료\"\n    refundStatus: \"\
+      환불 처리 중\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyOrder\narguments:\n  refinedQuery: \"포장 옵션과 '추카포카' 메시지를\
+      \ 추가하여 지갑 주문 변경\"\n  orderId: \"ORD20250807-3001\"\n  newGiftOption:\n    wrap:\
+      \ true\n    message: \"추카포카\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"포장 옵션과 '추카포카' 메시지를 추가하여 지갑 주문 변경\"\n    orderId: \"ORD20250807-3001\"\n\
+      \    newGiftOption:\n      wrap: true\n      message: \"추카포카\"\n    modifyStatus:\
+      \ \"주문 변경 완료\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "주문 및 일정 처리 결과 안내드립니다!\n\n1. 티셔츠 주문 취소 내역\n\n• 주문번호: ORD20250808-1001\n\
+      • 상품명: 여름용 반팔 티셔츠 (총 2개 중)\n• 핑크색 옵션(ITEM1001)**만 부분 취소 완료\n• 상태: 환불 처리 중\n\
+      • 화이트색 티셔츠(ITEM1002)**는 그대로 유지됩니다.\n\n2. 지갑 주문 변경 내역\n\n• 주문번호: ORD20250807-3001\n\
+      • 상품명: 클래식 가죽 반지갑 (블랙)\n• 변경 사항:\n  - 선물 포장 추가\n  - 메시지: '추카포카'\n• 상태: 주문 변경\
+      \ 완료\n\n3. 캘린더 일정 등록\n\n• 일정: 수지 생일\n• 일시: 2025년 8월 9일 (토) 오전 10:10 ~ 11:10\n\
+      • 메모: 선물 챙기기\n• 상태: 일정 등록 완료"

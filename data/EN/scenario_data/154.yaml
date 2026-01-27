@@ -1,0 +1,265 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- date: 2026-01-15
+
+      - User Name: Ryan Park'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I heard there was a major fire in Bali. Can you check the news and see
+      how much was the damage? Please cancel the flight I booked for Bali and instead
+      look for a flight to Hawaii on February 1st. Also, is the weather in Hawaii
+      good in February?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: news_agent\n      refined_query: \"Scale of damage\
+      \ from Bali fire\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"Check my booking details for flight to Bali\"\n    - status: pending\n \
+      \     name: travel_agent\n      refined_query: \"Cancel my flight booking to\
+      \ Bali\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: travel_agent\n      refined_query: \"Flight\
+      \ information for Hawaii on February 1\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: weather_agent\n\
+      \      refined_query: \"Hawaii weather in February\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"Bali fire damage scale\"\
+      \n  limit: 5\ntool_call_result:\n  data:\n    refinedQuery: \"Bali fire damage\
+      \ scale\"\n    newsArticles:\n      - title: \"Massive fire breaks out in Bali,\
+      \ damage continues to grow\"\n        description: \"A large fire recently broke\
+      \ out in Bali, forcing hundreds to evacuate and destroying dozens of buildings.\"\
+      \n        source: \"The Washington Post (US)\"\n        publishDate: \"2026-01-13\"\
+      \n        url: \"https://news.example.com/washington-post/2026-01-13-bali-massive-fire\"\
+      \n      - title: \"Bali fire deals heavy blow to tourism industry\"\n      \
+      \  description: \"Major tourist attractions in Bali have been damaged by the\
+      \ fire, and the tourism industry is expected to suffer greatly.\"\n        source:\
+      \ \"USA Today (US)\"\n        publishDate: \"2026-01-14\"\n        url: \"https://news.example.com/usa-today/2026-01-14-bali-tourism-impact\"\
+      \n      - title: \"Cause of Bali fire under investigation, human error not ruled\
+      \ out\"\n        description: \"Authorities in Bali are investigating the cause\
+      \ of the fire, and they have not ruled out the possibility of human error.\"\
+      \n        source: \"The New York Times (US)\"\n        publishDate: \"2026-01-13\"\
+      \n        url: \"https://news.example.com/new-york-times/2026-01-13-bali-fire-cause\"\
+      \n      - title: \"Recovery efforts begin at Bali fire site\"\n        description:\
+      \ \"Authorities have begun recovery work in the fire-affected areas of Bali,\
+      \ and they are providing support to help displaced residents.\"\n        source:\
+      \ \"Associated Press (US)\"\n        publishDate: \"2026-01-15\"\n        url:\
+      \ \"https://news.example.com/ap/2026-01-15-bali-recovery-efforts\"\n      -\
+      \ title: \"Bali requests international aid following fire\"\n        description:\
+      \ \"The Bali government has appealed to the international community for assistance\
+      \ in recovery efforts after the devastating fire.\"\n        source: \"Los Angeles\
+      \ Times (US)\"\n        publishDate: \"2026-01-15\"\n        url: \"https://news.example.com/la-times/2026-01-15-bali-requests-aid\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reserver’s contact information'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"Check flight information\
+      \ for Hawaii on February 1st\"\n  departure: \"JFK\"\n  destination: \"Hawaii\"\
+      \n  departureDate: \"2026-02-01\"\ntool_call_result:\n  flights:\n    - flight_number:\
+      \ KE001\n      tripId: FLIGHT-2026-0201-JFK-HNL-KE001\n      airline: \"Hawaiian\
+      \ Airlines\"\n      departure_airport: JFK\n      arrival_airport: HNL\n   \
+      \   departure_time: \"2026-02-01T09:00\"\n      arrival_time: \"2026-02-01T20:30:00-10:00\"\
+      \n      duration: \"11h 30m\"\n      price: 1500\n      currency: USD\n    \
+      \  seat_class: Economy\n      available_seats: 25\n    - flight_number: OZ123\n\
+      \      tripId: FLIGHT-2026-0201-JFK-HNL-OZ123\n      airline: \"American Airlines\"\
+      \n      departure_airport: JFK\n      arrival_airport: HNL\n      departure_time:\
+      \ \"2026-02-01T13:00\"\n      arrival_time: \"2026-02-01T02:30:00-10:00\"\n\
+      \      duration: \"11h 30m\"\n      price: 1450\n      currency: USD\n     \
+      \ seat_class: Economy\n      available_seats: 30\n    - flight_number: DL456\n\
+      \      tripId: FLIGHT-2026-0201-JFK-HNL-DL456\n      airline: \"Delta Air Lines\"\
+      \n      departure_airport: JFK\n      arrival_airport: HNL\n      departure_time:\
+      \ \"2026-02-01T17:00\"\n      arrival_time: \"2026-02-01T06:30:00-10:00\"\n\
+      \      duration: \"11h 30m\"\n      price: 1520\n      currency: USD\n     \
+      \ seat_class: Economy\n      available_seats: 20"
+- workflow_id: workflow_4
+  step_id: 7
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getGlobalWeather\narguments:\n  refinedQuery: \"Hawaii weather\
+      \ in February\"\n  location: \"Hawaii\"\n  date: \"February\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Hawaii weather in February\"\n    location: \"\
+      Hawaii\"\n    date: \"February\"\n    weatherSummary:\n      averageTemperature:\
+      \ \"64°F - 79°F\"\n      conditions: \"Mostly sunny\"\n      precipitation:\
+      \ \"Low rainfall\"\n      wind: \"Northeast winds, averaging 9 mph\"\n     \
+      \ humidity: \"Average humidity around 70%\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: To check your booking details for flight cancellation, I need the contact
+      information of the person who made the reservation.
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: (220) 220-2200
+- workflow_id: workflow_2
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getFlightReservation\narguments:\n  refinedQuery: \"Check my flight\
+      \ reservation for Bali\"\n  contactNumber: \"(220) 220-2200\"\ntool_call_result:\n\
+      \  reservations:\n    - reservationId: \"RESERV-101\"\n      flight_number:\
+      \ \"GA879\"\n      tripId: \"FLIGHT-2026-02-01-JFK-DPS-GA879\"\n      airline:\
+      \ \"Garuda Indonesia\"\n      departure_airport: \"JFK\"\n      arrival_airport:\
+      \ \"DPS\"\n      departure_time: \"2026-02-01T10:00:00+09:00\"\n      arrival_time:\
+      \ \"2026-02-01T16:00:00+08:00\"\n      seat_class: \"Economy\"\n      passenger_name:\
+      \ \"Ryan Park\"\n      seat_number: \"15A\"\n      price: 900\n      currency:\
+      \ USD\n      status: \"confirmed\"\n      change_count: 0"
+- workflow_id: null
+  step_id: 11
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelFlight\narguments:\n  refinedQuery: \"Cancel my flight booking\
+      \ for Bali\"\n  reservationId: \"RESERV-101\"\n  refundMethod: \"original_payment\"\
+      \ntool_call_result:\n  cancellation:\n    reservationId: \"RESERV-101\"\n  \
+      \  status: \"canceled\"\n    refundAmount: 900\n    currency: USD\n    refundMethod:\
+      \ \"original_payment\"\n    message: \"Your refund has been processed. The refund\
+      \ amount will be returned using your original payment method.\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ Recent News on the Major Fire in Bali
+
+
+      1. “Massive fire breaks out in Bali, damage continues to grow” — The Washington
+      Post (US) — 2026-01-13
+
+      URL: https://news.example.com/washington-post/2026-01-13-bali-massive-fire
+
+
+      2. “Bali fire deals heavy blow to tourism industry” — USA Today (US) — 2026-01-14
+
+      URL: https://news.example.com/usa-today/2026-01-14-bali-tourism-impact
+
+
+      3. “Cause of Bali fire under investigation, human error not ruled out” — The
+      New York Times (US) — 2026-01-13
+
+      URL: https://news.example.com/new-york-times/2026-01-13-bali-fire-cause
+
+
+      4. “Recovery efforts begin at Bali fire site” — Associated Press (US) — 2026-01-15
+
+      URL: https://news.example.com/ap/2026-01-15-bali-recovery-efforts
+
+
+      5. “Bali requests international aid following fire” — Los Angeles Times (US)
+      — 2026-01-15
+
+      URL: https://news.example.com/la-times/2026-01-15-bali-requests-aid
+
+
+      Multiple reports highlight the severity of the situation, and international
+      attention and support are urgently needed.
+
+
+
+      ◾ Flight Ticket Cancellation for Bali
+
+      - Reservation number RESERV-101 for Mr. Ryan Park’s flight to Bali has been
+      successfully canceled. A refund of $900 will be processed using the original
+      payment method.
+
+
+
+      ◾ Flight Information for Hawaii on February 1
+
+      - Here are the flight options from Incheon (JFK) to Honolulu (HNL) on February
+      1, 2026:
+
+
+      1. Hawaiian Airlines — KE001
+
+
+      Departure: Sun Feb 1, 2026, 09:00 (JFK, local)
+
+      Arrival: Sun Feb 1, 2026, 20:30 (HNL, HST)
+
+      Duration: 11h 30m
+
+      Price: USD $1,500
+
+      Seats left: 25
+
+
+      2. American Airlines — OZ123
+
+
+      Departure: Sun Feb 1, 2026, 13:00 (JFK, local)
+
+      Arrival: Sun Feb 1, 2026, 02:30 (HNL, HST)
+
+      Duration: 11h 30m
+
+      Price: USD $1,450
+
+      Seats left: 30
+
+
+      3. Delta Air Lines — DL456
+
+
+      Departure: Sun Feb 1, 2026, 17:00 (JFK, local)
+
+      Arrival: Sun Feb 1, 2026, 06:30 (HNL, HST)
+
+      Duration: 11h 30m
+
+      Price: USD $1,520
+
+      Seats left: 20
+
+
+      (All prices are for economy class.)
+
+
+
+      ◾ Hawaii Weather in February
+
+
+      - Average temperature: 64°F to 79°F
+
+      - Conditions: Mostly sunny
+
+      - Rainfall: Low
+
+      - Winds: Northeasterly at about 9 mph
+
+      - Average humidity: 70%
+
+
+      February is a great time to enjoy Hawaii’s mild and sunny weather. Perfect for
+      travel planning.'

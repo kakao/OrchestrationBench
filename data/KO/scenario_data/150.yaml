@@ -1,0 +1,95 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 1월 10일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 폭설이라 배송도 다 늦어지는건가? 내일도 서울에 눈 올 가능성이 있는지 알아봐. 부모님이 보내주신 반찬 배송 현황도 알아봐줘.
+      택배사는 한진택배고 운송장 번호 123765432235야.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"내일 서울 강설\
+      \ 확률\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n  \
+      \  - status: pending\n      name: delivery_agent\n      refined_query: \"한진\
+      \ 택배 운송장 번호 123765432235인 부모님이 보내주신 반찬 택배 배송 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"2025년 1월 11일\
+      \ 서울 강설 확률\"\n  location: \"서울\"\n  date: \"2025-01-11\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"2025년 1월 11일 서울 강설 확률\"\n    location: \"서울\"\n\
+      \    date: \"2025-01-11\"\n    snowProbability: \"80%\"\n    status: \"조회 완료\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"한진 택배 운송장 번호 123765432235인\
+      \ 부모님이 보내주신 반찬 택배 배송 조회\"\n  trackingNumber: \"123765432235\"\n  carrier: \"\
+      한진택배\"\ntool_call_result:\n  data:\n    refinedQuery: \"한진 택배 운송장 번호 123765432235인\
+      \ 부모님이 보내주신 반찬 택배 배송 조회\"\n    trackingNumber: \"123765432235\"\n    carrier:\
+      \ \"한진택배\"\n    currentStatus: \"배송 중\"\n    estimatedDelivery: \"2025-01-10\"\
+      \n    lastLocation: \"서울 물류센터\"\n    status: \"조회 완료\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '◾날씨 예보 안내:
+
+
+      - 위치: 서울
+
+      - 날짜: 2025년 1월 11일
+
+      - 강설 확률: 80%
+
+
+      해당 날짜에 높은 강설 확률이 예상됩니다. 외출 시 따뜻하게 입으시고, 미끄러운 길에 주의하시기 바랍니다. 추가적인 기상 정보를 원하시면
+      언제든지 문의해 주세요!
+
+
+
+      ◾택배 배송 조회 결과:
+
+
+      - 운송장 번호: 123765432235
+
+      - 택배사: 한진택배
+
+      - 현재 상태: 배송 중
+
+      - 마지막 위치: 서울 물류센터
+
+      - 예상 배송일: 2025년 1월 10일
+
+
+      부모님께서 보내주신 반찬은 현재 배송 중이며, 예정된 날짜에 도착할 것으로 보입니다.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 오 다행이다. 오늘 도착하는구나!
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "네, 맞습니다. 반찬이 오늘 도착할 예정이라니 정말 반가운 소식이에요! 맛있게 드시고 부모님께 감사의 인사도 잊지 마세요.\
+      \ \n택배 관련하여 다른 도움이 필요하시거나 추가 질문이 있으시면 언제든지 알려주세요!"

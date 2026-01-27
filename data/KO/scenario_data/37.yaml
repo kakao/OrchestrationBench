@@ -1,0 +1,127 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2024-06-16
+
+      - 시간: 14:20'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 CGV 천안시청점에서 영화 뭐뭐해? 15세 이상 관람 가능한 것 중에!
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      CGV 천안시청점 오늘 15세 이상 관람 가능한 영화 상영 정보\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"CGV 천안시청점 오늘 15세 이상\
+      \ 관람 가능한 영화 상영 정보\"\n  ageRating: \"15세 이상\"\n  isReleased: true\n  theaterLocation:\
+      \ \"CGV 천안시청점\"\n  sortBy: \"releaseDate\"\n  screeningDate: \"2024-06-16\"\n\
+      tool_call_result:\n  data:\n    - movieTitle: \"어벤져스: 엔드게임\"\n      ageRating:\
+      \ \"15세 이상\"\n      releaseDate: \"2024-06-06\"\n      showtimes:\n        -\
+      \ date: \"2024-06-16\"\n          time: \"14:25\"\n          theater: \"CGV\
+      \ 천안시청점\"\n          screen: \"IMAX관\"\n    - movieTitle: \"존 윅 4\"\n      ageRating:\
+      \ \"15세 이상\"\n      releaseDate: \"2024-06-12\"\n      showtimes:\n        -\
+      \ date: \"2024-06-16\"\n          time: \"15:40\"\n          theater: \"CGV\
+      \ 천안시청점\"\n          screen: \"일반관\"\n    - movieTitle: \"매트릭스 리저렉션\"\n    \
+      \  ageRating: \"15세 이상\"\n      releaseDate: \"2024-06-06\"\n      showtimes:\n\
+      \        - date: \"2024-06-16\"\n          time: \"18:40\"\n          theater:\
+      \ \"CGV 천안시청점\"\n          screen: \"4DX관\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "오늘(6/16) CGV 천안시청점 15세 이상 관람 가능 영화\n\n• 어벤져스: 엔드게임\n - 상영: 14:25 (IMAX관)\n\
+      • 존 윅 4\n - 상영: 15:40 (일반관)\n• 매트릭스 리저렉션\n - 상영: 18:40 (4DX관)\n\n→ 현재 시각(14:20)\
+      \ 기준, 곧 어벤져스: 엔드게임 상영이 시작됩니다."
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 어벤져스 엔드게임 빨리 봐야겠다! 뛰어가면 볼 수 있을 거 같아. 저거 2시 25분꺼 예매해줘 아 그리고 '강원 원주시 지정면
+      기업도시로 200 의료기기종합지원센터 405호' 이거 지번 주소로 바꿔주고, 033이 강원도 지역 번호 맞는지 확인해줘
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"CGV 천안시청점 오늘 15세 이상 관람 가능한 영화 상영 정보\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"CGV 천안시청점 2시 25분 영화 어벤져스 엔드게임 예매\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: life_info_agent\n      refined_query: \"'강원 원주시 지정면 기업도시로 200 의료기기종합지원센터\
+      \ 405호'를 지번 주소로 변경\"\n\nworkflow_4:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: life_info_agent\n      refined_query:\
+      \ \"033이 강원도 지역 번호인지 확인\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 상영 10분 전으로 당일 예매 마감되어 예매 불가'
+- workflow_id: workflow_3
+  step_id: 9
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: convertToRoadAddress\narguments:\n  refinedQuery: \"강원 원주시 지정면\
+      \ 기업도시로 200 의료기기종합지원센터 405호'를 지번 주소로 변경\"\n  originalAddress: \"강원 원주시 지정면 기업도시로\
+      \ 200 의료기기종합지원센터 405호\"\n  conversionType: \"toJibun\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"강원 원주시 지정면 기업도시로 200 의료기기종합지원센터 405호'를 지번 주소로\
+      \ 변경\"\n    originalAddress: \"강원 원주시 지정면 기업도시로 200 의료기기종합지원센터 405호\"\n    conversionType:\
+      \ \"toJibun\"\n    convertedAddress: \"강원 원주시 지정면 가곡리 1325 의료기기종합지원센터 405호\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPhoneNumberInfo\narguments:\n  refinedQuery: \"033이 강원도 지역\
+      \ 번호인지 확인\"\n  phoneNumber: \"033\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"033이 강원도 지역 번호인지 확인\"\n    phoneNumber: \"033\"\n    isValidAreaCode: true\n\
+      \    areaName: \"강원도\"\n    description: \"033은 강원도 지역 번호로 맞습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '[영화 예매 안내]
+
+
+      요청하신 어벤져스: 엔드게임 (14:25 상영)은 현재 시각이 14:20으로, 당일 예매는 상영 10분 전에 마감되어 지금 예매가 불가능합니다.
+
+      다른 시간대 상영이나 다른 영화 예매를 확인해 보시는 것을 권장드립니다.
+
+
+      [주소 변환]
+
+
+      • 도로명: 강원 원주시 지정면 기업도시로 200 의료기기종합지원센터 405호
+
+      • 지번: 강원 원주시 지정면 가곡리 1325 의료기기종합지원센터 405호
+
+
+      [지역번호 확인]
+
+
+      033은 강원도 지역번호가 맞습니다.'

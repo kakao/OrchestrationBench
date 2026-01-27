@@ -1,0 +1,109 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '시간: 2025/12/20 15:32'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 잠실종합운동장 근처 공영주차장좀 알려주고 제일 가까운곳 길도 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"잠실 종합운동장\
+      \ 근처 공영주차장\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"잠실 종합운동장 근처 공영주차장 길찾기\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"잠실 종합운동장 근처 공영주차장\"\
+      \n  location: \"잠실 종합운동장\"\n  searchRadius: 500\n  parkingType: \"public\"\n\
+      \  date: \"2025/07/18\"\n  sortBy: \"nearest\"\ntool_call_result:\n  data:\n\
+      \    parkingLots:\n      - name: \"잠실운동장 제1주차장\"\n        address: \"서울 송파구\
+      \ 올림픽로 25\"\n        distance: 180m\n        parkingType: \"public\"\n     \
+      \   priceType: \"hourly\"\n        hourlyRate: \"1,000원\"\n        availableSpots:\
+      \ 42\n        totalSpots: 150\n        openHours: \"00:00 ~ 24:00\"\n\n    \
+      \  - name: \"잠실종합운동장 남문주차장\"\n        address: \"서울 송파구 올림픽로 25길 12\"\n    \
+      \    distance: 250m\n        parkingType: \"public\"\n        priceType: \"\
+      hourly\"\n        hourlyRate: \"1,200원\"\n        availableSpots: 18\n     \
+      \   totalSpots: 100\n        openHours: \"06:00 ~ 23:00\"\n\n      - name: \"\
+      한아름 공영주차장\"\n        address: \"서울 송파구 백제고분로 340\"\n        distance: 600m\n\
+      \        parkingType: \"public\"\n        priceType: \"hourly\"\n        hourlyRate:\
+      \ \"1,000원\"\n        availableSpots: 33\n        totalSpots: 80\n        openHours:\
+      \ \"24시간 운영\""
+- workflow_id: null
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 사용자의 현재 위치'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '가장 가까운 잠실운동장 제1주차장으로 안내 해드릴게요.
+
+      출발지를 알려주세요.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 상암 월드컵경기장
+- workflow_id: workflow_2
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"상암 월드컵경기장에서 잠실운동장\
+      \ 제1주차장 으로 가는 길찾기\"\n  origin: \"상암 월드컵경기장\"\n  destination: \"잠실운동장 제1주차장\"\
+      \n  transportModes: \"car\"\n  optimizeBy: \"fastest\"\n  departureTime: \"\
+      2025-12-20T15:32\"\ntool_call_result:\n  data:\n    origin: \"상암 월드컵경기장\"\n\
+      \    destination: \"잠실운동장 제1주차장\"\n    distance: \"26.4km\"\n    duration: \"\
+      약 38분\"\n    transportMode: \"car\"\n    routeSummary:\n      - step: \"월드컵북로를\
+      \ 따라 동쪽으로 직진\"\n      - step: \"성산로 진입 후 강변북로 방향으로 우회전\"\n      - step: \"강변북로\
+      \ 타고 잠실 방면으로 직진 (약 20km)\"\n      - step: \"삼전사거리에서 우회전 후 올림픽로 진입\"\n      -\
+      \ step: \"잠실운동장 제1주차장 진입\"\n    toll: \"없음\"\n    trafficCondition: \"보통\"\n\
+      \    estimatedArrivalTime: \"2025-07-18T18:20:00+09:00\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '잠실운동장 제1주차장까지 경로 안내드릴게요.
+
+
+      ▶ 출발지: 상암 월드컵경기장
+
+      ▶ 도착지: 잠실운동장 제1주차장
+
+      ▶ 이동수단: 자동차
+
+      ▶ 예상 소요 시간: 약 38분 (거리: 26.4km)
+
+      ▶ 도착 예상 시각: 7월 18일 오후 6시 20분
+
+      ▶ 통행료: 없음
+
+      ▶ 현재 교통 상황: 보통
+
+
+      강변북로 따라 잠실 방면으로 이동하시다가,
+
+      삼전사거리에서 우회전해 올림픽로 진입 후 바로 주차장으로 연결됩니다.'

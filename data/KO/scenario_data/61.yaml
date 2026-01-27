@@ -1,0 +1,125 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '날짜 및 시간: 2025-07-19T10:40'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 맨체스터 시티의 2024-2025 시즌 EPL 최종 순위랑, 팀 내 득점 1위 선수 프로필 알려줘. 그리고 그 선수가 신은
+      축구화 모델 검색해서 제일 싼 곳 문자로 링크 좀 보내줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"맨체스터 시티의\
+      \ 2024-2025 시즌EPL 최종 순위 및 팀 내 득점 1위 선수 확인\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: person_agent\n      refined_query: \"2024-2025 시즌 맨체스터 시티의 득점 1위\
+      \ 선수 프로필 정보 조회\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"2024-2025 시즌 맨체스터 시티의 득점 1위 선수가 신은 축구화 모델 검색 후 가장 싼\
+      \ 곳 검색\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_3\"\n  steps:\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"2024-2025 시즌 맨체스터 시티의 득점 1위 선수가 신은 축구화 파는 가장 싼 곳 문자로\
+      \ 링크 전송\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportRank\narguments:\n  refinedQuery: \"맨체스터 시티의 최근 시즌 EPL\
+      \ 최종 순위, 팀 내 득점 1위 선수 확인\"\n  league: \"EPL\"\n  teamName: \"맨체스터 시티\"\ntool_call_result:\n\
+      \  data:\n    league: \"EPL\"\n    season: \"2024-2025\"\n    teamName: \"맨체스터\
+      \ 시티\"\n    finalStanding:\n      rank: 2\n      points: 86\n      wins: 26\n\
+      \      draws: 8\n      losses: 4\n      goalsFor: 88\n      goalsAgainst: 32\n\
+      \      goalDifference: +56\n    topScorer:\n      playerName: \"Erling Haaland\"\
+      \n      goals: 29\n      appearances: 33\n    note: \"맨체스터 시티는 2024-25 시즌 EPL을\
+      \ 2위로 마감했으며, 엘링 홀란은 팀 내 최다 득점자로 29골을 기록했습니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"엘링 홀란 선수 프로필 정보 조회\"\
+      \n  personName: \"엘링 홀란\"\n  roleType: \"운동선수\"\ntool_call_result:\n  data:\n\
+      \    personName: \"엘링 홀란\"\n    roleType: \"운동선수\"\n    birthDate: \"2000-07-21\"\
+      \n    nationality: \"노르웨이\"\n    groupName: \"맨체스터 시티 FC\"\n    physical: \"\
+      195cm, 94kg\"\n    career:\n      - \"2022~ 맨체스터 시티 FC (잉글랜드)\"\n      - \"\
+      2020~2022 보루시아 도르트문트 (독일)\"\n      - \"2019~2020 레드불 잘츠부르크 (오스트리아)\"\n    recentAwards:\n\
+      \      - \"2025 프리미어 리그 득점왕\"\n      - \"2024 UEFA 올해의 선수\"\n      - \"2024\
+      \ 프리미어 리그 득점왕\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"엘링 홀란 축구화 저렴한 순서로\
+      \ 검색\"\n  productCategory: \"축구화\"\n  sortBy: \"low_price\"\n  source: \"엘링\
+      \ 홀란\"\ntool_call_result:\n  data:\n    products:\n      - productId: \"SHOE-PHANTOM-HL-25\"\
+      \n        productName: \"나이키 팬텀 루나 II 엘리트 FG - 홀란 시그니처\"\n        brand: \"\
+      나이키\"\n        category: \"축구화\"\n        price: 289000\n        description:\
+      \ \"폭발적인 스피드와 강력한 슈팅을 위해 설계된 엘링 홀란의 최신 시그니처 축구화입니다.\"\n        imageUrl: \"\
+      https://example.com/images/nike_phantom_haaland.jpg\"\n        link: \"https://www.cheapest-soccer-mall.com/product/SHOE-PHANTOM-HL-25\"\
+      \n      - productId: \"SHOE-PHANTOM-HL-25-A\"\n        productName: \"나이키 팬텀\
+      \ 루나 II 엘리트 FG - 홀란 시그니처\"\n        brand: \"나이키\"\n        category: \"축구화\"\
+      \n        price: 291500\n        description: \"폭발적인 스피드와 강력한 슈팅을 위해 설계된 엘링\
+      \ 홀란의 최신 시그니처 축구화입니다.\"\n        imageUrl: \"https://example.com/images/nike_phantom_haaland.jpg\"\
+      \n        link: \"https://www.pro-direct-soccer.kr/product/SHOE-PHANTOM-HL-25-A\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 문자 전송을 위한 연락처'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 문자 전송을 위한 연락처를 알려주세요.
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1234-5678
+- workflow_id: null
+  step_id: 10
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"나이키 팬텀 루나 II 엘리트 FG\
+      \ - 홀란 시그니처 최저가 링크 문자 전송\"\n  phoneNumber: \"010-1234-5678\"\n  channel: \"\
+      sms\"\n  message: \"엘링 홀란드가 24-25 시즌 착용한 '나이키 팬텀 루나 II 엘리트 FG - 홀란 시그니처' 최저가\
+      \ 링크입니다: https://www.cheapest-soccer-mall.com/product/SHOE-PHANTOM-HL-25\"\n\
+      \  repeatRule: \"none\"\n  priority: \"normal\"\ntool_call_result:\n  data:\n\
+      \    messageId: \"MSG-20250719-00045\"\n    status: \"sent\"\n    channel: \"\
+      sms\"\n    phoneNumber: \"010-1234-5678\"\n    sentAt: \"2025-07-19T10:42:00+09:00\"\
+      \n    messagePreview: \"엘링 홀란드가 24-25 시즌 착용한 나이키 팬텀 GX II 엘리트 FG 최저가 링크입니다:\
+      \ https://example.com/product/nike-phantom-gx2\"\n    note: \"메시지가 정상적으로 발송되었습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "네, 요청하신 정보 확인이 모두 완료되었습니다.\n\n맨체스터 시티는 2024-2025 EPL 시즌을 최종 2위로 마쳤습니다.\n\
+      \n팀 내 최다 득점 선수는 엘링 홀란이며, 그는 2000년 7월 21일생의 노르웨이 출신 축구 선수로, 현재 잉글랜드 프리미어 리그의\
+      \ 맨체스터 시티 FC에서 활약하고 있습니다. 키 195cm, 몸무게 94kg의 체격을 가진 강력한 공격수로 잘 알려져 있으며, 이전에는\
+      \ 보루시아 도르트문트(독일), 레드불 잘츠부르크(오스트리아)에서도 활약한 바 있습니다.\n\n최근에는 2025 프리미어 리그 득점왕과\
+      \ 2024 UEFA 올해의 선수에 선정되는 등 세계 최고의 스트라이커 중 한 명으로 평가받고 있습니다\n\n엘링 홀란드 선수가 착용하는\
+      \ 최신 축구화 모델은 '나이키 팬텀 루나 II 엘리트 FG'로 확인되었습니다. \n\n검색된 판매처 중 가장 저렴한 곳의 링크 문자메시지로\
+      \ 아래와 같은 내용이 전송되었습니다:\n\n엘링 홀란드가 24-25 시즌 착용한 나이키 팬텀 GX II 엘리트 FG 축구화의 최저가 링크입니다:\n\
+      https://example.com/product/nike-phantom-gx2\n\n더 궁금한 점이나 추가로 찾고 싶은 정보가 있다면\
+      \ 언제든지 알려주세요."

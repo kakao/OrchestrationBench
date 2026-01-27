@@ -1,0 +1,94 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '현재 날짜 : 2025-11-29'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 내일 오후 3시에 퀵으로 서류를 보내야 하는데, 강남역에서 광화문까지 가는 퀵서비스 예약해줘. 보내는 사람은 나, 김민준이고,
+      받는 사람 정보는 이따가 알려줄게. 그리고 퀵기사님에게 출발할 때 나한테 전화해 달라고 문자 남겨줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"내일 오후\
+      \ 3시 강남역에서 광화문으로 가는 퀵서비스 예약. 발송인: 김민준\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: message_agent\n      refined_query: \"퀵 기사님 출발 시 나에게 전화해 달라고 문자\
+      \ 전송\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 보내는 사람의 연락처, 받는 사람의 정보(이름, 연락처)'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 네, 퀵서비스 예약을 진행하겠습니다. 예약을 위해 김민준 님의 연락처와 서류를 받으실 분의 성함, 연락처도 함께 알려주세요.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: '내 연락처는 010-2222-3333이야.
+
+      받을 분은 이정후, 연락처는 010-9876-5432이고.'
+- workflow_id: null
+  step_id: 7
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: bookDeliveryService\narguments:\n  refinedQuery: \"내일 오후 3시에 강남역에서\
+      \ 광화문으로 서류 퀵서비스 예약. 발송인: 김민준(010-2222-3333), 수신인: 이정후(010-9876-5432)\"\n  deliveryType:\
+      \ \"quick\"\n  reservation: true\n  pickupLocation: \"강남역\"\n  dropoffLocation:\
+      \ \"광화문\"\n  pickupTime: \"2025-11-30T15:00:00\"\n  senderInfo:\n    name: \"\
+      김민준\"\n    phone: \"010-2222-3333\"\n  receiverInfo:\n    name: \"이정후\"\n  \
+      \  phone: \"010-9876-5432\"\n  itemDescription: \"일반 서류\"\ntool_call_result:\n\
+      \  data:\n    status: \"confirmed\"\n    reservationId: \"QEXP-20251130-00124\"\
+      \n    deliveryType: \"quick\"\n    pickupTime: \"2025-11-30T15:00:00\"\n   \
+      \ pickupLocation: \"강남역\"\n    dropoffLocation: \"광화문\"\n    itemDescription:\
+      \ \"일반 서류\"\n    sender:\n      name: \"김민준\"\n      phone: \"010-2222-3333\"\
+      \n    receiver:\n      name: \"이정후\"\n      phone: \"010-9876-5432\"\n    driver:\n\
+      \      name: \"박진우\"\n      phone: \"010-7777-8888\"\n      vehicle: \"오토바이\"\
+      \n    estimatedArrival: \"2025-11-30T15:45:00\"\n    note: \"기사님께 픽업 10분 전 알림이\
+      \ 전송됩니다. 서류는 밀봉된 상태로 전달해주세요.\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"퀵서비스 기사님에게 출발 시 전화\
+      \ 달라고 문자 보내기\"\n  phoneNumber: \"010-7777-8888\"\n  channel: \"sms\"\n  message:\
+      \ \"기사님, 픽업 장소로 출발하실 때 저에게 전화 한 통 주시면 감사하겠습니다. (김민준 드림)\"\n  repeatRule: \"\
+      none\"\n  priority: \"normal\"\ntool_call_result:\n  data:\n    status: \"sent\"\
+      \n    channel: \"sms\"\n    phoneNumber: \"010-7777-8888\"\n    sentAt: \"2025-11-29T16:32:00\"\
+      \n    message: \"기사님, 픽업 장소 출발하실 때 저에게 전화 한 통 주시면 감사하겠습니다. (김민준 드림)\"\n    messageId:\
+      \ \"MSG-20251129-00456\"\n    deliveryStatus: \"delivered\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '김민준님, 요청하신 퀵서비스 예약 문자메시지 전송이 모두 완료되었어요!
+
+
+      *   퀵서비스 예약 완료: 내일(11월 30일) 오후 3시, 강남역에서 광화문으로 가는 서류 퀵 배송 예약이 정상적으로 접수되었어요.
+      박진우(010-7777-8888) 기사님이 오토바이로 배송 예정입니다.
+
+      *   문자 메시지 전송 완료 : 퀵서비스 기사님(박진우, 010-7777-8888)께 다음 메시지를 전송했어요: “기사님, 픽업 장소
+      출발하실 때 저에게 전화 한 통 주시면 감사하겠습니다. (김민준 드림)”'

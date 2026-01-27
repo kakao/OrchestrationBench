@@ -1,0 +1,51 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜: 2025-07-14
+
+      - 현재 시각: 17:02'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 7월 16일 오전 10시에 주간 회의 일정 등록해줘. 장소는 카카오 아지트 A동 O16이야.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"7월 16일\
+      \ 오전 10시에 카카오 아지트 A동 O16에서 주간 회의 일정 등록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"7월 16일 오전 10시에 카카오\
+      \ 아지트 A동 O16에서 주간 회의 일정 등록\"\n  title: \"주간 회의\"\n  startDateTime: \"2025-07-16T10:00\"\
+      \n  endDateTime: \"2025-07-16T11:00\"\n  location: \"카카오 아지트 A동 O16\"\ntool_call_result:\n\
+      \  data:\n    scheduleID: \"evt_40256\"\n    title: \"주간 회의\"\n    startDateTime:\
+      \ \"2025-07-16T10:00\"\n    endDateTime: \"2025-07-16T11:00\"\n    location:\
+      \ \"카카오 아지트 A동 O16\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '회의 일정을 다음과 같이 등록 완료했습니다.
+
+
+      -주간 회의
+
+
+      * 일시: 2025년 7월 16일 수요일 오전 10시~ 오전 11시
+
+      * 장소: 카카오 아지트 A동 O16'

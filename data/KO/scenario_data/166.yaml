@@ -1,0 +1,76 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 여자친구 생일 선물을 추천해주고, 선물을 전달하면서 같이 저녁 먹을만한 홍대입구역 근처 맛집도 찾아줘.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"여자친구 생일\
+      \ 선물 추천\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"홍대입구역\
+      \ 근처 여자친구 생일 저녁 식사 맛집 추천\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"여자친구 생일 선물 추천\"\n\
+      \  recipientType: \"연인\"\n  occasion: \"생일\"\n  gender: \"여성\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    products:\n      - productId: \"8521836\"\n\
+      \        name: \"마르디 메크르디 반팔티셔츠 LES CADEAUX MARDI MERCREDI BLOSSOM_5COLORS\"\
+      \n        price:\n          currency: \"KRW\"\n          amount: 48600\n   \
+      \     brand: \"마르디 메크르디\"\n\n      - productId: \"10291183\"\n        name:\
+      \ \"[라벨루쏘] 여성 폭스헤드 프린트 티셔츠 KW00134KJ0008 WH\"\n        price:\n          currency:\
+      \ \"KRW\"\n          amount: 142000\n        brand: \"메종키츠네\"\n\n      - productId:\
+      \ \"7580048\"\n        name: \"질바이질스튜어트 브레드 체인 미니크로스백 6종 택1\"\n        price:\n\
+      \          currency: \"KRW\"\n          amount: 83600\n        brand: \"질바이질스튜어트\"\
+      \n\n      - productId: \"11721313\"\n        name: \"토크 발라카 헐밋 미니크로스_3colors\"\
+      \n        price:\n          currency: \"KRW\"\n          amount: 185000\n  \
+      \      brand: \"분크\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"홍대입구역 근처 여자친구\
+      \ 생일 저녁 식사 레스토랑 추천\"\n  location: \"홍대입구역\"\n  partySize: \"2명\"\n  event: \"\
+      생일\"\n  sortBy: \"highest_rated\"\n\ntool_call_result:\n  status: success\n\
+      \  data:\n    recommendations:\n      - name: \"라비에벨\"\n        address: \"\
+      서울 마포구 와우산로21길 19\"\n        cuisine: \"프렌치 비스트로\"\n        priceRange: \"₩₩₩\"\
+      \n        rating: 4.8\n        features: [\"로맨틱한 분위기\", \"코스 요리\", \"조용한 공간\"\
+      ]\n        note: \"홍대 숨은 맛집으로, 생일이나 기념일 코스로 적합하며 예약 권장\"\n\n      - name: \"\
+      에라토 인 서울\"\n        address: \"서울 마포구 양화로6길 57-6\"\n        cuisine: \"이탈리안\
+      \ 파인 다이닝\"\n        priceRange: \"₩₩₩\"\n        rating: 4.7\n        features:\
+      \ [\"분위기 좋은 테라스\", \"와인 페어링\", \"생일 플레이트 제공 가능\"]\n        note: \"커플 고객이 많고,\
+      \ 조용히 식사하기 좋으며 직원 서비스도 호평\"\n\n      - name: \"루미에르 홍대\"\n        address: \"\
+      서울 마포구 잔다리로 31-9\"\n        cuisine: \"유러피언 컨템포러리\"\n        priceRange: \"\
+      ₩₩\"\n        rating: 4.6\n        features: [\"분위기 있는 조명\", \"합리적 가격\", \"\
+      인스타 감성 인테리어\"]\n        note: \"젊은 연인들에게 인기 있으며, 생일 미니 케이크 옵션 있음\"\n\n     \
+      \ - name: \"오프블랙\"\n        address: \"서울 마포구 와우산로29다길 18\"\n        cuisine:\
+      \ \"모던 아메리칸\"\n        priceRange: \"₩₩\"\n        rating: 4.5\n        features:\
+      \ [\"아늑한 분위기\", \"브런치~디너 가능\", \"감성 플레이팅\"]\n        note: \"홍대 정문 인근 위치, 예약\
+      \ 시 창가 좌석 요청 가능\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "안녕하세요! 여자친구분의 생일을 진심으로 축하드립니다. \U0001F973\n소중한 날을 더욱 특별하게 만들어줄 선물과 근사한\
+      \ 저녁 식사 장소를 추천해 드릴게요.\n\n### 여자친구 생일 선물 추천 \U0001F381\n\n요즘 많은 사랑을 받고 있는 브랜드의\
+      \ 티셔츠는 어떠세요? 데일리 아이템으로 활용하기 좋아 실용적인 선물이 될 거예요.\n\n* 마르디 메크르디 반팔티셔츠 (48,600원)\n\
+      * 메종키츠네 폭스헤드 프린트 티셔츠 (142,000원)\n\n어떤 코디에나 잘 어울리는 미니 크로스백도 좋은 선택이에요. 귀여우면서도\
+      \ 세련된 느낌을 줄 수 있습니다.\n\n* 질바이질스튜어트 브레드 체인 미니크로스백 (83,600원)\n* 분크 토크 발라카 헐밋 미니크로스\
+      \ (185,000원)\n\n---\n\n다음은 홍대입구역 근처에서 여자친구 생일 저녁 식사에 어울리는 식당 추천 4곳입니다:\n\n###\
+      \ 여자친구 생일 저녁 식사에 어울리는 식당 추천 \n\n* 라비에벨 – 프렌치 비스트로, 로맨틱한 분위기와 코스 요리로 생일에 적합 (★4.8)\n\
+      * 에라토 인 서울 – 이탈리안 파인 다이닝, 와인 페어링과 생일 플레이트 제공 (★4.7)\n* 루미에르 홍대 – 감성 인테리어의 유러피언\
+      \ 레스토랑, 미니 케이크 옵션 있음 (★4.6)\n* 오프블랙 – 아메리칸 캐주얼 다이닝, 분위기 있고 창가 좌석 예약 가능 (★4.5)\n\
+      \n분위기, 서비스, 음식 모두 호평받는 곳들이니 기념일에 잘 어울립니다. \n원하시면 예약도 도와드릴게요!"

@@ -1,0 +1,74 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- date: "2025-7-16"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Check the wedding schedule in Boston this Saturday, and let me know what
+      time should I take the train from New York Penn Station so I won’t be late.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Check\
+      \ the wedding schedule registered for this Saturday\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: transport_agent\n      refined_query: \"Find train times\
+      \ from New York Penn Station to the wedding in Boston this Saturday to make\
+      \ sure that I won’t be late\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Wedding schedule registered\
+      \ for this Saturday\"\n  startDate: \"2025-07-19\"\n  endDate: \"2025-07-19\"\
+      \n  keyword: \"wedding\"\ntool_call_result:\n  schedule:\n    title: \"Sophia's\
+      \ Wedding\"\n    location: \"Boston Marriott Copley Place, Boston\"\n    date:\
+      \ \"2025-07-19\"\n    time: \"14:00\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransitSchedule\narguments:\n  refinedQuery: \"Train schedule\
+      \ from New York Penn Station to Boston South Station on July 19\"\n  departureStation:\
+      \ \"New York Penn Station\"\n  arrivalStation: \"Boston South Station\"\n  departureDate:\
+      \ \"2025-07-19\"\n  transportType: \"train\"\ntool_call_result:\n  schedule:\n\
+      \    departureDate: \"2025-07-19\"\n    route: \"New York Penn Station → Boston\
+      \ South Station\"\n    trains:\n      - trainNo: \"Acela 2150\"\n        type:\
+      \ \"Acela Express\"\n        departureTime: \"07:00\"\n        arrivalTime:\
+      \ \"10:45\"\n        duration: \"3h 45m\"\n        seatType: [\"standard\",\
+      \ \"business\"]\n        price: \"$145\"\n\n      - trainNo: \"Acela 2152\"\n\
+      \        type: \"Acela Express\"\n        departureTime: \"09:30\"\n       \
+      \ arrivalTime: \"13:15\"\n        duration: \"3h 45m\"\n        seatType: [\"\
+      standard\", \"business\"]\n        price: \"$145\"\n\n      - trainNo: \"Acela\
+      \ 2154\"\n        type: \"Acela Express\"\n        departureTime: \"11:10\"\n\
+      \        arrivalTime: \"14:55\"\n        duration: \"3h 45m\"\n        seatType:\
+      \ [\"standard\", \"business\"]\n        price: \"$145\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "The wedding this Saturday (July 19) at Boston Marriott Copley Place,\
+      \ Boston will begin at 2:00 PM. To arrive comfortably on time, it’s best to\
+      \ reach South Station by 1:00 PM, at least an hour before the ceremony.\n\n\
+      ✅ Recommended train options (New York Penn Station → Boston South Station)\n\
+      \nAcela 2150: Departs at 07:00 → Arrives at 10:45\nAcela 2152: Departs at 09:30\
+      \ → Arrives at 13:15 ← latest recommended option\nAcela 2154: Departs at 11:10\
+      \ → Arrives at 14:55 ❌ too late for the wedding\n\n Bottom line: You’ll need\
+      \ to catch at least Acela 2152 (09:30 departure) to make it on time for the\
+      \ wedding. If you’d like a more relaxed schedule, I recommend Acela 2150 (07:00\
+      \ departure). Let me know if you’d like help in booking tickets!"

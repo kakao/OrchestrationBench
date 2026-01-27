@@ -1,0 +1,45 @@
+{
+  "agent_card": {
+    "name": "Information Search",
+    "agent_id": "search_agent",
+    "description": "An agent that quickly searches and provides detailed information on a wide range of topics. It explains unfamiliar terms or concepts in an easy-to-understand way and can also offer tips or examples for applying them in real life.",
+    "url": "http://localhost:10010/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "searchInfo",
+        "name": "Information Search",
+        "description": "Provides in-depth information on various topics or keywords the user is curious about.",
+        "examples": [
+          "What causes climate change?",
+          "Explain how blockchain technology works.",
+          "Tell me the history of the Eiffel Tower.",
+          "What are the health benefits of green tea?",
+          "How does the U.S. electoral college system operate?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "searchInfo",
+      "description": "A tool that quickly and accurately finds general information based on the user's natural language questions. When calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "Enter a clearly refined search query by combining the previous conversation context and the user's question. (e.g., 'meaning of Mercury retrograde', 'interpretation of a birth chart with many planets in Leo')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

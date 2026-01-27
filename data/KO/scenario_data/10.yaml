@@ -1,0 +1,218 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-07-18
+
+      - 연락처: 010-4646-4646
+
+      - 현재 시간: 13:02
+
+      - 현재 위치: lat: 37.402090, lng: 126.922528'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 공유자전거 보통 얼마하나?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"공유 자전거\
+      \ 비용\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransportInfo\narguments:\n  refinedQuery: \"공유 자전거 비용\"\n\
+      \  includeModes: \"bike\"\n  location:\n    lat: 37.402090\n    lng: 126.922528\n\
+      tool_call_result:\n  data:\n    query: \"공유 자전거 비용\"\n    transportModes: \"\
+      bike\"\n    bikeSharingCosts:\n      - serviceName: \"카카오 T 바이크\"\n        baseFee:\
+      \ 1200\n        unitTime: \"10분\"\n        unitFee: 300\n        maxDailyFee:\
+      \ 6000\n        paymentMethods:\n          - \"카카오페이\"\n          - \"신용카드\"\
+      \n          - \"모바일 결제\"\n        coverageArea: \"서울 및 수도권 일부, 경기도 안양시 포함\"\n\
+      \        notes: \"기본요금 1200원, 10분당 300원 추가\"\n    status: \"조회 완료\"\n  source:\
+      \ \"교통 에이전트\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '안양시를 포함한 서울 및 수도권에서 이용 가능한 공유 자전거 정보를 알려드릴게요.
+
+
+      [카카오 T 바이크]
+
+
+      • 기본요금: 1,200원 (10분 기준)
+
+      • 추가요금: 10분당 300원
+
+      • 1일 최대 요금: 6,000원
+
+      • 결제수단: 카카오페이, 신용카드, 모바일 결제
+
+      • 이용 가능 지역: 서울, 수도권 일부, 경기도 안양시 포함
+
+      • 참고사항: 기본요금 1,200원에 10분마다 300원씩 추가돼요.
+
+
+      필요하시면 대여 위치나 반납 가능 장소도 함께 안내해드릴 수 있어요!'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 버스가 낫겠다. 버스로 서울대공원까지 가는 거 알려주고, 공원 근처 카페랑 식당 골라주고, 예약까지 해줄래?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: transport_agent\n      refined_query: \"\
+      공유 자전거 비용\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      버스로 서울대공원까지 가는 방법\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"서울대공원 근처 카페와 식당 추천\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"서울대공원 근처 카페와 식당 예약\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출발지'
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: recommendRestaurants\n    arguments:\n      refinedQuery:\
+      \ \"서울대공원 근처 카페 추천\"\n      location: \"서울대공원\"\n      cuisineType: \"카페\"\n\
+      \      sortBy: \"highest_rated\"\n\n  - tool: recommendRestaurants\n    arguments:\n\
+      \      refinedQuery: \"서울대공원 근처 식당 추천\"\n      location: \"서울대공원\"\n      cuisineType:\
+      \ \"식당\"\n      sortBy: \"highest_rated\"\n\ntool_call_result:\n  - tool: recommendRestaurants\n\
+      \    query: \"서울대공원 근처 카페 추천\"\n    location: \"서울대공원\"\n    cuisineType: \"\
+      카페\"\n    restaurants:\n      - name: \"카페 숲속\"\n        address: \"경기도 과천시\
+      \ 서울대공원로 102\"\n        distance: \"200m\"\n        rating: 4.8\n        specialties:\
+      \ [\"아메리카노\", \"케이크\"]\n        openingHours: \"09:00 - 21:00\"\n      - name:\
+      \ \"그린티 하우스\"\n        address: \"경기도 과천시 서울대공원로 110\"\n        distance: \"\
+      350m\"\n        rating: 4.6\n        specialties: [\"녹차 라떼\", \"마카롱\"]\n   \
+      \     openingHours: \"10:00 - 20:00\"\n      - name: \"포레스트 카페\"\n        address:\
+      \ \"경기도 과천시 서울대공원로 120\"\n        distance: \"400m\"\n        rating: 4.5\n\
+      \        specialties: [\"카푸치노\", \"베이커리\"]\n        openingHours: \"08:30 -\
+      \ 22:00\"\n    status: \"조회 완료\"\n    source: \"지역 맛집 데이터베이스\"\n\n  - tool:\
+      \ recommendRestaurants\n    query: \"서울대공원 근처 식당 추천\"\n    location: \"서울대공원\"\
+      \n    cuisineType: \"식당\"\n    restaurants:\n      - name: \"한식당 산들바람\"\n  \
+      \      address: \"경기도 과천시 서울대공원로 105\"\n        distance: \"250m\"\n       \
+      \ rating: 4.7\n        specialties: [\"비빔밥\", \"불고기\"]\n        openingHours:\
+      \ \"11:00 - 22:00\"\n      - name: \"이탈리안 레스토랑 벨라\"\n        address: \"경기도\
+      \ 과천시 서울대공원로 115\"\n        distance: \"400m\"\n        rating: 4.6\n      \
+      \  specialties: [\"파스타\", \"피자\"]\n        openingHours: \"11:30 - 21:30\"\n\
+      \      - name: \"중식당 용\"\n        address: \"경기도 과천시 서울대공원로 118\"\n        distance:\
+      \ \"350m\"\n        rating: 4.5\n        specialties: [\"짜장면\", \"탕수육\"]\n \
+      \       openingHours: \"11:00 - 22:00\"\n    status: \"조회 완료\"\n    source:\
+      \ \"지역 맛집 데이터베이스\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약 장소 이름, 예약 날짜, 예약 시간'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "◾서울대공원 근처 카페 추천\n\n1. 카페 숲속\n   - 평점 4.8, 거리 약 200m  \n   - 대표 메뉴: 아메리카노,\
+      \ 케이크  \n   - 운영시간: 09:00~21:00  \n\n2. 그린티 하우스\n   - 평점 4.6, 거리 약 350m  \n\
+      \   - 대표 메뉴: 녹차 라떼, 마카롱  \n   - 운영시간: 10:00~20:00  \n\n3. 포레스트 카페\n   - 평점 4.5,\
+      \ 거리 약 400m  \n   - 대표 메뉴: 카푸치노, 베이커리  \n   - 운영시간: 08:30~22:00  \n\n\n◾서울대공원\
+      \ 근처 식당 추천\n\n1. 한식당 산들바람\n   - 평점 4.7, 거리 약 250m  \n   - 대표 메뉴: 비빔밥, 불고기  \n\
+      \   - 운영시간: 11:00~22:00  \n\n2. 이탈리안 레스토랑 벨라\n   - 평점 4.6, 거리 약 400m  \n   -\
+      \ 대표 메뉴: 파스타, 피자  \n   - 운영시간: 11:30~21:30  \n\n3. 중식당 용\n   - 평점 4.5, 거리 약\
+      \ 350m  \n   - 대표 메뉴: 짜장면, 탕수육  \n   - 운영시간: 11:00~22:00  \n\n원하시는 카페나 식당 예약을\
+      \ 도와드릴까요?\n예약하실 장소와 날짜, 시간을 말씀해 주시면 예약을 도와드릴게요!\n\n\n◾서울대공원까지 버스 길찾기\n\n: 서울대공원까지\
+      \ 버스로 가는 길 찾기를 도와드리려면 출발하실 위치가 필요합니다. \n '집', '서울역', '현재 위치'와 같이 말씀해 주세요!"
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 안양역임. 카페는 예약 안해도 될 거 같고 중식당 용만 예약할래 오늘 조금 이따 5시 15분?
+- workflow_id: workflow_2
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"안양역에서 버스로 서울대공원까지\
+      \ 가는 방법\"\n  origin: \"안양역\"\n  destination: \"서울대공원\"\n  departureTime: \"\
+      13:02\"\n  transportModes: \"bus\"\n  optimizeBy: \"fastest\"\ntool_call_result:\n\
+      \  data:\n    query: \"안양역에서 버스로 서울대공원까지 가는 방법\"\n    origin: \"안양역\"\n    destination:\
+      \ \"서울대공원\"\n    departureTime: \"13:02\"\n    transportModes: \"bus\"\n   \
+      \ optimizeBy: \"fastest\"\n    directions:\n      - step: 1\n        description:\
+      \ \"안양역 버스 정류장에서 5002번 버스 탑승\"\n        line: \"버스 5002\"\n        departureStop:\
+      \ \"안양역\"\n        departureTime: \"13:05\"\n      - step: 2\n        description:\
+      \ \"서울대공원 정류장에서 하차\"\n        arrivalStop: \"서울대공원 정문\"\n        arrivalTime:\
+      \ \"13:30\"\n    totalDuration: \"25분\"\n    totalTransfers: 0\n  source: \"\
+      교통 정보 시스템\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 예약 시간은 00분 또는 30분 단위로 설정되지 않아 예약 불가'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: '예약 시간은 00분 또는 30분 단위로만 입력할 수 있습니다.
+
+      5시 15분 대신 5시 또는 5시 30분처럼, 정각이나 30분 단위로 말씀해 주세요.'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 아 그래? 그럼 5시 30분 할게
+- workflow_id: null
+  step_id: 17
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"7월 18일 5시 30분 중식당\
+      \ 용 예약\"\n  placeName: \"중식당 용\"\n  placeCategory: \"중식당\"\n  reservationDate:\
+      \ \"2025-07-18\"\n  reservationTime: \"17:30\"\n  contactInfo: \"010-4646-4646\"\
+      \ntool_call_result:\n  data:\n    reservationId: \"RES202507181302003\"\n  \
+      \  placeName: \"중식당 용\"\n    placeCategory: \"중식당\"\n    reservationDate: \"\
+      2025-07-18\"\n    reservationTime: \"17:30\"\n    contactInfo: \"010-4646-4646\"\
+      \n    status: \"예약 완료\"\n    message: \"중식당 용 7월 18일 오후 5시 30분 예약이 완료되었습니다.\"\
+      \n  source: \"예약 시스템\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: "[안양역 → 서울대공원 버스 이동 안내]\n\n• 총 소요 시간: 25분\n• 환승: 없음 (직행)\n• 상세 경로 안내\n\
+      \ - 13:05\n  안양역 버스 정류장에서 5002번 버스 탑승\n  (정시 출발 예상)\n - 13:30\n  서울대공원 정문 정류장\
+      \ 도착\n  (버스 내리면 바로 입구 근처!)\n13시 2분 기준으로 가장 빠른 노선이에요.\n날씨나 실시간 교통 상황에 따라 약간의\
+      \ 변동은 있을 수 있으니 여유 있게 출발하세요!\n\n\n[중식당 용 예약 안내]\n\n중식당 용 7월 18일 오후 5시 30분 예약이\
+      \ 완료되었습니다. \n예약 번호: RES202507181302003\n즐거운 식사 되시길 바랍니다!"

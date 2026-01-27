@@ -1,0 +1,885 @@
+{
+  "agent_card": {
+    "name": "Travel",
+    "agent_id": "travel_agent",
+    "description": "A smart agent that quickly and easily handles a variety of domestic and international travel services such as flights, accommodations, and itineraries.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "findFlightInfo",
+        "name": "Flight Information",
+        "description": "Finds flights that match your criteria such as departure, destination, travel dates, airline, seat class, and number of passengers.",
+        "examples": [
+          "Show me direct flights from San Diego to Rome next Friday.",
+          "Find business class tickets for 3 people from JFK to Paris.",
+          "Recommend round-trip tickets from Chicago to New York by price range."
+        ]
+      },
+      {
+        "id": "bookFlight",
+        "name": "Book Flight",
+        "description": "Books a flight by entering passenger details, seat, baggage options, mileage/coupons, etc., for the selected flight schedule. Select the flight to book via 'Flight Information'.",
+        "examples": [
+          "Book a direct flight to Barcelona on 05/10/2025 at 7:00 am for 2 adults.",
+          "Book first class on Delta to LA on 07/03/2025.",
+          "Book Lufthansa flight LH401 to Munich on 08/18/2025 for 2 passengers."
+        ]
+      },
+      {
+        "id": "getFlightReservation",
+        "name": "Check Flight Reservation",
+        "description": "Check the details and status of your booked flights using your name, contact info, etc.",
+        "examples": [
+          "What's the status of the Tokyo flight I booked yesterday?",
+          "Can you check the itinerary booked under Emily Johnson?",
+          "Show me the flight info booked with (202) 555-0234."
+        ]
+      },
+      {
+        "id": "changeFlight",
+        "name": "Change Flight",
+        "description": "Request changes to an already booked flight such as schedule, seat type, baggage options, etc. You must select the reservation to change via 'Check Flight Reservation'.",
+        "examples": [
+          "Change my Madrid flight booked for 08/12/2025 to depart on 08/14/2025.",
+          "I want to upgrade my round-trip to London to business class.",
+          "Push back my Thailand departure date by 2 days."
+        ]
+      },
+      {
+        "id": "cancelFlight",
+        "name": "Cancel Flight",
+        "description": "Cancel the entire confirmed flight reservation and specify the refund and notification method. You must select the reservation to cancel via 'Check Flight Reservation'.",
+        "examples": [
+          "Cancel my Rome flight on 03/25/2025.",
+          "Request a refund for reservation number 'RES20240722' and send the notification by email.",
+          "Can you cancel my Bali flight due to a schedule change?"
+        ]
+      },
+      {
+        "id": "getAccommodationInfo",
+        "name": "Accommodation Information",
+        "description": "Recommends accommodations based on location, number of guests, check-in/out dates, type, rating, price, pet-friendliness, view, etc.",
+        "examples": [
+          "Recommend a family-friendly villa in Maui at the end of July for under $250 a night.",
+          "Looking for a 2-night stay starting 07/17/2025 in a hotel-level property in downtown Charleston.",
+          "Suggest a ryokan or hotel in Shinjuku, Tokyo, that's great for couples."
+        ]
+      },
+      {
+        "id": "getAccommodationReservation",
+        "name": "Check Accommodation Reservation",
+        "description": "Helps you check your booked accommodation details using your name, phone number, etc.",
+        "examples": [
+          "Show me the accommodation booked under Sarah Kim.",
+          "Do you have the details for the place I booked last month with (415) 555-9823?",
+          "Can you check my reservation near Miami Beach?"
+        ]
+      },
+      {
+        "id": "bookAccommodation",
+        "name": "Book Accommodation",
+        "description": "Books accommodation by entering the desired property, room type, number of guests, dates, and requests. Select the property to book via 'Accommodation Information'.",
+        "examples": [
+          "Book 2 standard ocean-view rooms for 2 nights from 07/18/2025 to 07/20/2025.",
+          "I want to book a 4-person cabin in Aspen early next month.",
+          "Reserve a room for a family of 3 at the Lotte City Hotel in Busan."
+        ]
+      },
+      {
+        "id": "cancelAccommodation",
+        "name": "Cancel Accommodation",
+        "description": "Cancel the entire accommodation booking and choose the refund and notification method. You must select the reservation to cancel via 'Check Accommodation Reservation'.",
+        "examples": [
+          "Cancel my hotel booking in Honolulu and notify me by text.",
+          "I need to cancel my cabin reservation in Lake Tahoe this weekend.",
+          "Cancel my Osaka accommodation due to a change in the number of guests and issue a refund."
+        ]
+      },
+      {
+        "id": "modifyAccommodation",
+        "name": "Change Accommodation",
+        "description": "Request changes to your existing booking such as dates, number of guests, number of rooms, and special requests up to 3 times. You must select the reservation to change via 'Check Accommodation Reservation'.",
+        "examples": [
+          "Change my check-in for the B&B in Savannah from 07/10/2025 to 07/12/2025.",
+          "Increase my Miami Beach hotel booking from 2 to 4 guests and add another room.",
+          "Add a quiet room request to my cabin reservation in Lake Tahoe."
+        ]
+      },
+      {
+        "id": "planTravel",
+        "name": "Plan Travel Itinerary",
+        "description": "Recommends an itinerary or custom travel course based on destination, schedule, companions, and duration.",
+        "examples": [
+          "Can you plan a 4-day trip to Asia with my parents?",
+          "Recommend a 3-day itinerary in Maui with friends.",
+          "Suggest a Friday-to-Sunday route for couples in Kyoto."
+        ]
+      },
+      {
+        "id": "getPopularPlaceInfo",
+        "name": "Popular Place Information",
+        "description": "A tool that recommends tourist attractions, landmarks, and themed travel spots in domestic and international cities.",
+        "examples": [
+          "Recommend some popular traditional markets in Paris.",
+          "List 5 landmarks in Osaka that tourists often visit."
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "findFlightInfo",
+      "description": "A tool that searches and filters flight information based on the user's departure, destination, schedule, seat, and other conditions. For repeated calls for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined flight search query including the user's natural language request along with previous conversation context (e.g., 'Early August round-trip to Paris, direct, business class')."
+          },
+          "departure": {
+            "type": "string",
+            "description": "Departure city name or airport code (e.g., 'Busan', 'PUS', 'Gimhae'). If not entered, 'JFK' is used by default."
+          },
+          "destination": {
+            "type": "string",
+            "description": "Destination city name or airport code (e.g., 'London', 'LHR', 'Heathrow')."
+          },
+          "departureDate": {
+            "type": "string",
+            "description": "Departure date (format: 'YYYY-MM-DD'). Past dates and dates more than 360 days from today are not allowed."
+          },
+          "returnDate": {
+            "type": "string",
+            "description": "Return date (round-trip only, format: 'YYYY-MM-DD'). Past dates and dates more than 360 days from today are not allowed."
+          },
+          "airlines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of preferred airlines (e.g., [\"Delta Air Lines\", \"United Airlines\", \"American Airlines\", \"Qatar Airways\"])."
+          },
+          "directOnly": {
+            "type": "boolean",
+            "description": "Whether to search only direct flights (e.g., true excludes layovers)."
+          },
+          "seatClass": {
+            "type": "string",
+            "enum": [
+              "economy",
+              "business",
+              "first"
+            ],
+            "description": "Seat class (e.g., 'economy', 'business', 'first')."
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "Maximum price for the flight search, USD (e.g., 1500)."
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "Minimum price for the flight search, USD (e.g., 3000)."
+          },
+          "adultPassengerCount": {
+            "type": "integer",
+            "description": "Number of adult passengers (age 12+). Total adults + children cannot exceed 6. Children cannot travel alone."
+          },
+          "kidPassengerCount": {
+            "type": "integer",
+            "description": "Number of children (ages 2–11). Cannot travel without an adult. Total adults + children cannot exceed 6."
+          },
+          "babyPassengerCount": {
+            "type": "integer",
+            "description": "Number of infants (under age 2)."
+          },
+          "luggageOption": {
+            "type": "string",
+            "enum": [
+              "checked_included",
+              "carry_on_only",
+              "no_restriction"
+            ],
+            "description": "Baggage option (e.g., 'checked_included' includes checked baggage, 'carry_on_only' excludes checked baggage, 'no_restriction' has no restrictions)."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "departure",
+          "destination",
+          "departureDate"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookFlight",
+      "description": "A tool for booking flights by entering the itinerary ID, passenger information, seat class, baggage option, mileage usage, and any in-flight service requests. You select the flight to book through 'flight information'. For multiple passengers, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A flight booking query that reflects the user's natural language request and previous context (e.g., 'Book the cheapest flight from New York to Miami on 02 October, 2025')"
+          },
+          "tripID": {
+            "type": "string",
+            "description": "The unique ID or code of the flight itinerary to be booked, retrieved from findFlightInfo (e.g., 'NYCLAX0525DL102')"
+          },
+          "passengerInfoList": {
+            "type": "array",
+            "description": "List of passengers. For international bookings, each passenger must include a passport number and nationality code. The total number of passengers (adults + children) can be up to 6.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Passenger's full name in English. For international flights, an English name is required (e.g., 'Jason Dawson', 'LEE JIHOON')."
+                },
+                "birthDate": {
+                  "type": "string",
+                  "description": "Passenger's date of birth (YYYY-MM-DD format, e.g., '2005-10-10')"
+                },
+                "gender": {
+                  "type": "string",
+                  "enum": [
+                    "male",
+                    "female",
+                    "other"
+                  ],
+                  "description": "Passenger's gender"
+                },
+                "passportNumber": {
+                  "type": "string",
+                  "description": "Required for international bookings. Passenger's passport number (e.g., 'M12345678'). domestic flights do not require passportNumber."
+                },
+                "nationality": {
+                  "type": "string",
+                  "description": "Required for international bookings. Enter the passenger's nationality as a 2-letter country code (e.g., 'US' for United States, 'KR' for South Korea"
+                },
+                "contactNumber": {
+                  "type": "string",
+                  "description": "Passenger's contact number (e.g., '+1-202-555-0173' or '(202) 555-0173')"
+                }
+              },
+              "required": [
+                "name",
+                "birthDate",
+                "gender",
+                "contactNumber"
+              ]
+            }
+          },
+          "seatClass": {
+            "type": "string",
+            "enum": [
+              "economy",
+              "business",
+              "first"
+            ],
+            "description": "Seat class (economy, business, first)"
+          },
+          "baggageOption": {
+            "type": "string",
+            "enum": [
+              "basic",
+              "extra",
+              "carry_on_only"
+            ],
+            "description": "Baggage option (basic: free checked baggage only, extra: additional baggage, carry_on_only: carry-on only)"
+          },
+          "useMileage": {
+            "type": "boolean",
+            "description": "Whether to use mileage points (true: use, false: do not use)"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "In-flight service or special requests (e.g., 'Allergy-friendly meal', 'Infant car seat needed', 'Wheelchair assistance')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "tripID",
+          "passengerInfoList",
+          "seatClass",
+          "baggageOption",
+          "useMileage"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getFlightReservation",
+      "description": "A tool to look up flight reservation information and filter results based on reservation status or passenger details. When calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A detailed search query combining the current context and the user's natural language request (e.g., 'Check reservation departing from New York', 'Look up next week's international bookings')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "The unique reservation ID or number assigned when booking the flight. Use this first if available (e.g., 'RES87654321')."
+          },
+          "name": {
+            "type": "string",
+            "description": "The passenger's full name in English or another language (e.g., 'HANA LEE', 'Hana Lee')."
+          },
+          "contactNumber": {
+            "type": "string",
+            "description": "The contact phone number provided when booking the flight. Required if there is no reservation ID or name (e.g., '(202) 555-0198')."
+          },
+          "passportNumber": {
+            "type": "string",
+            "description": "Only required for international flights. Not used for U.S. domestic flights. (e.g., 'P23456789')"
+          },
+          "statusFilter": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "canceled",
+              "pending"
+            ],
+            "description": "Filter results by specific reservation status ('confirmed' = confirmed, 'canceled' = canceled, 'pending' = pending)."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "changeFlight",
+      "description": "A tool to change the departure date, return date, seat class, baggage option, etc., of a flight reservation, and notify the user of the changes via various channels (SMS, email, etc.). You must first select the reservation to change via 'getFlightReservation'. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined reservation change request query based on the user's input and previous context (e.g., 'Please change the departure date to September 5', 'Please change the seat to business class')."
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "The existing flight reservation ID you want to change. You must enter the reservation ID confirmed in advance via getFlightReservation, and the reservation must be 'confirmed' and valid (e.g., 'RES20240716')."
+          },
+          "departureDate": {
+            "type": "string",
+            "description": "Enter the new departure date in YYYY-MM-DD format (e.g., '2025-09-05'). Can only be changed once before departure. For domestic flights, changes must be requested at least 24 hours before departure; for international flights, usually at least 48 hours before departure according to airline policy."
+          },
+          "returnDate": {
+            "type": "string",
+            "description": "Enter the new return date in YYYY-MM-DD format (e.g., '2025-09-05')."
+          },
+          "seatClass": {
+            "type": "string",
+            "enum": [
+              "business",
+              "economy",
+              "first"
+            ],
+            "description": "Select the new seat class. 'economy': Economy, 'business': Business, 'first': First class."
+          },
+          "baggageOption": {
+            "type": "string",
+            "enum": [
+              "basic",
+              "extra",
+              "carry_on_only"
+            ],
+            "description": "Select the new baggage option. 'basic': Standard baggage, 'extra': Additional baggage, 'carry_on_only': Carry-on only."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for changing the flight. Some airlines may require this, so please be specific (e.g., 'Business trip schedule adjustment', 'Personal reasons', 'Emergency situation')."
+          },
+          "notifyVia": {
+            "type": "string",
+            "description": "The message channel to receive change confirmation ('sms', 'whatsapp', 'email'; e.g., 'whatsapp')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelFlight",
+      "description": "A tool to cancel the entire itinerary of a booked flight ticket and process a refund at the user's request. It takes the reservation ID to cancel, reason for cancellation, refund method, and notification method as inputs. You must first select the reservation to cancel via 'Flight Reservation Lookup'. For multiple targets, you can structure them as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A request query reflecting the user's intent and previous context (e.g., 'Request to cancel the booked New York–Tokyo flight departing next weekend')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "The ID of the flight reservation to cancel. Must be obtained via getFlightReservation and can only cancel reservations with 'confirmed' status. (e.g., 'RES98765432')"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "Reason for flight ticket cancellation (e.g., 'Personal reasons', 'Event schedule change', 'Other')"
+          },
+          "refundMethod": {
+            "type": "string",
+            "description": "Specify refund method (e.g., 'original_payment', 'mileage', 'manual_bank'). Default is original_payment."
+          },
+          "notifyVia": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "email"
+            ],
+            "description": "Specify the method to receive cancellation result notifications (e.g., 'sms', 'email')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId",
+          "refundMethod"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getAccommodationInfo",
+      "description": "A tool to search for the best accommodation options based on various criteria such as location, dates, number of guests, accommodation type, and amenities. You must select the accommodation to book through 'Accommodation Information'. If calling repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined accommodation search query combining previous conversation context and the user's natural language request (e.g., 'An affordable hotel in Myeongdong, Seoul for 3 days and 2 nights with friends', 'A seaside pension in Gangneung with an ocean view and pool')"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location of the accommodation (city, neighborhood, administrative district, etc.) (e.g., Miami Beach, Las Vegas Strip, Lake Tahoe, Yosemite National Park, Manhattan)"
+          },
+          "checkInDate": {
+            "type": "string",
+            "description": "Check-in date (e.g., '2025-10-09'). If not specified, defaults to 'today'.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "checkOutDate": {
+            "type": "string",
+            "description": "Check-out date (e.g., '2025-10-13'). If not specified, defaults to a 1-night stay.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "guestCount": {
+            "type": "number",
+            "description": "Total number of guests (e.g., 2, 4). Maximum 6 people per room; if more than 6, increase the number of rooms accordingly."
+          },
+          "roomCount": {
+            "type": "number",
+            "description": "Number of rooms needed (e.g., 1, 2). If total guests exceed 6, the number of rooms can be automatically calculated based on the number of guests."
+          },
+          "accommodationType": {
+            "type": "string",
+            "enum": [
+              "hotel",
+              "motel",
+              "resort",
+              "guesthouse",
+              "camping",
+              "bnb",
+              "villa",
+              "lodge"
+            ],
+            "description": "Select accommodation type (e.g., 'hotel', 'guesthouse', 'camping')"
+          },
+          "amenities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Array of required amenities (e.g., [\"pool\", \"spa\", \"kitchen\", \"parking\"])"
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "Minimum price per night, Currency defaults to USD unless otherwise specified (e.g., 60)"
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "Maximum price per night, Currency defaults to USD unless otherwise specified (e.g., 300)"
+          },
+          "ratingMin": {
+            "type": "number",
+            "description": "Minimum rating based on user reviews (e.g., 4.5)"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "lowest_price",
+              "highest_rating",
+              "most_reviewed",
+              "distance"
+            ],
+            "description": "Sorting option (e.g., 'highest_rating'). Default is by rating."
+          },
+          "petFriendly": {
+            "type": "boolean",
+            "description": "Filter for pet-friendly accommodations only (e.g., true)"
+          },
+          "viewType": {
+            "type": "string",
+            "enum": [
+              "ocean_view",
+              "mountain_view",
+              "city_view"
+            ],
+            "description": "View preference (e.g., 'ocean_view', 'city_view')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "checkInDate",
+          "checkOutDate",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getAccommodationReservation",
+      "description": "A tool to look up accommodation reservation details and filter them by various criteria. When calling for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query that includes the previous conversation context or the user's natural language question (e.g., 'Check reservation for check-in on 13 Dec, 2025', 'Show my Hawaii reservation history')."
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "Unique reservation number. Can be used with one or more of userId, contactNumber, or name to look up a reservation."
+          },
+          "userId": {
+            "type": "string",
+            "description": "The booker's user ID. At least one of userId, reservationId, contactNumber, or name is required."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the person who made the reservation. At least one of userId, reservationId, contactNumber, or name is required (e.g., 'Emily Carter')."
+          },
+          "contactNumber": {
+            "type": "string",
+            "description": "The booker's contact phone number. At least one of userId, reservationId, contactNumber, or name is required (e.g., '(202) 555-0198')."
+          },
+          "checkInDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Check-in date (e.g., '2025-11-01). If not provided, searches based on reservations made within the last 3 months."
+          },
+          "location": {
+            "type": "string",
+            "description": "Accommodation location information (optional, e.g., 'Los Angeles', 'San Diego')."
+          },
+          "accommodationName": {
+            "type": "string",
+            "description": "Accommodation name or keyword (optional, e.g., 'Ramada Hotel')."
+          },
+          "statusFilter": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "canceled",
+              "completed"
+            ],
+            "description": "Reservation status filter: 'confirmed', 'canceled', 'completed'."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookAccommodation",
+      "description": "A tool that books accommodations based on the user's request. It can take various details such as property, room type, number of guests, dates, and special requests to complete the booking. If booking for multiple properties, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query for accommodation booking that reflects the previous conversation context and the user's specific request (e.g., 'Family beach resort in Miami', 'Luxury hotel near downtown Chicago')"
+          },
+          "accommodationID": {
+            "type": "string",
+            "description": "Unique ID of the accommodation to be booked (e.g., 'HOTEL543210', 'GUESTHOUSE7520')"
+          },
+          "accommodationName": {
+            "type": "string",
+            "description": "Exact name of the accommodation to be booked (e.g., 'Pine Hill Hotel', 'Blue Ocean Guesthouse')"
+          },
+          "location": {
+            "type": "string",
+            "description": "Location or address of the accommodation (e.g., 'Seogwipo, Jeju Island', 'Haeundae, Busan')"
+          },
+          "roomTypeId": {
+            "type": "string",
+            "description": "Unique ID of the selected room type (e.g., 'FAMILY_SUITE_VIEW', 'STANDARD_DOUBLE')"
+          },
+          "checkInDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Check-in date, same-day booking not allowed. Must be within 12 months from today (e.g., '08/15/2025')"
+          },
+          "checkOutDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Check-out date, must be after the check-in date and both must be within 12 months (e.g., '08/17/2025')"
+          },
+          "guestCount": {
+            "type": "integer",
+            "description": "Total number of guests. Maximum 6 guests per room; if more than 6, additional rooms must be booked (e.g., 3, 5, 8)"
+          },
+          "roomCount": {
+            "type": "integer",
+            "description": "Number of rooms needed. Set according to the maximum occupancy per room (6 guests) (e.g., 1, 2). Can be automatically determined based on the room's maximum occupancy (e.g., max 2 guests per room > 4 guests means 2 rooms)"
+          },
+          "userInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the person booking (e.g., 'John Smith')"
+              },
+              "contactNumber": {
+                "type": "string",
+                "description": "Contact phone number of the person booking (e.g., '(202) 555-0198')"
+              },
+              "email": {
+                "type": "string",
+                "description": "Email address of the person booking (e.g., 'johnsmith@example.com')"
+              }
+            },
+            "required": [
+              "name",
+              "contactNumber",
+              "email"
+            ],
+            "additionalProperties": false
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "Additional requests or special notes (e.g., 'Prefer a non-smoking room', 'Request breakfast included', 'Room with a great night view')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "accommodationName",
+          "roomTypeId",
+          "checkInDate",
+          "checkOutDate",
+          "guestCount",
+          "roomCount",
+          "userInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelAccommodation",
+      "description": "A tool that allows you to safely cancel a user's accommodation booking with various refund methods and notification options. You must first select the booking to cancel via 'getAccommodationReservation'. If calling repeatedly for multiple bookings, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query that clearly includes the user's natural language about the previous context and cancellation request. Examples: 'I want to cancel my hotel booking for 07/22/2025', 'Request to cancel last week's cottage booking'"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "The unique ID of the accommodation booking to be canceled. Use the value obtained from booking lookup (getAccommodationReservation). Bookings on the check-in day or non-cancellable products will not be processed even if entered. Example: 'RSV20250815_012'"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "Reason for accommodation cancellation (e.g., 'Unexpected business trip', 'Family event', 'Other personal reasons')"
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "original_payment",
+              "bank_transfer"
+            ],
+            "description": "The method by which the refund will be processed. Choose from refund to original payment method ('original_payment'), bank transfer ('bank_transfer')"
+          },
+          "notifyVia": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "email"
+            ],
+            "description": "Select how to receive the cancellation result notification: SMS ('sms'), or email ('email')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId",
+          "cancelReason",
+          "refundMethod",
+          "notifyVia"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyAccommodation",
+      "description": "A tool to change the check-in/check-out dates, number of guests, number of rooms, special requests, and payment/notification methods for an accommodation booking. You must first select the booking to change via 'getAccommodationReservation'. If calling repeatedly for multiple bookings, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query containing the full context of the change request and the user's natural language request (e.g., 'Extend checkout by one day', 'Add 2 adults and request a quiet room')."
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "The unique ID of the booking to change, as confirmed from getAccommodationReservation."
+          },
+          "modifiedCheckInDate": {
+            "type": "string",
+            "description": "The new check-in date to change to (e.g., '2025-11-30', ISO 8601 format)."
+          },
+          "modifiedCheckOutDate": {
+            "type": "string",
+            "description": "The new check-out date to change to (e.g., '2025-12-01', ISO 8601 format)."
+          },
+          "modifiedGuestCount": {
+            "type": "integer",
+            "description": "The updated total number of guests (e.g., 3)."
+          },
+          "modifiedRoomCount": {
+            "type": "integer",
+            "description": "The number of rooms to reserve after the change (e.g., 2)."
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "Any new or updated special requests you want to include (e.g., 'Request non-smoking room', 'Add baby bathtub'; leave blank if none)."
+          },
+          "paymentAdjustmentMethod": {
+            "type": "string",
+            "enum": [
+              "credit_card",
+              "original_payment"
+            ],
+            "description": "The payment method to use if there is an additional charge or refund."
+          },
+          "notifyVia": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "email"
+            ],
+            "description": "The method to receive a notification when the booking change is complete."
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "The reason for this booking change (only if needed, e.g., 'Travel schedule adjustment', 'Change in companions', 'Room preference change')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "planTravel",
+      "description": "A tool that creates customized travel itineraries based on various conditions such as destination, departure date, and type of travel companion. If you want to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined travel request sentence that reflects both the user's original request and the previous conversation context (e.g., 'Itinerary focused on national parks with beautiful scenery', 'Family trip centered on outdoor activities')."
+          },
+          "destination": {
+            "type": "string",
+            "description": "The desired region, city, or country for travel (e.g., 'Paris', 'Jeju Island', 'Hawaii')."
+          },
+          "duration": {
+            "type": "string",
+            "description": "Trip duration (number of nights and total days, e.g., '6 days, 5 nights'). If not provided, the default is 4days 3 nights."
+          },
+          "theme": {
+            "type": "string",
+            "description": "The theme or purpose of the trip (e.g., 'Family trip', 'Gourmet tour', 'Romantic')."
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Trip start date or departure date (e.g., '2026-02-12'). Optional."
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Trip end date or return date (e.g., '2026-02-13'). Optional."
+          },
+          "companionType": {
+            "type": "string",
+            "enum": [
+              "child",
+              "pregnant",
+              "friends",
+              "elderly",
+              "solo",
+              "couple"
+            ],
+            "description": "Type of travel companion (child: 'child', pregnant: 'pregnant', friends: 'friends', elderly: 'elderly', solo traveler: 'solo', couple: 'couple'). This information is directly reflected in the travel course recommendations."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "duration"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPopularPlaceInfo",
+      "description": "A tool that recommends tourist attractions and themed travel spots in domestic and international cities and destinations. You can find places by type according to various purposes and themes, such as photo spots, scenic drives, and shopping streets, and sort them by rating, number of visitors, or local recommendations. If calling repeatedly for multiple targets, you can structure the results as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined place search query that combines the previous conversation context and the user's natural language request. For example: 'Scenic drives and Instagram-worthy spots near Seoul', 'Top 3 cozy cafes in Tokyo'"
+          },
+          "location": {
+            "type": "string",
+            "description": "The region or city name to search (e.g., 'Kyoto', 'Gangnam, Seoul')"
+          },
+          "placeType": {
+            "type": "string",
+            "description": "The type of place to search for. Only one type can be selected at a time. (e.g., tourist attraction, shopping, photo spot, scenic drive, etc.)"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "highest_rated",
+              "most_visited",
+              "locals_pick"
+            ],
+            "description": "The criteria for sorting results. You can sort by rating, number of visitors, or local recommendations. The default is 'highest_rated'."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

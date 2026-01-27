@@ -1,0 +1,129 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-08-08
+
+      - userId: user_987654
+
+      - Name: Evan Brooks
+
+      - Contact: (202)171-7171
+
+      - Time: 10:10'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I just ordered two T-shirts earlier today and a wallet yesterday—please
+      cancel only the pink T-shirt, add gift wrapping and a message saying “Congrats
+      & Cheers” to the wallet, and also create a calendar event for this Saturday,
+      Suzy’s birthday, with a note saying “Remember to get the gift.”
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Check\
+      \ the order for the two T-shirts I placed earlier today\"\n    - status: pending\n\
+      \      name: shopping_agent\n      refined_query: \"Cancel only the pink T-shirt\
+      \ from the two I ordered earlier today\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"Check the order for the wallet I placed yesterday\"\n\
+      \    - status: pending\n      name: shopping_agent\n      refined_query: \"\
+      Update yesterday’s wallet order by adding gift wrapping and a message saying\
+      \ 'Congrats & Cheers.'\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"Create a calendar event for Suzy’s birthday this Saturday with a note saying\
+      \ 'Remember to get the gift.'\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check the order\
+      \ for the two T-shirts I placed earlier today\"\n  userId: \"user_987654\"\n\
+      \  recipientName: \"Evan Brooks\"\n  phoneNumber: \"(202)171-7171\"\n  orderDate:\
+      \ \"2025/08/08\"\ntool_call_result:\n  data:\n    refinedQuery: \"Check the\
+      \ order for the two T-shirts I placed earlier today\"\n    userId: \"user_987654\"\
+      \n    recipientName: \"Evan Brooks\"\n    phoneNumber: \"(202)171-7171\"\n \
+      \   orderDate: \"2025/08/08\"\n    orders:\n      - orderId: \"ORD20250808-1001\"\
+      \n        productName: \"Summer Short-Sleeve T-Shirt\"\n        quantity: 2\n\
+      \        itemIds:\n          - \"ITEM1001\"  # Pink T-shirt\n          - \"\
+      ITEM1002\"  # White T-shirt\n        status: \"Order Completed\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check the wallet\
+      \ order I placed yesterday\"\n  userId: \"user_987654\"\n  recipientName: \"\
+      Evan Brooks\"\n  phoneNumber: \"(202)171-7171\"\n  orderDate: \"2025/08/07\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Check the wallet order I placed\
+      \ yesterday\"\n    userId: \"user_987654\"\n    recipientName: \"Evan Brooks\"\
+      \n    phoneNumber: \"(202)171-7171\"\n    orderDate: \"2025/08/07\"\n    orders:\n\
+      \      - orderId: \"ORD20250807-3001\"\n        productName: \"Classic Leather\
+      \ Bifold Wallet\"\n        color: \"Black\"\n        quantity: 1\n        status:\
+      \ \"Order Completed\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Create a calendar\
+      \ event for Suzy's birthday this Saturday with a note saying 'Remember to get\
+      \ the gift'\"\n  title: \"Suzy's Birthday\"\n  startDateTime: \"2025-08-09T10:10\"\
+      \n  endDateTime: \"2025-08-09T11:10\"\n  memo: \"Remember to get the gift\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"Create a calendar event for\
+      \ Suzy's birthday this Saturday with a note saying 'Remember to get the gift'\"\
+      \n    title: \"Suzy's Birthday\"\n    startDateTime: \"2025-08-09T10:10\"\n\
+      \    endDateTime: \"2025-08-09T11:10\"\n    memo: \"Remember to get the gift\"\
+      \n    scheduleId: \"SCH20250809-001\"\n    status: \"Schedule successfully created\""
+- workflow_id: workflow_1
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelOrder\narguments:\n  refinedQuery: \"Cancel only the pink\
+      \ T-shirt from the two I ordered earlier today\"\n  orderId: \"ORD20250808-1001\"\
+      \n  itemIds: \"ITEM1001\"\n  cancelType: \"partial\"\n  refundMethod: \"original_method\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Cancel only the pink T-shirt\
+      \ from the two I ordered earlier today\"\n    orderId: \"ORD20250808-1001\"\n\
+      \    itemIds: \"ITEM1001\"\n    cancelType: \"partial\"\n    refundMethod: \"\
+      original_method\"\n    cancelStatus: \"Partial cancellation completed\"\n  \
+      \  refundStatus: \"Refund in progress\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyOrder\narguments:\n  refinedQuery: \"Update yesterday’s\
+      \ wallet order by adding gift wrapping and a message saying 'Congrats & Cheers'\"\
+      \n  orderId: \"ORD20250807-3001\"\n  newGiftOption:\n    wrap: true\n    message:\
+      \ \"Congrats & Cheers\"\ntool_call_result:\n  data:\n    refinedQuery: \"Update\
+      \ yesterday’s wallet order by adding gift wrapping and a message saying 'Congrats\
+      \ & Cheers'\"\n    orderId: \"ORD20250807-3001\"\n    newGiftOption:\n     \
+      \ wrap: true\n      message: \"Congrats & Cheers\"\n    modifyStatus: \"Order\
+      \ updated successfully\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s an update on your orders and schedule!\n\n1. T-shirt Order Cancellation\n\
+      • Order Number: ORD20250808-1001\n• Product: Summer Short-Sleeve T-Shirt (2\
+      \ items total)\n• Only the Pink T-shirt (ITEM1001) has been canceled\n• Status:\
+      \ Refund in progress\n• The White T-shirt (ITEM1002) remains unchanged\n\n2.\
+      \ Wallet Order Modification\n• Order Number: ORD20250807-3001\n• Product: Classic\
+      \ Leather Bifold Wallet (Black)\n• Changes:\n  - Added gift wrapping\n  - Message:\
+      \ “Congrats & Cheers”\n• Status: Order successfully updated\n\n3. Calendar Event\
+      \ Added\n• Event: Suzy’s Birthday\n• Date & Time: Saturday, August 9, 2025,\
+      \ 10:10 AM – 11:10 AM\n• Note: Remember to get the gift\n• Status: Schedule\
+      \ created successfully "

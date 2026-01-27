@@ -1,0 +1,98 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current date: 2025-07-15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you check what the closing price of General Dynamics stock was yesterday
+      and find out why the price is going up so much?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"General\
+      \ Dynamics stock closing price yesterday\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: finance_agent\n\
+      \      refined_query: \"Reason General Dynamics stock is rising\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"General Dynamics\
+      \ stock closing price yesterday\"\n  stockName: \"General Dynamics\"\n  date:\
+      \ \"2025-07-14\"\n  priceType: \"Closing Price\"\ntool_call_result:\n  data:\n\
+      \    tool: \"getStockPrice\"\n    result:\n      refinedQuery: \"General Dynamics\
+      \ stock quote\"\n      stockName: \"General Dynamics\"\n      date: \"2025-07-14\"\
+      \n      priceType: \"Closing Price\"\n      price: 245.30\n      currency: \"\
+      USD\"\n      market: \"NYSE\"\n      note: \"As of July 14, 2025, the closing\
+      \ price of General Dynamics was 245.30 USD.\"\n  status: \"success\"\n  timestamp:\
+      \ \"2025-07-15T18:05:00-04:00\"\n  source: \"NYSE New York Stock Exchange\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: searchFinanceInfo\narguments:\n  refinedQuery: \"Reasons General\
+      \ Dynamics stock is rising\"\ntool_call_result:\n  data:\n    summary: \"The\
+      \ main reasons General Dynamics' stock price has been rising are expectations\
+      \ of increased defense exports and strong government defense contracts. In particular,\
+      \ the possibility of large-scale defense deals in the Middle East and Southeast\
+      \ Asia has drawn attention, with news of high-value U.S. Navy and overseas contracts\
+      \ boosting investor sentiment. Additionally, the fact that American securities\
+      \ firms are raising their target prices has also had a positive impact.\"\n\
+      \    keywords:\n      - Expansion of defense exports\n      - Large-scale government\
+      \ defense contracts\n      - Anticipation of Middle East & Southeast Asia deals\n\
+      \      - Upgraded target prices from U.S. securities firms\n      - Improved\
+      \ investor sentiment"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'As of July 14, 2025, the closing stock price of General Dynamics was
+      245.30 USD on the NYSE.
+
+
+      This information is based on official New York Stock Exchange data for that
+      day.
+
+
+      ----------
+
+
+      The reasons behind the recent rise in General Dynamics’ stock price are as follows:
+
+
+      Expansion of defense exports: Anticipation of larger-scale arms exports is boosting
+      market expectations.
+
+
+      Strong government defense contracts: News of high-value U.S. Navy and overseas
+      defense deals is fueling momentum.
+
+
+      Middle East & Southeast Asia opportunities: Potential contracts in these regions
+      are attracting investor attention.
+
+
+      Upgraded target prices from U.S. securities firms: Analysts have raised their
+      forecasts, reflecting improved earnings prospects.
+
+
+      Improved investor sentiment: All these favorable factors combined are strengthening
+      overall confidence in the stock.
+
+
+      Together, these elements are driving General Dynamics’ stock price upward.'

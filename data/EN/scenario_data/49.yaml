@@ -1,0 +1,291 @@
+metadata:
+  total_steps: 20
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- name: "Oliver Bennett"
+
+      - contactNumber: "(999)988-8889"
+
+      - datetime: "2026-06-06 20:33"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you give me my home ZIP code? My friend from Korea will arrive in
+      the U.S. in two weeks—also, could you recommend a good musical to see in New
+      York over the weekend?"
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"Find\
+      \ my home ZIP code\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Search for recommended musical performances happening in New York City two\
+      \ weekends from now\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Address'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Date'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'To generate an accurate ZIP code, please provide your current home address.
+
+
+      Also, to recommend a musical in New York two weekends from now, I’ll need to
+      know the exact date when you’d like to watch.
+
+
+      Example: Saturday, June 20, 2026 or Sunday, June 21, 2026'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: My home address is Apt 301, 15 Riverside Blvd, The Hudson Residences,
+      Upper West Side, New York, NY. The date is Saturday, June 20, 2026.
+- workflow_id: workflow_1
+  step_id: 8
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPostalCode\narguments:\n  refinedQuery: \"Find postal code\
+      \ for Apt 301, 15 Riverside Blvd, The Hudson Residences, Upper West Side, New\
+      \ York, NY\"\n  addressQuery: \"Apt 301, 15 Riverside Blvd, The Hudson Residences,\
+      \ Upper West Side, New York, NY\"\ntool_call_result:\n  data:\n    postalCodeResult:\n\
+      \      address: \"Apt 301, 15 Riverside Blvd, The Hudson Residences, Upper West\
+      \ Side, New York, NY\"\n      postalCode: \"10069\"\n      status: \"success\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"Recommended\
+      \ musicals in New York City on Saturday, June 20th\"\n  genre: \"Musical\"\n\
+      \  location: \"New York\"\n  date: \"2026-06-20\"\n  isCurrentlyRunning: true\n\
+      \  sortBy: \"soonest\"\ntool_call_result:\n  data:\n    query: \"Recommended\
+      \ musicals in New York City on Saturday, June 20th\"\n    genre: \"Musical\"\
+      \n    location: \"New York\"\n    date: \"2026-06-20\"\n    isCurrentlyRunning:\
+      \ true\n    sortBy: \"soonest\"\n    performances:\n      - title: \"Les Misérables\"\
+      \n        venue: \"Imperial Theatre\"\n        startDate: \"2026-05-01\"\n \
+      \       endDate: \"2026-07-31\"\n        description: \"A world-renowned masterpiece\
+      \ musical with moving story and music\"\n        runningTime: \"2 hours 45 minutes\"\
+      \n        ticketPriceRange: \"$40–$120\"\n        showtimes:\n          - \"\
+      2:00 PM\"\n          - \"7:00 PM\"\n      - title: \"The Phantom of the Opera\"\
+      \n        venue: \"Majestic Theatre\"\n        startDate: \"2026-06-10\"\n \
+      \       endDate: \"2026-08-15\"\n        description: \"A classic musical with\
+      \ stunning stage design and beautiful music\"\n        runningTime: \"2 hours\
+      \ 30 minutes\"\n        ticketPriceRange: \"$50–$130\"\n        showtimes:\n\
+      \          - \"3:00 PM\"\n          - \"8:00 PM\"\n  source: \"Performance Information\
+      \ System\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s the ZIP code for your home address, along with recommended musical
+      performances in New York City on Saturday, June 20, 2026.
+
+
+      [Home Address & ZIP Code]
+
+      Apt 301, 15 Riverside Blvd, The Hudson Residences, Upper West Side, New York,
+      NY
+
+      ZIP Code: 10069
+
+
+      ---
+
+
+      [Recommended Musicals in New York City on Saturday, June 20, 2026]
+
+
+      1. **Les Misérables** (Imperial Theatre)
+
+
+      * A world-renowned masterpiece with moving story and unforgettable music.
+
+      * Running time: 2 hours 45 minutes
+
+      * Showtimes: 2:00 PM / 7:00 PM
+
+      * Ticket price: $40–$120
+
+      * Performance period: May 1, 2026 – July 31, 2026
+
+
+      2. **The Phantom of the Opera** (Majestic Theatre)
+
+
+      * A classic musical with stunning stage design and beautiful music.
+
+      * Running time: 2 hours 30 minutes
+
+      * Showtimes: 3:00 PM / 8:00 PM
+
+      * Ticket price: $50–$130
+
+      * Performance period: June 10, 2026 – August 15, 2026
+
+
+      If you want, I can also help you book tickets or provide more details about
+      the shows!'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: Thanks. Then please email Suzy Kim directly with my home zip code and
+      address. Also, I’ll book two tickets for the 2 PM showing of Les Misérables.
+      Can you let me know the cast lineup for that day?
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      Find my home ZIP code\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Search for recommended musicals in New York two weekends from now\"\n\n\
+      workflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: message_agent\n      refined_query: \"Send my home address\
+      \ and ZIP code to Suzy Kim\"\n\nworkflow_4:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Book 2 tickets for Les Misérables at Imperial Theatre, New York on June\
+      \ 20th at 2 PM\"\n\nworkflow_5:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Check the cast lineup for Les Misérables at Imperial Theatre, New York on\
+      \ Saturday, June 20th at 2 PM\""
+- workflow_id: workflow_3
+  step_id: 13
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Email'
+- workflow_id: workflow_4
+  step_id: 14
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: Viewer type (adult/child/senior/disabled) and seat grade required (R
+      section, VIP section, S section, A section)
+- workflow_id: workflow_5
+  step_id: 15
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"Search for the\
+      \ cast lineup of the musical Les Misérables at Imperial Theatre in New York\
+      \ on Saturday, June 20\"\n  performanceTitle: \"Les Misérables\"\n  genre: \"\
+      Musical\"\n  venueName: \"Imperial Theatre\"\n  location: \"New York\"\n  date:\
+      \ \"2026-06-20\"\n  isCurrentlyRunning: true\n  sortBy: \"soonest\"\ntool_call_result:\n\
+      \  data:\n    performanceTitle: \"Les Misérables\"\n    genre: \"Musical\"\n\
+      \    venueName: \"Imperial Theatre\"\n    location: \"New York\"\n    date:\
+      \ \"2026-06-20\"\n    isCurrentlyRunning: true\n    sortBy: \"soonest\"\n  \
+      \  castLineup:\n      - role: \"Jean Valjean\"\n        actor: \"David Miller\"\
+      \n      - role: \"Javert\"\n        actor: \"Michael Smith\"\n      - role:\
+      \ \"Cosette\"\n        actor: \"Emily Johnson\"\n      - role: \"Marius\"\n\
+      \        actor: \"Daniel Park\"\n      - role: \"Éponine\"\n        actor: \"\
+      Sophia Lee\"\n      - role: \"Madame Thénardier\"\n        actor: \"Anna Brown\"\
+      \n      - role: \"Thénardier\"\n        actor: \"Christopher Davis\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: 'To send an email to Suzy Kim, I’ll need her email address.
+
+
+      Also, I’ll need a bit more information to book tickets for Les Misérables:
+
+
+      1. Type of attendee (choose from Adult / Child / Senior / Disabled)
+
+
+      2. Preferred seating category (choose from VIP / R / S / A)'
+- workflow_id: null
+  step_id: 17
+  agent: user
+  agent_type: user
+  data:
+    content: suzykim@gmail.com, we're all adults here, VIP
+- workflow_id: workflow_3
+  step_id: 18
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Send my home ZIP code\
+      \ 10069 and English address Apt 301, 15 Riverside Blvd, The Hudson Residences,\
+      \ Upper West Side, New York, NY directly to Suzy Kim via email\"\n  email: \"\
+      suzykim@gmail.com\"\n  channel: \"email\"\n  message: \"Suzy, here are my home\
+      \ ZIP code and English address. ZIP code 10069, English address: Apt 301, 15\
+      \ Riverside Blvd, The Hudson Residences, Upper West Side, New York, NY\"\n \
+      \ repeatRule: \"none\"\n  priority: \"normal\"\ntool_call_result:\n  data:\n\
+      \    status: \"success\"\n    message: \"The email was successfully sent to\
+      \ suzykim@gmail.com.\"\n    sendTime: \"2026-06-06T20:33\"\n    channel: \"\
+      email\"\n    recipient: \"suzykim@gmail.com\""
+- workflow_id: workflow_4
+  step_id: 19
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookPerformance\narguments:\n  refinedQuery: \"Book 2 tickets\
+      \ for the musical Les Misérables on June 20 at 2 PM\"\n  performanceTitle: \"\
+      Les Misérables\"\n  venueName: \"Imperial Theatre\"\n  showDate: \"2026-06-20\"\
+      \n  showTime: \"14:00\"\n  audienceCount: 2\n  audienceTypes: [\"adult\", \"\
+      adult\"]\n  seatGrade: \"VIP\"\n  userInfo:\n    name: \"Oliver Bennett\"\n\
+      \    contactNumber: \"(999)988-8889\"\ntool_call_result:\n  data:\n    status:\
+      \ \"success\"\n    message: \"Your reservation for 2 VIP seats to Les Misérables\
+      \ on June 20 at 2 PM at Imperial Theatre has been completed successfully.\"\n\
+      \    reservationDetails:\n      performanceTitle: \"Les Misérables\"\n     \
+      \ venueName: \"Imperial Theatre\"\n      showDate: \"2026-06-20\"\n      showTime:\
+      \ \"14:00\"\n      audienceCount: 2\n      audienceTypes: [\"adult\", \"adult\"\
+      ]\n      seatGrade: \"VIP\"\n      seatNumbers: [\"VIP12\", \"VIP13\"]\n   \
+      \   userInfo:\n        name: \"Oliver Bennett\"\n        contactNumber: \"(999)988-8889\"\
+      \n      datetime: \"2026-06-06 20:33\""
+- workflow_id: null
+  step_id: 20
+  agent: main
+  agent_type: main
+  data:
+    content: "1. Email Delivery Result\n\n- Recipient: suzykim@gmail.com  \n- Time\
+      \ Sent: 8:33 PM  \n- Channel: Email  \n- Message Content:  \n  Suzy, here are\
+      \ my home ZIP code and English address.  \n  ZIP Code: 10069  \n  English Address:\
+      \ Apt 301, 15 Riverside Blvd, The Hudson Residences, Upper West Side, New York,\
+      \ NY  \n\nThe email was sent successfully!  \n\n---\n\n2. Musical Ticket Reservation\
+      \ Result\n\n- Show Title: Les Misérables  \n- Date & Time: Saturday, June 20,\
+      \ 2026, 2:00 PM  \n- Venue: Imperial Theatre, New York  \n- Tickets: 2 (Adults)\
+      \  \n- Seat Class: VIP  \n- Seat Numbers: VIP12, VIP13  \n- Reservation Info:\
+      \  \n  Name: Oliver Bennett  \n  Contact: (999)988-8889  \n\nYour reservation\
+      \ has been completed successfully!  \n\n---\n\n3. Cast Lineup (as of June 20,\
+      \ 2026)\n\n- Jean Valjean: David Miller  \n- Javert: Michael Smith  \n- Cosette:\
+      \ Emily Johnson  \n- Marius: Daniel Park  \n- Éponine: Sophia Lee  \n- Madame\
+      \ Thénardier: Anna Brown  \n- Thénardier: Christopher Davis  \n\nVenue: Imperial\
+      \ Theatre, New York  \nPerformance Date: 2026-06-20"

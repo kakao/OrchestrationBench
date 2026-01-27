@@ -1,0 +1,136 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 현재 한국 기준 날짜(2025년 7월 16일, 수요일)
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 요즘 계속 소화가 안되는데, 혹시 '위축성 위염'이 뭔지 자세히 알려주고, 서울 서초구에서 위내시경 전문 내과 병원을 추천해주세요.
+      추천해준 병원 중 한 곳에 다음 주 수요일 오후 2시로 예약까지 진행해주세요.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"위축성 위염 상세\
+      \ 정보 검색\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"다음주\
+      \ 수요일 오후 2시 예약 예약 가능한 서울시 서초구 위내시경 전문 내과 추천\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"서울시 서초구 위내시경 전문 내과 다음주 수요일\
+      \ 오후 2시 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"위축성 위염 상세 정보 검색\"\n\
+      tool_call_result:\n  data:\n    title: \"위축성 위염 (Atrophic Gastritis) 정보 요약\"\
+      \n    summary: \"위축성 위염은 위 점막의 만성적인 염증으로 인해 점막층이 얇아지고 위산 분비 세포가 줄어드는 질환입니다.\
+      \ 이로 인해 소화 기능이 저하될 수 있으며, 장기간 방치 시 위암 발생 위험을 높일 수 있어 주의가 필요합니다.\"\n    causes:\n\
+      \      - title: \"헬리코박터 파일로리균 감염\"\n        content: \"가장 흔한 원인으로, 헬리코박터균의 장기적인\
+      \ 감염이 위 점막에 만성 염증을 일으켜 세포를 위축시킵니다.\"\n      - title: \"자가면역성 위염\"\n        content:\
+      \ \"우리 몸의 면역 체계가 자신의 위 세포를 공격하여 발생하는 경우입니다. 이는 종종 다른 자가면역 질환과 동반되기도 합니다.\"\n\
+      \      - title: \"기타 요인\"\n        content: \"불규칙한 식습관, 맵고 짠 음식의 잦은 섭취, 흡연,\
+      \ 음주, 특정 약물(소염진통제 등)의 장기 복용, 스트레스 등도 영향을 줄 수 있습니다.\"\n    symptoms:\n      -\
+      \ \"특별한 증상이 없는 경우가 많아 건강검진에서 우연히 발견되기도 합니다.\"\n      - \"소화불량, 식후 더부룩함, 복부 팽만감,\
+      \ 메스꺼움, 식욕 부진 등이 나타날 수 있습니다.\"\n      - \"위산 분비가 줄어들어 기름진 음식 등을 먹었을 때 소화가 더\
+      \ 안된다고 느낄 수 있습니다.\"\n      - \"심한 경우 철분이나 비타민 B12 흡수 장애로 인해 빈혈 증상(피로, 쇠약감 등)이\
+      \ 동반될 수 있습니다.\"\n    diagnosis:\n      - title: \"위내시경 검사\"\n        content:\
+      \ \"가장 정확한 진단 방법으로, 위 점막이 얇아지고 혈관이 비쳐 보이는 등의 특징적인 모습을 직접 관찰합니다. 필요한 경우 조직검사를\
+      \ 통해 염증의 정도와 헬리코박터균 감염 여부를 확인합니다.\"\n    treatment:\n      - title: \"원인 치료\"\
+      \n        content: \"헬리코박터균 감염이 확인되면 제균 치료(항생제 등)를 시행합니다. 자가면역성 위염의 경우 부족한 비타민\
+      \ B12를 주사로 보충하는 등의 치료를 합니다.\"\n      - title: \"증상 완화\"\n        content: \"\
+      소화불량, 속쓰림 등의 증상을 완화하기 위해 위장 운동 조절제나 점막 보호제를 사용합니다.\"\n      - title: \"생활 습관\
+      \ 개선\"\n        content: \"규칙적인 식사를 하고, 자극적인 음식을 피하는 것이 중요합니다. 금연과 절주도 필수적입니다.\"\
+      \n    management_tips:\n      - \"위축성 위염은 위암의 위험도를 높일 수 있으므로, 진단받았다면 1~2년 주기의\
+      \ 정기적인 위내시경 검사를 통해 상태를 추적 관찰하는 것이 매우 중요합니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"다음주 수요일 2시 예악 가능한\
+      \ 서울 서초구 위내시경 전문 내과\"\n  placeCategory: \"내과\"\n  location: \"서울시 서초구\"\n  sortBy:\
+      \ \"distance\"\n  specialCondition: \"위내시경 전문\"\n  availableDate: \"2025-07-23\"\
+      \n  availableTime: \"14:00\"\ntool_call_result:\n  data:\n    places:\n    \
+      \  - placeId: \"HOSP_S_1001\"\n        name: \"편안한내과 의원\"\n        address:\
+      \ \"서울 서초구 서초대로 300 (서초동)\"\n        category: \"내과\"\n        rating: 4.8\n\
+      \        reviewCount: 782\n        tags:\n          - \"위/대장 내시경 전문\"\n    \
+      \      - \"5대암 검진 지정병원\"\n          - \"소화기내과 전문의 3인\"\n        description:\
+      \ \"대학병원급 내시경 장비를 보유하고 있으며, 수면 내시경 시 통증이 거의 없어 환자 만족도가 매우 높습니다.\"\n      - placeId:\
+      \ \"HOSP_S_1002\"\n        name: \"속편한내과 서초점\"\n        address: \"서울 서초구 강남대로\
+      \ 400 (강남역 10번 출구)\"\n        category: \"내과\"\n        rating: 4.7\n      \
+      \  reviewCount: 915\n        tags:\n          - \"정밀 내시경 클리닉\"\n          -\
+      \ \"용종 제거술 전문\"\n          - \"여의사 진료 가능\"\n        description: \"경험 많은 소화기내과\
+      \ 전문의가 직접 검사하며, 발견된 용종은 당일 제거가 가능합니다. 강남역과 가까워 접근성이 좋습니다.\"\n      - placeId:\
+      \ \"HOSP_S_1003\"\n        name: \"서울바른내과 의원\"\n        address: \"서울 서초구 신반포로\
+      \ 180 (반포동, 래미안퍼스티지 중심상가)\"\n        category: \"내과\"\n        rating: 4.9\n\
+      \        reviewCount: 550\n        tags:\n          - \"내시경 세부 전문의\"\n     \
+      \     - \"철저한 소독 관리\"\n          - \"건강검진 센터\"\n        description: \"내시경 소독\
+      \ 및 감염 관리를 최우선으로 하여 안전한 검사를 약속드립니다. 꼼꼼한 설명과 친절한 상담으로 유명합니다.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약하고자 하는 병원명, 예약자 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "서울 서초구에서 위내시경 관련 환자분들의 평가가 가장 좋은 내과 세 곳을 찾아봤습니다.\n\n  1.  편안한내과 의원:\
+      \ 대학병원급 장비를 사용하고, 통증이 거의 없는 수면 내시경으로 만족도가 아주 높은 곳입니다.\n  2.  속편한내과 서초점: 강남역과\
+      \ 가까워 방문하기 편하고, 경험 많은 전문의가 검사 중 발견된 용종을 바로 제거해준다고 합니다.\n  3.  서울바른내과 의원: 내시경\
+      \ 소독과 감염 관리를 철저히 하고, 설명을 꼼꼼하게 잘 해주셔서 평점이 가장 높습니다.\n\n이 세 곳 중에 어느 병원으로 예약을 도와드릴까요?\
+      \ 예약을 원하시는 병원과 예약자 연락처를 말씀해주시면 다음 주 수요일 오후 2시로 바로 진행하겠습니다."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 첫 번째로 알려주신 '편안한내과 의원'으로 예약해주세요. 연락처는 010-1234-5678입니다.
+- workflow_id: null
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"편안한내과 의원에 다음 주 수요일\
+      \ 오후 2시 위내시경 검사 예약\"\n  placeId: \"HOSP_S_1001\"\n  placeName: \"편안한내과 의원\"\n\
+      \  placeCategory: \"내과\"\n  reservationDate: \"2025-07-23\"\n  reservationTime:\
+      \ \"14:00\"\n  contactInfo: \"010-1234-5678\"\n  option: \"위내시경 검사\"\ntool_call_result:\n\
+      \  data:\n    reservationId: \"RSV_HOSP_S_1001_202507231400\"\n    status: \"\
+      confirmed\"\n    placeName: \"편안한내과 의원\"\n    reservationDate: \"2025-07-23\"\
+      \n    reservationTime: \"14:00\"\n    partySize: 1\n    userName: \"김민준\"\n\
+      \    contactInfo: \"010-1234-5678\"\n    message: \"예약이 확정되었습니다. 예약 시간 10분 전까지\
+      \ 내원해 주시기 바랍니다. 검사 전 주의사항은 문자로도 안내합니다.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '위축성 위염은 위 점막이 만성적인 염증으로 얇아지는 질환으로, 소화불량이나 더부룩함 같은 증상을 유발할 수 있습니다. 증상이
+      없는 경우도 많아 정기적인 내시경 검진으로 상태를 확인하는 것이 중요하다고 하네요.
+
+      -----------
+
+
+      요청에 따라 ''편안한내과 의원''에 다음 주 수요일(7월 23일) 오후 2시로 위내시경 검사 예약을 확정했습니다. 검사 전 주의 사항은
+      문자로 안내될 예정이니 참고해 주세요.
+
+      -----------
+
+
+      더 필요한 점이 있으시면 언제든지 다시 말씀해주세요.'

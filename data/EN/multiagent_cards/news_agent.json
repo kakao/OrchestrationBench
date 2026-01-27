@@ -1,0 +1,141 @@
+{
+  "agent_card": {
+    "name": "News",
+    "agent_id": "news_agent",
+    "description": "A specialized news agent that quickly delivers major domestic and international news, and can search, summarize, or brief news on topics or fields of interest.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": true
+    },
+    "skills": [
+      {
+        "id": "searchNews",
+        "name": "Search News",
+        "description": "Searches for recent news articles based on keywords or topics entered by the user. You can set sorting criteria (latest, most popular, etc.) or date filters, and then link to summaries or briefings.",
+        "examples": [
+          "Find the latest news about Apple",
+          "Look up news articles about the AI ethics debate",
+          "Show me articles from last week about the U.S. presidential election",
+          "Can you search for Google news from this afternoon?",
+          "Show me only trending tech news"
+        ]
+      },
+      {
+        "id": "summarizeNews",
+        "name": "Summarize News",
+        "description": "Handles news topic briefings or summaries of specific articles. If a topic-based briefing is requested or an article URL/body is provided, it delivers the corresponding summary.",
+        "examples": [
+          "Summarize this article: https://news.example.com/article/1234",
+          "Give me just the key points from the AI policy article",
+          "I don't want to read the long article, just summarize the key points",
+          "Can you give me a briefing on political issues?",
+          "Brief me mainly on breaking news that just came out",
+          "Organize this week's news by keyword"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "searchNews",
+      "description": "Searches for related news articles based on the user's query and returns a list of headlines and URLs. Supports date filters, categories, and result limits. If called repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "Refined news search query (e.g., 'Latest news about Nvidia stock')"
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Search start date (YYYY-MM-DD format, optional)"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Search end date (YYYY-MM-DD format, optional)"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "politics",
+              "economy",
+              "technology",
+              "sports",
+              "entertainment",
+              "world",
+              "health",
+              "etc"
+            ],
+            "description": "News category filter (optional)"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "Limit on number of search results (default: 5)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "limit"
+        ]
+      }
+    },
+    {
+      "name": "summarizeNews",
+      "description": "Handles news topic briefings or summaries of specific articles. You can request a topic-based briefing, or if an article URL/body is provided, it will summarize that article. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence stating the purpose of the summary or briefing (e.g., 'Summarize the news about the financial crisis', 'Just give me the key points of this article')"
+          },
+          "topic": {
+            "type": "string",
+            "description": "The briefing topic or keyword (e.g., 'financial crisis', 'real estate policy'')"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "politics",
+              "economy",
+              "technology",
+              "sports",
+              "entertainment",
+              "world",
+              "health",
+              "etc"
+            ],
+            "description": "News category filter (optional, used only for topic-based briefings)"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Reference date for the briefing in YYYY-MM-DD format (optional)"
+          },
+          "url": {
+            "type": "string",
+            "description": "URL of the news article to summarize (optional, used for article summaries)"
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "headlines",
+              "summary",
+              "bulletPoints",
+              "short",
+              "detailed"
+            ],
+            "description": "Format of the summary or briefing. For briefings, 'headlines'/'summary'/'bulletPoints' are recommended; for article summaries, 'short'/'detailed' are recommended"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

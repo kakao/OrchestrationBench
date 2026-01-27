@@ -1,0 +1,86 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '"date": 2016-01-27
+
+      "location": "Brooklyn, NY"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Lately I haven’t been sleeping well and I keep feeling anxious. Do you
+      think this could be an early sign of an anxiety disorder? I’d like to get a
+      consultation. Can you help me find a nearby mental health clinic that's open
+      in the evening?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"Consultation\
+      \ to evaluate possible anxiety disorder due to recent poor sleep and persistent\
+      \ anxiety\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"Find\
+      \ a nearby Psychiatric Clinic that's open in the evening\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"Consultation to evaluate\
+      \ possible anxiety disorder due to recent poor sleep and persistent anxiety\"\
+      \ntool_call_result:\n  data:\n    symptoms:\n      - \"Excessive worrying and\
+      \ anxiety\"\n      - \"Easily fatigued\"\n      - \"Difficulty concentrating\"\
+      \n      - \"Muscle tension\"\n      - \"Insomnia or sleep disturbances\"\n \
+      \   recommendation: \"I recommend consulting a professional for an accurate\
+      \ diagnosis.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Find a nearby Psychiatric\
+      \ Clinic that's open in the evening\"\n  placeCategory: \"Psychiatry Clinic\"\
+      \n  location: \"Brooklyn, NY\"\n  availableTime: \"6:00 PM to 9:00 PM\"\n  specialCondition:\
+      \ \"Evening hours\"\n  sortBy: \"distance\"\ntool_call_result:\n  places:\n\
+      \    - placeName: \"Peace of Mind Psychiatry Clinic\"\n      address: \"245\
+      \ Flatbush Avenue, Brooklyn, NY 11217\"\n      contact: \"(718)555-0142\"\n\
+      \      operatingHours: \"9:00 AM–9:00 PM (Evening hours available)\"\n     \
+      \ specialties:\n        - \"Anxiety Disorders\"\n        - \"Depression\"\n\
+      \        - \"Sleep Disorders\"\n      distanceFromLocation: \"0.8 mi\"\n\n \
+      \   - placeName: \"Tranquil Psychiatry Clinic\"\n      address: \"910 Bedford\
+      \ Avenue, Brooklyn, NY 11205\"\n      contact: \"(347)555-0198\"\n      operatingHours:\
+      \ \"10:00 AM–9:00 PM (Evening hours available)\"\n      specialties:\n     \
+      \   - \"Stress Management\"\n        - \"Anxiety Disorders\"\n        - \"Panic\
+      \ Disorder\"\n      distanceFromLocation: \"1.4 mi\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "I see that you’ve been having trouble sleeping lately and feeling anxious.\
+      \ That must be really difficult.\n\nThe symptoms you described could be early\
+      \ signs of an anxiety disorder. In the early stages, anxiety disorders often\
+      \ show symptoms such as:\n\n* Excessive worrying and nervousness\n* Getting\
+      \ tired easily\n* Difficulty concentrating\n* Muscle tension\n* Insomnia or\
+      \ other sleep problems\n\nA proper diagnosis can only be made through a consultation\
+      \ with a professional, so try not to worry too much and consider visiting a\
+      \ clinic.\n\nAs you requested, I looked up some nearby mental health clinics\
+      \ that offer evening appointments:\n\n\n1. Peace of Mind Psychiatry Clinic\n\
+      \n* Address: 245 Flatbush Avenue, Brooklyn, NY 11217\n* Contact: (718)555-0142\n\
+      * Operating Hours: 9:00 AM – 9:00 PM (Evening hours available)\n* Distance:\
+      \ 0.8 mi\n* Specialties:\n\n  * Anxiety Disorders\n  * Depression\n  * Sleep\
+      \ Disorders\n\n\n2. Tranquil Psychiatry Clinic\n\n* Address: 910 Bedford Avenue,\
+      \ Brooklyn, NY 11205\n* Contact: (347)555-0198\n* Operating Hours: 10:00 AM\
+      \ – 9:00 PM (Evening hours available)\n* Distance: 1.4 mi\n* Specialties:\n\n\
+      \  * Stress Management\n  * Anxiety Disorders\n  * Panic Disorder\n\nPlease\
+      \ visit at a time that works best for you, and I hope you find peace of mind\
+      \ soon."

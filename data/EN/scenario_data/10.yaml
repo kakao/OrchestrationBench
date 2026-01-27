@@ -1,0 +1,149 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current date: 2025-07-16
+
+      - Current location: Union Square Station'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you find a 24/7 coffee shop near me and suggest a playlist of music
+      for studying?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"24/7 coffee\
+      \ shop nearby\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Playlist to help me focus while studying\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"24/7 coffee shop nearby\"\
+      \n  location: \"near Union Square Station\"\n  placeCategory: \"coffee shop\"\
+      \n  sortBy: \"distance\"\n  specialCondition: \"open 24/7\"\ntool_call_result:\n\
+      \  data:\n    places:\n      - name: \"Focus Coffee - Union Square\"\n     \
+      \   address: \"10 E 14th St, New York, NY\"\n        openHours: \"Open 24/7\"\
+      \n        features:\n          - \"Study-friendly seating\"\n          - \"\
+      Private tables available\"\n          - \"Quiet atmosphere\"\n          - \"\
+      Plenty of outlets\"\n        tag:\n          - \"24/7\"\n          - \"coffee\"\
+      \n          - \"quiet\"\n\n      - name: \"Night Owl Coffee - Union Square\"\
+      \n        address: \"121 Waverly Pl, Basement, New York, NY\"\n        openHours:\
+      \ \"Open year-round, 24/7\"\n        features:\n          - \"Work-friendly\
+      \ zone\"\n          - \"Spacious seating\"\n          - \"Unlimited refills\"\
+      \n          - \"Secure entry system\"\n        tag:\n          - \"24/7\"\n\
+      \          - \"coffee\"\n          - \"study-friendly\"\n\n      - name: \"\
+      Quiet Corner Café - Union Square Station\"\n        address: \"161 Broadway,\
+      \ 3rd Floor, New York, NY\"\n        openHours: \"24/7\"\n        features:\n\
+      \          - \"Individual seating\"\n          - \"Free Wi-Fi\"\n          -\
+      \ \"Soft background music\"\n          - \"Reservations available\"\n      \
+      \  tag:\n          - \"24/7\"\n          - \"coffee\"\n          - \"quiet space\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMusicInfo\narguments:\n  refinedQuery: \"Playlist of music\
+      \ that helps improve focus while studying\"\n  moodTag: \"Music to boost concentration\
+      \ while studying\"\n  chartType: \"billboard\"\ntool_call_result:\n  data:\n\
+      \    playlists:\n      - title: \"Billboard Focus BGM\"\n        description:\
+      \ \"A playlist of calm instrumentals and lo-fi sounds to help you stay immersed\
+      \ in your studies\"\n        platform: \"Billboard\"\n        url: \"https://www.billboard.com/mymusic/playlist/focusbgm\"\
+      \n        tags:\n          - \"Study\"\n          - \"Concentration\"\n    \
+      \      - \"Lo-fi\"\n          - \"Instrumental\"\n      - title: \"Quiet Nights:\
+      \ Perfect Study Music\"\n        description: \"Emotional background music designed\
+      \ to help you focus during late-night study sessions in a calm atmosphere\"\n\
+      \        platform: \"Billboard\"\n        url: \"https://www.billboard.com/mymusic/playlist/quietstudy\"\
+      \n        tags:\n          - \"Late-night study\"\n          - \"Piano\"\n \
+      \         - \"Focus\"\n          - \"Calm\"\n      - title: \"Deep Focus with\
+      \ Billboard\"\n        description: \"A collection of Billboard-recommended\
+      \ tracks with minimal and repetitive beats to enhance brain focus\"\n      \
+      \  platform: \"Billboard\"\n        url: \"https://www.billboard.com/mymusic/playlist/deepfocus\"\
+      \n        tags:\n          - \"Minimal\"\n          - \"Deep work\"\n      \
+      \    - \"Focus boost\"\n          - \"Smart learning\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 24/7 Coffee Shops near Union Square Station
+
+
+      1- Focus Coffee - Union Square
+
+      - Address: 10 E 14th St, New York, NY
+
+      - Hours: Open 24/7
+
+      - Key Features: Study-friendly seating, private tables, quiet atmosphere, plenty
+      of outlets
+
+      - Tags: 24/7, coffee, quiet
+
+
+      2- Night Owl Coffee - Union Square
+
+      - Address: 121 Waverly Pl, Basement, New York, NY
+
+      - Hours: Open year-round, 24/7
+
+      - Key Features: Work-friendly zone, spacious seating, unlimited refills, secure
+      entry system
+
+      - Tags: 24/7, coffee, study-friendly
+
+
+      3- Quiet Corner Café - Union Square Station
+
+      - Address: 161 Broadway, 3rd Floor, New York, NY
+
+      - Hours: 24/7
+
+      - Key Features: Individual seating, free Wi-Fi, soft background music, reservations
+      available
+
+      - Tags: 24/7, coffee, quiet space
+
+
+      ▶  Billboard Playlists for Studying
+
+
+      1- Billboard Focus BGM
+
+      - Description: Calm instrumentals and lo-fi sounds to keep you immersed in your
+      studies
+
+      - Tags: Study, Concentration, Lo-fi, InstrumentalListen: https://www.billboard.com/mymusic/playlist/focusbgm
+
+
+      2- Quiet Nights: Perfect Study Music
+
+      - Description: Emotional background music for late-night study sessions in a
+      calm atmosphere
+
+      - Tags: Late-night study, Piano, Focus, Calm
+
+      - Listen: https://www.billboard.com/mymusic/playlist/quietstudy
+
+
+      3- Deep Focus with Billboard
+
+      - Description: Minimal and repetitive beats recommended by Billboard to enhance
+      steady focus
+
+      - Tags: Minimal, Deep work, Focus boost, Smart learning
+
+      - Listen: https://www.billboard.com/mymusic/playlist/deepfocus'

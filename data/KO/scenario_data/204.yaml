@@ -1,0 +1,181 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-08-10
+
+      현재시각: 오전 01:11분
+
+      현 위치: 서울 중구 세종대로 101'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 갑자기 지금 당장 밤 바다가 보고 싶어졌다! 지금 택시로 월미도 갈꺼야 거기까지 택시비랑 예상 소요시간 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"월미도까지의\
+      \ 택시비\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n \
+      \   - status: pending\n      name: transport_agent\n      refined_query: \"\
+      월미도까지의 예상 소요시간\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransportInfo\narguments:\n  refinedQuery: \"서울 중구 세종대로 101에서\
+      \ 월미도까지의 택시비\"\n  location: \"서울 중구 세종대로 101\"\n  destination: \"월미도\"\n  departureTime:\
+      \ \"2025-08-10T01:11\"\n  includeModes: \"taxi\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"월미도까지의 택시비\"\n    location: \"서울 중구 세종대로 101\"\n    destination:\
+      \ \"월미도\"\n    departureTime: \"2025-08-10T01:11\"\n    includeModes: \"taxi\"\
+      \n    taxiFareEstimate:\n      distanceKm: 33.5\n      estimatedFareKRW: 48000\n\
+      \      fareDetails:\n        baseFare: 4800\n        distanceFare: 38000\n \
+      \       timeFare: 2200\n      notes: \"실제 요금은 교통 상황에 따라 변동될 수 있습니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"서울 중구 세종대로 101에서\
+      \ 월미도까지의 예상 소요 시간\"\n  origin: \"서울 중구 세종대로 101\"\n  destination: \"월미도\"\n\
+      \  departureTime: \"2025-08-10T01:11\"\n  transportModes: \"car\"\n  optimizeBy:\
+      \ \"fastest\"\ntool_call_result:\n  data:\n    refinedQuery: \"월미도까지의 예상 소요\
+      \ 시간\"\n    origin: \"서울 중구 세종대로 101\"\n    destination: \"월미도\"\n    departureTime:\
+      \ \"2025-08-10T01:11\"\n    transportMode: \"car\"\n    optimizeBy: \"fastest\"\
+      \n    route:\n      duration: \"약 45분\"\n      distance: \"35km\"\n      summary:\
+      \ \"경인고속도로를 이용하는 경로가 가장 빠릅니다.\"\n      routeUrl: \"https://www.google.com/maps/dir/서울+중구+세종대로+101/월미도\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶  택시 이용 정보 안내
+
+
+      - 서울 중구 세종대로 101에서 월미도까지의 택시 요금과 소요 시간을 알려드릴게요.
+
+
+      - 월미도까지 예상 정보
+
+      - 예상 소요 시간: 약 45분
+
+      - 예상 택시 요금: 약 48,000원
+
+      - 이동 거리: 약 33.5km
+
+      - 추천 경로: 경인고속도로를 이용하는 것이 가장 빠릅니다.
+
+      - 이 요금은 교통 상황에 따라 변동될 수 있으니 참고만 해주세요.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 기사 아저씨와 4만원에 월미도까지 가기로 합의 했으니까 내 입출금 통장에서 농협 김택시 123-123456-789로 송금해줘
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: transport_agent\n      refined_query: \"\
+      월미도까지의 택시비\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: transport_agent\n      refined_query:\
+      \ \"월미도까지의 예상 소요시간\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: personal_banking_agent\n     \
+      \ refined_query: \"내 입출금 통장 잔액조회\"\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"내 입출금 통장에서 농협 김택시 123-123456-789로 4만원 송금\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 은행명, 계좌번호, 성함'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 일반 계좌 송금시 계좌 조회후 송금을 위하여 아래 정보를 알려주세요.
+
+
+      - 조회할 은행명 (예: 신한은행, 국민은행 등)
+
+
+      - 계좌번호 (예: 110-1234-5678)
+
+
+      - 예금주 성함 (예: 홍길동)'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 카카오뱅크, 987-987654-321, 박주드
+- workflow_id: workflow_3
+  step_id: 12
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"내 입출금 통장 잔액 조회\"\
+      \n  accountNumber: \"987-987654-321\"\n  accountHolderName: \"박주드\"\n  bankName:\
+      \ \"카카오뱅크\"\n  accountType: \"checking\"\n  includeTransactions: false\ntool_call_result:\n\
+      \  status: success\n  data:\n    sourceAccountId: \"kakaobank-987-987654-321\"\
+      \n    bankName: \"카카오뱅크\"\n    accountHolderName: \"박주드\"\n    accountNumber:\
+      \ \"987-987654-321\"\n    accountType: \"입출금 통장 (checking)\"\n    balance: \"\
+      ₩1,245,000\"\n    currency: \"KRW\""
+- workflow_id: null
+  step_id: 13
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"내 입출금 통장에서 농협 김택시\
+      \ 123-123456-789로 4만원 송금\"\n  recipientName: \"김택시\"\n  bankName: \"농협\"\n \
+      \ accountNumber: \"123-123456-789\"\n  amount: 40000\n  sourceAccountId: \"\
+      kakaobank-987-987654-321\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    transactionId: \"TX20250807123500123\"\n    sourceAccountId: \"kakaobank-987-987654-321\"\
+      \n    sourceBankName: \"카카오뱅크\"\n    recipientName: \"김택시\"\n    recipientBankName:\
+      \ \"농협\"\n    recipientAccountNumber: \"123-123456-789\"\n    amount: 40000\n\
+      \    currency: \"KRW\"\n    status: \"completed\"\n    message: \"송금이 완료되었습니다.\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: '김택시님에게 농협 계좌(123-123456-789)로 40,000원 송금이 완료되었습니다.
+
+
+      - 출금 계좌: 카카오뱅크 987-987654-321
+
+
+      - 받는 사람: 김택시
+
+
+      - 받는 은행: 농협
+
+
+      - 받는 계좌번호: 123-123456-789
+
+
+      - 송금 금액: 40,000원
+
+
+      - 거래 상태: 완료
+
+
+      - 거래 ID: TX20250807123500123
+
+
+      필요 시 거래 ID를 통해 확인하거나, 계좌 내역에서 조회하실 수 있습니다.'

@@ -1,0 +1,96 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '현재시각 13:00
+
+      날짜: 2025-08-01'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 판교역 가는 택시 불러줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"판교역 가는\
+      \ 택시 호출\""
+- workflow_id: null
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 현재위치, 전화번호'
+- workflow_id: workflow_1
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '예약을 진행하기 위해 아래 정보를 확인 부탁드립니다:
+
+
+      현재 위치는 어디인가요?
+
+
+      연락 가능한 전화번호도 함께 알려주세요.
+
+
+      해당 정보를 기반으로 정확한 예약을 도와드릴게요!'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 성수역 4번 출구,  010-1234-1234야
+- workflow_id: null
+  step_id: 7
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callTaxi\narguments:\n  refinedQuery: \"판교역 가는 택시 호출\"\n  pickupLocation:\
+      \ \"성수역 4번 출구\"\n  dropoffLocation: \"판교역\"\n  pickupTime: \"2025-08-01T13:00\"\
+      \n  passengerCount: 1\n  taxiType: \"general\"\n  contactInfo: \"010-1234-1234\"\
+      \ntool_call_result:\n  status: \"confirmed\"\n  data:\n    bookingId: \"TX20250801-001\"\
+      \n    pickupLocation: \"성수역 4번 출구\"\n    dropoffLocation: \"판교역\"\n    pickupTime:\
+      \ \"2025-08-01T13:00\"\n    passengerCount: 1\n    taxiType: \"일반 택시\"\n   \
+      \ driverName: \"김택시\"\n    driverPhone: \"010-5678-9876\"\n    vehicleNumber:\
+      \ \"서울 34바 6789\"\n    estimatedFare: 27500\n    estimatedArrivalTime: \"2025-08-01T13:00\"\
+      \n    note: \"성수역 4번 출구에서 13:00에 김택시 기사님 차량(서울 34바 6789)이 도착할 예정입니다. 연락처: 010-5678-9876\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '성수역 4번 출구에서 판교역으로 향하는 일반 택시가 정상적으로 예약되었습니다.
+
+
+      예약 번호: TX20250801-001
+
+
+      탑승 시간: 2025년 8월 1일 오후 1시
+
+
+      탑승 인원: 1명
+
+
+      배정 기사: 김택시 (010-5678-9876)
+
+
+      차량 번호: 서울 34바 6789
+
+
+      예상 요금: 약 27,500원
+
+
+      김택시 기사님이 성수역 4번 출구로 13:00까지 도착할 예정입니다. 탑승 전 차량 번호와 기사님 연락처를 꼭 확인해주세요.'

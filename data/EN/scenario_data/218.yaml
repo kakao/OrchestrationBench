@@ -1,0 +1,103 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Current location - New York Times Building, 620 8th Ave, Brooklyn, New
+      York
+
+      Current time - 12:33'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Tell me about the pasta restaurant in Hell’s Kitchen, Manhattan recommended
+      by actor Timothée Chalamet, and find the fastest public transit route from my
+      current location to that restaurant.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Pasta restaurants\
+      \ in Hell's Kitchen recommended by Timothée Chalamet\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: transport_agent\n      refined_query: \"Fastest public\
+      \ transit route to the pasta restaurants in Hell's Kitchen recommended by Timothée\
+      \ Chalamet\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Pasta restaurants\
+      \ in Hell's Kitchen recommended by Timothée Chalamet\"\n  location: \"Hell's\
+      \ Kitchen, Manhattan\"\n  cuisineType: \"Italian\"\n  specificDishes: \"Pasta\"\
+      \n  source: \"Timothée Chalamet\"\n  sortBy: \"highest_rated\"\ntool_call_result:\n\
+      \  data:\n    name: \"Sesamo\"\n    location: \"520 10th Ave, Hell's Kitchen,\
+      \ Manhattan, New York, NY 10036\"\n    source: \"Timothée Chalamet\"\n    rating:\
+      \ 4.5\n    description: \"A modern Italian restaurant in Hell's Kitchen blending\
+      \ classic Italian techniques with bold Asian flavors, featured in multiple media\
+      \ outlets and recommended by Timothée Chalamet.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Fastest public transit\
+      \ route from my location to Sesamo in Hell's Kitchen, Manhattan recommended\
+      \ by Timothée Chalamet\"\n  origin: \"New York Times Building, 620 8th Ave,\
+      \ Brooklyn, New York\"\n  destination: \"Sesamo, 520 10th Ave, Hell's Kitchen,\
+      \ Manhattan, New York, NY 10036\"\n  transportModes: [\"subway\", \"bus\"]\n\
+      \  departureTime: \"12:33\"\n  optimizeBy: \"fastest\"\ntool_call_result:\n\
+      \  directions:\n    - step: 1\n      instruction: \"Walk northwest to the W\
+      \ 42 St/8 Av bus stop (in front of Port Authority) for the westbound M42.\"\n\
+      \      station: \"W 42 St/8 Av (M42 westbound)\"\n      line: \"Walk\"\n   \
+      \   time: \"2–3 min\"\n    - step: 2\n      instruction: \"Board M42 westbound\
+      \ toward 12 Av/42 St; ride ~2 stops to W 42 St/10 Av. Walk 1 block south to\
+      \ Sesamo (520 10th Ave).\"\n      station: \"From: W 42 St/8 Av → To: W 42 St/10\
+      \ Av\"\n      line: \"M42 bus (westbound)\"\n      time: \"Bus 4–6 min + Walk\
+      \ 2–3 min (total ~8–12 min)\"\n  transferCount: 0\n  trafficCondition: \"Smooth\"\
+      \n  fare: \"$2.90 (MetroCard / OMNY)\"\n  note: \"Check MTA Bus alerts for M42\
+      \ service changes; walking the whole way is ~12–15 min if you prefer.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'The pasta restaurant in Hell''s Kitchen recommended by actor Timothée
+      Chalamet is Sesamo. It’s a modern Italian spot blending classic Italian techniques
+      with bold Asian flavors, featured in multiple media outlets and recommended
+      by Timothée Chalamet. The exact address is 520 10th Ave, Hell''s Kitchen, Manhattan,
+      New York, NY 10036.
+
+
+      From your current location at the New York Times Building, 620 8th Ave, Brooklyn,
+      New York, NY 10018, the fastest way to get to Sesamo by public transportation
+      is as follows:
+
+
+      Walk 2–3 minutes to the W 42 St/8 Av stop (M42 westbound).
+
+      Take M42 (westbound) toward 12 Av/42 St, ride ~2 stops to W 42 St/10 Av.
+
+      Walk 1 block south to Sesamo (520 10th Ave).
+
+      Time: about 8–12 minutes total
+
+
+      Fare: $2.90 (MetroCard or OMNY tap)
+
+
+      Tip: If buses are delayed, you can walk the entire way in ~12–15 minutes (about
+      0.6 mi) straight along 42nd → 10th Ave → down to 520.
+
+      This involves 0 transfers, traffic is smooth, and the fare is about $2.90 (MetroCard).
+
+      Note: Check for service changes or delays on the A/C/E subway lines.'

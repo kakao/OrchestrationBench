@@ -1,0 +1,128 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '-Today''s date: January 3, 2028'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: What’s the current price of Apple stock?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"Check today's\
+      \ stock price of Apple\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"Check Apple stock\
+      \ price on January 3, 2028\"\n  date: \"2028-01-03\"\n  stockName: \"Apple\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Check Apple stock price on\
+      \ January 3, 2028\"\n    date: \"2028-01-03\"\n    stockName: \"Apple\"\n  \
+      \  stockPrice: \"300\"\n    currency: \"USD\"\n    status: \"Stock price retrieved\
+      \ successfully\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: On January 3, 2028, Apple’s stock price was successfully retrieved. The
+      stock price on that date was $300 USD.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: I can’t believe my dream of Apple hitting $300 finally came true! I’m
+      feeling great about the profits, so I want to treat my girlfriend to a nice
+      dinner to celebrate. Could you recommend a great restaurant near Kendall Square
+      that serves premium steak, and also search for nearby public parking options?
+      It’d be even better if they have EV charging stations.
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"Check\
+      \ today's Apple stock price\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Recommend a premium steakhouse near Kendall Square for a date with my girlfriend\"\
+      \n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: transport_agent\n      refined_query: \"Public parking\
+      \ lots with EV charging available near Kendall Square\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Recommend\
+      \ a premium steakhouse near Kendall Square for a date with my girlfriend\"\n\
+      \  sortBy: \"highest_rated\"\n  location: \"Kendall Square\"\n  specificDishes:\
+      \ \"steak\"\n  cuisineType: \"American\"\n  ambience: \"romantic date\"\n  partySize:\
+      \ \"2\"\ntool_call_result:\n  data:\n    refinedQuery: \"Recommend a premium\
+      \ steakhouse near Kendall Square for a date with my girlfriend\"\n    sortBy:\
+      \ \"highest_rated\"\n    location: \"Kendall Square\"\n    specificDishes: \"\
+      steak\"\n    cuisineType: \"American\"\n    ambience: \"romantic date\"\n  \
+      \  partySize: \"2\"\n    recommendedRestaurants:\n      - restaurantName: \"\
+      The Capital Grille\"\n        rating: 4.9\n        address: \"250 Boylston St,\
+      \ Boston, MA\"\n        description: \"An upscale steakhouse offering dry-aged\
+      \ steaks and elegant atmosphere, perfect for a romantic date\"\n        popularDishes:\n\
+      \          - \"Dry-aged sirloin\"\n          - \"Filet mignon\"\n        specialFeatures:\
+      \ \"Extensive wine list and sophisticated ambience\"\n      - restaurantName:\
+      \ \"Smith & Wollensky\"\n        rating: 4.8\n        address: \"107 South Market\
+      \ St, Boston, MA\"\n        description: \"Classic American steakhouse serving\
+      \ premium cuts in a stylish setting\"\n        popularDishes:\n          - \"\
+      Prime ribeye\"\n          - \"New York strip\"\n        specialFeatures: \"\
+      Romantic atmosphere with professional service\"\n    status: \"Recommendation\
+      \ complete\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"Public parking lots\
+      \ with EV charging near Kendall Square\"\n  searchRadius: 500\n  sortBy: \"\
+      nearest\"\n  location: \"Kendall Square\"\n  parkingType: \"public\"\n  vehicleType:\
+      \ \"EV\"\ntool_call_result:\n  data:\n    refinedQuery: \"Public parking lots\
+      \ with EV charging near Kendall Square\"\n    searchRadius: 500\n    sortBy:\
+      \ \"nearest\"\n    location: \"Kendall Square\"\n    parkingType: \"public\"\
+      \n    vehicleType: \"EV\"\n    parkingLots:\n      - name: \"Kendall Square\
+      \ Public Parking Garage\"\n        address: \"90 Broadway, Cambridge, MA\"\n\
+      \        distance: 200\n        availableEVChargers: 5\n        totalSpots:\
+      \ 50\n        rate: \"$2.00/30min\"\n      - name: \"Kendall Square South Parking\
+      \ Lot\"\n        address: \"150 Main St, Cambridge, MA\"\n        distance:\
+      \ 350\n        availableEVChargers: 3\n        totalSpots: 30\n        rate:\
+      \ \"$4.00/hour\"\n    status: \"Search complete\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "<Recommended Steakhouses for a Date near Kendall Square>\n\nHere are\
+      \ two polished choices for a celebratory date night—both classic steakhouses\
+      \ with a romantic vibe:\n\n1. The Capital Grille — Rating: 4.9\n   Address:\
+      \ 250 Boylston St, Boston, MA\n   Why it fits: Upscale, elegant dining with\
+      \ dry-aged steaks; great wine list—very date-friendly.\n   Popular dishes: Dry-aged\
+      \ sirloin, Filet mignon\n   Notable: Sophisticated ambience and attentive service\n\
+      \n2. Smith & Wollensky — Rating: 4.8\n   Address: 107 South Market St, Boston,\
+      \ MA\n   Why it fits: Classic American steakhouse with premium cuts and stylish\
+      \ setting.\n   Popular dishes: Prime ribeye, New York strip\n   Notable: Romantic\
+      \ atmosphere with professional service\n\n---\n\n# Public Parking with EV Charging\
+      \ near Kendall Square\n\n1. Kendall Square Public Parking Garage\n   Address:\
+      \ 90 Broadway, Cambridge, MA\n   Distance: 200 m · EV chargers: 5 · Total spots:\
+      \ 50 · Rate: $2.00/30 min\n\n2. Kendall Square South Parking Lot\n   Address:\
+      \ 150 Main St, Cambridge, MA\n   Distance: 350 m · EV chargers: 3 · Total spots:\
+      \ 30 · Rate: $4.00/hour"

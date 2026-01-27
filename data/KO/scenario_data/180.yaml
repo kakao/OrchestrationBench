@@ -1,0 +1,67 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '현재날짜: 2025-07-14'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 비트코인 현재 시세 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"비트코인 현재\
+      \ 시세\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getCryptoPrice\narguments:\n  refinedQuery: \"비트코인 현재 시세\"\n \
+      \ symbol: \"BTC\"\n  currency: \"KRW\"\n  priceType: \"현재가\"\n  date: \"2025-07-14\"\
+      \ntool_call_result:\n  data:\n    tool: \"getCryptoPrice\"\n    result:\n  \
+      \    refinedQuery: \"비트코인 현재 시세\"\n      symbol: \"BTC\"\n      currency: \"\
+      KRW\"\n      date: \"2025-07-14\"\n      priceType:\n        현재가: \"84,500,000원\"\
+      \n        전일대비: \"+1.2%\"\n        종가: \"84,000,000원\"\n        시가: \"82,900,000원\"\
+      \n        고가: \"85,300,000원\"\n        저가: \"82,500,000원\"\n        거래량: \"\
+      3,254 BTC\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '2025년 7월 14일 기준 비트코인(BTC)의 원화 현재 시세는 다음과 같습니다.
+
+
+      현재가: 84,500,000원
+
+
+      전일 대비: +1.2%
+
+
+      시가: 82,900,000원
+
+
+      종가: 84,000,000원
+
+
+      고가: 85,300,000원
+
+
+      저가: 82,500,000원
+
+
+      거래량: 3,254 BTC
+
+
+      시세는 시장 상황에 따라 변동될 수 있으므로 참고용으로 활용해 주세요.'

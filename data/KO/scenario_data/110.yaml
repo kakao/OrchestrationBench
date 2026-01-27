@@ -1,0 +1,118 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-07-28'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '지난주 예약한 세종문화회관 피카소 전시 8월 3일로 변경하려고,
+
+      대전에서 그날 이용할 렌터카 예약도 도와줘'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      지난주 예약한 세종문화회관 피카소 전시 예약 조회\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"지난주 예약한 세종문화회관 피카소 전시 8월 3일로 변경\"\n\nworkflow_2:\n \
+      \ status: pending\n  type: independent\n  steps:\n    - status: pending\n  \
+      \    name: transport_agent\n      refined_query: \"대전에서 8월 3일에 이용할 렌터카 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 연락처'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 연락처, 차량 픽업시간, 반납 날짜, 반납 시간, 차종, 운전자의 나이, 보험 옵션'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "예약 변경과 렌터카 예약을 위해 \n연락처, 차량 픽업 시간, 차량 반납 날짜와 시간, 차종,\n운전자의 나이와 보험 옵션을\
+      \ 말씀해 주세요."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: '010-0987-6543
+
+      픽업은 오전 10시, 반납은 8월 5일 오후 3시
+
+      소형차로 해주고
+
+      32살, 자차제외한 보험으로 해줘'
+- workflow_id: workflow_1
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionReservationInfo\narguments:\n  refinedQuery: \"지난주\
+      \ 예약한 세종문화회관 피카소 전시 예약 조회\"\n  contactInfo: \"010-0987-6543\"\ntool_call_result:\n\
+      \  reservationInfo:\n    reservationId: \"EXH-PI-20250727-00123\"\n    exhibitionTitle:\
+      \ \"피카소의 인생과 작품\"\n    venue: \"세종문화회관\"\n    reservationName: \"홍길동\"\n   \
+      \ contactInfo: \"010-0987-6543\"\n    reservationDate: \"2025-08-01\"\n    reservationTime:\
+      \ \"14:00\"\n    ticketCount: 1\n    status: \"예약확정\"\n    changeAvailable:\
+      \ true\n    changePolicy: \"관람일 3일 전까지 변경 가능, 이후에는 취소만 가능\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookRentalCar\narguments:\n  refinedQuery: \"대전에서 8월 3일 오전 10시에\
+      \ 픽업하여 8월 5일 오후 3시에 반납 예정인 소형차 자차 제외한 보험 렌터카 예약\"\n  pickupLocation: \"대전\"\n\
+      \  dropoffLocation: \"대전\"\n  pickupDateTime: \"2025-08-03T10:00\"\n  returnDateTime:\
+      \ \"2025-08-05T15:00\"\n  carType: \"소형\"\n  driverAge: 32\n  insuranceOption:\
+      \ \"basic\"\n  contactInfo: \"010-0987-6543\"\ntool_call_result:\n  reservationInfo:\n\
+      \    reservationId: \"RC-DAE-20250803-00045\"\n    carType: \"소형\"\n    model:\
+      \ \"현대 엑센트\"\n    licensePlate: \"34가 5678\"\n    pickupLocation: \"대전역 렌터카\
+      \ 지점\"\n    dropoffLocation: \"대전역 렌터카 지점\"\n    pickupDateTime: \"2025-08-03T10:00\"\
+      \n    returnDateTime: \"2025-08-05T15:00\"\n    rentalCompany: \"ABC렌터카\"\n\
+      \    insuranceOption: \"기본보험(자차 제외)\"\n    totalPrice: \"₩96,000\"\n    status:\
+      \ \"예약확정\"\n    contactInfo: \"010-0987-6543\"\n    notes:\n      - \"주유 조건:\
+      \ 만차 반납\"\n      - \"운전자 본인 명의 신용카드 지참\"\n      - \"자차보험 미포함, 사고 시 자기부담금 발생\""
+- workflow_id: workflow_1
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyExhibitionTicket\narguments:\n  refinedQuery: \"지난주 예약한\
+      \ 세종문화회관 피카소 전시 8월 3일로 변경\"\n  reservationId: \"EXH-PI-20250727-00123\"\n  contactInfo:\
+      \ \"010-0987-6543\"\n  newDate: \"2025-08-03\"\ntool_call_result:\n  modificationResult:\n\
+      \    reservationId: \"EXH-PI-20250727-00123\"\n    exhibitionTitle: \"피카소의 인생과\
+      \ 작품\"\n    venue: \"세종문화회관\"\n    reservationName: \"홍길동\"\n    contactInfo:\
+      \ \"010-0987-6543\"\n    oldDate: \"2025-08-01\"\n    newDate: \"2025-08-03\"\
+      \n    reservationTime: \"14:00\"\n    ticketCount: 1\n    status: \"변경완료\"\n\
+      \    changeFee: \"₩0\"\n    message: \"관람일이 2025-08-03로 성공적으로 변경되었습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 세종문화회관 피카소 전시 예약이 변경되었습니다.\n\n* 예약자: 홍길동\n* 예약번호: EXH-PI-20250727-00123\n\
+      * 기존 관람일: 2025-08-01\n* 변경 관람일: 2025-08-03\n* 관람 시간: 14:00\n* 인원: 1명\n* 변경 수수료:\
+      \ ₩0\n* 상태: 변경완료\n\n\n▶ 렌터카 예약이 완료되었습니다.\n\n* 예약번호: RC-DAE-20250803-00045\n\
+      * 차량: 현대 엑센트 (소형)\n* 차량번호: 34가 5678\n* 대여 장소: 대전역 렌터카 지점\n* 반납 장소: 대전역 렌터카 지점\n\
+      * 대여 일시: 2025-08-03 10:00\n* 반납 일시: 2025-08-05 15:00\n* 렌터카 업체: ABC렌터카\n* 보험\
+      \ 옵션: 기본보험(자차 제외)\n* 총 요금: ₩96,000\n* 상태: 예약확정\n* 주의사항:\n\n  1. 주유 조건: 만차 반납\n\
+      \  2. 운전자 본인 명의 신용카드 지참\n  3. 자차보험 미포함, 사고 시 자기부담금 발생"

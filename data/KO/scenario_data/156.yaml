@@ -1,0 +1,64 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 10월 10일 생일이 무슨 별자리인지 알려주고, 그 별자리에 어울리는 생일 선물 추천해줘. 참고로 여자고 금액은 5만원 이상으로
+      부탁해.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"10월 10일\
+      \ 생일인 사람의 별자리 정보\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"10월 10일 생일인 여성의 별자리에 어울리는 5만원 이상 생일 선물 추천\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getStarSignInfo\narguments:\n  refinedQuery: \"10월 10일 생일인 사람의\
+      \ 별자리 정보\"\n  birthDate: \"10월 10일\"\ntool_call_result:\n  birthDate: \"10월\
+      \ 10일\"\n  starSign: \"천칭자리 (Libra)\"\n  characteristics:\n    - \"조화를 중요시함\"\
+      \n    - \"공정하고 균형 잡힌 태도를 가짐\"\n    - \"사교적이고 사람들과의 관계를 중시함\"\n  dateRange: \"\
+      9월 23일 - 10월 22일\"\n  status: \"completed\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"별자리가 천칭자리인 여성에게\
+      \ 어울리는 5만원 이상 생일 선물 추천\"\n  gender: \"여성\"\n  minPrice: 50000\ntool_call_result:\n\
+      \  refinedQuery: \"별자리가 천칭자리인 여성에게 어울리는 5만원 이상 생일 선물 추천\"\n  gender: \"여성\"\n\
+      \  minPrice: 50000\n  recommendations:\n    - product: \"럭셔리 향수 세트\"\n     \
+      \ price: 75000\n      description: \"균형 잡힌 향을 선호하는 천칭자리에게 어울리는 고급 향수 세트\"\n\
+      \    - product: \"디자이너 주얼리\"\n      price: 95000\n      description: \"세련된 디자인의\
+      \ 주얼리로, 사교성을 중요시하는 천칭자리에 적합\"\n    - product: \"프리미엄 스파 바우처\"\n      price:\
+      \ 80000\n      description: \"조화를 중요시하는 천칭자리에게 완벽한 휴식과 재충전을 위한 스파 경험\"\n   \
+      \ - product: \"아트 데코 조명\"\n      price: 70000\n      description: \"미적인 감각을\
+      \ 중시하는 천칭자리를 위한 세련된 인테리어 조명\"\n    - product: \"마인드풀니스 저널\"\n      price: 55000\n\
+      \      description: \"균형 잡힌 삶을 추구하는 천칭자리에게 적합한 자기 성찰 및 기록 도구\"\n  status: \"\
+      completed\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "◾별자리 정보 조회\n\n10월 10일에 태어난 사람의 별자리는 천칭자리(Libra)입니다.\n\n- 날짜 범위: 9월 23일\
+      \ - 10월 22일\n- 주요 특성:\n  - 조화를 중요시함\n  - 공정하고 균형 잡힌 태도를 가짐\n  - 사교적이고 사람들과의\
+      \ 관계를 중시함\n\n천칭자리는 균형 잡힌 삶과 주변 사람들과의 조화를 중시하며, 사회적이고 공정한 성향을 지니고 있습니다. 이러한 특성은\
+      \ 대인관계에서 많은 이점을 가져다줄 수 있습니다.\n\n\n\n◾별자리가 천칭자리인 여성에게 어울리는 5만원 이상 생일 선물 추천\n\n\
+      천칭자리의 조화, 공정함, 사교적인 특성을 고려하여 다음과 같은 선물을 선택할 수 있습니다.\n\n1. 럭셔리 향수 세트\n   - 가격:\
+      \ 75,000원\n   - 설명: 균형 잡힌 향을 선호하는 천칭자리에게 어울리는 고급 향수 세트\n\n2. 디자이너 주얼리\n   -\
+      \ 가격: 95,000원\n   - 설명: 세련된 디자인의 주얼리로, 사교성을 중요시하는 천칭자리에 적합\n\n3. 프리미엄 스파 바우처\n\
+      \   - 가격: 80,000원\n   - 설명: 조화를 중요시하는 천칭자리에게 완벽한 휴식과 재충전을 위한 스파 경험\n\n4. 아트\
+      \ 데코 조명\n   - 가격: 70,000원\n   - 설명: 미적인 감각을 중시하는 천칭자리를 위한 세련된 인테리어 조명\n\n5.\
+      \ 마인드풀니스 저널\n   - 가격: 55,000원\n   - 설명: 균형 잡힌 삶을 추구하는 천칭자리에게 적합한 자기 성찰 및 기록\
+      \ 도구\n\n이 선물들은 천칭자리의 성향과 잘 어울리며 특별한 날을 더욱 의미 있게 만들어줄 것입니다."

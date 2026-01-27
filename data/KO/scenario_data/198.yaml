@@ -1,0 +1,152 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-08-19
+
+      현재시각: 오후 13:19분
+
+      userid: U0DK23111'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 살쪄서 이대론 안돼! 인플루언서 김계란이 하는 운동 정보 알려주고 반숙란 30알짜리 제일 싼거 주문해, 그리고 매일 저녁 8시에
+      '운동 해야지?'라고 보이스 알람해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"인플루언서 김계란이\
+      \ 하는 운동 정보\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: shopping_agent\n      refined_query: \"\
+      반숙란 30알 제일 싼 거 찾기\"\n    - status: pending\n      name: shopping_agent\n   \
+      \   refined_query: \"반숙란 30알 제일 싼 거 주문\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"매일 저녁 8시에 '운동 해야지?'라고 보이스 알람\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"인플루언서 김계란이 하는 운동\
+      \ 정보\"\ntool_call_result:\n  data:\n    articles:\n      - title: \"김계란, 하루\
+      \ 3분 전신 운동 루틴 공개\"\n        source: \"헬스조선\"\n        url: \"https://health.chosun.com/news/article_kimge-ran_routine\"\
+      \n        summary: \"인플루언서 김계란이 공개한 하루 3분 전신 운동 루틴은 맨몸 스쿼트, 팔굽혀펴기, 버피 테스트 등\
+      \ 전신 근육을 자극하는 동작으로 구성되어 있다.\"\n      - title: \"헬스 유튜버 김계란, 유산소+근력 복합 프로그램 추천\"\
+      \n        source: \"머니투데이\"\n        url: \"https://news.mt.co.kr/kimge-ran_workout\"\
+      \n        summary: \"김계란은 체중 감량과 근육 유지 모두를 위해 유산소와 근력 운동을 병행할 것을 권장하며, 인터벌 러닝과\
+      \ 덤벨 트레이닝을 함께 수행하는 방법을 소개했다.\"\n      - title: \"김계란이 말하는 헬스 초보자를 위한 5가지 팁\"\
+      \n        source: \"조선일보\"\n        url: \"https://www.chosun.com/kimge-ran_tips\"\
+      \n        summary: \"헬스 초보자는 무리한 운동보다는 꾸준히 할 수 있는 루틴을 만들고, 올바른 자세와 충분한 휴식을 병행해야\
+      \ 한다고 조언했다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"반숙란 30알 제일 싼 거 찾기\"\
+      \n  productCategory: \"계란\"\n  sortBy: \"low_price\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"반숙란 30알 제일 싼 거 찾기\"\n    productCategory: \"계란\"\n    sortBy:\
+      \ \"low_price\"\n    products:\n      - productId: \"egg_soft_001\"\n      \
+      \  productName: \"신선한 반숙란 30알\"\n        brand: \"행복농장\"\n        price: 12000\n\
+      \        size: \"30알\"\n        rating: 4.5\n        stockStatus: \"재고 있음\"\n\
+      \        deliveryEstimate: \"2025-08-20\"\n      - productId: \"egg_soft_002\"\
+      \n        productName: \"프리미엄 반숙란 30알\"\n        brand: \"맛있는농장\"\n        price:\
+      \ 13500\n        size: \"30알\"\n        rating: 4.7\n        stockStatus: \"\
+      재고 있음\"\n        deliveryEstimate: \"2025-08-20\"\n      - productId: \"egg_soft_003\"\
+      \n        productName: \"착한 반숙란 30알\"\n        brand: \"우리농장\"\n        price:\
+      \ 14000\n        size: \"30알\"\n        rating: 4.3\n        stockStatus: \"\
+      재고 있음\"\n        deliveryEstimate: \"2025-08-20\"\n    status: \"조회 완료\"\n \
+      \ source: \"온라인 마켓플레이스\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"매일 저녁 8시에 '운동 해야지?'라고\
+      \ 보이스 알람\"\n  reminderContent: \"운동 해야지?\"\n  reminderTime: \"2025-08-19T20:00\"\
+      \n  repeatRule: \"daily\"\n  deliveryMethod: \"voice\"\n  priority: \"normal\"\
+      \ntool_call_result:\n  status: \"success\"\n  message: \"매일 저녁 8시에 '운동 해야지?'\
+      \ 보이스 알람이 설정되었습니다.\"\n  reminderDetails:\n    reminderContent: \"운동 해야지?\"\n\
+      \    reminderTime: \"2025-08-19T20:00\"\n    repeatRule: \"daily\"\n    deliveryMethod:\
+      \ \"voice\"\n    priority: \"normal\""
+- workflow_id: workflow_2
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주소, 이름, 연락처'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '안내를 도와드리겠습니다.
+
+      상품 배송을 위해 아래 정보를 알려주세요:
+
+
+      - 수령인 이름
+
+
+      - 배송받을 주소 (우편번호 포함)
+
+
+      -  연락 가능한 전화번호
+
+
+      정보를 확인한 후 주문을 계속 진행하겠습니다.
+
+      (※ 개인정보는 안전하게 처리됩니다.)'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 김상식, 010-1234-1234 주소는 인천시 부평구 부평동 00-0
+- workflow_id: null
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"반숙란 30알 제일 싼 거 주문\"\
+      \n  productItems:\n    - productName: \"신선한 반숙란 30알\"\n      productId: \"egg_soft_001\"\
+      \n      quantity: 1\n      price: 12000\n  userId: \"U0DK23111\"\n  shippingAddress:\n\
+      \    recipient: \"김상식\"\n    adress: \"인천시 부평구 부평동 00-0\"\n    phone: \"010-1234-1234\"\
+      \ \ntool_call_result:\n  data:\n    userId: \"U0DK23111\"\n    orderId: \"order_20250804_001\"\
+      \n    refinedQuery: \"반숙란 30알 제일 싼 거 주문\"\n    productItems:\n      - productName:\
+      \ \"신선한 반숙란 30알\"\n        productId: \"egg_soft_001\"\n        quantity: 1\n\
+      \        price: 12000\n    shippingAddress:\n      recipient: \"김상식\"\n    \
+      \  address: \"인천시 부평구 부평동 00-0\"\n      phone: \"010-1234-1234\"\n    totalAmount:\
+      \ 12000\n    paymentStatus: \"결제 완료\"\n    deliveryStatus: \"배송 준비 중\"\n   \
+      \ estimatedDelivery: \"2025-08-20\"\n    status: \"주문 완료\"\n  source: \"온라인\
+      \ 마켓플레이스 주문 시스템\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "안녕하세요! 인플루언서 김계란님이 추천하는 운동 정보에 대해 궁금하셨군요. 몇 가지 유용한 정보를 찾아봤습니다.\n\n▶\
+      \  김계란의 운동 루틴 및 팁\n- 하루 3분 전신 운동 루틴: 바쁜 분들을 위한 짧고 굵은 운동법입니다. 맨몸 스쿼트, 팔굽혀펴기,\
+      \ 버피 테스트 등 전신 근육을 자극하는 동작으로 구성되어 있습니다.\n\n- 유산소+근력 복합 프로그램: 체중 감량과 근육 유지를 동시에\
+      \ 원하는 분들에게 적합한 방법입니다. 인터벌 러닝과 덤벨 트레이닝을 함께하는 것을 추천했습니다.\n\n- 헬스 초보자를 위한 조언: 무리하게\
+      \ 운동하기보다는 꾸준히 할 수 있는 루틴을 만드는 것이 중요하다고 합니다. 또한, 올바른 자세와 충분한 휴식의 중요성도 강조했습니다.\n\
+      \n- 더 자세한 내용이 궁금하시다면 아래 기사들을 참고해 보세요.\n\n▶ 김계란, 하루 3분 전신 운동 루틴 공개 (헬스조선)\n\n\
+      ▶ 헬스 유튜버 김계란, 유산소+근력 복합 프로그램 추천 (머니투데이)\n\n▶ 김계란이 말하는 헬스 초보자를 위한 5가지 팁 (조선일보)\n\
+      \n----------\n\n2. 반숙란 주문 완료\n다음 상품 주문이 정상적으로 완료되었습니다.\n\n- 상품명: 신선한 반숙란 30알\n\
+      \n- 가격: 12,000원\n\n- 수령인: 김상식\n-\n- 배송지: 인천시 부평구 부평동 00-0\n\n- 연락처: 010-1234-1234\n\
+      \n- 배송 상태: 배송 준비 중\n \n- 예상 도착일: 2025년 8월 20일\n\n주문 ID는 order_20250804_001이며,\
+      \ 결제는 완료되었습니다.\n\n----------\n\n3. 운동 알림 설정 완료\n매일 저녁 8시에 아래와 같은 보이스 알람이 울리도록\
+      \ 설정해드렸어요:\n\n- “운동 해야지?”\n\n- 시작일: 2025년 8월 19일\n\n- 반복: 매일\n\n- 방식: 음성 알림\n\
+      \n- 우선순위: 일반\n\n- 운동 루틴 유지에 도움이 되셨으면 좋겠어요!"

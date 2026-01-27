@@ -1,0 +1,157 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date 2025/07/18
+
+      Contact: (222)212-1212'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I want to change the Asiana flight to South Korea that I booked last
+      week to business class, and also move the departure to the day after tomorrow.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"Check the\
+      \ Asiana flight to South Korea that I booked last week\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ travel_agent\n      refined_query: \"Check business class tickets for the\
+      \ Asiana flight to South Korea departing the day after tomorrow\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: [\"workflow_1\", \"workflow_2\"\
+      ]\n  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"Change the ticket I booked last week to a business class flight departing\
+      \ the day after tomorrow\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getFlightReservation\narguments:\n  refinedQuery: \"Check the\
+      \ Asiana reservation for South Korea that I booked last week\"\n  contactNumber:\
+      \ \"(222)212-1212\"\ntool_call_result:\n  reservation:\n    airline: \"Asiana\
+      \ Airlines\"\n    flightNumber: \"OZ108\"\n    departure: \"2025-07-26 10:30\"\
+      \n    arrival: \"2025-07-27 13:00\"\n    route: \"New York (JFK) → Incheon (ICN)\"\
+      \n    passengerName: \"Michael Jordan\"\n    reservationId: \"LSM1991\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"Check Asiana Airlines\
+      \ business class flights from New York to Korea on July 20, 2025\"\n  departure:\
+      \ \"JFK\"\n  destination: \"Incheon (ICN)\"\n  departureDate: \"2025-07-20\"\
+      \ntool_call_result:\n  flights:\n    - airline: \"Asiana Airlines\"\n      flightNumber:\
+      \ \"OZ108\"\n      departureTime: \"2025-07-20 10:30\"\n      arrivalTime: \"\
+      2025-07-21 14:00\"\n      departureAirport: \"New York (JFK)\"\n      arrivalAirport:\
+      \ \"Incheon (ICN)\"\n      duration: \"14h 30m\"\n      status: \"Scheduled\"\
+      \n\n    - airline: \"Asiana Airlines\"\n      flightNumber: \"OZ112\"\n    \
+      \  departureTime: \"2025-07-20 17:45\"\n      arrivalTime: \"2025-07-21 21:10\"\
+      \n      departureAirport: \"New York (JFK)\"\n      arrivalAirport: \"Incheon\
+      \ (ICN)\"\n      duration: \"14h 25m\"\n      status: \"Scheduled\"\n\n    -\
+      \ airline: \"Asiana Airlines\"\n      flightNumber: \"OZ120\"\n      departureTime:\
+      \ \"2025-07-20 20:50\"\n      arrivalTime: \"2025-07-22 00:10\"\n      departureAirport:\
+      \ \"New York (JFK)\"\n      arrivalAirport: \"Incheon (ICN)\"\n      duration:\
+      \ \"14h 20m\"\n      status: \"Scheduled\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Flight boarding information'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are the Asiana Airlines flight options for July 20, 2025, from
+      New York (JFK) to Incheon (ICN).
+
+
+      1. OZ108
+
+
+      Departs: 2025-07-20 10:30 (JFK)
+
+      Arrives: 2025-07-21 14:00 (ICN)
+
+      Duration: 14h 30m • Status: Scheduled
+
+
+      2. OZ112
+
+
+      Departs: 2025-07-20 17:45 (JFK)
+
+      Arrives: 2025-07-21 21:10 (ICN)
+
+      Duration: 14h 25m • Status: Scheduled
+
+
+      3. OZ120
+
+
+      Departs: 2025-07-20 20:50 (JFK)
+
+      Arrives: 2025-07-22 00:10 (ICN)
+
+      Duration: 14h 20m • Status: Scheduled
+
+
+      Please let me know which flight you’d like to take, and I’ll help you change
+      your reservation."'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: I’d like to change it to flight OZ112 at 5:45 PM
+- workflow_id: null
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: changeFlight\narguments:\n  refinedQuery: \"Change the flight\
+      \ I booked last week (OZ108) to flight OZ112 on 7/20 at 5:45 PM with business\
+      \ class\"\n  reservationId: \"LSM1991\"\n  seatClass: \"business\"\ntool_call_result:\n\
+      \  reservationId: \"RES87654321\"\n  airline: \"Asiana Airlines\"\n  flightNumber:\
+      \ \"OZ112\"\n  passengerName: \"Michael Jordan\"\n  departure:\n    city: \"\
+      New York\"\n    airport: \"John F. Kennedy International Airport (JFK)\"\n \
+      \   date: \"2025-07-20\"\n    time: \"17:45\"\n  arrival:\n    city: \"Incheon\"\
+      \n    airport: \"Incheon International Airport (ICN)\"\n    date: \"2025-07-21\"\
+      \n    time: \"21:10\"\n  seat: \"5A\"\n  seatClass: \"business\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your flight change has been completed as requested.
+
+
+      — Passenger: Michael Jordan
+
+      — Airline: Asiana Airlines (OZ112)
+
+      — Cabin: Business
+
+      — Departure: Sun, Jul 20, 2025, 5:45 PM — John F. Kennedy International Airport
+      (JFK), New York
+
+      — Arrival: Mon, Jul 21, 2025, 9:10 PM — Incheon International Airport (ICN),
+      Incheon
+
+      — Seat: 5A
+
+      — New Reservation ID: RES87654321'

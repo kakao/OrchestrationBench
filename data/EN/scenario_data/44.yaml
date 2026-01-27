@@ -1,0 +1,274 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-07-18
+
+      - Contact: (464)646-4646
+
+      - Current Time: 1:02 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: How much does a bike share usually cost?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Bike\
+      \ sharing cost\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransportInfo\narguments:\n  refinedQuery: \"Bike sharing cost\"\
+      \n  includeModes: \"bike\"\n  location:\n    lat: 42.3601\n    lon: -71.0589\n\
+      tool_call_result:\n  data:\n    query: \"bike sharing cost\"\n    transportModes:\
+      \ \"bike\"\n    bikeSharingCosts:\n      - serviceName: \"Bluebikes\"\n    \
+      \    baseFee: 2.95\n        unitTime: \"30 minutes\"\n        unitFee: 2.95\n\
+      \        maxDailyFee: 15.00\n        paymentMethods:\n          - \"Credit Card\"\
+      \n          - \"Mobile Payment\"\n        coverageArea: \"Greater Boston area\
+      \ including Cambridge, Brookline, and Somerville\"\n        notes: \"Base fare\
+      \ $2.95 for 30 minutes, additional charges apply for longer rides.\"\n    status:\
+      \ \"Lookup complete\"\n  source: \"Transport Agent\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s some information about shared bicycles available in the Greater
+      Boston area, including Cambridge, Brookline, and Somerville.
+
+
+      [Bluebikes]
+
+
+      • Base fare: $2.95 (for the first 30 minutes)
+
+      • Additional fare: $2.95 per 30 minutes
+
+      • Daily maximum fare: $15.00
+
+      • Payment methods: Credit Card, Mobile Payment
+
+      • Service area: Greater Boston area, including Cambridge, Brookline, and Somerville
+
+      • Note: The base fare is $2.95 for 30 minutes, and additional charges apply
+      for longer rides.
+
+
+      If you want, I can also provide details on rental stations and return locations!'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: Taking the bus sounds better. Can you tell me how to get to Franklin
+      Park Zoo by bus, pick a café and a restaurant nearby, and make a reservation
+      as well?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: transport_agent\n      refined_query: \"\
+      Bike sharing cost\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"How to get to Franklin Park Zoo by bus\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Recommend cafes and restaurants near Franklin Park Zoo\"\
+      \n\nworkflow_4:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_3\"\
+      \n  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Book cafes and restaurants near Franklin Park Zoo\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure location'
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: recommendRestaurants\n    arguments:\n      refinedQuery:\
+      \ \"Recommend cafes near Franklin Park Zoo\"\n      location: \"Franklin Park\
+      \ Zoo\"\n      cuisineType: \"Cafe\"\n      sortBy: \"highest_rated\"\n\n  -\
+      \ tool: recommendRestaurants\n    arguments:\n      refinedQuery: \"Recommend\
+      \ restaurants near Franklin Park Zoo\"\n      location: \"Franklin Park Zoo\"\
+      \n      cuisineType: \"Restaurant\"\n      sortBy: \"highest_rated\"\n\ntool_call_result:\n\
+      \  - tool: recommendRestaurants\n    query: \"Recommend cafes near Franklin\
+      \ Park Zoo\"\n    location: \"Franklin Park Zoo\"\n    cuisineType: \"Cafe\"\
+      \n    restaurants:\n      - name: \"Zoo Brew Café\"\n        address: \"1 Franklin\
+      \ Park Rd, Boston, MA\"\n        distance: \"150m\"\n        rating: 4.8\n \
+      \       specialties: [\"Cold Brew\", \"Blueberry Muffins\"]\n        operatingHours:\
+      \ \"08:00 - 18:00\"\n      - name: \"Wild Bean Coffee House\"\n        address:\
+      \ \"12 Glenway St, Boston, MA\"\n        distance: \"300m\"\n        rating:\
+      \ 4.6\n        specialties: [\"Latte\", \"Bagels\"]\n        operatingHours:\
+      \ \"07:30 - 20:00\"\n      - name: \"Parkside Café\"\n        address: \"25\
+      \ Blue Hill Ave, Boston, MA\"\n        distance: \"450m\"\n        rating: 4.5\n\
+      \        specialties: [\"Espresso\", \"Croissants\"]\n        operatingHours:\
+      \ \"07:00 - 21:00\"\n    status: \"Lookup complete\"\n    source: \"Local restaurant\
+      \ database\"\n\n  - tool: recommendRestaurants\n    query: \"Recommend restaurants\
+      \ near Franklin Park Zoo\"\n    location: \"Franklin Park Zoo\"\n    cuisineType:\
+      \ \"Restaurant\"\n    restaurants:\n      - name: \"Boston Bistro\"\n      \
+      \  address: \"5 Columbia Rd, Boston, MA\"\n        distance: \"250m\"\n    \
+      \    rating: 4.7\n        specialties: [\"Clam Chowder\", \"Lobster Roll\"]\n\
+      \        operatingHours: \"11:00 - 22:00\"\n      - name: \"Bella Italia\"\n\
+      \        address: \"18 Seaver St, Boston, MA\"\n        distance: \"400m\"\n\
+      \        rating: 4.6\n        specialties: [\"Pasta\", \"Brick Oven Pizza\"\
+      ]\n        operatingHours: \"11:30 - 21:30\"\n      - name: \"Dragon Wok\"\n\
+      \        address: \"20 Morton St, Boston, MA\"\n        distance: \"350m\"\n\
+      \        rating: 4.5\n        specialties: [\"Kung Pao Chicken\", \"Fried Rice\"\
+      ]\n        operatingHours: \"11:00 - 22:00\"\n    status: \"Lookup complete\"\
+      \n    source: \"Local restaurant database\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reservation location name, reservation date, and reservation
+      time'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Recommended Cafés near Franklin Park Zoo\n\n1. Zoo Brew Café\n  -\
+      \ Rating: 4.8, about 150m away\n  - Signature menu: Cold Brew, Blueberry Muffins\n\
+      \  - Hours: 8:00 AM – 6:00 PM\n2. Wild Bean Coffee House\n  - Rating: 4.6, about\
+      \ 300m away\n  - Signature menu: Latte, Bagels\n  - Hours: 7:30 AM – 8:00 PM\n\
+      3. Parkside Café\n  - Rating: 4.5, about 450m away\n  - Signature menu: Espresso,\
+      \ Croissants\n  - Hours: 7:00 AM – 9:00 PM\n\n◾ Recommended Restaurants near\
+      \ Franklin Park Zoo\n\n1. Boston Bistro\n  - Rating: 4.7, about 250m away\n\
+      \  - Signature menu: Clam Chowder, Lobster Roll\n  - Hours: 11:00 AM – 10:00\
+      \ PM\n2. Bella Italia\n  - Rating: 4.6, about 400m away\n  - Signature menu:\
+      \ Pasta, Brick Oven Pizza\n  - Hours: 11:30 AM – 9:30 PM\n3. Dragon Wok\n  -\
+      \ Rating: 4.5, about 350m away\n  - Signature menu: Kung Pao Chicken, Fried\
+      \ Rice\n  - Hours: 11:00 AM – 10:00 PM\n\nWould you like me to help you make\
+      \ a reservation at one of these cafés or restaurants?\nJust let me know the\
+      \ place, date, and time, and I’ll take care of it!\n\n◾ Bus Directions to Franklin\
+      \ Park Zoo\n\nTo help you find the best bus route to Franklin Park Zoo, I’ll\
+      \ need your starting point.\nPlease tell me something like “home,” “Downtown\
+      \ Crossing,” or “current location.”"
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: I’m at South Station. I don’t think we need to reserve the café, but
+      let’s book a table at Dragon Wok. How about 5:15 PM today?
+- workflow_id: workflow_2
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"How to get from South\
+      \ Station to Franklin Park Zoo by bus\"\n  origin: \"South Station\"\n  destination:\
+      \ \"Franklin Park Zoo\"\n  departureTime: \"13:02\"\n  transportModes: \"bus\"\
+      \n  optimizeBy: \"fastest\"\ntool_call_result:\n  data:\n    query: \"How to\
+      \ get from South Station to Franklin Park Zoo by bus\"\n    origin: \"South\
+      \ Station\"\n    destination: \"Franklin Park Zoo\"\n    departureTime: \"13:02\"\
+      \n    transportModes: \"bus\"\n    optimizeBy: \"fastest\"\n    directions:\n\
+      \      - step: 1\n        description: \"Board bus 28 at the South Station bus\
+      \ stop\"\n        line: \"Bus 28\"\n        departureStop: \"South Station\"\
+      \n        departureTime: \"13:05\"\n      - step: 2\n        description: \"\
+      Get off at the Franklin Park Zoo main entrance stop\"\n        arrivalStop:\
+      \ \"Franklin Park Zoo Main Entrance\"\n        arrivalTime: \"13:30\"\n    totalDuration:\
+      \ \"25 minutes\"\n    totalTransfers: 0\n  source: \"Transit Information System\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: Reservation cannot be made because the time is not set in
+      00 or 30 minute intervals.'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: 'Reservation times can only be entered in 00 or 30-minute intervals.
+
+      For example, instead of 5:15, please say 5:00 or 5:30 — on the hour or half-hour
+      only.'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: Oh really? Then I'll do 5:30.
+- workflow_id: null
+  step_id: 17
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"Reservation at Dragon\
+      \ Wok on July 18 at 5:30 PM\"\n  placeName: \"Dragon Wok\"\n  reservationDate:\
+      \ \"2025-07-18\"\n  reservationTime: \"17:30\"\n  contactInfo: \"(464)646-4646\"\
+      \ntool_call_result:\n  data:\n    reservationId: \"RES202507181302003\"\n  \
+      \  placeName: \"Dragon Wok\"\n    reservationDate: \"2025-07-18\"\n    reservationTime:\
+      \ \"17:30\"\n    contactInfo: \"(464)646-4646\"\n    status: \"Reservation Confirmed\"\
+      \n    message: \"Your reservation at Dragon Wok for July 18 at 5:30 PM has been\
+      \ confirmed.\"\n  source: \"Reservation System\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: '[Bus Directions: South Station → Franklin Park Zoo]
+
+
+      Total travel time: 25 minutes
+
+      Transfers: None (direct)
+
+
+      • Detailed Route
+
+
+      1:05 PM
+
+      Board Bus #28 at South Station bus stop
+
+      (Expected to depart on time)
+
+
+      1:30 PM
+
+      Arrive at the Franklin Park Zoo Main Entrance
+
+      (Once you get off, the entrance is right nearby!)
+
+
+      This is the fastest route as of 1:02 PM.
+
+      Please allow some extra time since weather or real-time traffic may cause slight
+      delays.
+
+
+      [Reservation at Dragon Wok]
+
+
+      Your reservation at Dragon Wok has been confirmed for July 18 at 5:30 PM.
+
+      Reservation number: RES202507181302003
+
+      I hope you enjoy your meal!'

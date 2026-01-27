@@ -1,0 +1,105 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Please recommend a birthday gift for my girlfriend, and also find a good
+      restaurant near the Times Square where we can have dinner together when I give
+      it to her.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Birthday\
+      \ gift ideas for my girlfriend\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: place_agent\n  \
+      \    refined_query: \"Romantic birthday dinner restaurant recommendations near\
+      \ the Times Square\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"Birthday gift ideas\
+      \ for my girlfriend\"\n  recipientType: \"partner\"\n  occasion: \"birthday\"\
+      \n  gender: \"female\"\ntool_call_result:\n  status: success\n  data:\n    products:\n\
+      \      - productId: \"8521836\"\n        name: \"Mardi Mercredi Short-Sleeve\
+      \ T-Shirt LES CADEAUX MARDI MERCREDI BLOSSOM_5COLORS\"\n        price:\n   \
+      \       currency: \"USD\"\n          amount: 149\n        brand: \"Mardi Mercredi\"\
+      \n\n      - productId: \"10291183\"\n        name: \"[Labelux] Women's Fox Head\
+      \ Print T-Shirt KW00134KJ0008 WH\"\n        price:\n          currency: \"USD\"\
+      \n          amount: 142\n        brand: \"Maison Kitsuné\"\n\n      - productId:\
+      \ \"7580048\"\n        name: \"Jill by Jill Stuart Bread Chain Mini Crossbody\
+      \ Bag – 6 Styles\"\n        price:\n          currency: \"USD\"\n          amount:\
+      \ 184\n        brand: \"Jill by Jill Stuart\"\n\n      - productId: \"11721313\"\
+      \n        name: \"Tocca Balaka Helmet Mini Crossbody – 3 Colors\"\n        price:\n\
+      \          currency: \"USD\"\n          amount: 185\n        brand: \"Vunque\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Romantic birthday\
+      \ dinner restaurant near Times Square for my girlfriend\"\n  location: \"Times\
+      \ Square\"\n  partySize: \"2\"\n  event: \"birthday\"\n  sortBy: \"highest_rated\"\
+      \ntool_call_result:\n  status: success\n  data:\n    recommendations:\n    \
+      \  - name: \"The View Restaurant & Lounge (Marriott Marquis)\"\n        address:\
+      \ \"1535 Broadway, New York, NY 10036\"\n        cuisine: \"Modern American\"\
+      \n        priceRange: \"$$$\"\n        rating: 4.6\n        features: [\"Rotating\
+      \ skyline views\", \"Romantic atmosphere\", \"Full bar & wine list\"]\n    \
+      \    note: \"Iconic revolving restaurant right in Times Square—great for a birthday\
+      \ dinner with a view. Request a window table when booking.\"\n\n      - name:\
+      \ \"Gabriel Kreuther\"\n        address: \"41 W 42nd St, New York, NY 10036\"\
+      \n        cuisine: \"Alsatian / Contemporary French\"\n        priceRange: \"\
+      $$$$\"\n        rating: 4.8\n        features: [\"Michelin-star\", \"Tasting\
+      \ menus\", \"Elegant, quiet setting\"]\n        note: \"Refined, romantic spot\
+      \ by Bryant Park (a short walk from Times Square). Perfect for special occasions;\
+      \ note dietary preferences when reserving.\"\n\n      - name: \"Le Bernardin\"\
+      \n        address: \"155 W 51st St, New York, NY 10019\"\n        cuisine: \"\
+      Seafood / French\"\n        priceRange: \"$$$$\"\n        rating: 4.9\n    \
+      \    features: [\"Michelin 3-star\", \"Seafood-focused tasting menus\", \"Extensive\
+      \ wine pairing\"]\n        note: \"World-class fine dining for celebratory nights.\
+      \ Jacket recommended; book well in advance for prime times.\"\n\n      - name:\
+      \ \"La Grande Boucherie\"\n        address: \"145 W 53rd St, New York, NY 10019\"\
+      \n        cuisine: \"French Brasserie\"\n        priceRange: \"$$$\"\n     \
+      \   rating: 4.7\n        features: [\"Parisian-style interior\", \"Outdoor seating\"\
+      , \"Classic French dishes\"]\n        note: \"Lively yet romantic brasserie\
+      \ a short stroll from Times Square. Ask for a cozy booth and mention the birthday\
+      \ for a celebratory touch. Entrance, window seats can be requested when booking.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "Hello!  A big congratulations on your girlfriend’s birthday! \nLet me\
+      \ suggest some thoughtful gifts and a few great dinner spots to make her day\
+      \ extra special.\n\n▶ Birthday Gift Ideas for Your Girlfriend\n\nHere are some\
+      \ curated birthday gift options:\n\n1. Mardi Mercredi Short-Sleeve T-Shirt LES\
+      \ CADEAUX BLOSSOM (5 Colors)\n\n   * Brand: Mardi Mercredi\n   * Price: $149\n\
+      \n2. Maison Kitsuné Women’s Fox Head Print T-Shirt (KW00134KJ0008 WH)\n\n  \
+      \ * Brand: Maison Kitsuné\n   * Price: $142\n\n3. Jill by Jill Stuart Bread\
+      \ Chain Mini Crossbody Bag – 6 Styles\n\n   * Brand: Jill by Jill Stuart\n \
+      \  * Price: $184\n\n4. Tocca Balaka Helmet Mini Crossbody – 3 Colors\n\n   *\
+      \ Brand: Vunque\n   * Price: $185\n\n---\n\n▶ Romantic Birthday Dinner Near\
+      \ Times Square\n\nHere are highly rated romantic restaurants you can consider\
+      \ for the special evening:\n\n1. The View Restaurant & Lounge (Marriott Marquis)\n\
+      \n   * Cuisine: Modern American\n   * Price Range: $$$ (~$50–70 per person)\n\
+      \   * Rating: ⭐ 4.6\n   * Features: Rotating skyline views, Romantic atmosphere,\
+      \ Full bar & wine list\n   * Note: Request a window table for the best birthday\
+      \ experience.\n\n2. Gabriel Kreuther\n\n   * Cuisine: Alsatian / Contemporary\
+      \ French\n   * Price Range: $$$$ (~$100+ per person)\n   * Rating: ⭐ 4.8\n \
+      \  * Features: Michelin-star, Tasting menus, Elegant and quiet\n   * Note: Located\
+      \ near Bryant Park, perfect for a refined birthday dinner.\n\n3. Le Bernardin\n\
+      \n   * Cuisine: Seafood / French\n   * Price Range: $$$\\$ (~$150+ per person)\n\
+      \   * Rating: ⭐ 4.9\n   * Features: Michelin 3-star, Seafood-focused tasting\
+      \ menus, Wine pairing\n   * Note: One of the world’s best fine dining restaurants,\
+      \ Reservations required.\n\n4. La Grande Boucherie\n\n   * Cuisine: French Brasserie\n\
+      \   * Price Range: $$$ (~$50–80 per person)\n   * Rating: ⭐ 4.7\n   * Features:\
+      \ Parisian-style interior, Outdoor seating, Classic French dishes\n   * Note:\
+      \ Romantic brasserie vibe, mention the birthday when booking for special touches."

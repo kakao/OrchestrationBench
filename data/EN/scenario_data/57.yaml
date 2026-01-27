@@ -1,0 +1,128 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2026-02-02
+
+      - Contact: (213) 633-3336'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Book me a luxury taxi for February 8th at 5:30 AM. Also, since all the
+      details are already in the February 8th competition schedule I registered, please
+      check that and find information on parking near the competition venue for that
+      day.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Book\
+      \ a luxury taxi for February 8th at 5:30 AM\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"Check competition schedule on February 8th\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      Find parking near the competition venue on February 8th\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Pickup location and destination name'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check competition schedule\
+      \ on February 8\"\n  startDate: \"2026-02-08\"\n  keyword: \"competition\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"Check competition schedule on\
+      \ February 8\"\n    startDate: \"2026-02-08\"\n    endDate: \"2026-02-08\"\n\
+      \    keyword: \"competition\"\n    schedules:\n      - title: \"Pork Belly Slicing\
+      \ Championship\"\n        location: \"Jacob K. Javits Convention Center, New\
+      \ York, NY\"\n        date: \"2026-02-08\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"Search for parking\
+      \ near Jacob K. Javits Convention Center\"\n  location: \"Jacob K. Javits Convention\
+      \ Center, New York, NY\"\n  searchRadius: 500\n  date: \"2026-02-08\"\n  sortBy:\
+      \ \"nearest\"\ntool_call_result:\n  data:\n    refinedQuery: \"Search for parking\
+      \ near Jacob K. Javits Convention Center\"\n    location: \"Jacob K. Javits\
+      \ Convention Center, New York, NY\"\n    searchRadius: 500\n    date: \"2026-02-08\"\
+      \n    sortBy: \"nearest\"\n    parkingLots:\n      - name: \"Javits Center Public\
+      \ Parking Garage\"\n        distance: \"about 400 ft\"\n        fee: \"$8.00\
+      \ per hour\"\n        availableSpaces: 15\n        reservationAvailable: true\n\
+      \      - name: \"34th Street Private Parking Lot\"\n        distance: \"about\
+      \ 1,480 ft\"\n        fee: \"$6.50 per hour\"\n        availableSpaces: 8\n\
+      \        reservationAvailable: false"
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 'To reserve a premium taxi, I’ll need the following information:
+
+
+      • Pickup location: Where would you like to be picked up?
+
+      • Destination: Where are you headed?
+
+
+      Once these are confirmed, I’ll proceed right away.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: I want to go from Springfield Elementary School to Jacob K. Javits Convention
+      Center in New York.
+- workflow_id: workflow_1
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callTaxi\narguments:\n  refinedQuery: \"Book a luxury taxi on\
+      \ February 8 at 5:30 AM from Springfield Elementary School to Jacob K. Javits\
+      \ Convention Center\"\n  pickupLocation: \"Springfield Elementary School\"\n\
+      \  dropoffLocation: \"Jacob K. Javits Convention Center, New York, NY\"\n  pickupTime:\
+      \ \"2026-02-08T05:30\"\n  passengerCount: 1\n  taxiType: \"luxury\"\n  reservation:\
+      \ true\n  contactInfo: \"(213) 633-3336\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Book a luxury taxi on February 8 at 5:30 AM from Springfield Elementary\
+      \ School to Jacob K. Javits Convention Center\"\n    pickupLocation: \"Springfield\
+      \ Elementary School\"\n    dropoffLocation: \"Jacob K. Javits Convention Center,\
+      \ New York, NY\"\n    pickupTime: \"2026-02-08T05:30\"\n    passengerCount:\
+      \ 1\n    taxiType: \"luxury\"\n    reservation: true\n    contactInfo: \"(213)\
+      \ 633-3336\"\n    bookingStatus: \"Reservation Confirmed\"\n    bookingId: \"\
+      TX202602080530001\"\n    estimatedFare: \"$45\"\n    driverInfo:\n      name:\
+      \ \"David Kim\"\n      phone: \"(212)555-7788\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "Schedule and Transportation Information for February 8\n\n◾ Event Schedule\n\
+      - Title: Pork Belly Slicing Championship\n- Venue: Jacob K. Javits Convention\
+      \ Center, New York, NY\n- Date: 2026-02-08\n\n◾ Parking Information (near Javits\
+      \ Center)\n1. Javits Center Public Parking Garage\n   - Distance: about 400\
+      \ ft\n   - Fee: $8.00 per hour\n   - Available spaces: 15\n   - Reservations\
+      \ available\n2. 34th Street Private Parking Lot\n   - Distance: about 1,480\
+      \ ft\n   - Fee: $6.50 per hour\n   - Available spaces: 8\n   - Reservations\
+      \ not available\n\n◾ Taxi Reservation Confirmed\n- Departure: Springfield Elementary\
+      \ School (2026-02-08, 5:30 AM)\n- Arrival: Jacob K. Javits Convention Center,\
+      \ New York, NY\n- Taxi type: Luxury\n- Estimated fare: $45\n- Driver: David\
+      \ Kim ((212)555-7788)\n- Reservation number: TX202602080530001\n\nPlease let\
+      \ me know if you need any additional information or changes!"

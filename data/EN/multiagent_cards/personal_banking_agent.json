@@ -1,0 +1,391 @@
+{
+  "agent_card": {
+    "name": "Personal Banking",
+    "agent_id": "personal_banking_agent",
+    "description": "A personal finance assistant that helps you safely and easily handle everyday banking tasks such as transfers, account inquiries, loan checks, and setting up, modifying, or canceling automatic transfers.",
+    "url": "http://localhost:10021/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "transferMoney",
+        "name": "Transfer Money",
+        "description": "Takes the recipient's name, account number, amount, etc., and processes immediate or scheduled transfers. To transfer, first check the balance via 'Account Inquiry' before proceeding.",
+        "examples": [
+          "Send $50 to Mom",
+          "Transfer to account 1278/98/34567654 at ABC Bank",
+          "Schedule a transfer of $150 for Saturday at 9am"
+        ]
+      },
+      {
+        "id": "getAccountBalance",
+        "name": "Account Inquiry",
+        "description": "Checks balances for checking, savings, and other accounts based on the account number and account holder's name, and can also provide recent transaction history if needed.",
+        "examples": [
+          "How much is in my account right now?",
+          "Show me the balance for Jason Dawson's account",
+          "Check the savings balance for account 110-123-456789"
+        ]
+      },
+      {
+        "id": "getLoanBalance",
+        "name": "Loan Inquiry",
+        "description": "Checks loan balance, interest rate, and maturity date based on the loan account number and borrower's name.",
+        "examples": [
+          "How much is left on my mortgage?",
+          "Show me loan details for account 203-456-987654",
+          "Check the balance on Alex Smith's personal loan"
+        ]
+      },
+      {
+        "id": "createAutoTransfer",
+        "name": "Set Up Automatic Transfer",
+        "description": "Sets up an automatic transfer to send a fixed amount to a designated account on a recurring basis. You can specify frequency, date, memo, etc.",
+        "examples": [
+          "Set up an automatic rent payment on the 10th of every month",
+          "Schedule an automatic transfer of $20 to my parents every Friday"
+        ]
+      },
+      {
+        "id": "modifyAutoTransfer",
+        "name": "Modify Automatic Transfer",
+        "description": "Edits the amount, frequency, date, memo, etc., of a registered automatic transfer. At least one field must be changed. Use 'View Automatic Transfers' to select the transfer to modify.",
+        "examples": [
+          "Change the automatic transfer amount to $300",
+          "I want to change the date to the 15th",
+          "Switch the frequency from weekly to monthly"
+        ]
+      },
+      {
+        "id": "cancelAutoTransfer",
+        "name": "Cancel Automatic Transfer",
+        "description": "Cancels or stops a set automatic transfer. Use 'View Automatic Transfers' to select the transfer to cancel.",
+        "examples": [
+          "Cancel my automatic rent payment",
+          "Stop the automatic allowance transfer to my parents"
+        ]
+      },
+      {
+        "id": "getAutoTransferList",
+        "name": "View Automatic Transfers",
+        "description": "View all automatic transfers or filter by date, recipient, or account number.",
+        "examples": [
+          "Show me this month's automatic transfers",
+          "Check the automatic transfers to Mom",
+          "List the automatic transfers for account 110-987-123456"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "transferMoney",
+      "description": "A tool that processes real-time account transfers by taking the recipient's name, account number, amount, and transfer memo. The receiving bank, account number, and account holder's name are required. To transfer, first check the balance via account inquiry before proceeding. For multiple recipients, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined version of the user's natural language request (e.g., 'Send $50 to Mom')"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "Recipient account holder's name (e.g., 'Jason Dawson'). If the account number and account holder's name do not match, the transfer will fail."
+          },
+          "bankName": {
+            "type": "string",
+            "description": "Receiving bank name (e.g., 'Bank of America', 'Chase')"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "Recipient's account number (e.g., '123456789012')"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Transfer amount in USD (minimum $1)"
+          },
+          "memo": {
+            "type": "string",
+            "description": "Transfer memo or description (optional, e.g., 'August living expenses')"
+          },
+          "scheduledAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Scheduled transfer date/time (optional, ISO 8601 format; use if not transferring immediately)"
+          },
+          "sourceAccountId": {
+            "type": "string",
+            "description": "Source account ID (e.g., 'acc-20230701-001')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "recipientName",
+          "bankName",
+          "accountNumber",
+          "amount",
+          "sourceAccountId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getAccountBalance",
+      "description": "A tool to check the balance and recent transaction history of a specified account. Supports various types such as checking, savings, installment savings, and housing subscription accounts. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence from a natural language balance inquiry request (e.g., 'Show me the balance of my checking account')"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "The account number to check (e.g., '123456789012')"
+          },
+          "accountHolderName": {
+            "type": "string",
+            "description": "The name of the account holder (e.g., 'Jason Dawson')"
+          },
+          "bankName": {
+            "type": "string",
+            "description": "The name of the bank (e.g., \"Bank of America\", \"Chase\", \"Wells Fargo\")"
+          },
+          "accountType": {
+            "type": "string",
+            "enum": [
+              "checking",
+              "savings",
+              "CD",
+              "investment",
+              "other"
+            ],
+            "description": "Type of financial account (e.g., checking, savings, money market, certificate of deposit, investment, etc.)"
+          },
+          "includeTransactions": {
+            "type": "boolean",
+            "description": "Whether to include recent transaction history (optional, default is false)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bankName",
+          "accountNumber",
+          "accountHolderName",
+          "includeTransactions"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getLoanBalance",
+      "description": "Retrieves information about a user's loan products, including remaining balance, interest rate, and maturity date. To perform a loan inquiry, the borrower's name and loan account number are required. For multiple inquiries, you can provide them in a list format.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined version of the natural language request asking about the loan balance (e.g., 'How much is left on my mortgage?')"
+          },
+          "loanAccountNumber": {
+            "type": "string",
+            "description": "Loan account number (e.g., '9876543210')"
+          },
+          "borrowerName": {
+            "type": "string",
+            "description": "Borrower's name (e.g., 'John Smith')"
+          },
+          "loanType": {
+            "type": "string",
+            "enum": [
+              "mortgage",
+              "personal_loan",
+              "student",
+              "auto",
+              "etc"
+            ],
+            "description": "Type of loan (mortgage, credit, student, car, etc.)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "loanAccountNumber",
+          "borrowerName"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "createAutoTransfer",
+      "description": "A tool to set up regular automatic transfers to a specific account. It takes information such as recipient, transfer frequency, date, and amount to configure the auto transfer. If you need to call it repeatedly for multiple recipients, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence from the natural language request (e.g., 'Send $200 to my parents on the 10th of every month')"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "Recipient's name"
+          },
+          "bankName": {
+            "type": "string",
+            "description": "Recipient's bank name"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "Recipient's account number"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Transfer amount (in USD)"
+          },
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "description": "Transfer frequency"
+          },
+          "transferDay": {
+            "type": "string",
+            "description": "Transfer date for monthly transfers (e.g., '10' for the 10th day) or day of the week for weekly transfers (e.g., 'Friday')."
+          },
+          "memo": {
+            "type": "string",
+            "description": "Transfer memo (optional)"
+          },
+          "routingNumber": {
+            "type": "string",
+            "description": "The bank routing number for the recipient account"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "recipientName",
+          "bankName",
+          "accountNumber",
+          "amount",
+          "frequency",
+          "transferDay",
+          "routingNumber"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getAutoTransferList",
+      "description": "A tool to check the user's registered auto transfers. You can filter the full list by recipient based on the withdrawal account and account holder. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined version of the natural language request (e.g., 'Show me this month's auto transfers')"
+          },
+          "accountHolderName": {
+            "type": "string",
+            "description": "Withdrawal account holder name (e.g., 'Jason Dawson')"
+          },
+          "fromAccountNumber": {
+            "type": "string",
+            "description": "Withdrawal account number (e.g., '110-987-123456')"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "Recipient account holder name (optional)"
+          },
+          "transferDay": {
+            "type": "string",
+            "description": "Filter by specific transfer date (optional, e.g., '15' for transfers scheduled on the 15th of each month)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "accountHolderName",
+          "fromAccountNumber"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyAutoTransfer",
+      "description": "A tool to modify existing automatic transfer settings. You can change items such as amount, date, frequency, and recipient account. Use 'View Auto Transfers' to select the transfer you want to change. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence for the change request (e.g., 'Change the rent transfer date to the 15th')"
+          },
+          "autoTransferId": {
+            "type": "string",
+            "description": "The ID or reference name of the auto transfer to change"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount to change to (optional)"
+          },
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "description": "The frequency to change to (optional)"
+          },
+          "transferDay": {
+            "type": "string",
+            "description": "The transfer date (e.g., '15' for the 15th of each month) or day of the week (e.g., 'Friday') to change to (optional)"
+          },
+          "memo": {
+            "type": "string",
+            "description": "The memo to change to (optional)"
+          },
+          "routingNumber": {
+            "type": "string",
+            "description": "The bank routing number for the recipient account"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "autoTransferId",
+          "routingNumber"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelAutoTransfer",
+      "description": "A tool to cancel a registered automatic transfer. Specify the target transfer by automatic transfer ID or recipient name. Use 'View automatic transfers' to select the transfer you want to cancel. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence for the cancellation request (e.g., 'I want to cancel my automatic transfer')"
+          },
+          "autoTransferId": {
+            "type": "string",
+            "description": "The ID or nickname of the automatic transfer to cancel"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "Recipient name (Optional: used if identifying by recipient instead of ID)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "autoTransferId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

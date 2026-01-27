@@ -1,0 +1,186 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'now : 2026-07-01'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번달 20일에 아이 둘을 포함한 7인 가족과 서울 여행을 가. 서울에서 볼만한 공연이랑 저녁 먹을 서울 맛집도 예약해줘.
+      각각 위치는 상관 없어.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      이번달 20일 서울에서 아이 둘 포함 7인 가족이 관람 가능한 공연 추천\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"이번달 20일 서울에서 아이 둘 포함 7인 가족과 함께 저녁 먹을 맛집 추천\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"이번달 20일 서울에서 아이 둘 포함 7명 공연 예매\"\n\nworkflow_4:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"이번달 20일 서울에서 7인 가족과 함께 저녁 먹을\
+      \ 식당 예약(아이 동반)\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"이번달 20일 가족과\
+      \ 함께 볼 수 있는 서울 공연 추천\"\n  location: \"서울\"\n  date: \"2026-07-20\"\n  ageRating:\
+      \ \"전체 관람가\"\n  sortBy: \"soonest\"\ntool_call_result:\n  data:\n    - performanceTitle:\
+      \ \"뮤지컬 <라이온 킹>\"\n      venueName: \"예술의전당 오페라극장\"\n      showDate: \"2026-07-20\"\
+      \n      showTime: \"14:00\"\n      ageRating: \"전체 관람가\"\n      includeDocent:\
+      \ false\n      description: \"가족 모두가 즐길 수 있는 디즈니 대표 뮤지컬. 역동적인 무대와 음악으로 유명.\"\
+      \n      posterUrl: \"https://example.com/posters/lionking.jpg\"\n\n    - performanceTitle:\
+      \ \"그림자극 <피터팬의 모험>\"\n      venueName: \"국립중앙박물관 극장 용\"\n      showDate: \"\
+      2026-07-20\"\n      showTime: \"11:00\"\n      ageRating: \"전체 관람가\"\n     \
+      \ includeDocent: false\n      description: \"아이들을 위한 환상적인 그림자극 공연. 부모와 자녀가 함께\
+      \ 즐기기 적합.\"\n      posterUrl: \"https://example.com/posters/peterpan_shadow.jpg\"\
+      \n\n    - performanceTitle: \"서울시립교향악단 가족 음악회\"\n      venueName: \"롯데콘서트홀\"\
+      \n      showDate: \"2026-07-20\"\n      showTime: \"17:00\"\n      ageRating:\
+      \ \"전체 관람가\"\n      includeDocent: false\n      description: \"어린이들을 위한 해설이\
+      \ 포함된 클래식 음악회. 클래식 입문용으로 추천.\"\n      posterUrl: \"https://example.com/posters/family_orchestra.jpg\"\
+      \n  source: \"서울 공연/전시 통합 플랫폼\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"서울에서 가족과 함께\
+      \ 저녁 먹을 식당 추천\"\n  location: \"서울\"\n  ambience: \"가족 친화적\"\n  reservationTime:\
+      \ \"2026-07-20 저녁 6시\"\n  sortBy: \"highest_rated\"\n  event: \"가족 여행\"\n  partySize:\
+      \ \"7명\"\ntool_call_result:\n  status: success\n  data:\n    - placeName: \"\
+      옥동식\"\n      location: \"서울 마포구 양화로7길 44\"\n      cuisineType: \"한식\"\n    \
+      \  priceRange: \"₩₩ (1인당 약 20,000~30,000원)\"\n      ambience: \"가족 친화적, 아늑한\
+      \ 분위기\"\n      rating: 4.7\n      reviewCount: 1200\n      reservationAvailable:\
+      \ true\n      recommendedMenu:\n        - \"돼지국밥\"\n        - \"모둠반찬 정식\"\n\
+      \      contact: \"02-123-4567\"\n      naverPlaceId: \"odongsik123\"\n     \
+      \ imageUrl: \"https://example.com/images/odongsik.jpg\"\n\n    - placeName:\
+      \ \"한방삼계탕 유정집\"\n      location: \"서울 종로구 자하문로 125\"\n      cuisineType: \"\
+      한식\"\n      priceRange: \"₩₩ (약 25,000원)\"\n      ambience: \"전통 한옥 분위기, 가족\
+      \ 단위 손님 많음\"\n      rating: 4.5\n      reviewCount: 870\n      reservationAvailable:\
+      \ true\n      recommendedMenu:\n        - \"삼계탕\"\n        - \"전복죽\"\n     \
+      \ contact: \"02-456-7890\"\n      naverPlaceId: \"yujeongzip456\"\n      imageUrl:\
+      \ \"https://example.com/images/yujeongzip.jpg\"\n\n    - placeName: \"백리향 서울호텔점\"\
+      \n      location: \"서울 중구 을지로 30 롯데호텔서울 2층\"\n      cuisineType: \"한식 (고급 중식도\
+      \ 병행)\"\n      priceRange: \"₩₩₩ (약 30,000원 내외)\"\n      ambience: \"호텔 레스토랑,\
+      \ 조용하고 세련된 분위기\"\n      rating: 4.6\n      reviewCount: 620\n      reservationAvailable:\
+      \ true\n      recommendedMenu:\n        - \"한우탕수육\"\n        - \"해물누룽지탕\"\n\
+      \      contact: \"02-789-0123\"\n      naverPlaceId: \"baeklihyang789\"\n  \
+      \    imageUrl: \"https://example.com/images/baeklihyang.jpg\"\n\n    - placeName:\
+      \ \"황금콩밭\"\n      location: \"서울 성동구 서울숲길 19\"\n      cuisineType: \"한식\"\n\
+      \      priceRange: \"₩ (15,000~20,000원)\"\n      ambience: \"밝고 쾌적함, 아이 동반 가족\
+      \ 환영\"\n      rating: 4.3\n      reviewCount: 980\n      reservationAvailable:\
+      \ true\n      recommendedMenu:\n        - \"청국장 정식\"\n        - \"두부보쌈\"\n \
+      \     contact: \"02-321-6543\"\n      naverPlaceId: \"goldensoyfield321\"\n\
+      \      imageUrl: \"https://example.com/images/soyfield.jpg\"\n\n    - placeName:\
+      \ \"삼청동 수제비\"\n      location: \"서울 종로구 삼청로 101\"\n      cuisineType: \"한식\"\
+      \n      priceRange: \"₩ (1인 약 15,000원)\"\n      ambience: \"소박하고 따뜻한 분위기, 줄\
+      \ 서는 맛집\"\n      rating: 4.4\n      reviewCount: 1350\n      reservationAvailable:\
+      \ false\n      recommendedMenu:\n        - \"수제비\"\n        - \"보리밥 정식\"\n \
+      \     contact: \"02-555-1234\"\n      naverPlaceId: \"samcheongSujaebi555\"\n\
+      \      imageUrl: \"https://example.com/images/sujaebi.jpg\"\n  source: \"로컬\
+      \ 맛집 DB 및 리뷰 기반 추천 엔진\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 공연 이름, 예약자 이름, 전화번호, 좌석 등급, 관람자 유형(adult / child / senior / disabled)'
+- workflow_id: workflow_4
+  step_id: 7
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약 장소명, 예약 시간'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "가족과 함께 보기 좋은 7월 20일 서울 공연 추천입니다:\n\n뮤지컬 <라이온 킹>\n- 시간/장소: 오후 2시, 예술의전당\n\
+      - 특징: 디즈니 인기작, 가족 모두 추천\n\n그림자극 <피터팬의 모험>\n- 시간/장소: 오전 11시, 국립중앙박물관 극장 용\n-\
+      \ 특징: 어린이 대상 환상적인 그림자극\n\n서울시립교향악단 가족 음악회\n- 시간/장소: 오후 5시, 롯데콘서트홀\n- 특징: 어린이\
+      \ 해설 포함 클래식 입문 공연\n\n---------------------------------------\n\n가족과 함께 저녁에 가기\
+      \ 좋은 서울 맛집이에요.\n\n1. 옥동식 (마포) – 돼지국밥 전문, 아늑한 분위기\n2. 유정집 (종로) – 전통 삼계탕, 한옥 느낌으로\
+      \ 가족 단위 인기\n3. 백리향 (중구) – 호텔 레스토랑, 고급스러운 분위기\n4. 황금콩밭 (성수) – 청국장·두부요리, 아이 동반\
+      \ 환영\n5. 삼청동 수제비 (종로) – 정겨운 분위기, 웨이팅 있음\n\n예약 가능한 곳 위주로 추천드렸어요. \n\n----------------------------------------\n\
+      \n예약을 원하는 공연과 맛집을 말씀해주세요. \n원활한 공연 예매를 위해 예약자 이름, 전화번호, 공연장 좌석 등급(R석, VIP석,\
+      \ S석, A석), 관람자 유형(성인 / 어린이 / 노인 / 장애인)은 필수입니다!"
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: "나는 박혜진이고 전화번호는 010-1231-1231이야. \n공연은 라이언킹으로 하고 R석이면 좋겠어. 어린이 2명 빼고\
+      \ 다 성인이야\n식당은 백리향으로 6시에 예약해줘. 가족들만 들어갈 수 있는 프라이빗 룸으로"
+- workflow_id: workflow_3
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: bookPerformance\n    arguments:\n      refinedQuery:\
+      \ \"7월 20일 오후 2시에 라이온 킹 R석 성인 4명 예매\"\n      performanceTitle: \"라이온 킹\"\n \
+      \     venueName: \"예술의전당 오페라극장\"\n      showDate: \"2026-07-20\"\n      showTime:\
+      \ \"14:00\"\n      audienceCount: 4\n      seatGrade: \"R석\"\n      audienceTypes:\
+      \ [\"adult\", \"adult\", \"adult\", \"adult\"]\n      userInfo:\n        name:\
+      \ \"박혜진\"\n        contactNumber: \"010-1231-1231\"\n  \n  - tool: bookPerformance\n\
+      \    arguments:\n      refinedQuery: \"7월 20일 오후 2시에 라이온 킹 R석 성인 1명 어린이 2명 예매\"\
+      \n      performanceTitle: \"라이온 킹\"\n      venueName: \"예술의전당 오페라극장\"\n    \
+      \  showDate: \"2026-07-20\"\n      showTime: \"14:00\"\n      audienceCount:\
+      \ 3\n      seatGrade: \"R석\"\n      audienceTypes: [\"adult\", \"child\", \"\
+      child\"]\n      userInfo:\n        name: \"박혜진\"\n        contactNumber: \"\
+      010-1231-1231\"\n\ntool_call_result:\n  - status: success\n    data:\n     \
+      \ reservationId: \"RES342433001\"\n      performanceTitle: \"라이온 킹\"\n     \
+      \ venueName: \"예술의전당 오페라극장\"\n      showDate: \"2026-07-20\"\n      showTime:\
+      \ \"14:00\"\n      audienceCount: 4\n      seats:\n        - \"B12\"\n     \
+      \   - \"B13\"\n        - \"B14\"\n        - \"B15\"\n      seatGrade: \"R석\"\
+      \n      totalPrice: 400000\n      confirmationMessage: \"예매가 완료되었습니다. 현장에서 신분증과\
+      \ 함께 QR 티켓을 제시해주세요.\"\n      qrCodeUrl: \"https://example.com/tickets/RES342433001\"\
+      \n    source: \"공식 예매 시스템\"\n    \n  - status: success\n    data:\n      reservationId:\
+      \ \"RES342433002\"\n      performanceTitle: \"라이온 킹\"\n      venueName: \"예술의전당\
+      \ 오페라극장\"\n      showDate: \"2026-07-20\"\n      showTime: \"14:00\"\n     \
+      \ audienceCount: 3\n      seats:\n        - \"B16\"\n        - \"B17\"\n   \
+      \     - \"B18\"\n      seatGrade: \"R석\"\n      totalPrice: 300000\n      confirmationMessage:\
+      \ \"예매가 완료되었습니다. 현장에서 신분증과 함께 QR 티켓을 제시해주세요.\"\n      qrCodeUrl: \"https://example.com/tickets/RES342433002\"\
+      \n    source: \"공식 예매 시스템\""
+- workflow_id: workflow_4
+  step_id: 11
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"2026년 7월 20일 저녁 6시에\
+      \ 백리향 서울호텔점 7명 프라이빗룸으로 예약\"\n  placeName: \"백리향 서울호텔점\"\n  reservationDate:\
+      \ \"2026-07-20\"\n  reservationTime: \"18:00\"\n  partySize: 7\n  contactInfo:\
+      \ \"010-1231-1231\"\n  specialRequest: \"프라이빗룸\"\ntool_call_result: \n  status:\
+      \ success\n  data:\n    reservationId: \"RES20250714009\"\n    placeName: \"\
+      백리향 서울호텔점\"\n    reservationDate: \"2026-07-20\"\n    reservationTime: \"18:00\"\
+      \n    partySize: 7\n    tableType: \"프라이빗룸 (가족 전용)\"\n    confirmationMessage:\
+      \ \"예약이 완료되었습니다. 프론트에서 '박혜진' 이름으로 확인해 주세요.\"\n    contact: \"02-789-0123\"\n\
+      \    mapUrl: \"https://map.example.com/place/baeklihyang\"\n    qrCodeUrl: \"\
+      https://example.com/reservation/RES20250714009\"\n  source: \"식당 예약 시스템\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "<공연 예약>\n\n공연: 뮤지컬 라이온 킹\n장소: 예술의전당 오페라극장\n일시: 2025년 7월 20일 (월) 오후 2시\n\
+      인원: 성인 5명, 어린이 2명\n좌석: R석 B12~B18\n총 금액: 700,000원\n티켓 수령: QR 티켓 링크 → 예매 확인하기\n\
+      \n현장에서 신분증과 함께 QR 티켓을 제시해 주세요.\n맛집 추천과 예약도 바로 도와드릴게요.\n\n\n<식당 예약>\n \n- 식당:\
+      \ 백리향 서울호텔점\n- 일시: 2025년 7월 20일 (월) 오후 6시\n- 인원: 7명\n- 좌석: 가족 전용 프라이빗룸\n\n☎\
+      \ 문의: 02-789-0123\n\n프론트에서 “박혜진” 이름으로 확인해 주세요.\n\n공연 티켓도 준비 완료되었으니 멋진 여행되세요!"

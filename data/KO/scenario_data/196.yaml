@@ -1,0 +1,398 @@
+metadata:
+  total_steps: 21
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-10-10
+
+      현재시각: 오후 13:19분'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 지난번에 이벤트로 받은 연금복권 어제 추첨했거든? 결과 확인좀...
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"어제 추첨한\
+      \ 연금복권 결과 확인\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getLotteryInfo\narguments:\n  refinedQuery: \"10월 09일 연금복권 결과\
+      \ 확인\"\n  lotteryType: \"pension_lottery\"\n  drawDate: \"2025-10-09\"\ntool_call_result:\n\
+      \  data:\n    result:\n      refinedQuery: \"10월 09일 연금복권 결과 확인\"\n      lotteryType:\
+      \ \"pension_lottery\"\n      drawDate: \"2025-10-09\"\n      winningNumbers:\n\
+      \        - firstPrize: [\"3조 528914\", \"5조 732001\"]\n        - secondPrize:\
+      \ [\"각 조 528913\", \"각 조 528915\", \"각 조 732000\", \"각 조 732002\"]\n       \
+      \ - bonusPrize: [\"2조 111222\"]\n      message: \"2025년 10월 2일 추첨된 연금복권 당첨번호입니다.\
+      \ 1등은 '3조 528914'와 '5조 732001'입니다. 각 조 앞뒤 번호는 2등, 보너스 번호는 2조 111222입니다.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "2025년 10월 9일 연금복권 당첨 결과는 다음과 같습니다.\n\n1등 당첨번호\n\n- 3조 528914\n- 5조 732001\n\
+      \  (매달 정해진 금액의 연금을 받을 수 있는 번호입니다)\n\n2등 당첨번호 (1등 앞뒤 번호)\n\n- 각 조 528913, 528915\n\
+      - 각 조 732000, 732002\n\n보너스 번호\n\n- 2조 111222\n  (보너스 당첨은 별도 조건에 따라 지급됩니다)\n\
+      \n※ 복권 조와 번호를 정확히 확인해 주세요. 당첨 시에는 가까운 복권 판매점이나 공식 홈페이지를 통해 수령 방법을 확인하실 수 있습니다."
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 아니? 엌!!! 연금복권 당첨금을 일시불로 받는 것과 분할로 받는 것 중 어떤게 좋은지 검색해보고 제주도 성산에 바다가 보이는
+      단독주택 2층짜리로 월세좀 알아봐봐
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      어제 추첨한 연금복권 결과 확인\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"연금복권 당첨금을 일시불로 받는 것과 분할로 받는 것 중 어떤 방식이 좋은지 알아보기\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ place_agent\n      refined_query: \"제주도 성산에 바다가 보이는 단독주택 2층짜리 월세 검색\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"연금복권 당첨금을 일시불로 받는 것과\
+      \ 분할로 받는 것 중 어떤 방식이 좋은지 알아보기\"\ntool_call_result:\n  data:\n    summary: |\n\
+      \      연금복권 당첨금 수령 방식은 크게 **일시불 수령**과 **분할 수령(월 지급)** 두 가지로 나뉩니다. 각각 장단점이 있습니다.\n\
+      \n      1. **분할 수령 (기본 방식)**  \n         - 월 500만 원씩 20년간 지급  \n         - 총\
+      \ 수령액: 12억 원 (과세 후 약 10억 8천만 원)  \n         - 장점: 안정적인 현금 흐름 확보, 절세 효과 있음  \n\
+      \         - 단점: 인플레이션, 조기 사망 시 총수령액 감소\n\n      2. **일시불 수령 (일부 선택 가능)**  \n\
+      \         - 예: 세후 약 7~9억 원 수준 (연금 구조에 따라 할인 적용)  \n         - 장점: 투자/상환 등 자유로운\
+      \ 자금 운용 가능  \n         - 단점: 한 번에 고액을 받으면 과세 및 낭비 위험, 금융관리 필요\n\n      전문가 의견:\
+      \  \n      재무적 목표(부채 상환, 투자 계획 등)와 소비 성향에 따라 달라집니다.  \n      **장기적 안정이 중요하면\
+      \ 분할 수령**, **투자에 자신 있거나 큰 지출 계획이 있으면 일시불 수령**이 유리할 수 있습니다.\n\n    sources:\n\
+      \      - title: \"연금복권 당첨금 수령 방식 비교\"\n        url: \"https://finance.naver.com/special/pension_lottery\"\
+      \n      - title: \"복권위원회 FAQ\"\n        url: \"https://www.dhlottery.co.kr/gameInfo.do?method=gameInfo645\"\
+      \n      - title: \"재무 전문가 칼럼: 당첨금 수령 전략\"\n        url: \"https://www.mk.co.kr/news/economy/view/2023/07/570123\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getRealEstateInfo\narguments:\n  refinedQuery: \"제주도 성산에 바다가 보이는\
+      \ 단독주택 2층짜리 월세 검색\"\n  propertyType: \"단독주택\"\n  transactionType: \"월세\"\n \
+      \ location: \"제주도 성산\"\n  options:\n    floors: \"2층\"\n    view: \"바다 전망\"\n\
+      tool_call_result:\n  data:\n    listings:\n      - title: \"성산 바다 전망 단독주택 2층\
+      \ 월세\"\n        propertyType: \"단독주택\"\n        transactionType: \"월세\"\n  \
+      \      location: \"제주도 서귀포시 성산읍\"\n        area: \"전용 25평\"\n        price:\n\
+      \          deposit: 10000000   # 보증금\n          monthly: 800000     # 월세\n \
+      \       floors: \"2층\"\n        view: \"바다 전망\"\n        builtYear: 2019\n \
+      \       movingDate: \"즉시 입주 가능\"\n        buildingName: null\n        source:\
+      \ \"직방\"\n        url: \"https://example.com/listing/12345\"\n      - title:\
+      \ \"성산 해안도로 근처 2층 단독주택\"\n        propertyType: \"단독주택\"\n        transactionType:\
+      \ \"월세\"\n        location: \"제주도 성산읍 고성리\"\n        area: \"30평\"\n       \
+      \ price:\n          deposit: 5000000\n          monthly: 600000\n        floors:\
+      \ \"2층\"\n        view: \"부분 바다 전망\"\n        builtYear: 2015\n        movingDate:\
+      \ \"2025년 9월 이후\"\n        buildingName: null\n        source: \"네이버부동산\"\n\
+      \        url: \"https://example.com/listing/67890\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "1. 연금복권 당첨금 수령 방식 비교\n\n연금복권 당첨금 수령 방식에는 분할 수령과 일시불 수령 두 가지가 있으며, 각각의\
+      \ 특징은 다음과 같습니다.\n\n- 분할 수령 (기본 방식)\n\n  - 지급 방식: 월 500만 원씩 20년간 지급\n  - 총 수령액:\
+      \ 세전 12억 원 / 세후 약 10억 8천만 원\n  \n  - 장점\n    - 매달 안정적인 현금 흐름\n    * 절세 효과\n\n\
+      \  - 단점\n    - 인플레이션에 따른 실질가치 하락\n    - 조기 사망 시 전체 수령액 감소\n\n- 일시불 수령 (일부 선택\
+      \ 가능)\n\n  - 지급 방식: 세후 약 7\\~9억 원 수준\n\n  - 장점\n    - 고액 자금 활용 가능 (투자, 부채 상환\
+      \ 등)\n    - 자유로운 자산 운용\n\n  - 단점\n    - 고액 자산 관리에 대한 책임 증가\n    - 과세 위험, 낭비\
+      \ 가능성\n\n- 전문가 의견 요약\n\n  - 장기적 생활 안정이 중요하다면 분할 수령이 유리\n  - 단기 자금 운용이나 투자 목적이\
+      \ 있다면 일시불 수령이 유리\n\n자산 규모, 투자 계획, 소비 성향 등을 고려해 선택하시는 것이 좋습니다.\n\n----------\n\
+      \n2. 제주도 성산 단독주택 월세 검색 결과\n\n제주도 성산 지역에서 바다가 보이는 2층 단독주택 월세 매물을 다음과 같이 확인했습니다.\n\
+      \n- 성산 바다 전망 단독주택\n\n  - 전용면적: 25평\n  - 구조: 2층\n  - 전망: 바다 전망\n  - 보증금: 1,000만\
+      \ 원\n  - 월세: 80만 원\n  - 준공연도: 2019년\n  - 입주 가능일: 즉시 입주\n  - 출처: 직방\n  - 링크:\
+      \ [매물 자세히 보기](https://example.com/listing/12345)\n\n- 성산 해안도로 근처 2층 주택\n\n \
+      \ - 전용면적: 30평\n  - 구조: 2층\n  - 전망: 부분 바다 전망\n  - 보증금: 500만 원\n  - 월세: 60만 원\n\
+      \  - 준공연도: 2015년\n  - 입주 가능일: 2025년 9월 이후\n  - 출처: 네이버부동산\n  - 링크: [매물 자세히 보기](https://example.com/listing/67890)"
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 아 제주에서 그동안 못 즐겼던 취미생할을 해야겠다 스카르파 클라이밍 신발좀 사야겠어
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      어제 추첨한 연금복권 결과 확인\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: search_agent\n      refined_query:\
+      \ \"연금복권 당첨금을 일시불로 받는 것과 분할로 받는 것 중 어떤 방식이 좋은지 알아보기\"\n\nworkflow_3:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ place_agent\n      refined_query: \"제주도 성산에 바다가 보이는 단독주택 2층짜리 월세 검색\"\n\n\
+      workflow_4:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"스카르파 클라이밍 신발 검색\"\
+      \n\nworkflow_5:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_4\"\
+      \n  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"스카르파 클라이밍 신발 구매\""
+- workflow_id: workflow_4
+  step_id: 13
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"스카르파 클라이밍 신발 검색\"\
+      \n  productCategory: \"신발\"\n  brand: \"스카르파\"\n  sortBy: \"latest\"\ntool_call_result:\n\
+      \  data:\n    products:\n      - name: \"스카르파 인스팅트 VSR 클라이밍 슈즈\"\n        description:\
+      \ \"강한 마찰력과 정밀한 엣징 성능을 갖춘 실내외 겸용 클라이밍화\"\n        price: 198000\n        availability:\
+      \ \"재고 있음\"\n        productId: \"SCARPA-VSR-001\"\n        url: \"https://example.com/products/scarpa-vsr\"\
+      \n        imageUrl: \"https://example.com/images/scarpa-vsr.jpg\"\n\n      -\
+      \ name: \"스카르파 드라고 클라이밍 슈즈\"\n        description: \"부드러운 미창과 공격적인 다운턴 구조의 스포츠\
+      \ 클라이밍화\"\n        price: 225000\n        availability: \"재고 있음\"\n        productId:\
+      \ \"SCARPA-DRAGO-002\"\n        url: \"https://example.com/products/scarpa-drago\"\
+      \n        imageUrl: \"https://example.com/images/scarpa-drago.jpg\"\n\n    \
+      \  - name: \"스카르파 푸리아 에어\"\n        description: \"가볍고 유연한 소재로 고난도 무브에 최적화된\
+      \ 클라이밍 슈즈\"\n        price: 210000\n        availability: \"일부 사이즈 품절\"\n  \
+      \      productId: \"SCARPA-FURIAAIR-003\"\n        url: \"https://example.com/products/scarpa-furiaair\"\
+      \n        imageUrl: \"https://example.com/images/scarpa-furiaair.jpg\""
+- workflow_id: workflow_5
+  step_id: 14
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 제품 이름, 수령인 이름, 주소, 사이즈, 구매수량, 전화번호'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: '스카르파(SCARPA)의 인기 클라이밍 신발들을 아래와 같이 확인할 수 있습니다.
+
+
+      1.스카르파 인스팅트 VSR
+
+
+      실내외 겸용으로 사용 가능한 제품이며, 강한 마찰력과 정밀한 엣징 성능이 특징입니다.
+
+
+      - 가격: 198,000원
+
+
+      - 재고: 있음
+
+
+      - 제품 상세 보기
+
+
+      2. 스카르파 드라고
+
+
+      공격적인 다운턴 구조와 부드러운 미창이 특징으로, 스포츠 클라이밍에 적합한 고성능 모델입니다.
+
+
+      - 가격: 225,000원
+
+
+      - 재고: 있음
+
+
+      - 제품 상세 보기
+
+
+      3.스카르파 푸리아 에어
+
+
+      매우 가볍고 유연한 소재로 제작되어, 고난도 무브와 테크니컬 루트에 적합합니다.
+
+
+      - 가격: 210,000원
+
+
+      - 재고: 일부 사이즈 품절
+
+
+      - 제품 상세 보기
+
+
+      각 모델은 특징과 착화감이 다르므로, 목적(볼더링/리드/실내외 여부)이나 발 모양에 따라 선택하시는 것이 좋습니다. 필요하시면 비교표나
+      추천 모델도 안내해드릴 수 있어요.
+
+
+      ----------
+
+
+      스카르파 클라이밍 슈즈 구매를 위해 아래 정보를 확인해 주시겠어요?
+
+
+      - 제품 이름: 원하시는 모델명을 정확히 입력해 주세요.
+
+      (예: 스카르파 인스팅트 VSR, 드라고, 푸리아 에어 등)
+
+
+      - 수령인 이름: 실명 기준으로 입력 부탁드립니다.
+
+
+      - 배송지 주소: 우편번호 포함한 정확한 배송 주소를 입력해 주세요.
+
+
+      - 신발 사이즈: 국내 기준 사이즈로 알려주세요.
+
+      (예: 250mm)
+
+
+      - 구매 수량: 한 켤레 이상 구매하실 경우 개수를 명확히 기입해 주세요.
+
+
+      - 연락처: 배송 및 확인 연락을 위해 필요합니다.
+
+
+      필요한 정보가 모두 확인되면 결제 및 배송 안내를 도와드리겠습니다.
+
+      특정 모델의 재고 여부나 발볼에 맞는 추천도 필요하시면 함께 말씀해주세요.'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 아 그 알아본 집 근처에 클라이밍 할 수 있는 해벽 찾아봐봐
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      어제 추첨한 연금복권 결과 확인\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: search_agent\n      refined_query:\
+      \ \"연금복권 당첨금을 일시불로 받는 것과 분할로 받는 것 중 어떤 방식이 좋은지 알아보기\"\n\nworkflow_3:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ place_agent\n      refined_query: \"제주도 성산에 바다가 보이는 단독주택 2층짜리 월세 검색\"\n\n\
+      workflow_4:\n  status: completed\n  type: independent\n  steps:\n    - status:\
+      \ completed\n      name: shopping_agent\n      refined_query: \"스카르파 클라이밍 신발\
+      \ 검색\"\n\nworkflow_5:\n  status: paused\n  type: dependent\n  depend_on: \"\
+      workflow_4\"\n  steps:\n    - status: paused\n      name: shopping_agent\n \
+      \     refined_query: \"스카르파 클라이밍 신발 구매\"\n\ninterrupted_workflow_5-1:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ travel_agent\n      refined_query: \"제주도 성산에 클라이밍 할 수 있는 해벽\""
+- workflow_id: workflow_5
+  step_id: 18
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getPopularPlaceInfo\narguments:\n  refinedQuery: \"제주도 성산에 클라이밍\
+      \ 할 수 있는 해벽\"\n  location: \"제주도 성산\"\n  placeType: \"클라이밍 해벽\"\n  sortBy: \"\
+      highest_rated\"\ntool_call_result:\n  data:\n    places:\n      - name: \"섭지코지\
+      \ 해벽\"\n        description: \"성산일출봉 인근에 위치한 섭지코지는 비교적 접근이 쉬우며, 자연 암벽 등반이 가능한\
+      \ 해벽 지대입니다. 바다를 배경으로 한 클라이밍 경험이 특징입니다.\"\n        location: \"제주특별자치도 서귀포시 성산읍\
+      \ 고성리\"\n        rating: 4.8\n        reviews: 112\n        accessInfo: \"주차\
+      \ 후 도보 10분\"\n        safetyNote: \"조수 간만 주의, 하네스 필수\"\n        bestSeason:\
+      \ \"3월~6월, 9월~11월\"\n        imageUrl: \"https://example.com/images/seopjikoji-wall.jpg\"\
+      \n\n      - name: \"광치기해변 암벽\"\n        description: \"풍경이 아름다운 광치기해변 끝자락에 위치한\
+      \ 소규모 해벽 구간으로, 초중급자에게 적합합니다. 조용한 분위기에서 클라이밍을 즐길 수 있습니다.\"\n        location:\
+      \ \"서귀포시 성산읍 시흥리 114\"\n        rating: 4.6\n        reviews: 74\n        accessInfo:\
+      \ \"성산항 근처 도보 15분\"\n        safetyNote: \"파도 및 낙석 주의\"\n        bestSeason:\
+      \ \"봄, 가을\"\n        imageUrl: \"https://example.com/images/gwangchigi-wall.jpg\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: '1. 섭지코지 해벽
+
+
+      - 위치: 제주 서귀포시 성산읍 고성리
+
+
+      - 특징: 성산일출봉 근처에 위치해 있어 접근성이 뛰어나며, 자연 암벽에서 바다를 바라보며 클라이밍할 수 있는 곳입니다.
+
+
+      - 평점: 4.8 (후기 112건)
+
+
+      - 접근: 주차 후 도보 약 10분
+
+
+      - 계절 추천: 3월6월, 9월11월
+
+
+      - 유의사항: 조수 간만에 따라 클라이밍 가능 시간이 제한될 수 있으며, 반드시 하네스 착용 권장
+
+
+
+      2. 광치기해변 암벽
+
+
+      - 위치: 제주 서귀포시 성산읍 시흥리 114
+
+
+      - 특징: 풍경이 아름다운 광치기해변 끝자락에 위치한 소규모 해벽 구간으로, 초·중급자에게 적합합니다. 조용하고 여유로운 분위기에서 클라이밍을
+      즐길 수 있습니다.
+
+
+      - 평점: 4.6 (후기 74건)
+
+
+      - 접근: 성산항 근처에서 도보 15분
+
+
+      - 계절 추천: 봄, 가을
+
+
+      - 유의사항: 파도와 낙석 주의 필요
+
+
+      ----------
+
+
+      스카르파 클라이밍 슈즈 구매를 위해 아래 정보를 확인해 주시겠어요?
+
+
+      제품 이름: 원하시는 모델명을 정확히 입력해 주세요.
+
+      (예: 스카르파 인스팅트 VSR, 드라고, 푸리아 에어 등)
+
+
+      수령인 이름: 실명 기준으로 입력 부탁드립니다.
+
+
+      배송지 주소: 우편번호 포함한 정확한 배송 주소를 입력해 주세요.
+
+
+      신발 사이즈: 국내 기준 사이즈로 알려주세요.
+
+      (예: 250mm)
+
+
+      구매 수량: 한 켤레 이상 구매하실 경우 개수를 명확히 기입해 주세요.
+
+
+      연락처(전화번호): 배송 및 확인 연락을 위해 필요합니다.
+
+
+      필요한 정보가 모두 확인되면 결제 및 배송 안내를 도와드리겠습니다.
+
+      특정 모델의 재고 여부나 발볼에 맞는 추천도 필요하시면 함께 말씀해주세요.'
+- workflow_id: null
+  step_id: 20
+  agent: user
+  agent_type: user
+  data:
+    content: 아니다 죽으면 뭔 소용이냐 다 취소해 안전한 취미를 찾아야지...
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: 네! 세상에는 즐겁고 안전한 취미가 정말 많으니, 함께 천천히 찾아봐요.

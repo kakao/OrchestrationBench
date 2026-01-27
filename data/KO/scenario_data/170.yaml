@@ -1,0 +1,161 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2025-07-16
+
+      Time: 10:30'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 다음주 수요일부터 일주일간 오스트리아로 여행을 가. 오스트리아에서 할만한 활동 뭐가 있어? 추천할 만한 인기 있는 활동들 찾아서
+      여행 일정 짜줘 아 그리고 캘린더에 일정 등록해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"오스트리아에서\
+      \ 추천할 만한 인기 있는 활동들을 찾아서 다음 주 수요일부터 일주일간의 여행 일정 계획\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ calendar_agent\n      refined_query: \"다음 주 수요일부터 일주일간 오스트스트리아 여행 일정 등록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"오스트리아에서 추천할 만한 활동들을\
+      \ 찾아서 2025년 7월 23일부터 일주일간의 여행 일정 계획\"\n  destination: \"오스트리아\"\n  duration:\
+      \ \"6박 7일\"\n  startDate: \"2025-07-23\"\n  endDate: \"2025-07-29\"\ntool_call_result:\n\
+      \  itinerary:\n    destination: \"오스트리아\"\n    startDate: \"2025-07-23\"\n \
+      \   duration: \"6박 7일\"\n    highlights:\n      - \"비엔나에서 클래식 음악과 황실 궁전 체험\"\
+      \n      - \"빈숲 와이너리 마을 탐방 및 전통 저녁식사\"\n      - \"잘츠부르크에서 영화 촬영지 투어와 모차르트 역사\
+      \ 체험\"\n      - \"잘츠카머구트 호수 지대 카약 & 온천 체험\"\n      - \"할슈타트 소금광산과 케이블카 전망대 투어\"\
+      \n      - \"그라츠 구시가지 및 미술관 산책\"\n      - \"다하슈타인 알프스 하이킹 및 얼음동굴 탐험\"\n  dailyPlan:\n\
+      \    - day: \"Day 1 (7월 23일)\"\n      location: \"비엔나 (Vienna)\"\n      activities:\n\
+      \        - \"비엔나 국립 오페라하우스 가이드 투어\"\n        - \"쉔브룬 궁전과 정원 산책\"\n        -\
+      \ \"빈 시내 카페에서 사흘렌토르트 맛보기\"\n\n    - day: \"Day 2 (7월 24일)\"\n      location:\
+      \ \"비엔나 근교\"\n      activities:\n        - \"빈숲(Weinviertel) 와이너리 마을 투어\"\n\
+      \        - \"현지 와인 시음 및 호이리게(Heuriger) 레스토랑 디너\"\n\n    - day: \"Day 3 (7월 25일)\"\
+      \n      location: \"잘츠부르크 (Salzburg)\"\n      activities:\n        - \"모차르트\
+      \ 생가 및 잘츠부르크 대성당 방문\"\n        - \"'사운드 오브 뮤직' 영화 투어\"\n        - \"미라벨 정원에서\
+      \ 저녁 산책\"\n\n    - day: \"Day 4 (7월 26일)\"\n      location: \"잘츠카머구트 (Salzkammergut)\"\
+      \n      activities:\n        - \"볼프강 호수 카약 또는 요트 체험\"\n        - \"바트이슐 온천에서\
+      \ 휴식\"\n\n    - day: \"Day 5 (7월 27일)\"\n      location: \"할슈타트 (Hallstatt)\"\
+      \n      activities:\n        - \"소금광산 탐방 및 호수 유람선\"\n        - \"할슈타트 전망대 케이블카\
+      \ 탑승\"\n\n    - day: \"Day 6 (7월 28일)\"\n      location: \"그라츠 (Graz)\"\n  \
+      \    activities:\n        - \"그라츠 구시가지 도보 투어\"\n        - \"쿤스트하우스(현대미술관) 및\
+      \ 시계탑 방문\"\n\n    - day: \"Day 7 (7월 29일)\"\n      location: \"다하슈타인 (Dachstein\
+      \ Alps)\"\n      activities:\n        - \"다하슈타인 스카이워크, 빙하 하이킹\"\n        - \"\
+      오스트리아 전통 마을에서 점심 후 귀국 준비\"\n\n  notes:\n    - \"모든 주요 도시 간 이동은 열차 기준으로 약 2~3시간\
+      \ 소요\"\n    - \"전 일정 영어 가이드 포함 가능\"\n    - \"일부 액티비티는 날씨에 따라 사전 예약 필수\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"다음 주 수요일부터 일주일간\
+      \ '오스트리아 여행' 일정 등록\"\n  title: \"오스트리아 여행\"\n  startDateTime: \"2025-07-23T10:30\"\
+      \n  endDateTime: \"2025-07-29T11:30\"\ntool_call_result:\n  data:\n    scheduleId:\
+      \ \"SCHD20250723_TRAVEL\"\n    status: \"created\"\n    title: \"오스트리아 여행\"\n\
+      \    startDateTime: \"2025-07-23\"\n    endDateTime: \"2025-07-29\"\n    message:\
+      \ \"다음 주 수요일(23일)부터 총 7일간 '오스트리아 여행' 일정이 캘린더에 등록되었습니다.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '네, 요청하신 대로 다음 주 수요일(23일)부터 7일간의 ''오스트리아 여행'' 일정을 캘린더에 등록했습니다.
+
+
+      ----
+
+
+      ■ 오스트리아 여행 일정 (6박 7일)
+
+
+      Day 1 (7월 23일) – 비엔나 (Vienna)
+
+      • 비엔나 국립 오페라하우스 가이드 투어
+
+      • 쉔브룬 궁전과 정원 산책
+
+      • 빈 시내 카페에서 사흘렌토르트 맛보기
+
+
+      Day 2 (7월 24일) – 비엔나 근교
+
+      • 빈숲(Weinviertel) 와이너리 마을 투어
+
+      • 현지 와인 시음 및 호이리게(Heuriger) 레스토랑 디너
+
+
+      Day 3 (7월 25일) – 잘츠부르크 (Salzburg)
+
+      • 모차르트 생가 및 잘츠부르크 대성당 방문
+
+      • ''사운드 오브 뮤직'' 영화 투어
+
+      • 미라벨 정원에서 저녁 산책
+
+
+      Day 4 (7월 26일) – 잘츠카머구트 (Salzkammergut)
+
+      • 볼프강 호수에서 카약 또는 요트 체험
+
+      • 바트이슐 온천에서 휴식
+
+
+      Day 5 (7월 27일) – 할슈타트 (Hallstatt)
+
+      • 소금광산 탐방 및 호수 유람선
+
+      • 할슈타트 전망대 케이블카 탑승
+
+
+      Day 6 (7월 28일) – 그라츠 (Graz)
+
+      • 그라츠 구시가지 도보 투어
+
+      • 쿤스트하우스(현대미술관) 및 시계탑 방문
+
+
+      Day 7 (7월 29일) – 다하슈타인 (Dachstein Alps)
+
+      • 다하슈타인 스카이워크, 빙하 하이킹
+
+      • 오스트리아 전통 마을에서 점심 후 귀국 준비
+
+
+      ■ 여행 하이라이트
+
+      • 비엔나에서 클래식 음악과 황실 궁전 체험
+
+      • 빈숲 와이너리 마을 탐방 및 전통 저녁식사
+
+      • 잘츠부르크 영화 촬영지 투어 및 모차르트 역사 체험
+
+      • 잘츠카머구트 호수 지대 카약 & 온천 체험
+
+      • 할슈타트 소금광산과 케이블카 전망대 투어
+
+      • 그라츠 구시가지 및 미술관 산책
+
+      • 다하슈타인 알프스 하이킹 및 얼음동굴 탐험
+
+
+      ■ 참고 사항
+
+      • 주요 도시 간 이동은 열차 기준 약 2~3시간 소요
+
+      • 전 일정 영어 가이드 포함 가능
+
+      • 일부 액티비티는 날씨에 따라 사전 예약 필요'

@@ -1,0 +1,203 @@
+{
+  "agent_card": {
+    "name": "물류/배송(delivery)",
+    "agent_id": "delivery_agent",
+    "description": "배송 예약 및 배송 조회를 도와주는 스마트 물류 에이전트입니다. 다양한 배송 방식으로 접수 및 배송 상태 확인까지 한번에 처리할 수 있습니다.",
+    "url": "http://localhost:10007/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "bookDeliveryService",
+        "name": "퀵/택배 예약",
+        "description": "퀵서비스(일반/오토바이/자전거/화물) 또는 택배, 당일배송 등 다양한 배송 유형으로 수거 및 배송 서비스를 예약합니다. 픽업/수령지, 시간, 물품 정보 등 상세 요청을 입력해주면 쉽고 빠르게 배송 접수가 가능합니다.",
+        "examples": [
+          "내일 오전 11시에 판교 오피스에서 서울역으로 노트북 퀵 예약해줘.",
+          "엄마에게 보낼 과일 상자 택배 접수 부탁해.",
+          "무거운 박스를 회사에서 집으로 화물로 예약하고 싶은데 가능할까?",
+          "수급처에서 견적서 내 위치로 오토바이 퀵으로 보내고 싶어.",
+          "친구 집에 자전거로 소형 소포 오늘 바로 전달해줄 수 있을까?"
+        ]
+      },
+      {
+        "id": "trackDelivery",
+        "name": "배송 조회",
+        "description": "운송장 번호 또는 보낸 사람 연락처 등으로 물품의 실시간 배송 상태를 확인할 수 있습니다. 어떤 택배사든 자동 추정하여 현재 위치와 예상 도착 시간을 안내해드립니다.",
+        "examples": [
+          "234567890123 이 번호로 보낸 택배 어디쯤일까?",
+          "한진택배로 발송한 소포 배송 진행 상황 알려줘.",
+          "내 이름 홍길동으로 보낸 퀵서비스 현재 위치 확인할 수 있어?",
+          "배송 기사님이 언제 도착하는지 궁금해.",
+          "지난주에 보낸 우체국택배가 아직 도착 안 했는데 어디쯤인지 알아볼 수 있어?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "bookDeliveryService",
+      "description": "퀵/택배 서비스 예약을 도와주는 도구로, 다양한 배송 유형(퀵, 오토바이, 자전거, 택배, 화물 등)에 따라 픽업 시간, 위치, 발송인/수신인 정보, 물품 설명 등을 입력하여 맞춤형 배송 예약을 할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 요청 및 이전 대화 맥락을 포함한 정제된 예약 요청 쿼리 (예: '내일 오전 10시에 서류 원본을 퀵으로 서울역까지 보내고 싶어')"
+          },
+          "deliveryType": {
+            "type": "string",
+            "enum": [
+              "quick",
+              "parcel",
+              "motorcycle",
+              "cargo",
+              "bike"
+            ],
+            "description": "이용할 배송 유형 (예: 'quick': 당일 또는 당일특송, 'parcel': 택배, 'motorcycle': 오토바이 퀵, 'cargo': 화물, 'bike': 자전거 퀵)"
+          },
+          "pickupLocation": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "물품을 픽업할 장소 (예: '서울 강남 본사', '내 위치')"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number",
+                    "description": "위도"
+                  },
+                  "lng": {
+                    "type": "number",
+                    "description": "경도"
+                  }
+                },
+                "required": [
+                  "lat",
+                  "lng"
+                ],
+                "description": "물품을 픽업할 좌표 정보"
+              }
+            ],
+            "description": "물품을 픽업할 위치 정보 (주소 또는 좌표)"
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "description": "물품을 받을 장소 또는 목적지 (예: '부산 해운대 센텀시티', '회사 동료 집')"
+          },
+          "pickupTime": {
+            "type": "string",
+            "description": "희망 픽업 시간 (예: 'now' 즉시, 또는 ISO8601 날짜·시간 형식 '2025-09-12T15:30'). 예약인 경우 필수 입력 항목이며, 퀵서비스 예약 시 최소 30분 이후부터 오후 8시까지만 지정 가능"
+          },
+          "senderInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "물품 보내는 사람 이름 (예: '홍길동')"
+              },
+              "phone": {
+                "type": "string",
+                "description": "발송자 연락처 (예: '010-1234-5678')"
+              }
+            },
+            "required": [
+              "name",
+              "phone"
+            ],
+            "description": "보내는 사람의 이름과 전화번호"
+          },
+          "receiverInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "수령인 이름 (예: '이수지')"
+              },
+              "phone": {
+                "type": "string",
+                "description": "받는 사람 연락처 (예: '010-8765-4321')"
+              }
+            },
+            "required": [
+              "name",
+              "phone"
+            ],
+            "description": "받는 사람의 이름과 전화번호"
+          },
+          "itemDescription": {
+            "type": "string",
+            "description": "물품 설명 (예: '출장 서류', '선물용 생활용품 세트', '취급 주의 도자기')"
+          },
+          "itemSize": {
+            "type": "string",
+            "enum": [
+              "소형",
+              "중형",
+              "대형"
+            ],
+            "description": "물품 크기 구분 ('소형', '중형', '대형')"
+          },
+          "itemWeight": {
+            "type": "number",
+            "description": "물품 무게, 단위: kg (예: 2). 퀵 예약 시 10kg를 초과하면 불가하며, 반드시 택배 유형을 선택해야 함"
+          },
+          "reservation": {
+            "type": "boolean",
+            "description": "사전 예약 여부 (true: 예약, false 또는 미입력 시 즉시 배송). 예약 시에는 pickupTime이 반드시 필요함"
+          },
+          "source": {
+            "type": "string",
+            "description": "이용할 배송 서비스 제공 플랫폼 (예: '카카오퀵', 'CJ대한통운', '우체국택배', '한진택배')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "deliveryType",
+          "pickupLocation",
+          "dropoffLocation",
+          "pickupTime",
+          "senderInfo",
+          "receiverInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "trackDelivery",
+      "description": "운송장 번호, 배송사, 또는 보낸 사람 정보를 바탕으로 현재 택배의 배송 상태와 위치를 추적하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락과 사용자 자연어 질문을 반영한 정제된 조회 쿼리 (예: '원두 배송 어디까지 왔는지 알려줘', '롯데택배 배송 조회해줘.')"
+          },
+          "trackingNumber": {
+            "type": "string",
+            "description": "배송 추적에 사용할 운송장(송장) 번호. 운송장 번호가 입력된 경우 이를 기반으로 조회가 가능합니다. (예: '198765432109', 'EP23456789KR')"
+          },
+          "carrier": {
+            "type": "string",
+            "description": "택배사 코드 또는 이름(자동 추정 가능). (예: '롯데택배', '한진택배', '우체국', '쿠팡로지스틱스')"
+          },
+          "senderName": {
+            "type": "string",
+            "description": "보낸 사람 이름. 운송장 번호가 없을 때 보낸 사람 정보로 조회 시 사용됩니다."
+          },
+          "senderPhone": {
+            "type": "string",
+            "description": "보낸 사람 연락처(전화번호). 운송장 번호가 없을 때 보낸 사람 연락처로 조회가 가능합니다. 하이픈 없이 번호만 입력합니다. (예: '01012345678')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2025-07-16
+
+      Time: 10:30
+
+      Location: 서울특별시 강남구
+
+      userId: USR951031'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 배우 변우석이랑 내 띠 궁합이 궁금해. 나는 1995년 10월 31일생 여자야.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"배우 변우석 프로필\
+      \ 정보 조회\"\n    - status: pending\n      name: counsel_agent\n      refined_query:\
+      \ \"1995년 10월 31일생 여자와 변우석의 궁합 정보 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"배우 변우석 프로필 정보 조회\"\n\
+      \  personName: \"변우석\"\n  roleType: \"배우\"\ntool_call_result:\n  data:\n   \
+      \ personName: \"변우석\"\n    roleType: \"배우\"\n    birthDate: \"1991-10-31\"\n\
+      \    nationality: \"대한민국\"\n    agency: \"바로엔터테인먼트\"\n    physical: \"189cm\"\
+      \n    debut: \"2016년 tvN 드라마 '디어 마이 프렌즈'\"\n    knownFor: [\"선재 업고 튀어\", \"\
+      20세기 소녀\", \"힘쎈여자 강남순\"]\n    instagramId: \"byeonwooseok\""
+- workflow_id: null
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCompatibilityInfo\narguments:\n  refinedQuery: \"1995년 10월\
+      \ 31일생 여자와 1991년 10월 31일생 남자(변우석)의 궁합 정보 조회\"\n  personA:\n    birthDate: \"\
+      1995-10-31\"\n    gender: \"female\"\n  personB:\n    birthDate: \"1991-10-31\"\
+      \n    gender: \"male\"\ntool_call_result:\n  data:\n    personA:\n      birthDate:\
+      \ \"1995-10-31\"\n      zodiac: \"돼지띠\"\n      dayPillar: \"을해 (乙亥)\"\n    personB:\n\
+      \      birthDate: \"1991-10-31\"\n      zodiac: \"양띠\"\n      dayPillar: \"\
+      신미 (辛未)\"\n    compatibilityScore: 85\n    summary: \"두 분은 서로에게 안정감을 주는 좋은 인연입니다.\
+      \ 서로 다른 성향이 매력으로 작용하며, 함께 성장할 수 있는 관계입니다.\"\n    details:\n      - aspect: \"\
+      오행 궁합\"\n        content: \"여성분(乙木)은 남성분(辛金)에게 다소 제어받는 형국이나, 이는 오히려 관계의 안정성을\
+      \ 높여줍니다. 서로에게 필요한 기운을 보완해 주는 관계입니다.\"\n        score: 80\n      - aspect: \"\
+      성격 및 가치관\"\n        content: \"여성분은 따뜻하고 이해심이 많으며, 남성분은 섬세하고 강한 책임감을 가지고 있습니다.\
+      \ 서로의 다름을 존중하고 이해한다면 깊은 유대감을 형성할 수 있습니다.\"\n        score: 90\n      - aspect:\
+      \ \"조언\"\n        content: \"서로의 감정을 솔직하게 표현하고 충분한 대화를 나누는 것이 중요합니다. 가끔은 각자의\
+      \ 시간이 필요할 수 있으니, 서로의 독립성을 존중해 주세요.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '배우 변우석 님과의 사주 궁합 결과를 알려드릴게요.
+
+
+      두 분의 궁합 점수는 85점으로, 서로에게 안정감을 주며 함께 성장할 수 있는 좋은 인연으로 보입니다.
+
+
+      자세한 궁합 내용은 다음과 같습니다:
+
+
+      *   종합 요약: 서로 다른 성향이 오히려 매력으로 작용하며, 따뜻하고 이해심 많은 님과 책임감이 강하고 섬세한 변우석 님이 만나 깊은
+      유대감을 형성할 수 있는 관계입니다.
+
+      *   오행 궁합: 두 분은 서로에게 필요한 기운을 보완해 주는 관계입니다. 이는 관계의 안정성을 높여주는 긍정적인 요소로 작용합니다.
+
+      *   관계 조언: 앞으로 두 분의 관계를 더욱 좋게 만들기 위해서는 서로의 감정을 솔직하게 표현하고 충분히 대화하는 것이 중요합니다.
+      또한, 각자의 독립적인 시간을 존중해 주는 것도 도움이 될 것입니다.금/辛金)에게 다소 제어받는 모습이지만, 이는 오히려 관계의 안정성을
+      높여주는 긍정적인 작용을 합니다.
+
+      *   성격 및 가치관: 사용자님은 따뜻하고 이해심이 많고, 변우석 님은 섬세하며 강한 책임감을 가지고 있어 서로의 다름을 존중하고 이해한다면
+      깊은 유대감을 형성할 수 있습니다.
+
+      *   관계 조언: 서로의 감정을 솔직하게 표현하고 충분한 대화를 나누는 것이 중요합니다. 또한, 각자의 독립적인 시간을 존중해 준다면
+      관계에 더욱 도움이 될 거예요.
+
+
+      더 궁금한 점이 있으시면 언제든지 다시 물어보세요'

@@ -1,0 +1,111 @@
+{
+  "agent_card": {
+    "name": "스포츠(sports)",
+    "agent_id": "sports_agent",
+    "description": "경기 일정, 점수, 순위, 선수 기록 등 다양한 종목의 스포츠 정보를 실시간으로 알려주는 전문 에이전트입니다.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getSportGameInfo",
+        "name": "스포츠 경기 정보",
+        "description": "선택한 스포츠 팀의 경기 일정, 점수, 선수별 기록 등 최신 경기 정보를 확인할 수 있습니다. 리그, 팀, 날짜, 선수명 기준으로 조회할 수 있습니다.",
+        "examples": [
+          "이번 주 SSG 랜더스 경기 일정 알려줘.",
+          "내일 EPL에서 리버풀 경기 누가 선발이야?",
+          "KBO 어제 홈런 친 선수 명단 볼 수 있어?",
+          "다음주 NBA 애틀랜타 홉스 경기 어디서 열려?",
+          "오늘 손흥민 득점했는지 확인해줘."
+        ]
+      },
+      {
+        "id": "getSportRank",
+        "name": "스포츠 순위",
+        "description": "주요 리그별 팀 순위, 시즌별 승률, 특정 선수의 기록까지 폭넓은 순위 및 기록 정보를 제공합니다. 리그, 시즌, 팀명, 선수명 등의 조건으로 조회가 가능합니다.",
+        "examples": [
+          "K리그 현재 순위표 좀 보여줘.",
+          "2024년 NBA 플레이오프 진출팀 알려줄래?",
+          "오늘 KBO에서 NC 다이노스 몇 위야?",
+          "올시즌 EPL 득점왕은 누구야?",
+          "박민우 올해 타율 얼만지 궁금해."
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getSportGameInfo",
+      "description": "국내외 리그별 경기 일정, 결과, 팀·선수 기록 등 스포츠 관련 정보를 조회할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "현재 대화 맥락과 사용자의 자연어 요청을 모두 반영한 정제된 검색 쿼리 (예: '지난 주말 두산 경기에서 골 터뜨린 선수', '이번 달 맨유 일정 알려줘')"
+          },
+          "teamName": {
+            "type": "string",
+            "description": "조회하고자 하는 팀 명칭 (KBO, EPL, NBA 등 다양한 종목과 리그의 팀명 사용 가능, 예: 'SSG 랜더스', 'Chelsea FC')"
+          },
+          "league": {
+            "type": "string",
+            "description": "경기 또는 기록을 조회할 리그 명칭 (예: 'K리그', 'EPL', 'NBA', 'KBO')"
+          },
+          "targetDate": {
+            "type": "string",
+            "description": "조회할 대상 날짜 또는 기간 (예: '2024-08-15', '다음주', 날짜 미입력 시 오늘을 기준으로 조회)"
+          },
+          "playerName": {
+            "type": "string",
+            "description": "특정 선수의 기록이나 정보를 알고 싶을 때 선수 이름 (예: '이정후', 'Erling Haaland')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getSportRank",
+      "description": "다양한 종목의 리그별 순위 및 팀·선수 성적을 조회할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청 또는 챗 맥락을 반영한 세부 검색 쿼리 (예: '2024 프로축구 득점왕', '최근 야구 순위')"
+          },
+          "league": {
+            "type": "string",
+            "description": "순위를 알고 싶은 스포츠 리그명. 필수 파라미터이며, 입력이 없을 경우 반드시 리그명을 안내받아야 합니다. (예: 'KBO', 'EPL', 'NBA')"
+          },
+          "season": {
+            "type": "string",
+            "description": "원하는 시즌 연도. 4자리 숫자로 입력 (예: '2024'). 생략 시 현재 연도 사용."
+          },
+          "targetDate": {
+            "type": "string",
+            "description": "데이터 기준일 또는 특정 날짜. 날짜 형식 (예: '2024-08-15') 및 상대적 표현 ('오늘', '지난주') 모두 허용. 시즌이나 날짜에 연도가 없으면 현재 연도가 적용됨."
+          },
+          "teamName": {
+            "type": "string",
+            "description": "팀 단위로 조회할 경우 팀의 전체 이름 (예: '두산 베어스', '서울 SK 나이츠')"
+          },
+          "playerName": {
+            "type": "string",
+            "description": "선수 개별 기록을 원할 때 선수 전체 이름 (예: '이정후', '황희찬')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "league"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "agent_card": {
+    "name": "정보검색",
+    "agent_id": "search_agent",
+    "description": "다양한 주제에 대해 상세 정보를 신속하게 검색하여 제공하는 에이전트입니다. 궁금한 용어나 개념을 이해하기 쉽게 설명하고, 실생활에 적용할 수 있는 팁이나 사례도 안내할 수 있습니다.",
+    "url": "http://localhost:10010/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "searchInfo",
+        "name": "정보검색",
+        "description": "사용자가 궁금해하는 여러 주제나 키워드에 대해 심층적인 정보를 제공합니다.",
+        "examples": [
+          "기후 변화의 원인이 뭐야?",
+          "블록체인 기술은 어떻게 작동해?",
+          "에펠탑의 역사에 대해 알려줘.",
+          "녹차가 건강에 좋은 이유는 뭐야?",
+          "미국의 선거인단 제도는 어떻게 운영돼?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "searchInfo",
+      "description": "사용자의 자연어 질문을 바탕으로 다양한 정보를 빠르고 정확하게 찾아주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 질문을 종합해 명확하게 정제된 검색 쿼리를 입력합니다. (예: '위축된 식신의 의미', '정재가 많은 사주에서 고려할 점' 등)"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'data: 2026/01/15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 어제 카카오 종가 좀 알려주고, 이번주 카카오 관련 주요 뉴스가 있으면 3문장으로 요약해 줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"어제 카카오\
+      \ 종가 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: news_agent\n      refined_query: \"이번 주\
+      \ 카카오 주요 뉴스 검색\"\n    - status: pending\n      name: news_agent\n      refined_query:\
+      \ \"이번 주 카카오 주요 뉴스 3문장 요약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"2026년 1월 14일 카카오\
+      \ 종가 조회\"\n  stockName: \"카카오\"\n  date: \"2026-01-14\"\n  priceType: \"종가\"\
+      \n\ntool_call_result:\n  status: success\n  data:\n    stockName: \"카카오\"\n\
+      \    price: 155800"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"이번 주 카카오 주요 뉴스\"\n \
+      \ fromDate: \"2026-01-12\"\n  toDate: \"2026-01-15\"\n  limit: 5\n\ntool_call_result:\n\
+      \  status: success\n  data:\n    articles:\n      - title: \"카카오, AI 번역 서비스\
+      \ ‘카카오 i 번역’ 정식 출시\"\n        source: \"머니투데이\"\n        publishedAt: \"2026-01-12T08:35:00+09:00\"\
+      \n        url: \"https://news.mt.co.kr/kakao-ai-translate-launch\"\n\n     \
+      \ - title: \"카카오, 블록체인 자회사 그라운드X와 디지털 지갑 사업 확대\"\n        source: \"조선비즈\"\n\
+      \        publishedAt: \"2026-01-12T14:22:00+09:00\"\n        url: \"https://biz.chosun.com/it-tech/2026/01/12/kakao-groundx-wallet\"\
+      \n\n      - title: \"카카오, ‘멜론’ 글로벌 진출 가속화… 동남아 음원 서비스 확대\"\n        source:\
+      \ \"ZDNet Korea\"\n        publishedAt: \"2026-01-14T11:10:00+09:00\"\n    \
+      \    url: \"https://zdnet.co.kr/view/?no=20260114092800\"\n\n      - title:\
+      \ \"카카오, 2025년 4분기 실적 발표… 매출 8% 증가\"\n        source: \"연합뉴스\"\n        publishedAt:\
+      \ \"2026-01-15T17:45:00+09:00\"\n        url: \"https://www.yna.co.kr/view/AKR20260115085100017\"\
+      \n\n      - title: \"카카오게임즈, 신작 MMORPG ‘아레스’ 국내 사전예약 돌입\"\n        source: \"\
+      전자신문\"\n        publishedAt: \"2026-01-13T13:30:00+09:00\"\n        url: \"\
+      https://etnews.com/20260113000123\""
+- workflow_id: null
+  step_id: 6
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"카카오, AI 번역 서비스 ‘카카오 i 번역’ 정식 출시 뉴스 요약\"\n      date: \"2026-01-12\"\n  \
+      \    url: \"https://news.mt.co.kr/kakao-ai-translate-launch\"\n\n  - tool: summarizeNews\n\
+      \    arguments:\n      refinedQuery: \"카카오, 블록체인 자회사 그라운드X와 디지털 지갑 사업 확대 뉴스\
+      \ 요약\"\n      date: \"2026-01-12\"\n      url: \"https://biz.chosun.com/it-tech/2026/01/12/kakao-groundx-wallet\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"카카오, ‘멜론’\
+      \ 글로벌 진출 가속화… 동남아 음원 서비스 확대 뉴스 요약\"\n      date: \"2026-01-14\"\n      url:\
+      \ \"https://zdnet.co.kr/view/?no=20260114092800\"\n\n  - tool: summarizeNews\n\
+      \    arguments:\n      refinedQuery: \"카카오, 2025년 4분기 실적 발표… 매출 8% 증가 뉴스 요약\"\
+      \n      date: \"2026-01-15\"\n      url: \"https://www.yna.co.kr/view/AKR20260115085100017\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"카카오게임즈, 신작\
+      \ MMORPG ‘아레스’ 국내 사전예약 돌입 뉴스 요약\"\n      date: \"2026-01-13\"\n      url: \"\
+      https://etnews.com/20260113000123\"\n\ntool_call_result:\n  - result: |\n  \
+      \    카카오는 AI 기반 번역 서비스 '카카오 i 번역'을 정식 출시했다.  \n      자연스러운 문장 생성과 맥락 이해를 강화한\
+      \ 모델이 적용되었으며, 총 6개 언어를 지원한다.  \n      이번 서비스는 글로벌 사용자 대상 서비스 확장 기반이 될 것으로 기대된다.\n\
+      \n  - result: |\n      카카오는 블록체인 자회사 그라운드X와 함께 디지털 지갑 ‘클립(Klip)’ 기능을 강화하고 있다.\
+      \  \n      NFT 멤버십과 제휴 혜택을 중심으로 온·오프라인 연계 기능을 확대할 예정이다.  \n      카카오는 디지털 인증과\
+      \ 금융 결제 수단으로 클립의 역할을 강화하고자 한다.\n\n  - result: |\n      카카오는 음악 플랫폼 멜론의 동남아 진출을\
+      \ 본격화했다.  \n      베트남·태국·인도네시아 현지 팀을 구성해 콘텐츠와 마케팅을 강화할 계획이다.  \n      K-POP\
+      \ 중심의 로컬 전략을 통해 글로벌 시장 확대를 노리고 있다.\n\n  - result: |\n      카카오는 2025년 4분기 매출\
+      \ 2조 1,200억 원, 영업이익 1,450억 원을 기록했다.  \n      광고 플랫폼과 커머스의 회복, 금융 서비스 성장 등이 실적\
+      \ 개선에 기여했다.  \n      AI와 페이 등 플랫폼 중심 성장이 지속될 전망이다.\n\n  - result: |\n      카카오게임즈는\
+      \ MMORPG ‘아레스’의 국내 사전예약을 시작했다.  \n      고사양 그래픽과 실시간 전장 시스템이 특징이며, 글로벌 이용자의\
+      \ 관심을 받고 있다.  \n      정식 출시는 상반기 중으로 예정돼 있다."
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '2026년 1월 14일 카카오 주가는 155,800원으로 마감하였습니다.
+
+
+      이번주 카카오 주요 뉴스를 3문장으로 요약할게요.
+
+
+      카카오는 최근 AI 번역 서비스 ‘카카오 i 번역’을 출시하고, 블록체인 지갑 ‘클립’과 음원 플랫폼 ‘멜론’의 글로벌 확장에 나섰습니다.
+
+      2025년 4분기 실적은 광고·커머스 회복 등에 힘입어 매출 8% 증가를 기록했습니다.
+
+      카카오게임즈는 신작 MMORPG ‘아레스’의 사전예약을 시작하며 게임 부문 강화에 나섰습니다.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 카카오 올해 1분기 실적 발표가 언제야? 해당 날짜 찾아서 오전 9시에 리마인더에 등록하고 음성 알림으로 알려줘
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"어제\
+      \ 카카오 종가 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: news_agent\n      refined_query: \"이번주\
+      \ 카카오 주요 뉴스 검색\"\n    - status: completed\n      name: news_agent\n      refined_query:\
+      \ \"이번주 카카오 주요 뉴스 3문장 요약\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"카카오 올해 1분기 실적 발표일\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"카카오 올해 1분기 실적 발표일 오전 9시에 리마인더 등록 및 음성 알림 설정\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"카카오 2026년 1분기 실적 발표일\"\
+      \ntool_call_result:\n  status: success\n  data:\n    dateIR: \"2026-04-29T09:00:00+09:00\"\
+      \n    references:\n      - \"https://www.bloter.net/news/articleView.html?idxno=640186\"\
+      \n      - \"https://m.irgo.co.kr/IR일정/35092/TCPI/카카오-카카오-2026년-1분기-경영실적-발표\""
+- workflow_id: workflow_4
+  step_id: 11
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"카카오 2026년 1분기 실적\
+      \ 발표일 오전 9시에 리마인더 등록 및 음성 알림 설정\"\n  reminderContent: \"카카오 2026년 1분기 실적 발표일\"\
+      \n  reminderTime: \"2026-04-29T09:00:00+09:00\"\n  repeatRule: \"none\"\n  priority:\
+      \ \"normal\"\n  deliveryMethod: \"voice\"\ntool_call_result:\n  status: success\n\
+      \  data:\n    reminderId: \"REM20260429-001\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 카카오의 2026년 1분기 경영실적 발표는 오는 4월 29일로 예정되어 있습니다! 일정 잊어버리시지 않게 리마인더 등록했습니다.
+      4월 29일 오전 9시에 알려드리겠습니다.

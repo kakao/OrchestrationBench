@@ -1,0 +1,275 @@
+{
+  "agent_card": {
+    "name": "상담/운세 (Counsel & Fortune)",
+    "agent_id": "counsel_agent",
+    "description": "심리 상담, 사주, 띠, 별자리, MBTI 등 다양한 상담과 운세 정보를 제공하는 통합 에이전트입니다.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getCounseling",
+        "name": "심리상담",
+        "description": "이직, 인간관계, 우울 등 고민에 대한 심리상담을 제공합니다.",
+        "examples": [
+          "요즘 계속 기분이 가라앉아 도움이 필요해",
+          "회사 다니는 게 힘든데 계속 다녀야 할지 고민이야",
+          "배우자와 크게 다퉜는데 해결 방법이 궁금해",
+          "우리 아이가 집중을 못 하는데 혹시 문제가 있을까?",
+          "성인 ADHD는 어떤 방식으로 검사받을 수 있을까?"
+        ]
+      },
+      {
+        "id": "getSajuInfo",
+        "name": "사주팔자",
+        "description": "출생일자, 시간, 성별, 양력/음력을 바탕으로 사주 정보 및 운세 해석을 제공합니다.",
+        "examples": [
+          "1992년 3월 2일 오전 7시 서울에서 태어난 남자 사주 좀 봐줘",
+          "임수일주는 어떤 특징이 있는지 알려줘",
+          "내년 연애운이 어떻게 될지 궁금해",
+          "정관이 많은 사주는 삶이 어떻게 달라져?",
+          "올해 결혼할 가능성이 있을지 궁금하다",
+          "지금 만나는 여자친구와 잘 맞는지 궁합이 궁금해",
+          "나는 언제쯤 제대로 성공할 수 있을까?",
+          "1987년 토끼띠 올해 재물운 요청해"
+        ]
+      },
+      {
+        "id": "getZodiacInfo",
+        "name": "띠정보",
+        "description": "출생 연도를 기반으로 무슨 띠인지 확인하고, 해당 띠의 정보를 제공합니다.",
+        "examples": [
+          "2003년생은 무슨 띠로 분류돼?",
+          "유재석의 띠가 궁금해"
+        ]
+      },
+      {
+        "id": "getCompatibilityInfo",
+        "name": "궁합",
+        "description": "출생정보를 기반으로 두 사람 또는 해당 띠 간의 궁합을 분석해줍니다.",
+        "examples": [
+          "토끼띠 남성과 용띠 여성의 궁합을 알려줘",
+          "나랑 이도현은 잘 맞는지 궁합 봐줄래?"
+        ]
+      },
+      {
+        "id": "getStarSignInfo",
+        "name": "별자리",
+        "description": "별자리별 성격, 운세, 그리고 별자리 궁합 등 정보를 제공합니다.",
+        "examples": [
+          "물고기자리 오늘 운세 궁금해",
+          "사수자리 여자와 처녀자리 남자 조합은 어때?",
+          "7월 14일은 어느 별자리에 해당해?"
+        ]
+      },
+      {
+        "id": "getMbtiInfo",
+        "name": "MBTI 풀이",
+        "description": "MBTI에 따른 성향, 특징, 추천 직업 등을 알려줍니다.",
+        "examples": [
+          "INFP에게 어울리는 직종이 뭐 있을까?",
+          "ENTJ의 주요 성격 특징을 알려줘",
+          "IT 분야에 가장 많은 MBTI 유형이 뭘까?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getCounseling",
+      "description": "사용자의 고민, 감정, 대인관계 문제, 심리 증상 등에 대한 상담 요청을 자연어로 받아 전문가 상담이 필요한 경우 적합한 안내나 정보를 제공하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "상담 받고 싶은 고민이나 상황, 감정, 심리적 증상, 대인관계 문제 등을 자세히 표현한 자연어 요청 (예시: '최근 불안감이 심해져서 해결 방법이 궁금해요', '회사 동료와 큰 갈등을 겪고 있어서 상담이 필요합니다', '아이의 집중력이 부족한 것 같아 걱정이에요', '성인 집중력 장애 자가진단 방법 알려주세요', '오랜 기간 우울한 기분이 지속돼서 상담이 필요할까요?')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getSajuInfo",
+      "description": "사용자의 출생 정보와 질문을 바탕으로 사주팔자, 운세, 궁합 등 관련 정보를 분석해주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 사주 관련 질문 또는 요청이 자연어로 정제된 형태 (예: '내년 진급운 알려줘', '정재가 많은 사주는 무슨 의미야?', '호랑이띠인 남자친구와 궁합 봐줘')"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "출생 날짜, 형식: YYYY-MM-DD (예: 1992-07-15)"
+          },
+          "birthTime": {
+            "type": "string",
+            "description": "출생 시간 (선택), 형식: HH:mm (예: 06:30)"
+          },
+          "calendarType": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "lunar"
+            ],
+            "description": "날짜 유형, 양력은 'solar', 음력은 'lunar'로 입력. 미입력 시 기본값은 'solar'입니다."
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "male",
+              "female"
+            ],
+            "description": "성별, 'male'은 남성, 'female'은 여성"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "birthDate",
+          "gender",
+          "calendarType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getZodiacInfo",
+      "description": "사용자의 출생 연도 또는 관련 정보를 바탕으로 해당 띠(십이지신)를 확인할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청 및 이전 맥락을 포함하는 정제된 쿼리입니다. 예: '2001년생 띠 알려줘', '이도현은 무슨 띠야?'"
+          },
+          "year": {
+            "type": "integer",
+            "description": "띠를 알고 싶은 대상자의 출생 연도(4자리, 1900~2025 사이의 숫자)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "year"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getCompatibilityInfo",
+      "description": "두 사람의 출생정보와 쿼리를 바탕으로 궁합 정보를 제공하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락과 사용자 자연어 요청이 모두 반영된 정제된 궁합 질문 (예: '양띠 남자와 말띠 여자 궁합 알려줘', '나랑 김민지 궁합 보고 싶어')"
+          },
+          "personA": {
+            "type": "object",
+            "properties": {
+              "birthDate": {
+                "type": "string",
+                "description": "첫 번째 사람의 생년월일 (YYYY-MM-DD 형식, 반드시 입력 필요)"
+              },
+              "birthTime": {
+                "type": "string",
+                "description": "첫 번째 사람의 출생 시간 (선택사항, HH:mm 형식)"
+              },
+              "gender": {
+                "type": "string",
+                "description": "첫 번째 사람의 성별 (예: '남자', '여자')"
+              }
+            },
+            "required": [
+              "birthDate",
+              "gender"
+            ]
+          },
+          "personB": {
+            "type": "object",
+            "properties": {
+              "birthDate": {
+                "type": "string",
+                "description": "두 번째 사람의 생년월일 (YYYY-MM-DD 형식, 반드시 입력 필요)"
+              },
+              "birthTime": {
+                "type": "string",
+                "description": "두 번째 사람의 출생 시간 (선택사항, HH:mm 형식)"
+              },
+              "gender": {
+                "type": "string",
+                "description": "두 번째 사람의 성별 (예: '남자', '여자')"
+              }
+            },
+            "required": [
+              "birthDate",
+              "gender"
+            ]
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "personA",
+          "personB"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getStarSignInfo",
+      "description": "별자리 정보, 운세, 그리고 별자리 궁합을 찾아주는 도구입니다. 사용자의 궁금증에 따라 자신의 별자리, 생일에 해당하는 별자리, 혹은 상대 별자리와의 궁합 정보를 제공할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요청이 모두 담긴 최종 질의 문장입니다. (예: '이번 주 물병자리 운세 알려줘', '5월 8일은 무슨 별자리야?')"
+          },
+          "starSign": {
+            "type": "string",
+            "description": "운세나 정보를 알고 싶은 특정 별자리의 이름입니다. (예: '양자리', '사자자리')"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "생일 정보로, 별자리 확인이 필요한 날짜입니다. 'MM월 DD일' 또는 'YYYY-MM-DD' 형식 사용 가능. (예: '3월 22일', '2002-09-18')"
+          },
+          "partnerStarSign": {
+            "type": "string",
+            "description": "별자리 궁합을 알고 싶은 상대의 별자리 이름입니다. 궁합 요청일 때만 사용합니다. (예: '처녀자리', '염소자리')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getMbtiInfo",
+      "description": "사용자의 질문 또는 요청을 바탕으로 MBTI 유형별 특징, 성향, 추천 직업, 선호하는 분야 등 다양한 정보를 제공하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 의도를 반영하여 생성된, MBTI에 대한 구체적인 질문이나 요청 (예: 'enfj에 어울리는 취미 추천해줘', 'mbti별로 인간관계에서 두드러지는 특징 알려줘')"
+          },
+          "mbtiType": {
+            "type": "string",
+            "description": "MBTI 성격유형을 지정할 때 사용하는 4자리 약어(예: 'infj', 'esfp')이며, 알파벳 소문자로 입력해야 합니다."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-07-07'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: My younger sibling and I are planning a 7-day, 6-night trip to Seoul
+      starting August 3, departing from Los Angeles. It’s just the two of us, both
+      adults. Can you recommend flights to Seoul and a place to stay?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"Search for\
+      \ flights from Los Angeles (LAX) to Seoul for 2 adults, departing August 3 for\
+      \ a 7-day, 6-night trip\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"Recommend accommodations in Seoul for 2 people, August 3 for a 7-day, 6-night\
+      \ stay\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"Search for flights\
+      \ to Seoul for 2 adults, departing August 3 for a 7-day, 6-night trip\"\n  departure:\
+      \ \"LAX\"\n  destination: \"ICN\"\n  departureDate: \"2025-08-03\"\n  adultPassengerCount:\
+      \ 2\ntool_call_result:\n  data:\n    flights:\n      - flightNumber: \"KE012\"\
+      \n        airline: \"Korean Air\"\n        departureTime: \"2025-08-03T11:00-07:00\"\
+      \n        arrivalTime: \"2025-08-04T15:30+09:00\"\n        seatClass: \"economy\"\
+      \n        price: \"$1250\"\n      - flightNumber: \"AA153\"\n        airline:\
+      \ \"American Airlines\"\n        departureTime: \"2025-08-03T13:00-07:00\"\n\
+      \        arrivalTime: \"2025-08-04T17:20+09:00\"\n        seatClass: \"economy\"\
+      \n        price: \"$1190\"\n    note: \"Flight options for Seoul (ICN) for 2\
+      \ adults, August 3–10.\"\n  source: \"Flight booking system\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"Hotel recommendations\
+      \ in Seoul for 2 people, 6 nights 7 days starting August 4th\"\n  location:\
+      \ \"Seoul\"\n  checkInDate: \"2025-08-04\"\n  checkOutDate: \"2025-08-10\"\n\
+      \  guestCount: 2\n  sortBy: \"highest_rating\"\ntool_call_result:\n  data:\n\
+      \    accommodations:\n      - hotelName: \"Lotte Hotel Seoul\"\n        rating:\
+      \ \"4.8\"\n        address: \"30 Eulji-ro, Jung-gu, Seoul\"\n        pricePerNight:\
+      \ \"$220\"\n        amenities:\n          - \"Free Wi-Fi\"\n          - \"Breakfast\
+      \ included\"\n          - \"Indoor swimming pool\"\n      - hotelName: \"Four\
+      \ Points by Sheraton Seoul, Station\"\n        rating: \"4.5\"\n        address:\
+      \ \"366 Hangang-daero, Yongsan-gu, Seoul (near Seoul Station)\"\n        pricePerNight:\
+      \ \"$150\"\n        amenities:\n          - \"Free Wi-Fi\"\n          - \"Fitness\
+      \ center\"\n    note: \"Here are recommended accommodations in Seoul for 2 guests\
+      \ from August 4th to 10th (6 nights, 7 days).\"\n  source: \"Accommodation booking\
+      \ system\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are some recommended flights and accommodations for your trip to
+      Seoul from August 4 to August 10.
+
+
+      ◾ Flight Recommendations:
+
+
+      1. Korean Air (KE012)
+
+
+      - Departure: August 3, 2025, 11:00 AM (Los Angeles International Airport – LAX)
+
+      - Arrival: August 4, 2025, 3:30 PM (Seoul – Incheon International Airport)
+
+      - Class: Economy
+
+      - Fare: $1,250
+
+
+      2. American Airlines (AA153)
+
+
+      - Departure: August 3, 2025, 1:00 PM (Los Angeles International Airport – LAX)
+
+      - Arrival: August 4, 2025, 5:20 PM (Seoul – Incheon International Airport)
+
+      - Class: Economy
+
+      - Fare: $1,190
+
+
+      ◾ Hotel Recommendations:
+
+
+      1. Lotte Hotel Seoul
+
+      - Rating: 4.8
+
+      - Location: 30 Eulji-ro, Jung-gu, Seoul (Central Business District, near Myeongdong)
+
+      - Price per night: $220
+
+      - Amenities: Free Wi-Fi, breakfast included, indoor swimming pool
+
+      - Total for 6 nights: $1,320
+
+
+      2. Four Points by Sheraton Seoul, Station
+
+
+      - Rating: 4.5
+
+      - Location: 366 Hangang-daero, Yongsan-gu, Seoul (near Seoul Station)
+
+      - Price per night: $150
+
+      - Amenities: Free Wi-Fi, fitness center
+
+      - Total for 6 nights: $900
+
+
+      If needed, I can also help you with flight bookings and detailed hotel information.
+      Have a wonderful trip!'

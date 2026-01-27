@@ -1,0 +1,347 @@
+{
+  "agent_card": {
+    "name": "캘린더",
+    "agent_id": "calendar_agent",
+    "description": "음력ㆍ양력 달력 확인, 일정 등록/조회/취소/변경, 맞춤 알림 등 생활 스케줄과 관련된 다양한 기능을 제공하는 캘린더 에이전트입니다.",
+    "url": "http://localhost:10008/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": true
+    },
+    "skills": [
+      {
+        "id": "getCalendar",
+        "name": "달력(음력, 양력) 조회",
+        "description": "양력, 음력 날짜와 각종 명절, 절기, 기념일 일자를 조회하거나 변환합니다.",
+        "examples": [
+          "오늘 날짜를 음력 기준으로 바꿔줄 수 있어?",
+          "올해 설날이 언제인지 알려줘",
+          "입춘 날짜가 어떻게 돼?",
+          "2026년 삼복 중 초복이 며칠이야?",
+          "음력 7월 15일이 양력으론 언제야?"
+        ]
+      },
+      {
+        "id": "createSchedule",
+        "name": "일정 등록",
+        "description": "지정 일시에 약속, 예약, 기념일 등 새로운 일정을 캘린더에 기록합니다.",
+        "examples": [
+          "다음 주 화요일 오후 6시에 친구들이랑 영화 보기 일정 추가해줘",
+          "8월 3일 저녁 8시 강남역에서 식사 약속 등록해줘",
+          "내일 오전 9시에 병원 예약 넣어줘",
+          "다음 달 첫째 주 월요일 아침 7시에 조깅 일정 만들어줘",
+          "7월 15일 생일 저녁 파티 스케줄 캘린더에 넣어줘"
+        ]
+      },
+      {
+        "id": "getSchedule",
+        "name": "일정 조회",
+        "description": "기간, 키워드, 캘린더 타입 등 조건별로 등록된 일정을 검색합니다.",
+        "examples": [
+          "이번 달에 잡힌 약속들 전부 보여줄래?",
+          "오늘 오후에 예약된 일정 알려줘",
+          "개인 캘린더에서 '미팅' 들어간 일정 찾아줘",
+          "다음 주 일정 전체 요약해줘",
+          "장모님 생신 스케줄 언제인지 확인해줘"
+        ]
+      },
+      {
+        "id": "cancelSchedule",
+        "name": "일정 취소",
+        "description": "저장된 일정 중 특정 일정을 선택해 삭제합니다. '일정 조회'를 통해 취소할 일정을 선택합니다.",
+        "examples": [
+          "내일 오전 미팅 일정 취소해줘",
+          "저녁 약속 스케줄 삭제해 줄래?"
+        ]
+      },
+      {
+        "id": "modifySchedule",
+        "name": "일정 변경",
+        "description": "등록된 일정의 세부 항목(시간, 장소 등)을 수정합니다. '일정 조회'를 통해 변경할 일정을 선택합니다.",
+        "examples": [
+          "다음 주 수요일 저녁 모임 시작 시간을 8시로 바꿔줘",
+          "오늘 점심 미팅 장소를 '시청역 카페'로 변경해줄 수 있어?"
+        ]
+      },
+      {
+        "id": "remindSchedule",
+        "name": "리마인더",
+        "description": "지정된 시간, 메시지, 반복 조건에 따라 예약 알림을 설정합니다.",
+        "examples": [
+          "오전 10시에 서류 제출하라고 알림 설정해줘",
+          "매주 월요일 오전 11시에 회의 전 알림 받게 해줘",
+          "다음 주 금요일 오후 5시에 '엄마에게 전화하기' 알림 추가해",
+          "오늘 저녁 7시에 운동하라고 챗으로 알려줘"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getCalendar",
+      "description": "음력과 양력의 날짜 변환, 특정 절기·명절·기념일 검색, 그리고 기준 날짜의 음력·양력 정보를 알려주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청 또는 이전 맥락까지 포함한 정제된 쿼리 (예: '음력 3월 초하루 날짜 알려줘', '양력으로 오늘의 날짜 변환')"
+          },
+          "date": {
+            "type": "string",
+            "description": "날짜 기준이 되는 특정 날짜 (예: '2024-09-12'). ISO 8601(YYYY-MM-DD) 형식 사용"
+          },
+          "calendarType": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "lunar"
+            ],
+            "description": "주어진 날짜의 캘린더 유형: 음력(lunar) 또는 양력(solar) 중 선택"
+          },
+          "convertedCalendarType": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "lunar"
+            ],
+            "description": "변환하고자 하는 캘린더 유형: 음력(lunar) 또는 양력(solar) 중 선택"
+          },
+          "targetEvent": {
+            "type": "string",
+            "description": "명절, 절기, 또는 기념일 이름 (예: '한식', '입추', '크리스마스', '설날')"
+          },
+          "year": {
+            "type": "integer",
+            "description": "조회할 연도. 4자리 숫자로 입력하며, 생략 시 기본값은 현재 연도"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "year"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "createSchedule",
+      "description": "사용자의 새로운 일정을 생성하고 다양한 옵션(장소, 반복, 메모 등)과 함께 캘린더에 저장하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어 입력과 이전 대화 맥락을 융합해 일정 정보를 파악한 정제된 요청 (예: '8월 13일 오전 9시에 아침 미팅 추가', '저녁 6시에 친구와 약속 등록')"
+          },
+          "title": {
+            "type": "string",
+            "description": "일정의 제목 또는 간단한 요약(최대 50자, 예: '마케팅팀 점심 회의', '피트니스 트레이닝')"
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "일정이 시작되는 날짜와 시각(예: '2025-08-13T09:00', 반드시 현재 시각 이후여야 함), 구체적인 시간이 명시되어 있지 않다면 현재시간을 기준으로 설정",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "일정 종료 시각(예: '2025-08-13T10:00'). 입력하지 않으면 시작 시각으로부터 1시간으로 자동 설정",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string",
+            "description": "일정이 진행될 장소나 위치정보(예: '강남역 근처 카페', '본사 3층 회의실')"
+          },
+          "memo": {
+            "type": "string",
+            "description": "일정에 대한 자유 메모 또는 상세 설명(최대 300자, 예: '회의 끝나고 바로 사무실 이동', '운동 후 샤워실 사용 가능')"
+          },
+          "calendarType": {
+            "type": "string",
+            "description": "저장할 캘린더 종류(예: 'personal', 'work', 'shared'), 사용자 발화에 포함될 경우만 필터링 조건으로 사용"
+          },
+          "repeatRule": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daily",
+              "weekly",
+              "monthly",
+              "yearly"
+            ],
+            "description": "일정 반복 주기(예: 'none'(반복 없음), 'weekly'(매주 반복) 등), 사용 발화에 명시적으로 포함된 경우 추출"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "title",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getSchedule",
+      "description": "사용자의 자연어 질의를 기반으로 특정 기간, 키워드, 캘린더 유형에 따라 일정을 검색하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 현재 사용자 질문을 종합해 정제한 일정 조회 질의 (예: '8월 첫째 주 미팅 일정', '꼭 해야 하는 업무 일정')"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "일정 조회를 시작할 날짜. ISO 8601 형식 또는 'YYYY-MM-DD'로 입력 (예: '2025-08-10'). 자연어 기간(예: '오늘', '이번 주')을 입력하면 실제 날짜로 변환되어야 함."
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "일정 조회를 종료할 날짜. ISO 8601 또는 'YYYY-MM-DD' 형식 (예: '2025-08-16'). startDate만 있을 경우 endDate도 startDate와 동일하게 처리."
+          },
+          "keyword": {
+            "type": "string",
+            "description": "일정 제목 또는 메모에 포함된 검색 키워드 (예: '회의', '기념일', '세미나')"
+          },
+          "calendarType": {
+            "type": "string",
+            "enum": [
+              "personal",
+              "work",
+              "shared",
+              "anniversary"
+            ],
+            "description": "조회할 캘린더 종류 (예: 'personal'은 개인 일정, 'work'는 업무, 'shared'는 공유, 'anniversary'는 기념일용 캘린더)"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelSchedule",
+      "description": "특정 일정을 취소하는 도구로, 사용자의 취소 요청과 연관된 일정을 찾아 삭제할 수 있습니다.  '일정 조회'를 통해 취소할 일정을 선택합니다 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 취소 요청과 맥락 정보를 모두 포함하는 정제된 쿼리 (예: '내일 있을 회의 취소해줘', '다음 주 금요일 가족 모임 취소')"
+          },
+          "scheduleID": {
+            "type": "string",
+            "description": "취소하려는 일정의 고유 id 값. 일정을 식별하여 정확히 취소 처리할 때 사용합니다."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "scheduleID"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifySchedule",
+      "description": "기존 일정의 시작/종료 시각, 장소, 제목 등을 수정하는 도구입니다.  '일정 조회'를 통해 변경할 일정을 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청을 기반으로 생성된 요약 쿼리 (예: '회의를 금요일 오전 10시로 옮기고 장소는 온라인으로 변경')"
+          },
+          "scheduleID": {
+            "type": "string",
+            "description": "수정하려는 일정의 고유 ID (예: 'evt_30711', 'sched208')"
+          },
+          "newStartDateTime": {
+            "type": "string",
+            "description": "변경된 시작 시각 (예: '2025-07-18T10:00:00')"
+          },
+          "newEndDateTime": {
+            "type": "string",
+            "description": "변경된 종료 시각. 기본값은 시작 시각 이후 1시간 (예: '2025-07-18T11:00:00')"
+          },
+          "newLocation": {
+            "type": "string",
+            "description": "변경된 장소 (예: '카카오 판교 오피스 3층 회의실')"
+          },
+          "newTitle": {
+            "type": "string",
+            "description": "변경된 일정 제목 (예: '프로젝트 킥오프')"
+          },
+          "note": {
+            "type": "string",
+            "description": "기타 참고 사항 또는 부가 설명 (예: '회의 후 점심 있음')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "scheduleID"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "remindSchedule",
+      "description": "특정 시간에 사용자에게 메시지, 할 일, 약속 등을 알림 형태로 안내하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락과 사용자의 자연어 요청을 포함한 정제된 알림 요청 문장 (예: '오전 7시에 운동하라는 알림', '퇴근 시간 전에 우유 사기 알림')"
+          },
+          "reminderContent": {
+            "type": "string",
+            "description": "알림에 표시할 주요 메시지 또는 할 일의 내용 (예: '오전 7시에 운동 시작하기', '퇴근 전에 우유 사기')"
+          },
+          "reminderTime": {
+            "type": "string",
+            "description": "알림이 발생해야 하는 정확한 시간 (ISO 8601 형식 예: '2025-12-01T07:00')"
+          },
+          "repeatRule": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daily",
+              "weekly",
+              "monthly",
+              "yearly"
+            ],
+            "description": "'none'(기본값): 반복 없음, 'daily': 매일 반복, 'weekly': 매주 반복, 'monthly': 매월 반복, 'yearly': 매년 반복 중 선택"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "high",
+              "normal"
+            ],
+            "description": "'normal'(기본값): 일반 알림, 'high': 중요한(강하게 표시되는) 알림"
+          },
+          "deliveryMethod": {
+            "type": "string",
+            "enum": [
+              "push",
+              "voice",
+              "chat"
+            ],
+            "description": "'chat'(기본값): 채팅 알림, 'push': 푸시 알림, 'voice': 음성 알림 방식 중 선택"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reminderContent",
+          "reminderTime",
+          "repeatRule",
+          "priority",
+          "deliveryMethod"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

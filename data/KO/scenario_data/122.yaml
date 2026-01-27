@@ -1,0 +1,120 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 7월 15일
+
+      - 예약자 이름: 박온유
+
+      - 예약자 전화번호: 010-1234-5678
+
+      - 예약자 메일: abcde@example.com'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 반려동물 동반 가능하고 시티뷰 객실 있는 서울 호텔 찾아서 예약해줘. 인원은 4명이고 2박 3일 일정이야.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"반려동물 동반\
+      \ 가능하고 시티뷰 객실 있는 4인이 2박 3일 투숙 가능한 서울 호텔 추천\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: travel_agent\n      refined_query: \"반려동물 동반 가능하고 시티뷰 객실 있는 4인이\
+      \ 2박 3일 투숙 가능한 서울 호텔 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"반려동물 동반 가능하고\
+      \ 시티뷰 객실 있는 4인이 2박 3일 투숙 가능한 서울 호텔 추천\"\n  location: \"서울\"\n  checkInDate:\
+      \ \"2025-07-15\"\n  checkOutDate: \"2025-07-17\"\n  guestCount: 4\n  roomCount:\
+      \ 1\n  accommodationType: \"hotel\"\n  sortBy: \"highest_rating\"\n  petFriendly:\
+      \ true\n  viewType: \"city_view\"\ntool_call_result:\n  data:\n    accommodations:\n\
+      \      - name: \"시그니엘 서울\"\n        rating: 4.9\n        address: \"서울 송파구 올림픽로\
+      \ 300\"\n        petFriendly: true\n        viewType: \"city_view\"\n      \
+      \  availableRooms:\n          - roomType: \"프리미어 시티뷰 패밀리룸\"\n            roomTypeId:\
+      \ \"PREMIER_CITYVIEW_FAMILY\"\n            capacity: 4\n            pricePerNight:\
+      \ \"750,000원\"\n            amenities:\n              - \"무료 Wi-Fi\"\n     \
+      \         - \"욕조\"\n              - \"반려동물 동반 가능\"\n              - \"도심 전망\"\
+      \n      - name: \"앤트로사이트 호텔\"\n        rating: 4.7\n        address: \"서울 종로구\
+      \ 자하문로 20\"\n        petFriendly: true\n        viewType: \"city_view\"\n  \
+      \      availableRooms:\n          - roomType: \"시티뷰 디럭스 4인실\"\n            roomTypeId:\
+      \ \"DELUXE_CITYVIEW_QUAD\"\n            capacity: 4\n            pricePerNight:\
+      \ \"520,000원\"\n            amenities:\n              - \"루프탑 테라스\"\n      \
+      \        - \"반려동물 동반 가능\"\n              - \"개별 냉난방\"\n              - \"도심\
+      \ 전망\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 호텔 사용자 선택, 체크인 날짜, 체크아웃 날짜'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "서울에서 반려동물과 함께 시티뷰 객실에 투숙하실 수 있는 호텔을 두 곳 추천드립니다. 두 호텔 모두 4인이 2박 3일 동안\
+      \ 머물기에 적합하며, 반려동물 동반과 도심 전망 조건을 충족합니다.\n\n1. 시그니엘 서울\n\n   * 평점: 4.9\n   * 주소:\
+      \ 서울 송파구 올림픽로 300\n   * 객실명: 프리미어 시티뷰 패밀리룸 (roomTypeId: `PREMIER_CITYVIEW_FAMILY`)\n\
+      \   * 인원: 4인\n   * 1박 요금: 750,000원\n   * 주요 편의시설: 무료 Wi-Fi, 욕조, 반려동물 동반 가능,\
+      \ 도심 전망\n\n2. 앤트로사이트 호텔\n\n   * 평점: 4.7\n   * 주소: 서울 종로구 자하문로 20\n   * 객실명:\
+      \ 시티뷰 디럭스 4인실 (roomTypeId: `DELUXE_CITYVIEW_QUAD`)\n   * 인원: 4인\n   * 1박 요금:\
+      \ 520,000원\n   * 주요 편의시설: 루프탑 테라스, 반려동물 동반 가능, 개별 냉난방, 도심 전망\n\n원하시는 호텔이 있으신가요?\
+      \ 말씀해주시면 예약을 도와드릴 수 있습니다. 원활한 예약 진행을 위해 체크인, 체크아웃 날짜를 알려주세요."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 시그니엘 서울이 좋겠어. 8월 15일에 체크인해서 17일에 체크아웃 예정이야.
+- workflow_id: null
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: bookAccommodation\narguments:\n  refinedQuery: \"4인이 8월 15일부터\
+      \ 8월 17일까지 머물 시그니엘 서울 호텔 시티뷰 객실 예약\"\n  accommodationName: \"시그니엘 서울\"\n  roomTypeId:\
+      \ \"PREMIER_CITYVIEW_FAMILY\"\n  checkInDate: \"2025-08-15\"\n  checkOutDate:\
+      \ \"2025-08-17\"\n  guestCount: 4\n  roomCount: 1\n  location: \"서울\"\n  userInfo:\n\
+      \    name: \"박온유\"\n    contactNumber: \"010-1234-5678\"\n    email: \"abcde@example.com\"\
+      \ntool_call_result:\n  data:\n    reservationId: \"RSV20250815002\"\n    accommodationName:\
+      \ \"시그니엘 서울\"\n    roomType: \"프리미어 시티뷰 패밀리룸\"\n    roomTypeId: \"PREMIER_CITYVIEW_FAMILY\"\
+      \n    checkInDate: \"2025-08-15\"\n    checkOutDate: \"2025-08-17\"\n    guestCount:\
+      \ 4\n    roomCount: 1\n    totalPrice: \"1,500,000원\"\n    reservedFor:\n  \
+      \    name: \"박온유\"\n      contactNumber: \"010-1234-5678\"\n      email: \"\
+      abcde@example.com\"\n    status: \"confirmed\"\n    confirmationMessage: \"\
+      시그니엘 서울 프리미어 시티뷰 패밀리룸 예약이 완료되었습니다. 체크인은 2025년 8월 15일이며, 체크아웃은 8월 17일입니다.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '시그니엘 서울의 프리미어 시티뷰 패밀리룸 예약이 완료되었습니다.
+
+      투숙 인원은 4명이며, 체크인은 2025년 8월 15일, 체크아웃은 8월 17일입니다.
+
+      총 요금은 1,500,000원이며, 예약자 정보는 다음과 같습니다:
+
+
+      * 예약자: 박온유
+
+      * 연락처: 010-1234-5678
+
+      * 이메일: [abcde@example.com](mailto:abcde@example.com)
+
+
+      즐거운 투숙 되시길 바랍니다. 추가 요청이 있으시면 언제든지 알려주세요.'

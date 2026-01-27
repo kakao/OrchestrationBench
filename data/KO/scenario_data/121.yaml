@@ -1,0 +1,78 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 7월 15일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 다음 주 수요일에 중요한 회의 있었는데 뭐였더라? 미리 리마인더 설정해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"다음 주 수요일\
+      \ 회의 일정 조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"다음 주 수요일 회의 일정 리마인더 설정\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"다음 주 수요일 회의 일정 조회\"\
+      \n  startDate: \"2025-07-23\"\n  endDate: \"2025-07-23\"\n  keyword: \"회의\"\n\
+      tool_call_result:\n  data:\n    schedules:\n      - title: \"프로젝트 진행 상황 보고 회의\"\
+      \n        date: \"2025-07-23\"\n        time: \"오전 11:00\"\n        location:\
+      \ \"본사 2층 대회의실\"\n        attendees:\n          - \"김부장\"\n          - \"박과장\"\
+      \n          - \"최대리\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 리마인드 할 시간'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 리마인더 알림은 몇 시로 설정할까요?
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 전날 저녁 7시로 해줘
+- workflow_id: null
+  step_id: 8
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"다음 주 수요일 프로젝트 진행\
+      \ 상황 보고 회의 일정에 대해 전날 저녁 7시에 리마인더 설정\"\n  reminderContent: \"내일 프로젝트 진행 상황 보고\
+      \ 회의 참석하기\"\n  reminderTime: \"2025-07-22T19:00\"\n  deliveryMethod: \"chat\"\
+      \n  priority: \"normal\"\n  repeatRule: \"none\"\ntool_call_result:\n  data:\n\
+      \    reminders:\n      - content: \"내일 프로젝트 진행 상황 보고 회의 참석하기\"\n        reminderTime:\
+      \ \"2025-07-22T19:00\"\n        deliveryMethod: \"chat\"\n        priority:\
+      \ \"normal\"\n        repeatRule: \"none\"\n        status: \"설정 완료\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "다음 주 수요일에 있을 중요한 회의에 대한 알림을 설정해두었습니다. 회의 일정과 세부 내용은 다음과 같습니다:\n\n1.\
+      \ 회의 제목: 프로젝트 진행 상황 보고 회의  \n2. 날짜 및 시간: 2025년 7월 23일 수요일 오전 11:00  \n3. 장소:\
+      \ 본사 2층 대회의실  \n4. 참석자: 김부장, 박과장, 최대리  \n\n다음 주 화요일 저녁 7시에 채팅으로 리마인드 알림 예정입니다.\
+      \ 추가 알림이나 변경이 필요하시면 언제든지 말씀해 주세요!"

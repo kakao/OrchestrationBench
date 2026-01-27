@@ -1,0 +1,152 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- location: "세종시"
+
+      - datetime: "2025-02-17 12:34"
+
+      - name: "홍길동"
+
+      - contactNumber: "010-2345-6134"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 아빠 생일 음력으로 5월 5일인데 양력으로 계산해서 알려주고 그날에 한정식 식당 5명으로 예약해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"음력 5월\
+      \ 5일을 양력으로 변환\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"양력 생일날에 5명 예약 가능한 한정식 식당 검색\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"양력 생일날에 5명 예약 가능한\
+      \ 한정식 식당 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getCalendar\narguments:\n  refinedQuery: \"음력 5월 5일을 양력으로 변환\"\
+      \n  date: \"2025-05-05\"\n  calendarType: \"lunar\"\n  convertedCalendarType:\
+      \ \"solar\"\n  year: 2025\ntool_call_result:\n  convertedDate: \"2025-06-29\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"2025년 6월 29일에\
+      \ 예약 가능한 한정식 식당\"\n  location: \"세종시\"\n  cuisineType: \"한정식\"\n  reservationTime:\
+      \ \"2025-06-29\"\n  event: \"아빠 생일\"\n  sortBy: \"highest_rated\"\ntool_call_result:\n\
+      \  restaurants:\n    - name: \"세종 한가온\"\n      address: \"세종특별자치시 한누리대로 200\"\
+      \n      phone: \"044-865-1234\"\n      priceRange: \"₩₩₩\"\n      availableTime:\
+      \ [\"18:00\", \"19:00\", \"20:00\"]\n      rating: 4.8\n      features: [\"\
+      개별룸\", \"예약 가능\", \"전통 분위기\"]\n      link: \"https://restaurant.example.com/세종한가온\"\
+      \n\n    - name: \"수라한정식 세종점\"\n      address: \"세종특별자치시 도움1로 110\"\n      phone:\
+      \ \"044-987-5678\"\n      priceRange: \"₩₩\"\n      availableTime: [\"17:30\"\
+      , \"19:30\"]\n      rating: 4.6\n      features: [\"가족 모임 추천\", \"예약 필수\", \"\
+      주차 가능\"]\n      link: \"https://restaurant.example.com/수라한정식\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 식당 선택, 방문 예정 시간'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '세종시에서 아버지 생신을 기념하기 좋은 한정식 식당을 추천드립니다.
+
+
+      세종 한가온
+
+      전통적인 분위기의 고급 한정식 전문점으로, 개별 룸이 있어 가족 단위 모임에 적합합니다.
+
+      ▸ 주소: 세종특별자치시 한누리대로 200
+
+      ▸ 전화: 044-865-1234
+
+      ▸ 예약 가능 시간: 18:00, 19:00, 20:00
+
+      ▸ 평점: ⭐ 4.8
+
+      ▸ 링크: 세종 한가온 예약하기
+
+
+      수라한정식 세종점
+
+      합리적인 가격의 인기 있는 한정식 식당으로, 가족 생일상으로 추천됩니다.
+
+      ▸ 주소: 세종특별자치시 도움1로 110
+
+      ▸ 전화: 044-987-5678
+
+      ▸ 예약 가능 시간: 17:30, 19:30
+
+      ▸ 평점: ⭐ 4.6
+
+      ▸ 링크: 수라한정식 예약하기
+
+
+      편하신 시간에 맞춰 예약해드릴 수도 있으니 시간도 같이 말씀 주세요! 😊'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: _x0008_세종 한가온이 평점이 더 좋네. 여기로 해줘. 저녁 6시로 해주고 개별 룸이랑 케이크 반입도 메모로 남겨줘.
+- workflow_id: null
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"세종 한가온 2025년 6월 29일\
+      \ 저녁 6시 5인 가족 예약\"\n  placeName: \"세종 한가온\"\n  placeCategory: \"한정식집\"\n  reservationDate:\
+      \ \"2025-06-29\"\n  reservationTime: \"18:00\"\n  partySize: 5\n  contactInfo:\
+      \ \"010-2345-6134\"\n  option: \"개별 룸, 생일 케이크 반입\"\ntool_call_result:\n  reservationStatus:\
+      \ \"성공\"\n  reservationDetails:\n    placeName: \"세종 한가온\"\n    reservationDate:\
+      \ \"2025-06-29\"\n    reservationTime: \"18:00\"\n    partySize: 5\n    contactInfo:\
+      \ \"010-2345-6134\"\n    confirmationNumber: \"RES-20250629-51327\"\n    specialNote:\
+      \ \"개별 룸으로 배정 예정, 생신 기념 케이크 반입 가능\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '아버지의 음력 생일인 2025년 음력 5월 5일은 양력으로 2025년 6월 29일(일요일)입니다.
+
+
+      해당 날 저녁 식사를 위해 세종시에 위치한 한정식집 ''세종 한가온''에 오후 6시, 5인 가족 예약이 완료되었습니다.
+
+
+      예약 정보는 아래와 같습니다:
+
+      - 식당명: 세종 한가온
+
+      - 날짜 및 시간: 2025년 6월 29일 (일) 오후 6시
+
+      - 인원: 5명
+
+      - 연락처: 010-2345-6134
+
+      - 예약 번호: RES-20250629-51327
+
+      - 특이사항: 개별 룸 제공 예정, 생신 기념 케이크 반입 가능
+
+
+      즐거운 가족 모임 되시길 바랍니다!'

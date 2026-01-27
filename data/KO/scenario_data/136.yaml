@@ -1,0 +1,190 @@
+metadata:
+  total_steps: 17
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 6월 6일 금요일
+
+      - 현재 시각: 18:00
+
+      - userId: U0DK23134'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 퇴근길에 꽃 사서 가고 싶어. 영등포역 근처에 지금 열려 있는 꽃집 알려줘. 괜찮은 곳 있으면 유칼립투스랑 수국, 리시안셔스
+      같은 그린&화이트 조합의 내추럴한 느낌으로 꽃다발 예약하려고 해. 아마 저녁 7시 이후에 찾으러 갈 수 있을 듯.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"영등포역 근처에\
+      \ 지금 열려 있는 꽃집\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"영등포역 근처 지금 열려 있는 꽃집 중 괜찮은 곳에서, 유칼립투스, 수국, 리시안셔스 같은 그린&화이트\
+      \ 조합의 내추럴한 느낌의 꽃다발을 저녁 7시 이후에 픽업 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"6월 6일 금요일 18시에 영업\
+      \ 중인 영등포역 근처 꽃집\"\n  placeCategory: \"꽃집\"\n  location: \"영등포역\"\n  availableDate:\
+      \ \"2025-06-06\"\n  availableTime: \"오후 7시 이후\"\n  sortBy: \"distance\"\ntool_call_result:\n\
+      \  data:\n    requestDate: \"2025-06-06\"\n    requestTime: \"오후 7시 이후\"\n \
+      \   searchLocation: \"영등포역\"\n    placeCategory: \"꽃집\"\n    searchResults:\n\
+      \      - shopName: \"꽃나라\"\n        distanceFromLocation: \"500m\"\n       \
+      \ openingHours: \"9:00 - 21:00\"\n        closedDays: \"일요일\"\n      - shopName:\
+      \ \"플라워 가든\"\n        distanceFromLocation: \"650m\"\n        openingHours:\
+      \ \"10:00 - 20:00\"\n        closedDays: \"연중무휴\"\n      - shopName: \"블루밍 플라워\"\
+      \n        distanceFromLocation: \"750m\"\n        openingHours: \"9:30 - 22:00\"\
+      \n        closedDays: \"월요일\"\n    status: \"검색 완료\"\n    notes: \"오후 7시 이후에\
+      \ 영업 중인 꽃집 리스트 제공\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 꽃집 사용자 선택, 예약자 연락처, 예약 시간'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "영등포역 근처에서 2025년 6월 6일 금요일 오후 7시 이후에 방문할 수 있는 꽃집 목록입니다. 지정한 시간에 영업 중인\
+      \ 꽃집은 다음과 같습니다:\n\n1. 꽃나라\n   - 거리: 500m\n   - 영업시간: 9:00 - 21:00\n   - 휴무일:\
+      \ 일요일\n\n2. 플라워 가든\n   - 거리: 650m\n   - 영업시간: 10:00 - 20:00\n   - 휴무일: 연중무휴\n\
+      \n3. 블루밍 플라워\n   - 거리: 750m\n   - 영업시간: 9:30 - 22:00\n   - 휴무일: 월요일\n\n예약하실\
+      \ 꽃집과 예약자 연락처, 예약 시간을 알려주시면 예약을 도와드리겠습니다."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 플라워 가든으로 예약할게. 010-1234-5678이고 아마 7시 15분쯤 도착할 거 같은데 그때로 가능한가?
+- workflow_id: null
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 정각 또는 30분 단위 예약만 가능하므로 예약 불가'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 정각 또는 30분 단위 예약만 가능합니다. 원하시는 시간대를 다시 알려주시면 예약을 도와드릴게요.
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: 아 그럼 7시로 예약해줘.
+- workflow_id: null
+  step_id: 11
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"플라워 가든에서 유칼립투스, 수국,\
+      \ 리시안셔스 같은 그린&화이트 조합의 내추럴한 느낌의 꽃다발을 저녁 7시에 픽업 예약\"\n  placeName: \"플라워 가든\"\n\
+      \  placeCategory: \"꽃집\"\n  reservationDate: \"2025-06-06\"\n  reservationTime:\
+      \ \"19:00\"\n  userId: \"U0DK23134\"\n  contactInfo: \"010-1234-5678\"\n  specialRequest:\
+      \ \"유칼립투스, 수국, 리시안셔스 같은 그린&화이트 조합의 내추럴한 느낌으로 부탁드려요.\"\ntool_call_result:\n \
+      \ data:\n    refinedQuery: \"플라워 가든에서 유칼립투스, 수국, 리시안셔스 같은 그린&화이트 조합의 내추럴한 느낌의\
+      \ 꽃다발을 저녁 7시에 픽업 예약\"\n    placeName: \"플라워 가든\"\n    placeCategory: \"꽃집\"\n\
+      \    reservationDate: \"2025-06-06\"\n    reservationTime: \"19:00\"\n    userId:\
+      \ \"U0DK23134\"\n    contactInfo: \"010-1234-5678\"\n    specialRequest: \"\
+      유칼립투스, 수국, 리시안셔스 같은 그린&화이트 조합의 내추럴한 느낌으로 부탁드려요.\"\n    status: \"예약 완료\"\n \
+      \   notes: \"특수 요청 사항에 따라 꽃다발 준비\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '플라워 가든에서의 꽃다발 픽업 예약이 성공적으로 완료되었습니다. 예약 세부 사항은 다음과 같습니다:
+
+
+      - 예약 장소: 플라워 가든 (꽃집)
+
+      - 픽업 날짜: 2025년 6월 6일
+
+      - 픽업 시간: 오후 7시
+
+      - 연락처: 010-1234-5678
+
+
+      특별 요청 사항: 유칼립투스, 수국, 리시안셔스와 같은 그린&화이트 조합의 내추럴한 느낌의 꽃다발을 예쁘게 준비하겠습니다.
+
+
+      예약하신 시간보다 늦어지실 경우 미리 연락 부탁드립니다.'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: '기대된다! 갑자기 리시안셔스 꽃말이 궁금해지네.
+
+      아 그리고 거실에 둘 귀여운 꽃병도 같이 알아보려구. 금액은 최대 5만원으로 생각하고 있어.'
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: place_agent\n      refined_query: \"영등포역\
+      \ 근처에 지금 열려 있는 꽃집\"\n\nworkflow_2:\n  status: completed\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n      name:\
+      \ place_agent\n      refined_query: \"영등포역 근처 지금 열려 있는 꽃집 중 괜찮은 곳에서, 유칼립투스,\
+      \ 수국, 리시안셔스 같은 그린&화이트 조합의 내추럴한 느낌의 꽃다발을 저녁 7시 이후에 픽업 예약\"\n\nworkflow_3:\n \
+      \ status: pending\n  type: independent\n  steps:\n    - status: pending\n  \
+      \    name: search_agent\n      refined_query: \"리시안셔스 꽃말\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: shopping_agent\n      refined_query: \"거실에 두기 좋은 5만 원 이하의 귀여운 꽃병\""
+- workflow_id: workflow_3
+  step_id: 15
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"리시안셔스 꽃말\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"리시안셔스 꽃말\"\n    flowerName: \"리시안셔스\"\n    flowerMeanings:\n\
+      \      - \"매력과 우아함\"\n      - \"감사의 마음\"\n      - \"언제나 한결같은 사랑\"\n    notes:\
+      \ \"리시안셔스는 종종 결혼식이나 감사의 자리에서 많이 사용됩니다.\"\n    status: \"success\""
+- workflow_id: workflow_4
+  step_id: 16
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"거실에 두기 좋은 5만 원 이하의\
+      \ 귀여운 꽃병\"\n  productCategory: \"꽃병\"\n  maxPrice: 50000\n  sortBy: \"latest\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"거실에 두기 좋은 5만 원 이하의 귀여운 꽃병\"\
+      \n    productCategory: \"꽃병\"\n    maxPrice: 50000\n    products:\n      - productName:\
+      \ \"미니멀리스트 도자기 꽃병\"\n        price: 30000\n        description: \"심플한 디자인으로\
+      \ 어느 공간에나 잘 어울립니다.\"\n        link: \"https://example.com/product/vase1\"\n\
+      \      - productName: \"컬러 포인트 유리 꽃병\"\n        price: 45000\n        description:\
+      \ \"다양한 컬러로 공간에 활기를 더합니다.\"\n        link: \"https://example.com/product/vase2\"\
+      \n      - productName: \"빈티지 스타일 세라믹 꽃병\"\n        price: 40000\n        description:\
+      \ \"고풍스러운 느낌으로 클래식한 분위기를 연출합니다.\"\n        link: \"https://example.com/product/vase3\"\
+      \n    status: \"success\""
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "◾리시안셔스의 꽃말 정보\n\n- 꽃 이름: 리시안셔스\n- 꽃말:\n  - 매력과 우아함\n  - 감사의 마음\n  -\
+      \ 언제나 한결같은 사랑\n\n\n◾꽃병 상품 검색 결과\n거실에 두기 좋은 5만 원 이하의 귀여운 꽃병입니다. 아래의 제품들을 고려해\
+      \ 보세요:\n\n1. 미니멀리스트 도자기 꽃병\n   - 가격: 30,000원\n   - 설명: 심플한 디자인으로 어느 공간에나 잘 어울립니다.\n\
+      \   - [제품 보기](https://example.com/product/vase1)\n\n2. 컬러 포인트 유리 꽃병\n   - 가격:\
+      \ 45,000원\n   - 설명: 다양한 컬러로 공간에 활기를 더합니다.\n   - [제품 보기](https://example.com/product/vase2)\n\
+      \n3. 빈티지 스타일 세라믹 꽃병\n   - 가격: 40,000원\n   - 설명: 고풍스러운 느낌으로 클래식한 분위기를 연출합니다.\n\
+      \   - [제품 보기](https://example.com/product/vase3)"

@@ -1,0 +1,304 @@
+metadata:
+  total_steps: 24
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: May 25, 2026
+
+      - userId: U0DK15389'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: My new address is 610 Maple Street, Apt. 1102, Springfield, IL. Can you
+      help me find the ZIP code for my new address? And please remind me next Monday
+      to review my lease agreement and cancel the automatic rent payment I’ve set
+      up.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"Find\
+      \ the ZIP code for 610 Maple Street, Apt 1102, Springfield, IL\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: calendar_agent\n      refined_query: \"Set an important reminder\
+      \ next Monday to review the lease agreement\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"Check registered auto-transfer details\"\n    - status:\
+      \ pending\n      name: personal_banking_agent\n      refined_query: \"Cancel\
+      \ the existing automatic rent payment\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPostalCode\narguments:\n  refinedQuery: \"Find the ZIP code\
+      \ for 610 Maple Street, Apt 1102, Springfield, IL\"\n  addressQuery: \"610 Maple\
+      \ Street, Apt 1102, Springfield, IL\"\ntool_call_result:\n  data:\n    addressQuery:\
+      \ \"610 Maple Street, Apt 1102, Springfield, IL\"\n    postalCode: \"62704\"\
+      \n    city: \"Springfield\"\n    state: \"IL\"\n    country: \"USA\"\n    status:\
+      \ \"Success\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reminder time'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Withdrawal account holder name and account number'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: Please let me know the time you would like to receive reminder notifications.
+      Also, to check your automatic payment registration details, I will need the
+      account holder’s name and the account number for the withdrawal account.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: Please do it at 10 AM. The account holder’s name is Olivia Brown, and
+      the account number is 110987123456
+- workflow_id: workflow_2
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"Remind me on Monday,\
+      \ June 1st, 2026 at 10:00 AM with an important alert to review the lease agreement\"\
+      \n  reminderContent: \"Review the lease agreement\"\n  reminderTime: \"2026-06-01T10:00\"\
+      \n  repeatRule: \"none\"\n  priority: \"high\"\n  deliveryMethod: \"chat\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"Remind me on Monday, June 1st,\
+      \ 2026 at 10:00 AM with an important alert to review the lease agreement\"\n\
+      \    reminderContent: \"Review the lease agreement\"\n    reminderTime: \"2026-06-01T10:00\"\
+      \n    repeatRule: \"none\"\n    priority: \"high\"\n    deliveryMethod: \"chat\"\
+      \n    status: \"scheduled\"\n    confirmationMessage: \"I’ll send you a chat\
+      \ reminder on Monday, June 1st, 2026 at 10:00 AM to 'Review the lease agreement'.\
+      \ It has been marked as an important alert.\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"Check registered\
+      \ auto-transfer details\"\n  accountHolderName: \"Olivia Brown\"\n  fromAccountNumber:\
+      \ \"110987123456\"\ntool_call_result:\n  data:\n    refinedQuery: \"Check registered\
+      \ auto-transfer details\"\n    accountHolderName: \"Olivia Brown\"\n    fromAccountNumber:\
+      \ \"110987123456\"\n    autoTransfers:\n      - payeeName: \"AT&T\"\n      \
+      \  payeeAccount: \"100222333444\"\n        transferAmount: 35\n        transferDate:\
+      \ \"Every 25th of the month\"\n        memo: \"Cell phone bill\"\n        autoTransferId:\
+      \ \"AT1001\"\n      - payeeName: \"Electric Power Company\"\n        payeeAccount:\
+      \ \"200123456789\"\n        transferAmount: 62\n        transferDate: \"Every\
+      \ 21st of the month\"\n        memo: \"Electric bill\"\n        autoTransferId:\
+      \ \"AT1002\"\n      - payeeName: \"Chase Credit Card\"\n        payeeAccount:\
+      \ \"300555666777\"\n        transferAmount: 150\n        transferDate: \"Every\
+      \ 5th of the month\"\n        memo: \"Credit card payment\"\n        autoTransferId:\
+      \ \"AT1003\"\n      - payeeName: \"John Smith\"\n        payeeAccount: \"055333444555\"\
+      \n        transferAmount: 800\n        transferDate: \"Every 1st of the month\"\
+      \n        memo: \"Apartment rent\"\n        autoTransferId: \"AT1004\"\n   \
+      \ status: \"success\"\n    notes: \"A total of 4 auto-transfers are registered.\""
+- workflow_id: null
+  step_id: 11
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelAutoTransfer\narguments:\n  refinedQuery: \"Cancel rent\
+      \ auto-transfer\"\n  autoTransferId: \"AT1004\"\n  recipientName: \"John Smith\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Cancel rent auto-transfer\"\
+      \n    autoTransferId: \"AT1004\"\n    recipientName: \"John Smith\"\n    status:\
+      \ \"cancellation successful\"\n    message: \"The rent auto-transfer set up\
+      \ for John Smith has been successfully canceled.\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ ZIP Code Lookup
+
+      The ZIP code for your new address has been found.
+
+      Full Address: 610 Maple Street, Apt. 1102, Springfield, IL 62704
+
+      ZIP Code: 62704
+
+
+      ◾ Lease Agreement Review Reminder
+
+      A reminder has been set for "Review the lease agreement" on Monday, June 1,
+      2026 at 10:00 AM. The reminder will be delivered via chat and has been marked
+      as important. You can modify or check it later if needed.
+
+
+      ◾ Auto-Payment Inquiry and Rent Auto-Payment Cancellation
+
+      The auto-payments registered under Olivia Brown’s account (110987123456) are
+      as follows:
+
+
+      1. Every 25th, \$35 – AT\&T (cell phone bill)
+
+      2. Every 21st, \$62 – Electric Power Company (electric bill)
+
+      3. Every 5th, \$150 – Chase Credit Card (credit card payment)
+
+      4. Every 1st, \$800 – John Smith (apartment rent)
+
+
+      A total of 4 auto-payments are registered.
+
+
+      Following review of the auto-payment records, your requested cancellation has
+      been completed:
+
+      * The rent auto-payment set up for John Smith has been successfully canceled.
+      Going forward, rent will no longer be deducted automatically.'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: Oh, I should also cancel the automatic payment for my electricity bill.
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      Find the ZIP code for 610 Maple Street, Apt 1102, Springfield, IL\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: calendar_agent\n      refined_query: \"Set an important reminder\
+      \ next Monday to review the lease agreement\"\n\nworkflow_3:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: personal_banking_agent\n\
+      \      refined_query: \"Check registered auto-transfer details\"\n    - status:\
+      \ completed\n      name: personal_banking_agent\n      refined_query: \"Cancel\
+      \ the existing automatic rent payment\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"Cancel electricity bill auto-transfer\""
+- workflow_id: workflow_4
+  step_id: 15
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelAutoTransfer\narguments:\n  refinedQuery: \"Cancel automatic\
+      \ payment for electricity bill\"\n  autoTransferId: \"AT1002\"\n  recipientName:\
+      \ \"Electric Power Company\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Cancel automatic payment for electricity bill\"\n    autoTransferId: \"\
+      AT1002\"\n    recipientName: \"Electric Power Company\"\n    status: \"cancellation\
+      \ successful\"\n    message: \"The automatic payment for your electricity bill\
+      \ with the Electric Power Company has been successfully canceled.\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: The automatic payment for your electricity bill with the Electric Power
+      Company has been successfully canceled.
+- workflow_id: null
+  step_id: 17
+  agent: user
+  agent_type: user
+  data:
+    content: Come to think of it, I also need to update the shipping address for my
+      Amazon order to reflect my new ZIP code. Can you update it using the ZIP code
+      you found earlier?
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      Find the ZIP code for 610 Maple Street, Apt 1102, Springfield, IL\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: calendar_agent\n      refined_query: \"Set an important reminder\
+      \ next Monday to review the lease agreement\"\n\nworkflow_3:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: personal_banking_agent\n\
+      \      refined_query: \"Check registered auto-transfer details\"\n    - status:\
+      \ completed\n      name: personal_banking_agent\n      refined_query: \"Cancel\
+      \ the existing automatic rent payment\"\n\nworkflow_4:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: personal_banking_agent\n\
+      \      refined_query: \"Cancel electricity bill auto-transfer\"\n\nworkflow_5:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: shopping_agent\n      refined_query: \"Check order history from\
+      \ Amazon\"\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"Update shipping address for Amazon orders to reflect the new ZIP code\""
+- workflow_id: workflow_5
+  step_id: 19
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check Amazon order\
+      \ history\"\n  userId: \"U0DK15389\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Check Amazon order history\"\n    userId: \"U0DK15389\"\n    orderStatus:\
+      \ \"Not yet shipped\"\n    orderId: \"AMZ12345678\"\n    notes: \"The item you\
+      \ ordered from Amazon has not been shipped yet.\""
+- workflow_id: null
+  step_id: 20
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient contact number'
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: Please provide the contact information of the person who will be receiving
+      the order.
+- workflow_id: null
+  step_id: 22
+  agent: user
+  agent_type: user
+  data:
+    content: (202) 555-0173
+- workflow_id: null
+  step_id: 23
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyOrder\narguments:\n  refinedQuery: \"Change Amazon order\
+      \ shipping address\"\n  orderId: \"AMZ12345678\"\n  newShippingAddress:\n  \
+      \  recipient: \"Olivia Brown\"\n    address: \"610 Maple Street, Apt. 1102,\
+      \ Springfield, IL 62704\"\n    phone: \"(202) 555-0173\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Change Amazon order shipping address\"\n    orderId:\
+      \ \"AMZ12345678\"\n    newShippingAddress:\n      recipient: \"Olivia Brown\"\
+      \n      address: \"610 Maple Street, Apt. 1102, Springfield, IL 62704\"\n  \
+      \    phone: \"(202) 555-0173\"\n    status: \"success\"\n    message: \"The\
+      \ shipping address has been successfully updated.\""
+- workflow_id: null
+  step_id: 24
+  agent: main
+  agent_type: main
+  data:
+    content: 'The shipping address for your Amazon order (Order ID: AMZ12345678) has
+      been successfully updated. The new address details are as follows:
+
+
+      Recipient: Olivia Brown
+
+      Address: 610 Maple Street, Apt. 1102, Springfield, IL 62704
+
+      Contact: (202) 555-0173
+
+
+      You can continue to track the progress of your order at any time.'

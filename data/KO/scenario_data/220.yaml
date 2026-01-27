@@ -1,0 +1,132 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- location: "강남역 교보타워"
+
+      - datetime: "2025-09-17 12:34"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 장애대응 일정으로 심야 근무 예정이야. 근처에서 빠르게 저녁 포장해줄 수 있는 식당 알려주고, 끝나는 일정에 맞춰 탈
+      심야 택시도 좀 예약해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"근처에서 빠르게\
+      \ 저녁 포장해줄 수 있는 식당\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"오늘 장애 대응 심야 근무 일정 확인\"\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"근무 끝나는 시간에 맞춰 탈 심야 택시 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "- tool: recommendRestaurants\n  arguments:\n    refinedQuery: \"강남역\
+      \ 교보타워 근처에서 빠르게 저녁 포장해줄 수 있는 식당\"\n    location: \"강남역 교보타워\"\n    sortBy: \"\
+      highest_rated\"\n    reservationTime: \"오늘 저녁\"\n    tag: \"빠른 포장 가능\"\n  tool_call_result:\n\
+      \    restaurants:\n      - name: \"서브웨이\"\n        rating: 4.5\n        address:\
+      \ \"강남구 테헤란로 123-2\"\n        contact: \"02-1234-5678\"\n        availableSeats:\
+      \ 10\n        distance: \"100m\"\n        takeoutAvailable: true\n      - name:\
+      \ \"비비큐\"\n        rating: 4.0\n        address: \"강남구 테헤란로 123-3\"\n      \
+      \  contact: \"02-1234-5679\"\n        availableSeats: 5\n        distance: \"\
+      250m\"\n        takeoutAvailable: true\n      - name: \"비비큐\"\n        rating:\
+      \ 4.0\n        address: \"강남구 테헤란로 134\"\n        contact: \"02-1234-5679\"\n\
+      \        availableSeats: 5\n        distance: \"500m\"\n        takeoutAvailable:\
+      \ true"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "- tool: getSchedule\n  arguments:\n    refinedQuery: \"오늘 장애 대응 심야 근무\
+      \ 일정 확인\"\n    startDate: \"2025-09-17\"\n    endDate: \"2025-09-17\"\n    keyword:\
+      \ \"장애 대응 심야 근무\"\n  tool_call_result:\n    schedule:\n      title: \"장애대응 근무\"\
+      \n      location: \"서초대로77길 58 트라이랜드빌딩\"\n      date: \"2025-09-17\"\n     \
+      \ endtime: \"23:00\""
+- workflow_id: null
+  step_id: 6
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 도착지, 예약자 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 택시 예약을 위해 도착지와 예약자 연락처를 함께 말씀해 주세요.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 집으로 갈거야. 수원시 영통구 행복로 123. 전화번호는 010-9876-5432야.
+- workflow_id: null
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "- tool: callTaxi\n  arguments:\n    refinedQuery: \"강남역 교보타워에서 밤 11시\
+      \ 수원시 영통구 행복로 123까지 가는 택시 예약\"\n    pickupLocation: \"강남역 교보타워\"\n    dropoffLocation:\
+      \ \"수원시 영통구 행복로 123\"\n    pickupTime: \"2025-09-17T23:00\"\n    passengerCount:\
+      \ 1\n    reservation: true\n    taxiType: \"general\"\n    contactInfo: \"010-9876-5432\"\
+      \n  tool_call_result:\n    status: \"success\"\n    taxiInfo:\n      taxiNumber:\
+      \ \"1234\"\n      driverName: \"오양택\"\n      driverPhone: \"010-1234-5678\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '오늘 심야 근무에 맞춰 준비해드렸어요!
+
+
+
+
+      저녁 포장 가능한 식당 (근처)
+
+      - 서브웨이 (★ 4.5) — 강남구 테헤란로 123-2, 100m
+
+      - 비비큐 (★ 4.0) — 강남구 테헤란로 123-3, 250m
+
+      - 비비큐 — 강남구 테헤란로 134, 500m
+
+      모두 빠른 포장 가능하고, 평점도 높아요!
+
+      -------------
+
+
+      근무 일정 확인
+
+      - 일정: 장애대응 근무
+
+      - 장소: 서초대로77길 58 트라이랜드빌딩
+
+      - 종료 시간: 23:00
+
+      -------------
+
+
+      심야 택시 예약 완료
+
+      - 픽업: 23:00, 강남역 교보타워
+
+      - 도착지: 수원시 영통구 행복로 123
+
+      - 차량번호: 1234, 기사님: 오양택 (010-1234-5678)
+
+
+      편안한 퇴근 되시고, 야근도 무사히 마치시길 바랍니다! 😊'

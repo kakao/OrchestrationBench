@@ -1,0 +1,126 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Lately, I've been really into Dua Lipa's music and listening to it a
+      lot. Has she appeared on any variety or talk shows? Also, could you share the
+      link to her Levitating music video?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Recommend talk shows featuring Dua Lipa\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"Link to Dua Lipa's 'Levitating' music video\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"Recommend talk\
+      \ shows featuring Dua Lipa\"\n  genre: \"Talk Show\"\ntool_call_result:\n  tvPrograms:\n\
+      \    - title: \"The Tonight Show Starring Jimmy Fallon\"\n      broadcaster:\
+      \ \"NBC\"\n      genre: \"Talk Show\"\n      airDate: \"2023-05-16\"\n     \
+      \ description: \"Dua Lipa appeared as a guest, performing her latest single\
+      \ and joining Jimmy Fallon for a fun interview and a comedy skit.\"\n      link:\
+      \ \"https://www.nbc.com/the-tonight-show\"\n\n    - title: \"The Graham Norton\
+      \ Show\"\n      broadcaster: \"BBC One\"\n      genre: \"Talk Show\"\n     \
+      \ airDate: \"2022-10-08\"\n      description: \"Dua Lipa featured alongside\
+      \ other celebrity guests, chatting about her music career and sharing lighthearted\
+      \ moments.\"\n      link: \"https://www.bbc.co.uk/programmes/thegrahamnortonshow\"\
+      \n\n    - title: \"The Late Late Show with James Corden\"\n      broadcaster:\
+      \ \"CBS\"\n      genre: \"Talk Show\"\n      airDate: \"2023-03-01\"\n     \
+      \ description: \"Dua Lipa joined James Corden for a lively interview and participated\
+      \ in a musical comedy segment.\"\n      link: \"https://www.cbs.com/shows/late-late-show/\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"Dua Lipa 'Levitating'\
+      \ official music video link\"\ntool_call_result:\n  videos:\n    - title: \"\
+      Dua Lipa - 'Levitating' Official Music Video\"\n      uploadDate: \"2020-10-01\"\
+      \n      views: \"800M\"\n      link: \"https://www.youtube.com/watch?v=TUVcZfQe-Kw\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Appearances by Dua Lipa on Talk Shows\n\n1. The Tonight Show Starring\
+      \ Jimmy Fallon  \n   * Channel: NBC  \n   * Notable Appearance: Performed her\
+      \ hit songs and joined in fun interview segments.  \n   * Link: [Watch on NBC](https://www.nbc.com/the-tonight-show)\n\
+      \n2. The Graham Norton Show  \n   * Channel: BBC One  \n   * Notable Appearance:\
+      \ Featured alongside other celebrity guests, chatting about her music career\
+      \ and sharing lighthearted moments.  \n   * Link: [Watch on BBC](https://www.bbc.co.uk/programmes/thegrahamnortonshow)\n\
+      \n3. The Late Late Show with James Corden  \n   * Channel: CBS  \n   * Notable\
+      \ Appearance: Joined James Corden for a lively interview and participated in\
+      \ a musical comedy segment.  \n   * Link: [Watch on CBS](https://www.cbs.com/shows/late-late-show/)\n\
+      \n▶ Watch Dua Lipa's 'Levitating' Music Video  \n[https://www.youtube.com/watch?v=TUVcZfQe-Kw](https://www.youtube.com/watch?v=TUVcZfQe-Kw)"
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: Who is rapper DaBaby who was featured in Dua Lipa's song 'Levitating'?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Recommend talk shows featuring Dua Lipa\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: entertainment_agent\n\
+      \      refined_query: \"Link to Dua Lipa's 'Levitating' music video\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: person_agent\n      refined_query: \"Information about rapper DaBaby,\
+      \ who was featured in Dua Lipa's 'Levitating'\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"Information about rapper\
+      \ DaBaby, who was featured in Dua Lipa's 'Levitating'\"\n  personName: \"DaBaby\"\
+      \n  roleType: \"Rapper\"\ntool_call_result:\n  person:\n    name: \"Jonathan\
+      \ Lyndale Kirk\"\n    stageName: \"DaBaby\"\n    birthDate: \"1991-12-22\"\n\
+      \    nationality: \"American\"\n    profession: [\"Rapper\", \"Songwriter\"\
+      ]\n    debutYear: 2014\n    notableWorks:\n      - \"Suge\"\n      - \"Bop\"\
+      \n      - \"Rockstar (feat. Roddy Ricch)\"\n    recentActivity: \"Featured in\
+      \ Dua Lipa's 'Levitating' (2020)\"\n    agency: \"Interscope Records\"\n   \
+      \ officialLinks:\n      - name: \"Official Website\"\n        url: \"https://www.officialdababy.com\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ About the Featured Artist: DaBaby
+
+
+      Name: Jonathan Lyndale Kirk
+
+      Stage Name: DaBaby
+
+      Birth Date: December 22, 1991
+
+      Nationality: American
+
+      Profession: Rapper, Songwriter
+
+      Debut Year: 2014
+
+      Notable Works: Suge, Bop, Rockstar (feat. Roddy Ricch)
+
+      Recent Activity: Featured in Dua Lipa’s "Levitating" (2020)
+
+      Agency: Interscope Records
+
+      Official Website: [officialdababy.com](https://www.officialdababy.com)'

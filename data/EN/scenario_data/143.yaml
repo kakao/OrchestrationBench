@@ -1,0 +1,233 @@
+metadata:
+  total_steps: 15
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: June 1, 2024'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: BLACKPINK is finally making a full-group comeback! Show me the teaser
+      video for it. Also, check the New York concert schedule and book me a ticket.
+      Before the show, find a good nearby spot to eat. Since I’ll be going alone,
+      I’d prefer a Korean restaurant that’s comfortable for solo dining.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      BLACKPINK teaser video for comeback\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"BLACKPINK New York concert schedule\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Book tickets for BLACKPINK’s New York concert\"\n\nworkflow_4:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"Find good Korean\
+      \ restaurants near the BLACKPINK concert venue in New York that are comfortable\
+      \ for solo dining before the show\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"BLACKPINK teaser video\
+      \ for comeback\"\ntool_call_result:\n  data:\n    refinedQuery: \"BLACKPINK\
+      \ teaser video for comeback\"\n    videos:\n      - videoTitle: \"BLACKPINK\
+      \ NEW ERA: 'Break Down' Comeback Teaser\"\n        videoUrl: \"https://www.example.com/video1\"\
+      \n        uploadDate: \"2024-05-25\"\n        description: \"This is the teaser\
+      \ video for BLACKPINK’s new song 'Break Down.' Get a sneak peek before the official\
+      \ release!\"\n    status: \"success\"\n    notes: \"1 BLACKPINK teaser video\
+      \ for comeback was found.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"BLACKPINK New\
+      \ York concert schedule\"\n  genre: \"Concert\"\n  artistName: \"BLACKPINK\"\
+      \n  location: \"New York\"\n  sortBy: \"soonest\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"BLACKPINK New York concert schedule\"\n    genre: \"Concert\"\
+      \n    artistName: \"BLACKPINK\"\n    location: \"New York\"\n    sortBy: \"\
+      soonest\"\n    performances:\n      - performanceTitle: \"BORN PINK: BLACKPINK\
+      \ World Tour New York Concert\"\n        venueName: \"Madison Square Garden\"\
+      \n        showDate: \"2024-06-15\"\n        showTime: \"7:00 PM\"\n      - performanceTitle:\
+      \ \"BORN PINK Encore: BLACKPINK New York Concert\"\n        venueName: \"Barclays\
+      \ Center\"\n        showDate: \"2024-07-05\"\n        showTime: \"6:00 PM\"\n\
+      \    status: \"success\"\n    notes: \"A total of 2 BLACKPINK New York concert\
+      \ schedule entries were found.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Concert name, reservation holder’s name, number of tickets, attendee
+      information, phone number, and preferred seating category'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ BLACKPINK Comeback Teaser Video\n\n- Title: BLACKPINK NEW ERA: \"\
+      Break Down\" Comeback Teaser  \n- Video Link: [Click here to watch](https://www.example.com/video1)\
+      \  \n- Upload Date: May 25, 2024  \n- Description: This is the teaser video\
+      \ for BLACKPINK’s upcoming new single \"Break Down.\"\n\nGet a sneak peek of\
+      \ BLACKPINK’s new era with the teaser for the group's soon-to-be-released track\
+      \ \"Break Down\"!\n\n\n◾ BLACKPINK New York Concert Schedule  \nHere’s the information\
+      \ for BLACKPINK’s New York concerts:\n\n1. BORN PINK: BLACKPINK World Tour New\
+      \ York Concert  \n   - Venue: Madison Square Garden, New York  \n   - Date:\
+      \ June 15, 2024  \n   - Time: 7:00 PM\n\n2. BORN PINK Encore: BLACKPINK New\
+      \ York Concert  \n   - Venue: Barclays Center, New York  \n   - Date: July 5,\
+      \ 2024  \n   - Time: 6:00 PM\n\nThere are a total of 2 New York concert dates\
+      \ available. Please let me know for which concert you’d like to book tickets.\n\
+      \nTo reserve tickets, please provide:  \n- Booking name  \n- Number of attendees\
+      \  \n- Attendee type (adult, child, senior, disabled)  \n- Phone number  \n\
+      - Preferred seating category"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: Hey, but is Jisoo really doing okay health-wise? Did you see the recent
+      article?
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"BLACKPINK teaser video for comeback\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: entertainment_agent\n\
+      \      refined_query: \"BLACKPINK New York concert schedule\"\n\nworkflow_3:\n\
+      \  status: paused\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: paused\n      name: entertainment_agent\n      refined_query:\
+      \ \"Book tickets for BLACKPINK’s New York concert\"\n\ninterrupted_workflow_3-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: person_agent\n      refined_query: \"Recent health-related news\
+      \ about BLACKPINK’s Jisoo\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Find good Korean restaurants near the BLACKPINK concert\
+      \ venue in New York that are comfortable for solo dining before the show\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"Recent health-related\
+      \ news about BLACKPINK’s Jisoo\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Recent health-related news about BLACKPINK’s Jisoo\"\n    articles:\n  \
+      \    - title: \"BLACKPINK’s Jisoo shares recent health update\"\n        url:\
+      \ \"https://www.example.com/article1\"\n        publishDate: \"2024-05-30\"\n\
+      \        summary: \"BLACKPINK member Jisoo recently paused her activities due\
+      \ to health issues, but is currently recovering and preparing to return to her\
+      \ fans soon. Her agency stated that her condition is steadily improving and\
+      \ asked fans not to worry.\"\n    status: \"success\"\n    notes: \"1 article\
+      \ found for 'Recent health-related news about BLACKPINK’s Jisoo'.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 'A recent health-related article about BLACKPINK’s Jisoo has been viewed.
+
+
+      - Title: BLACKPINK’s Jisoo shares recent health update
+
+      - Link: [Read Article](https://www.example.com/article1)
+
+      - Published: May 30, 2024
+
+      - Summary: Jisoo, a member of BLACKPINK, temporarily paused her activities due
+      to health issues but is now recovering and preparing to return to her fans soon.
+      Her agency stated that her condition is steadily improving and asked fans not
+      to worry.
+
+
+      If you’d like to book tickets, please let me know the title of the concert you’re
+      interested in, and I’ll assist you with the reservation.
+
+      To proceed with ticket booking, please provide the reservation name, number
+      of attendees, ticket type (adult, child, senior, disabled), phone number, and
+      preferred seating category.'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: I’d like to book a ticket for the encore concert. The reservation name
+      is Rose Lee. One adult ticket, and I don’t have a seating preference. My phone
+      number is (202) 555-1234.
+- workflow_id: workflow_3
+  step_id: 13
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookPerformance\narguments:\n  refinedQuery: \"'BORN PINK Encore:\
+      \ BLACKPINK New York Concert' ticket booking\"\n  performanceTitle: \"BORN PINK\
+      \ Encore: BLACKPINK New York Concert\"\n  venueName: \"Barclays Center, New\
+      \ York\"\n  showDate: \"2024-07-05\"\n  showTime: \"18:00\"\n  audienceCount:\
+      \ 1\n  audienceTypes: \n    - \"adult\"\n  seatGrade: \"VIP\"\n  userInfo:\n\
+      \    name: \"Rose Lee\"\n    contactNumber: \"(202) 555-1234\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"'BORN PINK Encore: BLACKPINK New York Concert'\
+      \ ticket booking\"\n    performanceTitle: \"BORN PINK Encore: BLACKPINK New\
+      \ York Concert\"\n    venueName: \"Barclays Center, New York\"\n    venueAddress:\
+      \ \"620 Atlantic Ave, Brooklyn, NY 11217\"\n    showDate: \"2024-07-05\"\n \
+      \   showTime: \"18:00\"\n    audienceCount: 1\n    audienceType: \n      - \"\
+      adult\"\n    seatGrade: \"VIP\"\n    userInfo:\n      name: \"Rose Lee\"\n \
+      \     contactNumber: \"(202) 555-1234\"\n    bookingStatus: \"success\"\n  \
+      \  ticketId: \"BLKPNK-NY-20240705-001\"\n    notes: \"Your booking for the BLACKPINK\
+      \ Encore New York Concert has been successfully completed. Please save your\
+      \ ticket information.\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"A good Korean\
+      \ restaurant near Barclays Center in Brooklyn, New York where I can eat alone\
+      \ before the 'BORN PINK Encore: BLACKPINK New York Concert'\"\n  location: \"\
+      Brooklyn, New York\"\n  cuisineType: \"Korean\"\n  sortBy: \"highest_rated\"\
+      \n  ambience: \"Good for Solo Dining\"\n  partySize: \"1 person\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"A good Korean restaurant near Barclays Center\
+      \ in Brooklyn, New York where I can eat alone before the 'BORN PINK Encore:\
+      \ BLACKPINK New York Concert'\"\n    location: \"Brooklyn, New York\"\n    cuisineType:\
+      \ \"Korean\"\n    sortBy: \"highest_rated\"\n    ambience: \"Good for Solo Dining\"\
+      \n    partySize: \"1 person\"\n    restaurants:\n      - name: \"Seoul Kitchen\"\
+      \n        address: \"582 Atlantic Ave, Brooklyn, NY 11217\"\n        rating:\
+      \ 4.7\n        description: \"A Korean restaurant known for bibimbap and stews,\
+      \ with a cozy atmosphere that's ideal for solo dining.\"\n      - name: \"Korean\
+      \ Express BBQ\"\n        address: \"25 Lafayette Ave, Brooklyn, NY 11217\"\n\
+      \        rating: 4.5\n        description: \"Offers a variety of Korean BBQ\
+      \ and traditional dishes, with counter seating available for solo diners.\"\n\
+      \    status: \"success\"\n    notes: \"A total of 2 Korean restaurants near\
+      \ Barclays Center suitable for solo dining were recommended.\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "◾BLACKPINK Concert Ticket Confirmation\n\nYour reservation for \"BORN\
+      \ PINK Encore: BLACKPINK New York Concert\" has been successfully completed!\
+      \ Be sure to save your ticket information.\n\n- Date: July 5, 2024\n- Time:\
+      \ 6:00 PM\n- Venue: Barclays Center, New York\n- Seat Class: VIP\n- Ticket ID:\
+      \ BLKPNK-NY-20240705-001\n\n\n◾Recommended Korean Restaurants Near Barclays\
+      \ Center for Solo Dining\n\n1. Seoul Kitchen\n   - Address: 582 Atlantic Ave,\
+      \ Brooklyn, NY 11217\n   - Rating: 4.7\n   - Description: A Korean restaurant\
+      \ known for bibimbap and stews, with a cozy atmosphere that's ideal for solo\
+      \ dining.\n\n2. Korean Express BBQ\n   - Address: 25 Lafayette Ave, Brooklyn,\
+      \ NY 11217\n   - Rating: 4.5\n   - Description: Offers a variety of Korean BBQ\
+      \ and traditional dishes, with counter seating available for solo diners.\n\n\
+      These two spots are great places to grab a meal before heading to the \"BORN\
+      \ PINK Encore: BLACKPINK New York Concert.\" Enjoy your food and have a fantastic\
+      \ time at the show!"

@@ -1,0 +1,163 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2024-12-08
+
+      Time: 7:11 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I'm traveling to Sydney on December 14. Please plan an itinerary considering
+      the weather. It's a 7-day, 6-night trip. I'll be arriving early in the morning
+      on the first day, and on the last day I need to check out early and head to
+      the airport.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"Sydney\
+      \ 7-day weather forecast starting December 14\"\n    - status: pending\n   \
+      \   name: travel_agent\n      refined_query: \"7-day Sydney travel itinerary\
+      \ tailored to the weather. Arrive early morning on the first day, depart for\
+      \ the airport after an early check-out on the last day\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getGlobalWeather\narguments:\n  refinedQuery: \"Show me the weather\
+      \ in Sydney from December 14 to 20, 2024\"\n  location: \"Sydney\"\n  date:\
+      \ \"2024-12-14-2024-12-20\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    - date: \"2024-12-14\"\n      condition: \"Sunny\"\n      high: 78.8\n\
+      \      low: 62.6\n\n    - date: \"2024-12-15\"\n      condition: \"Partly Cloudy\"\
+      \n      high: 77.0\n      low: 60.8\n\n    - date: \"2024-12-16\"\n      condition:\
+      \ \"Showers\"\n      high: 71.6\n      low: 59.0\n\n    - date: \"2024-12-17\"\
+      \n      condition: \"Rain\"\n      high: 69.8\n      low: 57.2\n\n    - date:\
+      \ \"2024-12-18\"\n      condition: \"Clear\"\n      high: 75.2\n      low: 59.0\n\
+      \n    - date: \"2024-12-19\"\n      condition: \"Sunny\"\n      high: 80.6\n\
+      \      low: 64.4\n\n    - date: \"2024-12-20\"\n      condition: \"Sunny\"\n\
+      \      high: 82.4\n      low: 66.2\n  source: \"Global Weather API\""
+- workflow_id: null
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"6-night, 7-day Sydney\
+      \ itinerary from December 14 to 20, adjusted for the weather. Arrive early morning\
+      \ in Sydney on the first day, depart for the airport after early check-out on\
+      \ the last day.\"\n  destination: \"Sydney\"\n  duration: \"6 nights, 7 days\"\
+      \n  startDate: \"2024-12-14\"\n  endDate: \"2024-12-20\"\ntool_call_result:\n\
+      \  status: success\n  itinerary:\n    - day: 1\n      date: \"2024-12-14\"\n\
+      \      activities:\n        - \"Morning: Arrive at Sydney International Airport,\
+      \ transfer to hotel, drop off luggage\"\n        - \"Late morning to afternoon:\
+      \ Walk around Circular Quay, Sydney Opera House, and Harbour Bridge\"\n    \
+      \    - \"Evening: Dinner and night views in The Rocks district\"\n\n    - day:\
+      \ 2\n      date: \"2024-12-15\"\n      activities:\n        - \"Morning: Visit\
+      \ Bondi Beach\"\n        - \"Afternoon: Bondi to Coogee Coastal Walk\"\n   \
+      \     - \"Evening: Seafood dinner near Coogee Beach\"\n\n    - day: 3\n    \
+      \  date: \"2024-12-16\"\n      activities:\n        - \"Rain expected: Visit\
+      \ Sydney Museum, Australian Museum, and Museum of Contemporary Art\"\n     \
+      \   - \"Afternoon: Shopping at Queen Victoria Building and Westfield Mall\"\n\
+      \        - \"Evening: Relaxing dinner at a restaurant near the hotel\"\n\n \
+      \   - day: 4\n      date: \"2024-12-17\"\n      activities:\n        - \"Chance\
+      \ of rain: Sydney Aquarium, Madame Tussauds, and WILD LIFE Sydney Zoo (Darling\
+      \ Harbour)\"\n        - \"Afternoon: Sydney Tower Eye observation deck\"\n \
+      \       - \"Evening: Dinner at a waterfront restaurant in Darling Harbour\"\n\
+      \n    - day: 5\n      date: \"2024-12-18\"\n      activities:\n        - \"\
+      Clear skies all day: Blue Mountains day tour (Three Sisters, cable car, Echo\
+      \ Point)\"\n        - \"Evening: Return to Sydney city and rest\"\n\n    - day:\
+      \ 6\n      date: \"2024-12-19\"\n      activities:\n        - \"Morning: Stroll\
+      \ through Hyde Park, visit St. Mary’s Cathedral\"\n        - \"Afternoon: Souvenir\
+      \ shopping in Chinatown and Paddy’s Market\"\n        - \"Evening: Fine dining\
+      \ reservation to celebrate the last night in Sydney\"\n\n    - day: 7\n    \
+      \  date: \"2024-12-20\"\n      activities:\n        - \"Morning: Check out of\
+      \ hotel and transfer to airport\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s your 7-day, 6-night Sydney itinerary starting December 14, 2024,
+      planned around the forecast. You arrive early in the morning on Day 1, and you
+      will check out early on the last day to head to the airport.
+
+
+      Weather Summary (Dec 14–20):
+
+      - Sunny: 12/14, 12/19, 12/20
+
+      - Partly Cloudy: 12/15
+
+      - Showers/Rain: 12/16–12/17
+
+      - Clear: 12/18
+
+
+      Day 1 (Sat, 12/14)
+
+      - Morning: Arrive at Sydney International Airport, transfer to your hotel, and
+      drop off luggage.
+
+      - Afternoon: Explore Circular Quay, Sydney Opera House, and Harbour Bridge.
+
+      - Evening: Dinner and night views in The Rocks.
+
+
+      Day 2 (Sun, 12/15)
+
+      - Morning: Bondi Beach.
+
+      - Afternoon: Bondi to Coogee Coastal Walk.
+
+      - Evening: Seafood dinner near Coogee.
+
+
+      Day 3 (Mon, 12/16) — Showers expected
+
+      - Morning: Sydney Museum and Australian Museum.
+
+      - Afternoon: Museum of Contemporary Art; shopping at Queen Victoria Building/Westfield
+      if time allows.
+
+      - Evening: Relaxing dinner near the hotel.
+
+
+      Day 4 (Tue, 12/17) — Rain expected
+
+      - Morning: SEA LIFE Sydney Aquarium, Madame Tussauds, and WILD LIFE Sydney Zoo
+      (Darling Harbour).
+
+      - Afternoon: Sydney Tower Eye observation deck.
+
+      - Evening: Waterfront dinner at Darling Harbour.
+
+
+      Day 5 (Wed, 12/18) — Clear
+
+      - Full day: Blue Mountains day tour (Three Sisters, Echo Point, Scenic rides).
+
+      - Evening: Return to Sydney and rest.
+
+
+      Day 6 (Thu, 12/19) — Sunny
+
+      - Morning: Hyde Park and St. Mary’s Cathedral.
+
+      - Afternoon: Chinatown and Paddy’s Market for souvenirs.
+
+      - Evening: Special farewell dinner.
+
+
+      Day 7 (Fri, 12/20) — Sunny
+
+      - Morning: Early check-out and transfer to the airport.'

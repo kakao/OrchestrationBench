@@ -1,0 +1,185 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- current time: 2026-07-14T10:14
+
+      - user id: pkq822213'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Where’s the phone I bought online last week?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Check\
+      \ the phone I purchased online last week\"\n    - status: pending\n      name:\
+      \ delivery_agent\n      refined_query: \"Track the delivery using the phone\
+      \ I purchased online last week\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check cell phone\
+      \ purchase history from July 6 to July 12, 2026\"\n  userId: \"pkq822213\"\n\
+      tool_call_result:\n  status: success\n  data:\n    orderId: 2026071079936841\n\
+      \    productItems:\n      - productId: 8150780252\n        name: \"BlackBerry\
+      \ Phone BlackBerry Q10 Black 16G - Affordable Student Phone, Backup Device\"\
+      \n        color: \"Black\"\n        quantity: 1\n        price: 82\n    shippingAddress:\n\
+      \      recipient: \"Ethan Parker\"\n      address: \"22 Happy Place, Apt 502,\
+      \ Building 313, Springfield, IL\"\n      phone: \"(310) 347-9999\"\n    deliveryInfo:\n\
+      \      trackingNumber: \"1Z999AA10123456784\"\n      carrier: \"UPS\""
+- workflow_id: null
+  step_id: 5
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"Track cell phone\
+      \ delivery\"\n  trackingNumber: \"1Z999AA10123456784\"\n  carrier: \"UPS\"\n\
+      tool_call_result:\n  status: \"success\"\n  data:\n    senderName: \"Amazon\
+      \ Warehouse (Dallas, TX)\"\n    receiverName: \"Ethan Parker (Springfield, IL)\"\
+      \n    records:\n      - message: \"Your order has been successfully placed.\"\
+      \n        date: \"2026-07-10T20:11\"\n      - message: \"Your package is being\
+      \ prepared for shipment.\"\n        date: \"2026-07-11T10:12\"\n      - message:\
+      \ \"UPS has picked up the package.\"\n        date: \"2026-07-11T15:23\"\n \
+      \     - message: \"Departed UPS Facility - Dallas, TX\"\n        date: \"2026-07-12T07:37\"\
+      \n      - message: \"Arrived at UPS Facility - Springfield, IL\"\n        date:\
+      \ \"2026-07-12T23:22\"\n      - message: \"Out for delivery.\"\n        date:\
+      \ \"2026-07-13T05:00\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'The phone you purchased on July 10 is currently out for delivery.
+
+      It is on its way to your address in Springfield, IL.
+
+
+      Latest Delivery Updates
+
+      • 2026-07-13 05:00: Out for delivery
+
+      • 2026-07-12 23:22: Arrived at UPS Facility - Springfield, IL
+
+      • 2026-07-12 07:37: Departed UPS Facility - Dallas, TX
+
+      • 2026-07-11 15:23: UPS has picked up the package
+
+      • 2026-07-11 10:12: Your package is being prepared for shipment
+
+      • 2026-07-10 20:11: Your order has been successfully placed'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Can you recommend a soft case for my phone? Preferably a clear one.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      Check the phone I purchased online last week\"\n    - status: completed\n  \
+      \    name: delivery_agent\n      refined_query: \"Track the delivery using the\
+      \ phone I purchased online last week\"\n\nworkflow_2:\n  status: pending\n \
+      \ type: independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"Recommend a clear soft case for BlackBerry Q10\""
+- workflow_id: null
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"BlackBerry Q10 clear\
+      \ soft case\"\n  productCategory: \"phone case\"\n  color: \"clear\"\n  sortBy:\
+      \ \"latest\"\ntool_call_result:\n  data: success\n  products:\n    - productId:\
+      \ 10808999417\n      seller:\n        name: \"Vigato Link\"\n        foreign:\
+      \ true\n      name: \"BlackBerry Q10/Q5 Transparent Case - Clear Jelly\"\n \
+      \     colors:\n        - \"Clear\"\n        - \"Translucent\"\n      price:\
+      \ 19\n    - productId: 11802792644\n      seller:\n        name: \"Amartea\"\
+      \n        foreign: false\n      name: \"BlackBerry Q10/Q5 Soft Clear Case -\
+      \ Transparent\"\n      colors:\n        - \"Semi-Transparent Soft\"\n      \
+      \  - \"All-in-One Soft Cover\"\n      price: 23\n    - productId: 11841394964\n\
+      \      seller:\n        name: \"GRAYCO\"\n        foreign: false\n      name:\
+      \ \"BlackBerry Q10 Slim Fit Clear Case\"\n      price: 6"
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'I found some clear soft cases for your BlackBerry Q10 that you might
+      like:
+
+
+      1. BlackBerry Q10/Q5 Transparent Case - Clear Jelly (Vigato Link)
+
+      • Features: Clear and translucent colors, sold by an international seller
+
+      • Price: $19
+
+
+      2. BlackBerry Q10/Q5 Soft Clear Case - Transparent (Amartea)
+
+      • Features: Semi-transparent soft cover, all-in-one soft design
+
+      • Price: $23
+
+
+      3.BlackBerry Q10 Slim Fit Clear Case (GRAYCO)
+
+      • Features: Slim fit clear case
+
+      • Price: $6'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: Order the third one for me
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      Check the phone I purchased online last week\"\n    - status: completed\n  \
+      \    name: delivery_agent\n      refined_query: \"Track the delivery using the\
+      \ phone I purchased online last week\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: shopping_agent\n\
+      \      refined_query: \"Recommend a clear soft case for BlackBerry Q10\"\n\n\
+      workflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"Buy a slim-fit\
+      \ clear case (GRAYCO) for BlackBerry Q10\""
+- workflow_id: workflow_3
+  step_id: 13
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"Purchase BlackBerry\
+      \ Q10 Slim Fit Clear Case\"\n  userId: \"pkq822213\"\n  productItems:\n    productId:\
+      \ \"11841394964\"\n    productName: \"BlackBerry Q10 Slim Fit Clear Case\"\n\
+      \    quantity: 1\n    price: 6\n  shippingAddress:\n    recipient: \"Ethan Parker\"\
+      \n    address: \"22 Happy Place, Apt 502, Building 313, Springfield, IL\"\n\
+      \    phone: \"(310) 347-9999\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    orderId: \"20260714101411023\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: 'I just purchased a slim-fit clear case for the BlackBerry Q10. Your
+      order (ID: 20260714101411023) has been confirmed and will be shipped soon.'

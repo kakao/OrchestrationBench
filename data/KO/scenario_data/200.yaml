@@ -1,0 +1,261 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-08-06
+
+      현재시각: 오전 11:19분
+
+      userid: U0DK23111'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 냉장고에 돼지고기 앞다리랑 두부, 김치, 계란, 어묵, 국수 있는데 이걸로 만들 수 있는 요리 레시피 영상좀 찾아줘 그리고
+      밥 먹으면서 보게 한국 느와르 드라마 두개 추천 해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      돼지고기 앞다리랑 두부, 김치, 계란, 어묵, 국수로 만들 수 있는 요리 레시피 영상\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ entertainment_agent\n      refined_query: \"한국 느와르 드라마 두 개 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"돼지고기 앞다리랑 두부, 김치, 계란,\
+      \ 어묵, 국수로 만들 수 있는 요리 레시피 영상\"\ntool_call_result:\n  data:\n    searchQuery:\
+      \ \"돼지고기 앞다리랑 두부, 김치, 계란, 어묵, 국수로 만들 수 있는 요리 레시피 영상\"\n    resultCount: 3\n\
+      \    videos:\n      - title: \"돼지고기 앞다리살과 김치로 만드는 김치찌개 레시피 (두부+어묵 추가)\"\n  \
+      \      url: \"https://www.youtube.com/watch?v=example1\"\n        channel: \"\
+      요리하는 남자\"\n        duration: \"12:34\"\n        uploadDate: \"2024-11-02\"\n\
+      \        description: \"앞다리살과 묵은지로 깊은 맛을 낸 김치찌개에 두부, 어묵까지 넣어 한 그릇 뚝딱!\"\n  \
+      \      \n      - title: \"어묵과 김치로 만드는 국수 레시피! 계란지단까지 완벽한 조화\"\n        url:\
+      \ \"https://www.youtube.com/watch?v=example2\"\n        channel: \"집밥연구소\"\n\
+      \        duration: \"09:20\"\n        uploadDate: \"2023-08-14\"\n        description:\
+      \ \"김치+어묵+계란으로 만드는 매콤한 김치국수 레시피! 간단하지만 깊은 맛!\"\n\n      - title: \"돼지고기·두부·계란으로\
+      \ 만드는 단백한 반찬 3종 모음\"\n        url: \"https://www.youtube.com/watch?v=example3\"\
+      \n        channel: \"우리집 밥상\"\n        duration: \"15:05\"\n        uploadDate:\
+      \ \"2025-03-19\"\n        description: \"앞다리살, 두부, 계란을 활용한 반찬 3가지: 계란장조림, 두부조림,\
+      \ 고기볶음 레시피 대공개\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"한국 느와르 드라마 두 개\
+      \ 추천\"\n  genre: \"느와르\"\ntool_call_result:\n  data:\n    refinedQuery: \"한국\
+      \ 느와르 드라마 두 개 추천\"\n    genre: \"느와르\"\n    resultCount: 2\n    programs:\n\
+      \      - title: \"검은 태양\"\n        releaseYear: 2024\n        broadcaster: \"\
+      MBC\"\n        description: \"국정원의 최정예 요원이 실종 1년 만에 돌아와 조직 내 배신자를 추적하며 벌어지는\
+      \ 이야기. 묵직한 전개와 첩보 액션이 돋보이는 정통 느와르 드라마.\"\n        mainActors: [\"남궁민\", \"박하선\"\
+      , \"김지은\"]\n        episodes: 12\n        rating: 8.6\n        url: \"https://www.mbc.co.kr/program/black_sun\"\
+      \n\n      - title: \"악인전기\"\n        releaseYear: 2025\n        broadcaster:\
+      \ \"tvN\"\n        description: \"복수와 생존이 얽힌 피의 전쟁 속에서 권력의 민낯을 드러내는 하드보일드 느와르.\
+      \ 강렬한 연출과 몰입감 있는 스토리로 주목받음.\"\n        mainActors: [\"이제훈\", \"조진웅\", \"한소희\"\
+      ]\n        episodes: 10\n        rating: 9.1\n        url: \"https://www.tving.com/series/evil_men\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '요리 레시피 영상 추천
+
+      다음 재료로 만들 수 있는 요리 레시피 영상입니다:
+
+      돼지고기 앞다리살, 두부, 김치, 계란, 어묵, 국수
+
+
+      1. 돼지고기 앞다리살과 김치로 만드는 김치찌개 레시피 (두부+어묵 추가)
+
+      - 채널: 요리하는 남자
+
+      - 길이: 12분 34초
+
+      - 설명: 앞다리살과 묵은지로 깊은 맛을 낸 김치찌개에 두부와 어묵까지 넣어 완성한 레시피
+
+
+      2. 어묵과 김치로 만드는 국수 레시피 (계란지단 포함)
+
+      - 채널: 집밥연구소
+
+      - 길이: 9분 20초
+
+      - 설명: 김치, 어묵, 계란으로 만드는 매콤한 김치국수. 간단하지만 깊은 맛이 특징
+
+
+      3. 돼지고기·두부·계란으로 만드는 단백한 반찬 3종
+
+      - 채널: 우리집 밥상
+
+      - 길이: 15분 05초
+
+      - 설명: 앞다리살, 두부, 계란을 활용해 계란장조림, 두부조림, 고기볶음 세 가지 반찬을 만드는 영상
+
+
+      ----------
+
+
+      한국 느와르 드라마 추천 (2편)
+
+
+      1. 검은 태양 (2024, MBC)
+
+      - 출연: 남궁민, 박하선, 김지은
+
+      - 에피소드: 12부작
+
+      - 평점: 8.6
+
+      - 줄거리: 국정원 최정예 요원이 실종 1년 만에 복귀해 내부의 배신자를 추적하는 첩보 느와르. 강렬한 전개와 액션이 돋보임
+
+
+      2. 악인전기 (2025, tvN)
+
+      - 출연: 이제훈, 조진웅, 한소희
+
+      - 에피소드: 10부작
+
+      - 평점: 9.1
+
+      - 줄거리: 복수와 생존이 얽힌 피의 전쟁. 권력의 민낯을 그리는 하드보일드 스타일의 몰입감 높은 드라마'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 드라마 검은 태양에 나온 남궁민 필모좀 알려줘 그리고 강남에 남궁민 다니는 헬스장 있어?
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"돼지고기 앞다리랑 두부, 김치, 계란, 어묵, 국수로 만들 수 있는 요리 레시피 영상\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ entertainment_agent\n      refined_query: \"한국 느와르 드라마 두개 추천\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: person_agent\n      refined_query: \"드라마 검은 태양에 나온 남궁민 필모그래피\"\n\
+      \nworkflow_4:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"강남에 남궁민이 다니는 헬스장\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"드라마 검은 태양에 나온 남궁민 필모그래피\"\
+      \n  personName: \"남궁민\"\n  roleType: \"배우\"\n  workType: \"드라마\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"드라마 검은 태양에 나온 남궁민 필모그래피\"\n    personName: \"\
+      남궁민\"\n    roleType: \"배우\"\n    workType: \"드라마\"\n    filmography:\n     \
+      \ - title: \"검은 태양\"\n        year: 2021\n        role: \"한지혁\"\n        description:\
+      \ \"국정원의 최정예 요원이 조직 내 배신자를 찾아 나서는 첩보 액션 드라마\"\n      - title: \"스토브리그\"\n  \
+      \      year: 2019\n        role: \"백승수\"\n        description: \"하위권 야구팀에 새로\
+      \ 부임한 단장이 팀을 재건하는 과정을 그린 스포츠 드라마\"\n      - title: \"닥터 프리즈너\"\n        year:\
+      \ 2019\n        role: \"나이제\"\n        description: \"복수를 위해 교도소로 들어간 천재 의사의\
+      \ 이야기를 다룬 메디컬 스릴러\"\n      - title: \"훈남정음\"\n        year: 2018\n        role:\
+      \ \"강훈남\"\n        description: \"사랑을 믿지 않는 남자와 사랑을 믿고 싶은 여자의 로맨틱 코미디\"\n  \
+      \    - title: \"김과장\"\n        year: 2017\n        role: \"김성룡\"\n        description:\
+      \ \"비리를 척결하려는 회계사의 유쾌한 정의 실현기\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"강남에 남궁민이 다니는 헬스장\"\
+      \n  placeCategory: \"헬스장\"\n  sortBy: \"distance\"\n  location: \"강남\"\ntool_call_result:\n\
+      \  data:\n    places:\n      - name: \"더챔피언휘트니스 강남점\"\n        address: \"서울\
+      \ 강남구 논현로 508\"\n        distance: \"0.8km\"\n        phone: \"02-1234-5678\"\
+      \n        isRumoredCelebrityGym: true\n        celebrityMention: \"남궁민이 인터뷰에서\
+      \ 다닌 적 있다고 언급된 곳\"\n    status: \"success\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '배우 남궁민의 주요 드라마 필모그래피
+
+      남궁민은 폭넓은 연기 스펙트럼과 강렬한 캐릭터 소화력으로 사랑받는 배우입니다. 특히 **《검은 태양》**을 통해 깊은 내면 연기를 선보이며
+      강한 인상을 남겼습니다. 아래는 그의 대표적인 드라마 출연작들입니다:
+
+
+      《검은 태양》 (2021)
+
+
+      역할: 한지혁
+
+
+      줄거리: 국정원의 최정예 요원이 기억을 잃은 채 복귀하여 조직 내 배신자를 추적하는 첩보 액션 드라마. 강렬한 액션과 미스터리가 결합된
+      작품으로, 남궁민의 압도적인 존재감이 돋보입니다.
+
+
+      《스토브리그》 (2019)
+
+
+      역할: 백승수
+
+
+      줄거리: 만년 하위권 야구팀에 새롭게 부임한 단장이 팀을 재건하며 겪는 이야기를 담은 스포츠 드라마. 리더십과 전략이 조화를 이루는 캐릭터로
+      호평을 받았습니다.
+
+
+      《닥터 프리즈너》 (2019)
+
+
+      역할: 나이제
+
+
+      줄거리: 병원에서 쫓겨난 천재 의사가 복수를 위해 교도소 의료과장이 되어 벌어지는 메디컬 스릴러. 지적인 카리스마를 보여준 작품입니다.
+
+
+      《훈남정음》 (2018)
+
+
+      역할: 강훈남
+
+
+      줄거리: 사랑을 믿지 않는 남자와 사랑을 갈구하는 여자의 로맨스를 그린 코미디 드라마. 감성적인 연기와 코믹함이 어우러졌습니다.
+
+
+      《김과장》 (2017)
+
+
+      역할: 김성룡
+
+
+      줄거리: 회계사 출신이 대기업의 비리를 파헤치며 정의를 실현해가는 이야기를 담은 드라마. 유쾌한 풍자와 정의감 넘치는 캐릭터로 시청자들의
+      사랑을 받았습니다.
+
+
+      이처럼 남궁민은 액션, 스릴러, 스포츠, 코미디 등 장르를 넘나드는 연기력을 입증해온 배우입니다.
+
+      더 많은 작품 정보가 필요하시면 언제든 알려주세요!
+
+
+      ----------
+
+
+      강남에서 남궁민 씨가 다닌 것으로 알려진 헬스장에 대한 정보가 일부 확인되었습니다.
+
+
+      1. 더챔피언휘트니스 강남점
+
+
+      - 주소: 서울 강남구 논현로 508
+
+
+      - 전화: 02-1234-5678
+
+
+      - 참고: 남궁민 씨가 과거 인터뷰에서 이용한 적이 있다고 언급된 곳입니다.'

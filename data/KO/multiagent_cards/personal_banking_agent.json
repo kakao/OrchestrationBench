@@ -1,0 +1,379 @@
+{
+  "agent_card": {
+    "name": "개인 금융 (Personal Banking)",
+    "agent_id": "personal_banking_agent",
+    "description": "송금, 계좌 조회, 대출 확인, 자동이체 등록·변경·취소 등 일상적인 뱅킹 업무를 안전하고 간편하게 도와주는 개인 금융 관리 도우미입니다.",
+    "url": "http://localhost:10021/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "transferMoney",
+        "name": "송금",
+        "description": "받는 사람 이름, 계좌번호, 금액 등을 입력받아 즉시 또는 예약 송금을 처리합니다. 송금을 위해서는 '계좌 내역 조희'를 통해 잔액을 확인 후 송금을 수행합니다.",
+        "examples": [
+          "엄마한테 5만원 보내줘",
+          "신한은행 123456-78-987654 계좌로 송금해줘"
+        ]
+      },
+      {
+        "id": "getAccountBalance",
+        "name": "계좌 내역 조회",
+        "description": "사용자의 계좌번호와 예금주명을 기준으로 입출금, 예금, 적금 등 잔액을 조회하고 필요 시 최근 거래 내역도 함께 확인할 수 있습니다.",
+        "examples": [
+          "내 계좌에 지금 얼마 있어?",
+          "김민수 명의 계좌 잔액 알려줘",
+          "110-123-456789 예금 잔액 확인해줘"
+        ]
+      },
+      {
+        "id": "getLoanBalance",
+        "name": "대출 조회",
+        "description": "대출 계좌번호와 대출자명을 기준으로 대출 잔액, 이자율, 납입 스케줄 등을 확인합니다.",
+        "examples": [
+          "내 주택담보대출 얼마나 남았어?",
+          "203-456-987654 계좌 대출 정보 알려줘",
+          "홍길동 명의 신용대출 잔액 확인해줘"
+        ]
+      },
+      {
+        "id": "createAutoTransfer",
+        "name": "자동이체 등록",
+        "description": "지정된 계좌로 일정 금액을 반복 송금하는 자동이체를 설정합니다. 주기, 날짜, 메모 등을 함께 지정할 수 있습니다. ",
+        "examples": [
+          "매달 10일 월세 자동이체 등록해줘",
+          "매주 금요일 부모님께 2만원 보내는 자동이체 설정해줘"
+        ]
+      },
+      {
+        "id": "modifyAutoTransfer",
+        "name": "자동이체 변경",
+        "description": "등록된 자동이체의 금액, 주기, 날짜, 메모 등을 수정합니다. 최소 한 항목 이상 변경이 있어야 합니다. '자동이체 조회'를 통해 변경할 이체 내역을 선택합니다. ",
+        "examples": [
+          "자동이체 금액을 30만원으로 바꿔줘",
+          "날짜를 15일로 수정하고 싶어",
+          "주기를 매주에서 매월로 바꿔줘"
+        ]
+      },
+      {
+        "id": "cancelAutoTransfer",
+        "name": "자동이체 해지",
+        "description": "설정된 자동이체를 해지하거나 중단합니다. '자동이체 조회'를 통해 해지할 이체 내역을 선택합니다. ",
+        "examples": [
+          "월세 자동이체 취소할래",
+          "부모님 용돈 자동이체 해지해줘"
+        ]
+      },
+      {
+        "id": "getAutoTransferList",
+        "name": "자동이체 조회",
+        "description": "전체 자동이체 내역을 확인하거나 특정 날짜, 수취인, 계좌번호 기준으로 필터링하여 조회할 수 있습니다.",
+        "examples": [
+          "이번 달 자동이체 내역 보여줘",
+          "엄마한테 보내는 자동이체 확인해줘",
+          "110-987-123456 계좌 자동이체 목록 알려줘"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "transferMoney",
+      "description": "받는 사람의 이름, 계좌번호, 금액, 이체 메모 등을 입력받아 실시간 계좌 송금을 처리하는 도구입니다. 수취 은행, 계좌번호, 예금주명은 필수입니다. 송금을 위해서는 계좌 조회를 통해 잔액을 확인 후 송금을 수행합니다.  여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청을 정제한 문장 (예: '엄마한테 5만원 송금')"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "송금 대상 예금주 이름 (예: '김민수'), 계좌번호와 입금주 이름이 일치하지 않을 시 송금 실패"
+          },
+          "bankName": {
+            "type": "string",
+            "description": "수취 은행 이름 (예: 'KB국민은행', '신한은행')"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "송금 대상 계좌번호 (예: '110-123-456789')"
+          },
+          "amount": {
+            "type": "number",
+            "description": "송금 금액 (단위: 원), 최소 1000원부터 가능"
+          },
+          "memo": {
+            "type": "string",
+            "description": "이체 메모 또는 내역 설명 (선택, 예: '8월 생활비')"
+          },
+          "scheduledAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "예약 송금일시 (선택값, ISO 8601 형식. 즉시 송금이 아닌 경우 입력)"
+          },
+          "sourceAccountId": {
+            "type": "string",
+            "description": "출금 계좌 ID (예: 'acc-20230701-001')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "recipientName",
+          "bankName",
+          "accountNumber",
+          "amount",
+          "sourceAccountId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getAccountBalance",
+      "description": "지정된 계좌의 잔액 및 최근 거래 내역을 조회하는 도구입니다. 입출금, 예금, 적금, 청약 등 다양한 유형이 지원됩니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어 잔액 조회 요청을 정제한 문장 (예: '내 입출금 계좌 잔액 보여줘')"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "조회 대상 계좌번호 (예: '110-123-456789')"
+          },
+          "accountHolderName": {
+            "type": "string",
+            "description": "계좌 예금주 성함 (예: '김민수')"
+          },
+          "bankName": {
+            "type": "string",
+            "description": "수취 은행 이름 (예: 'KB국민은행', '신한은행')"
+          },
+          "accountType": {
+            "type": "string",
+            "enum": [
+              "checking",
+              "savings",
+              "installment",
+              "housing"
+            ],
+            "description": "계좌 유형 선택 (입출금, 예금, 적금, 청약 등)"
+          },
+          "includeTransactions": {
+            "type": "boolean",
+            "description": "최근 거래 내역 포함 여부 (선택값, 기본값 false)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bankName",
+          "accountNumber",
+          "accountHolderName",
+          "includeTransactions"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getLoanBalance",
+      "description": "사용자의 대출 상품에 대해 잔액, 이자율, 만기일 등을 조회합니다. 대출 조회를 위해서는 대출자 이름 및 대출 계좌번호는 필수입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "대출 잔액을 묻는 자연어 요청을 정제한 문장 (예: '주택담보대출 얼마나 남았어?')"
+          },
+          "loanAccountNumber": {
+            "type": "string",
+            "description": "대출 계좌번호 (예: '203-456-987654')"
+          },
+          "borrowerName": {
+            "type": "string",
+            "description": "대출자 이름 (예: '홍길동')"
+          },
+          "loanType": {
+            "type": "string",
+            "enum": [
+              "mortgage",
+              "credit",
+              "student",
+              "car",
+              "etc"
+            ],
+            "description": "대출 유형 (주택담보, 신용, 학자금, 자동차 등)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "loanAccountNumber",
+          "borrowerName"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "createAutoTransfer",
+      "description": "특정 계좌로 정기적으로 자동이체를 등록하는 도구입니다. 수취인, 이체 주기, 날짜, 금액 등의 정보를 입력받아 자동이체를 설정합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어 요청을 정제한 문장 (예: '매달 10일에 부모님께 20만원 보내줘')"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "수취인 이름"
+          },
+          "bankName": {
+            "type": "string",
+            "description": "수취 은행명"
+          },
+          "accountNumber": {
+            "type": "string",
+            "description": "수취 계좌번호"
+          },
+          "amount": {
+            "type": "number",
+            "description": "이체 금액 (단위: 원)"
+          },
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "description": "이체 주기"
+          },
+          "transferDay": {
+            "type": "string",
+            "description": "이체 날짜 또는 요일 (예: '10', '금요일')"
+          },
+          "memo": {
+            "type": "string",
+            "description": "이체 메모 (선택)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "recipientName",
+          "bankName",
+          "accountNumber",
+          "amount",
+          "frequency",
+          "transferDay"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getAutoTransferList",
+      "description": "사용자의 자동이체 등록 내역을 조회하는 도구입니다. 출금 계좌와 예금주 기준으로 전체 목록을 수취인으로 필터링할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어 요청을 정제한 문장 (예: '이번 달 자동이체 목록 보여줘')"
+          },
+          "accountHolderName": {
+            "type": "string",
+            "description": "출금 계좌 예금주 (예: '김민수')"
+          },
+          "fromAccountNumber": {
+            "type": "string",
+            "description": "출금 계좌번호 (예: '110-987-123456')"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "수취 계좌 예금주 (선택값)"
+          },
+          "transferDay": {
+            "type": "string",
+            "description": "특정 이체 날짜 기준 필터링 (선택값, 예: '15')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "accountHolderName",
+          "fromAccountNumber"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyAutoTransfer",
+      "description": "기존 자동이체 설정을 수정하는 도구입니다. 금액, 날짜, 주기, 수취계좌 등의 항목을 변경할 수 있습니다.  '자동이체 조회'를 통해 변경할 이체 내역을 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "변경 요청을 정제한 문장 (예: '월세 이체 날짜를 15일로 바꿔줘')"
+          },
+          "autoTransferId": {
+            "type": "string",
+            "description": "변경할 자동이체의 ID 또는 참조명"
+          },
+          "amount": {
+            "type": "number",
+            "description": "변경할 금액 (선택)"
+          },
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "description": "변경할 주기 (선택)"
+          },
+          "transferDay": {
+            "type": "string",
+            "description": "변경할 이체 날짜 또는 요일 (선택)"
+          },
+          "memo": {
+            "type": "string",
+            "description": "변경할 메모 (선택)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "autoTransferId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelAutoTransfer",
+      "description": "등록된 자동이체를 해지하는 도구입니다. 자동이체 ID 또는 수취인 이름으로 대상 이체를 지정합니다.  '자동이체 조회'를 통해 취소할 이체 내역을 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "해지 요청을 정제한 문장 (예: '자동이체 취소할래')"
+          },
+          "autoTransferId": {
+            "type": "string",
+            "description": "자동이체 ID 또는 참조명"
+          },
+          "recipientName": {
+            "type": "string",
+            "description": "수취인 이름 (선택)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "autoTransferId"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

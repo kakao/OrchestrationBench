@@ -1,0 +1,97 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Can you summarize the recent reviews and reactions to Squid Game? Also,
+      I’m curious about how Netflix’s stock has performed since its release.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"Summary\
+      \ of recent reviews and reactions to the drama Squid Game\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: entertainment_agent\n      refined_query: \"Release date of Squid\
+      \ Game\"\n    - status: pending\n      name: finance_agent\n      refined_query:\
+      \ \"Netflix stock performance since the release of Squid Game\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Summary of reviews and\
+      \ reactions to the drama Squid Game\"\ntool_call_result:\n  data:\n    summary:\
+      \ \"The drama 'Squid Game' gained explosive popularity, elevating the status\
+      \ of Korean content. Critics praised it for being not just as a simple survival\
+      \ game, but as a work offering deep insights into class issues in modern society\
+      \ and human nature. It received strong support from both audiences and critics,\
+      \ with a 95% freshness rating on Rotten Tomatoes and an 8.0 rating on IMDb.\
+      \ It also earned recognition by winning major categories at the Screen Actors\
+      \ Guild Awards (SAG) and the Emmys. However, some critics pointed out that the\
+      \ level of violence was excessive.\"\n    sources:\n      - \"Rotten Tomatoes\
+      \ - Squid Game Season 1\"\n      - \"IMDb - Squid Game (2021– )\"\n      - \"\
+      Variety - 'Squid Game' Makes History at the SAG Awards\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"Check release\
+      \ date information for Squid Game\"\n  programTitle: \"Squid Game\"\ntool_call_result:\n\
+      \  data:\n    programTitle: \"Squid Game\"\n    genre:\n      - \"Thriller\"\
+      \n      - \"Drama\"\n      - \"Survival\"\n    original_network: \"Netflix\"\
+      \n    releaseDate: \"2021-09-17\"\n    episodes: 9\n    synopsis: \"A story\
+      \ about people who enter a mysterious survival competition with a prize of 45.6\
+      \ billion won, risking their lives to become the final winner by enduring extreme\
+      \ games.\""
+- workflow_id: null
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"Netflix stock trend\
+      \ after the release date of Squid Game\"\n  stockName: \"Netflix\"\n  date:\
+      \ \"2021-09-17\"\ntool_call_result:\n  data:\n    stockName: \"Netflix, Inc.\
+      \ (NFLX)\"\n    trend_summary: \"After the release of the series 'Squid Game'\
+      \ on September 17, 2021, Netflix (NFLX) stock experienced a sharp rise fueled\
+      \ by expectations of explosive subscriber growth. Trading around $590 at the\
+      \ time of release, the stock surged to an all-time high of over $690 by mid-November\
+      \ 2021, a mere two months later.\"\n    price_history:\n      - date: \"2021-09-17\"\
+      \n        close_price: 590.34\n      - date: \"2021-10-15\"\n        close_price:\
+      \ 637.97\n      - date: \"2021-11-17\"\n        close_price: 691.69"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Sure, let me give you a summary of the reception of Squid Game and Netflix’s
+      stock performance after its release.
+
+
+      Reception of Squid Game
+
+
+      The drama Squid Game became a sensation, receiving overwhelmingly positive reviews.
+      Critics praised it for going beyond being a simple survival game to deliver
+      sharp insights into class struggles and human nature in modern society. On the
+      renowned review site Rotten Tomatoes, it earned a 95% freshness rating. It also
+      won major awards at prestigious ceremonies such as the Screen Actors Guild Awards
+      (SAG) and the Emmys, cementing its recognition for artistic excellence. However,
+      some critics did raise concerns about the high level of violence.
+
+
+      Netflix Stock After the Release of Squid Game
+
+
+      Following Squid Game''s release on September 17, 2021, Netflix’s (NFLX) stock
+      price surged, fueled by expectations of explosive subscriber growth. At the
+      time of release, the stock was trading around $590, and by mid-November 2021,
+      it hit an all-time high of over $690 within just two months, marking a significant
+      increase.'

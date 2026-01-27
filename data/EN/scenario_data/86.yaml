@@ -1,0 +1,169 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-12-15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I’m meeting my girlfriend near Union Square after she gets off work,
+      and we’re planning to watch a movie. Can you recommend a highly rated one that’s
+      now showing and book the tickets for us? Also, could you suggest a few pubs
+      around East Village where DJs spin vinyl records, and share their Instagram
+      handles? We want to head there after the movie.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Recommend a highly rated movie showing tonight near Union Square that I can\
+      \ watch with my girlfriend after work\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Recommend a pub in East Village where a DJ plays vinyl\
+      \ records, and include his/her Instagram handle\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: entertainment_agent\n      refined_query: \"Book tickets\
+      \ for a highly rated movie showing tonight near Union Square to watch with my\
+      \ girlfriend after work\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"Recommend highly rated\
+      \ movies currently showing at theaters near Union Square today\"\n  isReleased:\
+      \ true\n  theaterLocation: \"Union Square\"\n  sortBy: \"rating\"\n  screeningDate:\
+      \ \"2025-12-15\"\ntool_call_result:\n  movies:\n    - title: \"Night in New\
+      \ York\"\n      genre: \"Drama\"\n      ageRating: \"Rated 15 and up\"\n   \
+      \   reviewRate: 4.7\n      duration: \"108 min\"\n      theater: \"AMC Empire\
+      \ 25\"\n      showtimes: [\"1:20 PM\", \"4:40 PM\", \"8:10 PM\"]\n    - title:\
+      \ \"2049 Rewind\"\n      genre: \"Sci-Fi / Thriller\"\n      ageRating: \"Rated\
+      \ 12 and up\"\n      reviewRate: 4.5\n      duration: \"120 min\"\n      theater:\
+      \ \"Regal Union Square\"\n      showtimes: [\"2:00 PM\", \"5:30 PM\", \"9:00\
+      \ PM\"]"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Recommend\
+      \ a pub in East Village that is good to visit after watching a movie and where\
+      \ a DJ plays vinyl records, and include his/her Instagram handle\"\n  location:\
+      \ \"East Village\"\n  cuisineType: \"pub\"\n  sortBy: \"highest_rated\"\n  partySize:\
+      \ \"2 people\"\n  tag: \"vinyl music\"\ntool_call_result:\n  data:\n    location:\
+      \ \"East Village\"\n    tag: \"vinyl music\"\n    cuisineType: \"pub\"\n   \
+      \ results:\n      - name: \"LP Bar Midnight Sound\"\n        address: \"88 E\
+      \ 4th St, New York, NY 10003\"\n        operatingHours: \"6:00 PM ~ 2:00 AM\"\
+      \n        description: \"A vintage-style pub where the DJ curates music directly\
+      \ from vinyl. A cozy late-night spot to enjoy drinks and music.\"\n        instagram:\
+      \ \"https://www.instagram.com/lpbar_midnightsound\"\n\n      - name: \"DJ Pub\"\
+      \n        address: \"21 St. Mark's Pl, New York, NY 10003\"\n        operatingHours:\
+      \ \"8:00 PM ~ 3:00 AM\"\n        description: \"An atmospheric pub where the\
+      \ DJ plays only analog vinyl. Great place to enjoy cocktails recommended by\
+      \ the bartender.\"\n        instagram: \"https://www.instagram.com/djpub_eastvillage\"\
+      \n\n      - name: \"Vintage Beat\"\n        address: \"254 Avenue A, New York,\
+      \ NY 10009\"\n        operatingHours: \"9:00 PM ~ 4:00 AM\"\n        description:\
+      \ \"A unique venue blending vinyl music with ambient lighting. Popular with\
+      \ international guests, offering a global vibe.\"\n        instagram: \"https://www.instagram.com/vintagebeat_lp\""
+- workflow_id: null
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: name and contact information of the person making the reservation'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "I’ve found some great options for your evening:\n\nMovies near Union\
+      \ Square showing today:\n\n1. Night in New York\n\n   * Genre: Drama\n   * Age\
+      \ Rating: Rated 15 and up\n   * Rating: 4.7/5\n   * Duration: 108 min\n   *\
+      \ Theater: AMC Empire 25\n   * Showtimes: 1:20 PM, 4:40 PM, 8:10 PM\n\n2. 2049\
+      \ Rewind\n\n   * Genre: Sci-Fi / Thriller\n   * Age Rating: Rated 12 and up\n\
+      \   * Rating: 4.5/5\n   * Duration: 120 min\n   * Theater: Regal Union Square\n\
+      \   * Showtimes: 2:00 PM, 5:30 PM, 9:00 PM\n\nPlease let me know which movie\
+      \ and showtime you’d like, along with the name of the person booking and his\
+      \ or her contact number, so that I can help you reserve the tickets.\n\nAfter\
+      \ the movie, here are some highly recommended pubs in East Village you can go\
+      \ to where DJs spin vinyl records:\n\n1. LP Bar Midnight Sound\n\n   * Address:\
+      \ 88 E 4th St, New York, NY 10003\n   * Operating Hours: 6:00 PM \\~ 2:00 AM\n\
+      \   * Description: A vintage-style pub where the DJ curates music directly from\
+      \ vinyl. A cozy late-night spot to enjoy drinks and music.\n   * Instagram:\
+      \ [@lpbar\\_midnightsound](https://www.instagram.com/lpbar_midnightsound)\n\n\
+      2. DJ Pub\n\n   * Address: 21 St. Mark's Pl, New York, NY 10003\n   * Operating\
+      \ Hours: 8:00 PM \\~ 3:00 AM\n   * Description: An atmospheric pub where the\
+      \ DJ plays only analog vinyl. Great place to enjoy cocktails recommended by\
+      \ the bartender.\n   * Instagram: [@djpub\\_eastvillage](https://www.instagram.com/djpub_eastvillage)\n\
+      \n3. Vintage Beat\n\n   * Address: 254 Avenue A, New York, NY 10009\n   * Operating\
+      \ Hours: 9:00 PM \\~ 4:00 AM\n   * Description: A unique venue blending vinyl\
+      \ music with ambient lighting. Popular with international guests, offering a\
+      \ global vibe.\n   * Instagram: [@vintagebeat\\_lp](https://www.instagram.com/vintagebeat_lp)"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 'Book "Night in New York" at 8:10 PM for 2 adults.
+
+      James Carter (202)000-0000'
+- workflow_id: workflow_3
+  step_id: 9
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookMovieTicket\narguments:\n  refinedQuery: \"AMC Empire 25 booking\
+      \ for the movie 'Night in New York' at 8:10 PM for 2 adults\"\n  movieTitle:\
+      \ \"Night in New York\"\n  theaterName: \"AMC Empire 25\"\n  showDate: \"2025-12-15\"\
+      \n  showTime: \"20:10\"\n  audienceCount: 2\n  audienceTypes: [\"adult\", \"\
+      adult\"]\n  userInfo:\n    name: \"James Carter\"\n    contact: \"(202)000-0000\"\
+      \ntool_call_result:\n  reservationStatus: \"confirmed\"\n  movieTitle: \"Night\
+      \ in New York\"\n  theaterName: \"AMC Empire 25\"\n  showDate: \"2025-12-15\"\
+      \n  showTime: \"20:10\"\n  duration: \"108 minutes\"\n  audienceCount: 2\n \
+      \ audienceType: \"Adult\"\n  userInfo: [\"James Carter\", \"(202)000-0000\"\
+      ]\n  reservationNumber: \"AMC20251215-2083\"\n  seatNumbers: [\"E10\", \"E11\"\
+      ]"
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your reservation has been confirmed successfully.
+
+
+      Here are the details of your movie booking:
+
+
+      * Movie Title: Night in New York
+
+      * Theater: AMC Empire 25
+
+      * Date: 2025-12-15
+
+      * Showtime: 8:10 PM
+
+      * Duration: 108 minutes
+
+      * Audience: 2 adults
+
+      * Reserved by: James Carter
+
+      * Contact: (202)000-0000
+
+      * Reservation Number: AMC20251215-2083
+
+      * Seat Numbers: E10, E11
+
+
+      Enjoy your movie!'

@@ -1,0 +1,77 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025-06-01
+
+      - 현재 시각: 09:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 예일대학교 지원서 작성 중인데, 서울 동작구 보라매로 31을 정확한 영문 주소로 바꿔주고, 지원 접수 마감일인 7월 1일을
+      캘린더에 등록해줘. 혹시 제출 전에 점검해야 할 사항도 있으면 알려줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"'서울 동작구\
+      \ 보라매로 31'을 영문 주소로 변환\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"예일대학교 지원 접수 마감일인 7월 1일을 캘린더에 등록\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: search_agent\n \
+      \     refined_query: \"예일대학교 지원서 제출 전 점검해야 할 사항\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: convertToEnglishAddress\narguments:\n  refinedQuery: \"'서울 동작구\
+      \ 보라매로 31'을 영문 주소로 변환\"\n  addressQuery: \"서울 동작구 보라매로 31\"\ntool_call_result:\n\
+      \  addressQuery: \"서울 동작구 보라매로 31\"\n  englishAddress: \"31 Boramae-ro, Dongjak-gu,\
+      \ Seoul, South Korea\"\n  status: \"completed\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"예일대학교 지원 접수 마감일인\
+      \ 2025년 7월 1일을 캘린더에 등록\"\n  title: \"예일대학교 지원 접수 마감\"\n  startDateTime: \"2025-07-01T09:00\"\
+      \n  endDateTime: \"2025-07-01T10:00\"\ntool_call_result:\n  scheduleID: \"SCHD-12345\"\
+      \n  title: \"예일대학교 지원 접수 마감\"\n  startDateTime: \"2025-07-01T09:00\"\n  endDateTime:\
+      \ \"2025-07-01T10:00\"\n  description: \"예일대학교의 지원 접수 마감일입니다. 필요한 서류를 제출하세요.\"\
+      \n  location: \"Online\"\n  status: \"completed\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"예일대학교 지원서 제출 전 점검해야\
+      \ 할 사항\"\ntool_call_result:\n  query: \"예일대학교 지원서 제출 전 점검해야 할 사항\"\n  checklist:\n\
+      \    - \"지원서 양식이 올바르게 작성되었는지 확인\"\n    - \"모든 필요한 서류가 첨부되었는지 확인\"\n    - \"\
+      추천서가 요구되는 경우, 추천서가 포함되었는지 확인\"\n    - \"지원서비가 지불되었는지 확인\"\n    - \"에세이 및 개인\
+      \ 진술서가 요청사항에 맞게 작성되었는지 검토\"\n    - \"성적표 및 시험 점수가 제출되었는지 확인\"\n    - \"지원 마감일을\
+      \ 준수했는지 다시 확인\"\n  status: \"completed\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "◾영문 주소 변환 결과\n\n주소 \"서울 동작구 보라매로 31\"의 영문 변환 결과는 다음과 같습니다:\n- 31 Boramae-ro,\
+      \ Dongjak-gu, Seoul, South Korea\n\n이 주소는 영문 형식으로 변환된 결과이며, 국제적인 문서나 우편 발송 시\
+      \ 사용할 수 있습니다.\n\n\n\n◾캘린더 일정 등록 \n예일대학교 지원 접수 마감 일정이 캘린더에 성공적으로 등록되었습니다. 아래는\
+      \ 일정의 세부 정보입니다:\n\n- 일정 ID: SCHD-12345\n- 제목: 예일대학교 지원 접수 마감\n- 시작 시간: 2025년\
+      \ 7월 1일, 오전 9:00\n- 종료 시간: 2025년 7월 1일, 오전 10:00\n- 설명: 예일대학교의 지원 접수 마감일입니다.\
+      \ 필요한 서류를 제출하세요.\n- 위치: Online\n\n이 일정을 참고하여 필요한 준비를 하시기 바랍니다.\n\n\n\n◾예일대학교\
+      \ 지원서를 제출하기 전에 점검해야 할 사항\n\n1. 지원서 양식이 올바르게 작성되었는지 확인\n2. 모든 필요한 서류가 첨부되었는지\
+      \ 확인\n3. 추천서가 요구되는 경우, 추천서가 포함되었는지 확인\n4. 지원서비가 지불되었는지 확인\n5. 에세이 및 개인 진술서가\
+      \ 요청사항에 맞게 작성되었는지 검토\n6. 성적표 및 시험 점수가 제출되었는지 확인\n7. 지원 마감일을 준수했는지 다시 확인\n\n\
+      이러한 사항을 꼼꼼히 점검하여 최상의 지원서를 제출하시기 바랍니다. 성공적인 지원을 기원합니다!"

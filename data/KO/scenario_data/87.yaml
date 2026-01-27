@@ -1,0 +1,122 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025/07/22'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '최근에 해병대 병사들이 강아지한테 비비탄 난사한 사건
+
+      어머니께 알려드리고 싶은데 링크 3개만 줘, 내용 요약좀 해주고!
+
+      그리고 너가 준 링크랑 요약한거를 바로 어머니께 카톡 보내드려야겠어'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: news_agent\n      refined_query: \"최근 해병대 병사가\
+      \ 강아지에게 비비탄 난사한 사건 뉴스의 링크 3개\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:   \n    - status: pending\n      name:\
+      \ news_agent\n      refined_query: \"최근 해병대 병사가 강아지에게 비비탄 난사한 사건 뉴스 요약\"\n\n\
+      workflow_3:\n  status: pending\n  type: dependent\n  depend_on: [\"workflow_1\"\
+      , \"workflow_2\"]\n  steps:\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"최근 해병대 병사가 강아지에게 비비탄 난사한 사건 링크와 요약 내용을 어머니에게 카톡으로 전달\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"최근 해병대 병사가 강아지에게 비비탄을\
+      \ 난사한 사건 뉴스 3개\"\n  limit: 3\ntool_call_result:\n  news:\n    - title: \"무고한\
+      \ 강아지들에게 비비탄 난사에 이어 협박까지?\"\n      publisher: \"SBS\"\n      content: \"휴가 중인\
+      \ 해병대 병사 2명과 민간인 1명이 식당 마당에 묶인 반려견 4마리에게 수백 발의 비비탄을 난사해 1마리가 사망했습니다. 이후 사건을\
+      \ 은폐하려는 시도와 함께 견주에게 협박을 가한 정황도 확인됐습니다.\"\n      link: \"https://www.youtube.com/watch?v=S_gwnN-YFrU\"\
+      \n\n    - title: \"비비탄으로 반려견 쏴죽인 해병대, 부모가 견주 찾아가 ‘2차 가해’\"\n      publisher:\
+      \ \"동아일보\"\n      content: \"해병대 병사들이 반려견을 쏘아 죽인 사건 이후, 가해자의 부모가 피해 견주의 집을 찾아가\
+      \ 욕설과 함께 '다 죽여버리겠다'는 협박을 한 것으로 드러났습니다. 현재 경찰은 2차 가해 여부도 수사 중입니다.\"\n      link:\
+      \ \"https://www.donga.com/news/Society/article/all/20250623/131860554/1\"\n\n\
+      \    - title: \"‘해병대 비비탄’ 수백발 난사당한 반려견, 결국 안구 적출\"\n      publisher: \"연합뉴스TV\"\
+      \n      content: \"비비탄 공격을 당한 반려견 중 한 마리 '매화'는 안구에 손상을 입어 결국 적출 수술을 받았습니다. 보호자는\
+      \ '공격의 의도가 명확했고, 학대 수준이었다'며 엄중한 처벌을 요구했습니다.\"\n      link: \"https://m.yonhapnewstv.co.kr/news/AKR20250702160521497\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call: \n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"무고한 강아지들에게 비비탄 난사에 이어 협박까지? 뉴스 요약\"\n      style: \"short\"\n      url:\
+      \ \"https://www.youtube.com/watch?v=S_gwnN-YFrU\"\n\n  - tool: summarizeNews\n\
+      \    arguments:\n      refinedQuery: \"비비탄으로 반려견 쏴죽인 해병대, 부모가 견주 찾아가 ‘2차 가해'\
+      \ 뉴스 요약\"\n      style: \"short\"\n      url: \"https://www.donga.com/news/Society/article/all/20250623/131860554/1\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"해병대 비비탄’\
+      \ 수백발 난사당한 반려견, 결국 안구 적출 뉴스 요약\"\n      style: \"short\"\n      url: \"https://m.yonhapnewstv.co.kr/news/AKR20250702160521497\"\
+      \n\ntool_call_result:\n  - tool: summarizeNews\n    result:\n      summary:\
+      \ \"해병대 병사 2명과 민간인 1명이 강아지를 향해 비비탄을 난사한 사건이 발생했으며, 피해 강아지는 한 쪽 눈을 적출하는 중상을 입었습니다.\
+      \ 경찰은 동물학대 혐의로 수사 중이며, 해병대 측은 가해 병사에 대한 징계 절차를 검토 중입니다.\"\n\n  - tool: summarizeNews\n\
+      \    result:\n      summary: \"해병대 병사들이 반려견을 비비탄으로 죽인 뒤, 가해 병사의 아버지가 피해자 측에\
+      \ 협의를 요구하며 찾아간 사실이 드러났습니다.\"\n\n  - tool: summarizeNews\n    result:\n     \
+      \ summary: \"비비탄에 공격당한 반려견 ‘매화’는 안구를 적출했고, 경찰은 동물학대 혐의로 수사 중입니다. 해병대도 자체 조사와\
+      \ 징계를 검토 중이며, 보호자는 고의적 학대라며 강력한 처벌을 요구하고 있습니다.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수신자 번호'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 메세지를 수신받으실 어머니의 핸드폰번호가 필요합니다.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 010-0101-0101
+- workflow_id: null
+  step_id: 9
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"뉴스링크와 뉴스 요약을 어머니에게\
+      \ 카카오톡으로 전송\"\n  phoneNumber: \"010-0101-0101\"\n  channel: \"kakaotalk\"\n\
+      \  priority: \"normal\"\n  repeatRule: \"none\"\n  message: |\n    최근 해병대 병사에\
+      \ 의한 반려견 비비탄 난사 사건과 관련된 주요 기사 링크를 안내드립니다.\n\n    1. 무고한 강아지들에게 비비탄 난사에 이어 협박까지?\n\
+      \       https://www.youtube.com/watch?v=S_gwnN-YFrU\n\n    2. 비비탄으로 반려견 쏴죽인\
+      \ 해병대, 부모가 견주 찾아가 ‘2차 가해’\n       https://www.donga.com/news/Society/article/all/20250623/131860554/1\n\
+      \n    3. ‘해병대 비비탄’ 수백발 난사당한 반려견, 결국 안구 적출\n       https://m.yonhapnewstv.co.kr/news/AKR20250702160521497\n\
+      \n    최근 보도된 해병대 병사 비비탄 난사 사건 관련 요약입니다.\n\n    * 해병대 병사와 민간인이 묶여 있던 강아지 4마리에게\
+      \ 비비탄 수백 발을 발사\n    * 한 마리는 사망, 나머지 반려견들도 부상\n    * 견주가 신고하자 가해자 부모가 피해자 집을\
+      \ 찾아가 협박\n    * 현재 경찰은 동물학대 및 협박 혐의로 수사 중\ntool_call_result:\n  status: \"sent\"\
+      \n  channel: \"kakaotalk\"\n  recipient: \"어머니\"\n  messegePreview: \"최근 해병대\
+      \ 병사에 의한 반려견 비비탄 난사 사건과 관련된 주요 기사 링크를 안내드립니다. 1. 무고한 강아지들에게 비비탄 난사에 이어 협박까지?...\"\
+      \n  timestamp: \"2025-07-22T14:35:00+09:00\"\n  links:\n    - \"https://www.youtube.com/watch?v=S_gwnN-YFrU\"\
+      \n    - \"https://www.donga.com/news/Society/article/all/20250623/131860554/1\"\
+      \n    - \"https://m.yonhapnewstv.co.kr/news/AKR20250702160521497\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "▶최근 해병대 병사에 의한 반려견 비비탄 난사 사건과 관련된 주요 기사 링크를 안내드립니다.\n\n1. 무고한 강아지들에게\
+      \ 비비탄 난사에 이어 협박까지?\n  https://www.youtube.com/watch?v=S_gwnN-YFrU\n\n2. 비비탄으로\
+      \ 반려견 쏴죽인 해병대, 부모가 견주 찾아가 ‘2차 가해’\n  https://www.donga.com/news/Society/article/all/20250623/131860554/1\n\
+      \n3. ‘해병대 비비탄’ 수백발 난사당한 반려견, 결국 안구 적출\n   https://m.yonhapnewstv.co.kr/news/AKR20250702160521497\"\
+      \n\n▶최근 보도된 해병대 병사 비비탄 난사 사건 관련 요약입니다.\n\n* 해병대 병사와 민간인이 묶여 있던 강아지 4마리에게 비비탄\
+      \ 수백 발을 발사\n* 한 마리는 사망, 나머지 반려견들도 부상\n* 견주가 신고하자 가해자 부모가 피해자 집을 찾아가 협박\n* 현재\
+      \ 경찰은 동물학대 및 협박 혐의로 수사 중\"\n\n요청하신 내용이 어머니께 카카오톡으로 정상 전송되었습니다.\n전송된 메시지는 카카오톡에서\
+      \ 확인하실 수 있습니다."

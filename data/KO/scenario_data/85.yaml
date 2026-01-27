@@ -1,0 +1,131 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-12-15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: "오늘 강남역 근처에서 여자친구 일 끝나고 영화보기로 했는데\n요즘 평점 높은 영화 추천하고 예매좀 해줘, 그리고 한남동쪽\
+      \ 디제이가 LP 로 음악 틀어주는 \n펍도 몇개만 알려줘 인스타그램 아이디랑! 영화보고 갈려고"
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      오늘 여자친구와 퇴근하고 볼 강남역 근처 영화관에서 상영하는 평점 높은 영화 추천\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"영화 보고 갈 디제이가 LP로 음악을 틀어주는 인스타그램 아이디 포함하여 한남동 펍 추천\"\n\
+      \nworkflow_3:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"오늘 여자친구와 퇴근하고 볼 강남역 근처 영화관에서 상영하는 평점 높은 영화 예매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"오늘 강남역 근처 영화관에서 상영중인\
+      \ 평점높은 영화 추천\"\n  isReleased: true\n  theaterLocation: \"강남역\"\n  sortBy: \"\
+      rating\"\n  screeningDate: \"2025-12-15\"\ntool_call_result:\n  movies:\n  \
+      \  - title: \"서울의 밤\"\n      genre: \"드라마\"\n      ageRating: \"15세 이상 관람가\"\
+      \n      reviewRate: 4.7\n      duration: \"108분\"\n      theater: \"CGV 강남\"\
+      \n      showtimes: [\"13:20\", \"16:40\", \"20:10\"]\n    - title: \"2049 리와인드\"\
+      \n      genre: \"SF / 스릴러\"\n      ageRating: \"12세 이상 관람가\"\n      reviewRate:\
+      \ 4.5\n      duration: \"120분\"\n      theater: \"메가박스 강남\"\n      showtimes:\
+      \ [\"14:00\", \"17:30\", \"21:00\"]"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"영화 보고 갈 디제이가\
+      \ LP로 음악을 틀어주는 인스타그램 아이디 포함하여 한남동 펍 추천\"\n  location: \"한남동\"\n  cuisineType:\
+      \ \"펍\"\n  sortBy: \"highest_rated\"\n  partySize: \"2명\"\n  tag: \"lp음악\"\n\
+      tool_call_result:\n  data:\n    location: \"한남동\"\n    tag: \"lp음악\"\n    cuisineType:\
+      \ \"펍\"\n    results:\n      - name: \"LP바 한밤소리\"\n        address: \"서울 용산구\
+      \ 한남대로 88\"\n        openingHours: \"18:00 ~ 02:00\"\n        description: \"\
+      DJ가 직접 큐레이션한 LP로 선곡하는 빈티지 무드의 펍. 늦은 밤 조용히 음악과 술을 즐기기 좋은 공간.\"\n        instagram:\
+      \ \"https://www.instagram.com/hanbamsori_lpbar\"\n\n      - name: \"디지펍\"\n\
+      \        address: \"서울 용산구 독서당로 17길 21\"\n        openingHours: \"20:00 ~ 03:00\"\
+      \n        description: \"DJ가 아날로그 LP만으로 플레이하는 감성 펍. 바텐더 추천 칵테일과 함께 분위기를 즐기기\
+      \ 좋음.\"\n        instagram: \"https://www.instagram.com/djpub_seoul\"\n\n  \
+      \    - name: \"빈티지비트\"\n        address: \"서울 용산구 이태원로 254\"\n        openingHours:\
+      \ \"21:00 ~ 04:00\"\n        description: \"LP 음악과 조명이 어우러진 이색 공간. 외국인 손님도 자주\
+      \ 찾는 글로벌 무드의 펍.\"\n        instagram: \"https://www.instagram.com/vintagebeat_lp\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 영화 이름, 예약자 이름, 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "다음은 오늘 강남 지역에서 상영 중인 영화 정보입니다.\n\n1. 서울의 밤\n\n* 장르: 드라마\n* 관람 등급: 15세\
+      \ 이상 관람가\n* 평점: 4.7\n* 상영 시간: 108분\n* 극장: CGV 강남\n* 상영 시간표: 13:20, 16:40, 20:10\n\
+      \n2. 2049 리와인드\n\n* 장르: SF / 스릴러\n* 관람 등급: 12세 이상 관람가\n* 평점: 4.5\n* 상영 시간: 120분\n\
+      * 극장: 메가박스 강남\n* 상영 시간표: 14:00, 17:30, 21:00\n\n▶ 한남동 내 LP펍을 추천드릴게요.\n\n1. LP바\
+      \ 한밤소리\n\n   * 주소: 서울 용산구 한남대로 88\n   * 운영시간: 18:00 ~ 02:00\n   * 특징: DJ 큐레이션\
+      \ LP 선곡, 빈티지 무드, 조용한 밤 분위기\n   * 인스타그램: [hanbamsori\\_lpbar](https://www.instagram.com/hanbamsori_lpbar)\n\
+      \n2. 디지펍\n\n   * 주소: 서울 용산구 독서당로 17길 21\n   * 운영시간: 20:00 ~ 03:00\n   * 특징:\
+      \ LP 전용 DJ 플레이, 감성 칵테일, 감각적 조명\n   * 인스타그램: [djpub\\_seoul](https://www.instagram.com/djpub_seoul)\n\
+      \n3. 빈티지비트\n\n   * 주소: 서울 용산구 이태원로 254\n   * 운영시간: 21:00 ~ 04:00\n   * 특징: 글로벌\
+      \ 무드, 외국인 방문 잦음, 조명과 LP 음악 조화\n   * 인스타그램: [vintagebeat\\_lp](https://www.instagram.com/vintagebeat_lp)\n\
+      \n예매를 원하시는 영화와 예약자의 성함, 연락처를 알려주세요."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: '서울의밤 20:10 으로 성인 2명 해줘
+
+      이상민 010-0000-0000'
+- workflow_id: null
+  step_id: 9
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookMovieTicket\narguments:\n  refinedQuery: \"CGV 강남 서울의 밤 영화\
+      \ 상영시간 20:10으로 성인 2명 예약\"\n  movieTitle: \"서울의 밤\"\n  theaterName: \"CGV 강남\"\
+      \n  showDate: \"2025-12-15\"\n  showTime: \"20:10\"\n  audienceCount: 2\n  audienceTypes:\
+      \ [\"adult\", \"adult\"]\n  userInfo:\n    name: \"이상민\"\n    contact: \"010-0000-0000\"\
+      \ntool_call_result:\n  reservationStatus: \"confirmed\"\n  movieTitle: \"서울의\
+      \ 밤\"\n  theaterName: \"CGV 강남\"\n  showDate: \"2025-12-15\"\n  showTime: \"\
+      20:10\"\n  duration: \"108분\"\n  audienceCount: 2\n  audienceType: \"성인\"\n\
+      \  userInfo: [\"이상민\", \"010-0000-0000\"]\n  reservationNumber: \"CGV20251215-2083\"\
+      \n  seatNumbers: [\"E10\", \"E11\"]"
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 예매가 완료되었습니다.
+
+
+      * 영화 제목: 서울의 밤
+
+      * 극장: CGV 강남
+
+      * 상영 일시: 2025년 12월 15일 (월) 20:10
+
+      * 인원: 성인 2명
+
+      * 예약자 성함: 이상민
+
+
+      관람 전 예매 내역을 다시 한 번 확인해주세요.
+
+      즐거운 영화 관람 되시길 바랍니다.'

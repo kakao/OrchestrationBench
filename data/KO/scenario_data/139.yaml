@@ -1,0 +1,115 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2026년 5월 15일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 내일 친구랑 자전거 타고 반포 한강공원 갈거야. 집 근처 자전거 대여소 위치랑 내일 반포동 날씨 알려줘. 그리고 가는 길에
+      버블티 파는 카페 있는지도 알아봐줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"집 근처\
+      \ 자전거 대여소 위치\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: weather_agent\n      refined_query: \"내일\
+      \ 반포동 날씨\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"반포 한강공원\
+      \ 가는 길에 있는 버블티 파는 카페\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 자전거 대여할 위치'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"2026년 5월 16일\
+      \ 반포동 날씨\"\n  location: \"반포동\"\n  date: \"2026-05-16\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"2026년 5월 16일 반포동 날씨\"\n    location: \"반포동\"\n\
+      \    date: \"2026-05-16\"\n    weather:\n      temperature:\n        high: \"\
+      23°C\"\n        low: \"15°C\"\n      conditions: \"맑음\"\n      precipitation:\
+      \ \"0%\"\n      humidity: \"45%\"\n      wind:\n        speed: \"10 km/h\"\n\
+      \        direction: \"북동\"\n    summary: \"2026년 5월 16일 반포동 날씨는 맑고 기온은 15°C에서\
+      \ 23°C 사이일 것으로 예상됩니다.\"\n    status: \"정보 검색 완료\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"반포 한강공원 가는\
+      \ 길에 있는 버블티 파는 카페\"\n  sortBy: \"highest_rated\"\n  cuisineType: \"디저트 카페\"\n\
+      \  specificDishes: \"버블티\"\n  location: \"반포 한강공원\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"반포 한강공원 가는 길에 있는 버블티 파는 카페\"\n    sortBy: \"highest_rated\"\
+      \n    cuisineType: \"디저트 카페\"\n    specificDishes: \"버블티\"\n    location: \"\
+      반포 한강공원\"\n    recommendedCafes:\n      - cafeName: \"버블앤티\"\n        rating:\
+      \ 4.8\n        address: \"서울시 서초구 반포동 123-45\"\n        description: \"다양한 맛의\
+      \ 버블티와 디저트를 제공하는 인기 카페\"\n        popularDishes: \n          - \"타로 버블티\"\n\
+      \          - \"블랙 밀크티 버블티\"\n      - cafeName: \"새프레소 카페\"\n        rating:\
+      \ 4.7\n        address: \"서울시 강남구 신사동 678-90\"\n        description: \"품질 좋은\
+      \ 재료로 만든 버블티가 유명한 카페\"\n        popularDishes:\n          - \"녹차 버블티\"\n   \
+      \       - \"자몽 버블티\"\n      - cafeName: \"티라떼\"\n        rating: 4.6\n     \
+      \   address: \"서울시 서초구 방배동 543-21\"\n        description: \"편안한 분위기에서 즐길 수 있는\
+      \ 다양한 디저트와 버블티\"\n        popularDishes:\n          - \"망고 버블티\"\n         \
+      \ - \"오리지널 밀크티 버블티\"\n    status: \"추천 완료\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 자전거 대여소 위치를 찾기 위해서는 자전거를 대여하실 위치 정보가 필요합니다.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 서래마을이야.
+- workflow_id: workflow_1
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransportInfo\narguments:\n  refinedQuery: \"서래마을 근처 자전거 대여소\
+      \ 위치\"\n  location: \"서래마을\"\n  includeModes: \"bike\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"서래마을 근처 자전거 대여소 위치\"\n    location: \"서래마을\"\n\
+      \    includeModes: \"bike\"\n    bikeRentalLocations:\n      - rentalName: \"\
+      서래마을 자전거 대여소\"\n        address: \"서울시 서초구 서래로 12길 34\"\n        distanceFromLocation:\
+      \ \"200m\"\n        availableBikes: 15\n      - rentalName: \"양재천 자전거 대여소\"\n\
+      \        address: \"서울시 서초구 양재천로 46\"\n        distanceFromLocation: \"750m\"\
+      \n        availableBikes: 10\n      - rentalName: \"반포 자전거 대여소\"\n        address:\
+      \ \"서울시 서초구 반포대로 176\"\n        distanceFromLocation: \"1.2km\"\n        availableBikes:\
+      \ 20\n    status: \"정보 검색 완료\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "◾내일 반포동 날씨 정보\n\n2026년 5월 16일, 반포동의 날씨 정보입니다. 이날 반포동은 맑은 날씨가 예상되며, 기온은\
+      \ 최저 15°C에서 최고 23°C 사이일 것입니다. 강수 확률은 0%로 비 소식은 없으며, 상대 습도는 45% 정도로 예상됩니다. 바람은\
+      \ 북동 방향으로 시속 10 km 정도로 불겠습니다. 자전거 타기에 딱 좋은 날씨네요!\n\n\n◾서래마을 근처 자전거 대여소 정보\n\n\
+      1. 서래마을 자전거 대여소\n   - 주소: 서울시 서초구 서래로 12길 34\n   - 위치: 서래마을에서 약 200m 거리\n  \
+      \ - 대여 가능 자전거 수: 15대\n\n2. 양재천 자전거 대여소\n   - 주소: 서울시 서초구 양재천로 46\n   - 위치: 서래마을에서\
+      \ 약 750m 거리\n   - 대여 가능 자전거 수: 10대\n\n3. 반포 자전거 대여소\n   - 주소: 서울시 서초구 반포대로 176\n\
+      \   - 위치: 서래마을에서 약 1.2km 거리\n   - 대여 가능 자전거 수: 20대\n\n\n◾반포 한강공원 가는 길에 버블티를\
+      \ 즐길 수 있는 추천 카페 목록\n\n1. 버블앤티\n   - 평점: 4.8\n   - 주소: 서울시 서초구 반포동 123-45\n \
+      \  - 설명: 다양한 맛의 버블티와 디저트를 제공하는 인기 카페입니다.\n   - 인기 메뉴: 타로 버블티, 블랙 밀크티 버블티\n\n\
+      2. 새프레소 카페\n   - 평점: 4.7\n   - 주소: 서울시 강남구 신사동 678-90\n   - 설명: 품질 좋은 재료로 만든\
+      \ 버블티가 유명한 카페입니다.\n   - 인기 메뉴: 녹차 버블티, 자몽 버블티\n\n3. 티라떼\n   - 평점: 4.6\n   -\
+      \ 주소: 서울시 서초구 방배동 543-21\n   - 설명: 편안한 분위기에서 즐길 수 있는 다양한 디저트와 버블티를 제공합니다.\n\
+      \   - 인기 메뉴: 망고 버블티, 오리지널 밀크티 버블티"

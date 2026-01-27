@@ -1,0 +1,133 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 8월 4일 월요일
+
+      - 현재 시각: 21:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 요새 회식이 잦네. 15분 있다가 대리운전 예약해줄 수 있어? 그리고 8월 1일 저녁 7시에 디자인팀 회식 잡혔는데 일정 등록해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"15분 후에\
+      \ 대리운전 예약\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: calendar_agent\n      refined_query: \"\
+      8월 1일 저녁 7시에 디자인팀 회식 일정 등록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 사용자의 예약 희망 시간이 최소 예약 가능 기준(현재 시간 기준 30분~2시간 내)을 충족하지 않아 대리운전
+      예약 불가'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 일정 시작 시간이 과거이므로 저장 불가'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '대리운전 예약은 현재 시간 기준으로 최소 30분~2시간 내에만 가능합니다.
+
+
+      또한 일정 시작 시간은 반드시 현재 시각 이후여야 합니다. 일정 등록을 원하시는 날짜를 다시 한 번 확인해주세요.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 아, 그래? 그러면 그냥 지금 바로 호출해줘. 날짜를 잘못 썼네. 1일이 아니라 11일이야.
+- workflow_id: workflow_1
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 픽업 장소, 차량 정보'
+- workflow_id: workflow_2
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"8월 11일 저녁 7시에 디자인팀\
+      \ 회식 일정 등록\"\n  title: \"디자인팀 회식\"\n  startDateTime: \"2025-08-11T19:00\"\n\
+      \  endDateTime: \"2025-08-11T20:00\"\ntool_call_result:\n  data:\n    status:\
+      \ \"등록 완료\"\n    schedule:\n      - title: \"디자인팀 회식\"\n        startDateTime:\
+      \ \"2025-08-11T19:00\"\n        endDateTime: \"2025-08-11T20:00\"\n        description:\
+      \ \"8월 11일 저녁 7시에 디자인팀 회식이 예정되어 있습니다.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 대리운전 호출을 위해서는 기사님이 차량을 픽업할 출발 위치 정보가 필요합니다. 운행 예정 차량의 상세 정보도 알려주세요. 예를
+      들어 '쏘나타 흰색 32가1234' 처럼 말씀해주세요.
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 경향신문사 본사에서 출발할거야. 차량 정보는 K5 검은색 11다2345.
+- workflow_id: workflow_1
+  step_id: 12
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callDesignatedDriver\narguments:\n  refinedQuery: \"경향신문사 본사에서\
+      \ 지금 바로 대리운전 호출\"\n  pickupLocation: \"경향신문사 본사\"\n  vehicleInfo: \"K5 검은색 11다2345\"\
+      \n  pickupTime: \"now\"\ntool_call_result:\n  data:\n    status: \"호출 완료\"\n\
+      \    driverDetails:\n      name: \"김기사\"\n      contact: \"010-1234-5678\"\n\
+      \      estimatedArrivalTime: \"10분\"\n    pickupLocation: \"경향신문사 본사\"\n   \
+      \ vehicleInfo: \"K5 검은색 11다2345\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: '대리운전 호출과 일정 등록이 완료되었습니다.
+
+
+      ◾대리운전 호출 정보
+
+      - 운전기사: 김기사
+
+      - 차량: K5 검은색
+
+      - 번호판: 11다2345
+
+      - 기사 연락처: 010-1234-5678
+
+      - 픽업 장소: 경향신문사 본사
+
+      - 도착 예정 시간: 약 10분 후 (21:10)
+
+
+      ◾ 일정 등록 정보
+
+      - 이벤트: 디자인팀 회식
+
+      - 일시: 2025년 8월 11일 저녁 7시 ~ 8시
+
+      - 설명: 8월 11일 저녁 7시에 디자인팀 회식이 예정되어 있습니다.'

@@ -1,0 +1,161 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: I want to try making Greek yogurt. Can you recommend a YouTube video
+      that shows how to make it? Also, please show me the equipment I’ll need.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Recommend YouTube videos on how to make Greek yogurt\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ shopping_agent\n      refined_query: \"Recommend appliances needed to make\
+      \ Greek yogurt\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainmant_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"Recommended YouTube\
+      \ videos on how to make Greek yogurt\"\ntool_call_result:\n  videos:\n    -\
+      \ title: \"Easy Homemade Greek Yogurt | Beginner-Friendly Recipe\"\n      channel:\
+      \ \"Cooking with Soo\"\n      uploadDate: \"2024-09-15\"\n      views: \"1.2M\"\
+      \n      link: \"https://www.youtube.com/watch?v=grkyogurt101\"\n\n    - title:\
+      \ \"How to Make Greek Yogurt | Healthy with Just 3 Ingredients!\"\n      channel:\
+      \ \"Healthy Life Kitchen\"\n      uploadDate: \"2023-11-02\"\n      views: \"\
+      860K\"\n      link: \"https://www.youtube.com/watch?v=grkyogurt202\"\n\n   \
+      \ - title: \"No Oven Needed! Sugar-Free Greek Yogurt Recipe\"\n      channel:\
+      \ \"Sweet Home Recipe\"\n      uploadDate: \"2024-06-28\"\n      views: \"645K\"\
+      \n      link: \"https://www.youtube.com/watch?v=grkyogurt303\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Recommend machines\
+      \ for making Greek yogurt\"\n  sortBy: \"latest\"\n  productCategory: \"Kitchen\
+      \ Appliances\"\ntool_call_result:\n  products:\n    - name: \"Cuisinart Automatic\
+      \ Yogurt Maker CYM-100\"\n      price: \"$129\"\n      description: \"Yogurt\
+      \ maker with automatic temperature control and timer, includes Greek yogurt\
+      \ strainer.\"\n      link: \"https://example.com/product/cym-100\"\n      features:\n\
+      \        - Automatic temperature maintenance\n        - 1L capacity\n      \
+      \  - Easy to clean\n        - Includes Greek yogurt strainer\n\n    - name:\
+      \ \"Bianco Greek Yogurt Maker GY-700\"\n      price: \"$89\"\n      description:\
+      \ \"Dedicated Greek yogurt maker with low-temperature fermentation and easy\
+      \ filter replacement.\"\n      link: \"https://example.com/product/gy-700\"\n\
+      \      features:\n        - Low-temperature fermentation\n        - 8-hour automatic\
+      \ timer\n        - Stainless steel inner container\n        - Replaceable filter\n\
+      \n    - name: \"Philips Multicooker Viva Collection HD3167\"\n      price: \"\
+      $159\"\n      description: \"Multicooker with various cooking modes and fermentation\
+      \ function, suitable for yogurt and Greek yogurt.\"\n      link: \"https://example.com/product/hd3167\"\
+      \n      features:\n        - 12 cooking modes\n        - Adjustable fermentation\
+      \ temperature\n        - 5L large capacity\n        - Keep warm and scheduling\
+      \ functions"
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Here are some recommended YouTube videos on how to make Greek yogurt\
+      \ at home.\n\n1. Easy Homemade Greek Yogurt | A Beginner-Friendly Recipe**\n\
+      \  Channel: Cooking with Soo / Views: 1.2M / Uploaded: 2024-09-15\n  [Watch\
+      \ Video](https://www.youtube.com/watch?v=grkyogurt101)\n\n2. How to Make Greek\
+      \ Yogurt | Healthy with Just 3 Ingredients!**\n  Channel: Healthy Life Kitchen\
+      \ / Views: 860K / Uploaded: 2023-11-02\n  [Watch Video](https://www.youtube.com/watch?v=grkyogurt202)\n\
+      \n3. No Oven! Sugar-Free Greek Yogurt Recipe**\n  Channel: Sweet Home Recipe\
+      \ / Views: 645K / Uploaded: 2024-06-28\n  [Watch Video](https://www.youtube.com/watch?v=grkyogurt303)\n\
+      \n\n▶ Recommended appliances for making Greek yogurt at home:\n\n1. Cuisinart\
+      \ Automatic Yogurt Maker CYM-100** ($129)\n  Features automatic temperature\
+      \ control and timer, includes a Greek yogurt strainer.\n  [View Product](https://example.com/product/cym-100)\n\
+      \n2. Bianco Greek Yogurt Maker GY-700** ($89)\n  Low-temperature fermentation\
+      \ and replaceable filter system for easy use.\n  [View Product](https://example.com/product/gy-700)\n\
+      \n3. Philips Multicooker Viva Collection HD3167** ($159)\n  Adjustable fermentation\
+      \ temperature and multiple cooking modes, suitable for yogurt making.\n  [View\
+      \ Product](https://example.com/product/hd3167)"
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 'That’s way too expensive.
+
+      Show me white ones under $60, and also the ingredients needed to make Greek
+      yogurt.'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"YouTube video recommendations on how to make Greek yogurt\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: shopping_agent\n      refined_query: \"Recommend appliances needed\
+      \ to make Greek yogurt\"\n\nworkflow_2-1:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"Recommend a white appliance under $60 for making Greek yogurt\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: search_agent\n      refined_query: \"Ingredients needed to make\
+      \ Greek yogurt\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Recommend a white\
+      \ Greek yogurt maker under $60\"\n  sortBy: \"latest\"\n  productCategory: \"\
+      kitchen appliances\"\n  maxPrice: 60\n  color: \"white\"\ntool_call_result:\n\
+      \  products:\n    - name: \"Richen Greek Yogurt Maker RY-1500\"\n      price:\
+      \ \"$59\"\n      description: \"A white yogurt maker with simple button controls\
+      \ and automatic fermentation.\"\n      link: \"https://example.com/product/ry-1500\"\
+      \n      features:\n        - 1L capacity\n        - 8-hour automatic fermentation\n\
+      \        - Removable inner container\n        - Quiet operation\n\n    - name:\
+      \ \"Hurom Homemade Yogurt Maker HY-20W\"\n      price: \"$55\"\n      description:\
+      \ \"Minimalist white design, includes Greek yogurt strainer.\"\n      link:\
+      \ \"https://example.com/product/hy-20w\"\n      features:\n        - 1.2L capacity\n\
+      \        - Adjustable temperature\n        - Includes strainer\n        - Energy-saving\
+      \ mode\n\n    - name: \"Cuckoo Mini Yogurt Maker CY-100W\"\n      price: \"\
+      $49\"\n      description: \"Compact and budget-friendly white yogurt maker.\"\
+      \n      link: \"https://example.com/product/cy-100w\"\n      features:\n   \
+      \     - 0.8L capacity\n        - One-touch operation\n        - Easy to clean\n\
+      \        - Automatic temperature control"
+- workflow_id: workflow_3
+  step_id: 9
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Ingredients needed to\
+      \ make Greek yogurt\"\ntool: searchInfo\narguments:\n  refinedQuery: \"Ingredients\
+      \ needed to make Greek yogurt\"\ntool_call_result:\n  info:\n    title: \"Ingredients\
+      \ for Making Greek Yogurt\"\n    summary: \"A basic list of ingredients needed\
+      \ to make Greek yogurt at home.\"\n    ingredients:\n      - Plain yogurt (unsweetened)\n\
+      \      - Cheesecloth or yogurt strainer\n      - Strainer (stainless steel or\
+      \ plastic)\n      - Bowl (to collect whey)\n      - Container with lid (for\
+      \ storage)\n      - Milk (if fermenting yogurt from scratch)"
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s a list of recommended white yogurt makers under $60 for making\
+      \ Greek yogurt:\n\n1. Richen Greek Yogurt Maker RY-1500 ($59)\n\n  * Simple\
+      \ button controls, 8-hour automatic fermentation, 1L capacity, detachable inner\
+      \ container, quiet operation\n  * [View Product](https://example.com/product/ry-1500)\n\
+      \n2. Hurom Homemade Yogurt Maker HY-20W ($55)\n\n  * Minimal white design, 1.2L\
+      \ capacity, adjustable temperature, includes strainer, energy-saving mode\n\
+      \  * [View Product](https://example.com/product/hy-20w)\n\n3. Cuckoo Mini Yogurt\
+      \ Maker CY-100W ($49)\n\n  * Compact size, 0.8L capacity, one-touch operation,\
+      \ easy to clean, automatic temperature control for fermentation\n  * [View Product](https://example.com/product/cy-100w)\n\
+      \nTo make Greek yogurt, you’ll need the following ingredients and tools:\n\n\
+      * Plain unsweetened yogurt\n* Cheesecloth or yogurt strainer\n* Strainer (stainless\
+      \ steel or plastic)\n* Bowl (to collect whey)\n* Container with lid (for storing\
+      \ the finished product)\n* Milk (if fermenting yogurt from scratch)"

@@ -1,0 +1,138 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: '그릭요거트 만들어보고싶은데,, 유튜브에 만드는법 영상 있으면 추천해줘.
+
+      만들때 필요한 기계들도 보여줘'
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      유튜브 그릭요거트 만드는 법 영상 추천\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"그릭요거트를 만들때 필요한 기계 추천\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"유튜브 그릭요거트 만드는 법 영상\
+      \ 추천\"\ntool_call_result:\n  videos:\n    - title: \"집에서 쉽게 만드는 그릭요거트 | 초보도\
+      \ 성공하는 레시피\"\n      channel: \"Cooking with Soo\"\n      uploadDate: \"2024-09-15\"\
+      \n      views: \"1.2M\"\n      link: \"https://www.youtube.com/watch?v=grkyogurt101\"\
+      \n\n    - title: \"그릭요거트 만들기 | 준비물 3가지로 건강하게!\"\n      channel: \"Healthy Life\
+      \ Kitchen\"\n      uploadDate: \"2023-11-02\"\n      views: \"860K\"\n     \
+      \ link: \"https://www.youtube.com/watch?v=grkyogurt202\"\n\n    - title: \"\
+      노오븐! 무설탕 그릭요거트 만드는 방법\"\n      channel: \"Sweet Home Recipe\"\n      uploadDate:\
+      \ \"2024-06-28\"\n      views: \"645K\"\n      link: \"https://www.youtube.com/watch?v=grkyogurt303\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"그릭요거트를 만들때 필요한 기계\
+      \ 추천\"\n  sortBy: \"latest\"\n  productCategory: \"주방가전\"\ntool_call_result:\n\
+      \  products:\n    - name: \"쿠진아트 자동 요거트 메이커 CYM-100\"\n      price: \"₩129,000\"\
+      \n      description: \"자동 온도 조절 기능과 타이머가 탑재된 요거트 메이커로, 그릭요거트 필터망 포함.\"\n   \
+      \   link: \"https://example.com/product/cym-100\"\n      features:\n       \
+      \ - 자동 온도 유지\n        - 1L 용량\n        - 세척 용이\n        - 그릭요거트 전용 필터 포함\n\n\
+      \    - name: \"비앙코 그릭요거트 메이커 GY-700\"\n      price: \"₩89,000\"\n      description:\
+      \ \"저온 발효 기능과 간편 필터 교체 구조를 갖춘 그릭요거트 전용 기기.\"\n      link: \"https://example.com/product/gy-700\"\
+      \n      features:\n        - 저온 발효\n        - 8시간 자동 타이머\n        - 스테인리스 내통\n\
+      \        - 필터 교체식\n\n    - name: \"필립스 멀티쿠커 Viva Collection HD3167\"\n     \
+      \ price: \"₩159,000\"\n      description: \"다양한 조리 모드와 발효 기능이 포함되어 요거트 및 그릭요거트\
+      \ 제작 가능.\"\n      link: \"https://example.com/product/hd3167\"\n      features:\n\
+      \        - 12가지 조리 모드\n        - 발효 온도 조절\n        - 5L 대용량\n        - 보온 및\
+      \ 예약 기능"
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 그릭요거트를 집에서 만들 수 있는 추천 유튜브 영상을 안내드립니다.\n\n1. 집에서 쉽게 만드는 그릭요거트 | 초보도\
+      \ 성공하는 레시피**\n  채널: Cooking with Soo / 조회수: 1.2M / 업로드: 2024-09-15\n  [영상 보기](https://www.youtube.com/watch?v=grkyogurt101)\n\
+      \n2. 그릭요거트 만들기 | 준비물 3가지로 건강하게!**\n  채널: Healthy Life Kitchen / 조회수: 860K /\
+      \ 업로드: 2023-11-02\n  [영상 보기](https://www.youtube.com/watch?v=grkyogurt202)\n\
+      \n3. 노오븐! 무설탕 그릭요거트 만드는 방법**\n  채널: Sweet Home Recipe / 조회수: 645K / 업로드: 2024-06-28\n\
+      \  [영상 보기](https://www.youtube.com/watch?v=grkyogurt303)\n\n\n▶ 그릭요거트를 만들 때\
+      \ 사용할 수 있는 추천 기기를 안내드립니다.\n\n1. 쿠진아트 자동 요거트 메이커 CYM-100** (₩129,000)\n  자동 온도\
+      \ 조절과 타이머 기능이 있으며, 그릭요거트 전용 필터망 포함.\n  [제품 보기](https://example.com/product/cym-100)\n\
+      \n2. 비앙코 그릭요거트 메이커 GY-700** (₩89,000)\n  저온 발효 기능과 필터 교체식 구조로 간편하게 사용 가능.\n\
+      \  [제품 보기](https://example.com/product/gy-700)\n\n3. 필립스 멀티쿠커 Viva Collection\
+      \ HD3167** (₩159,000)\n  발효 온도 조절 및 다양한 조리 모드를 지원하여 요거트 제작 가능.\n  [제품 보기](https://example.com/product/hd3167)"
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: '너무비싼데?
+
+      6만원 아래 흰색으로 보여줘, 그리고 그릭요거트 만들때 필요한 재료도 보여줘.'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"유튜브 그릭요거트 만드는 법 영상 추천\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: shopping_agent\n      refined_query:\
+      \ \"그릭요거트를 만들때 필요한 기계 추천\"\n\nworkflow_2-1:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"그릭요거트를 만들때 필요한 기계 6만원 이하 흰색으로 추천\"\n\nworkflow_3:\n  status: pending\n \
+      \ type: independent\n  steps:\n    - status: pending\n      name: search_agent\n\
+      \      refined_query: \"그릭요거트 만들때 필요한 재료\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"그릭요거트를 만들때 필요한 기계\
+      \ 6만원이하 흰색으로 추천\"\n  sortBy: \"latest\"\n  productCategory: \"주방가전\"\n  maxPrice:\
+      \ 60000\n  color: \"흰색\"\ntool: searchProducts\narguments:\n  refinedQuery:\
+      \ \"그릭요거트를 만들때 필요한 기계 6만원이하 흰색으로 추천\"\n  sortBy: \"latest\"\n  productCategory:\
+      \ \"주방가전\"\n  maxPrice: 60000\n  color: \"흰색\"\ntool_call_result:\n  products:\n\
+      \    - name: \"리첸 그릭요거트 메이커 RY-1500\"\n      price: \"₩59,000\"\n      description:\
+      \ \"간편한 버튼 조작과 자동 발효 기능을 갖춘 흰색 요거트 메이커.\"\n      link: \"https://example.com/product/ry-1500\"\
+      \n      features:\n        - 1L 용량\n        - 자동 발효 8시간\n        - 분리형 내통\n\
+      \        - 저소음 작동\n\n    - name: \"휴롬 홈메이드 요거트 메이커 HY-20W\"\n      price: \"\
+      ₩55,000\"\n      description: \"화이트 컬러의 미니멀 디자인, 그릭요거트 필터 포함.\"\n      link:\
+      \ \"https://example.com/product/hy-20w\"\n      features:\n        - 1.2L 용량\n\
+      \        - 온도 조절 가능\n        - 필터망 포함\n        - 절전 모드\n\n    - name: \"쿠쿠 미니\
+      \ 요거트 메이커 CY-100W\"\n      price: \"₩49,000\"\n      description: \"소형 사이즈의\
+      \ 가성비 좋은 흰색 요거트 메이커.\"\n      link: \"https://example.com/product/cy-100w\"\n\
+      \      features:\n        - 0.8L 용량\n        - 원터치 작동\n        - 세척 용이\n   \
+      \     - 발효 온도 자동 유지"
+- workflow_id: workflow_3
+  step_id: 9
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"그릭요거트 만들때 필요한 재료\"\n\
+      tool: searchInfo\narguments:\n  refinedQuery: \"그릭요거트 만들때 필요한 재료\"\ntool_call_result:\n\
+      \  info:\n    title: \"그릭요거트 만들기 재료\"\n    summary: \"집에서 그릭요거트를 만들기 위해 필요한\
+      \ 기본 재료 목록입니다.\"\n    ingredients:\n      - 플레인 요거트 (무가당)\n      - 면 보자기 또는\
+      \ 요거트 전용 필터\n      - 체 (스테인리스 또는 플라스틱)\n      - 볼 (유청 받이용)\n      - 뚜껑이 있는 용기\
+      \ (완성품 보관용)\n      - 우유 (요거트를 직접 발효할 경우)"
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "그릭요거트를 만들 때 6만원 이하, 흰색 기계 추천 목록입니다.\n\n1. 리첸 그릭요거트 메이커 RY-1500** (₩59,000)\n\
+      \n  * 간편 버튼 조작, 자동 발효 8시간, 1L 용량, 분리형 내통, 저소음 작동\n  * [제품 보기](https://example.com/product/ry-1500)\n\
+      \n2. 휴롬 홈메이드 요거트 메이커 HY-20W** (₩55,000)\n\n  * 미니멀 화이트 디자인, 1.2L 용량, 온도 조절 가능,\
+      \ 필터망 포함, 절전 모드\n  * [제품 보기](https://example.com/product/hy-20w)\n\n3. 쿠쿠 미니\
+      \ 요거트 메이커 CY-100W** (₩49,000)\n\n  * 소형 사이즈, 0.8L 용량, 원터치 작동, 세척 용이, 발효 온도 자동\
+      \ 유지\n  * [제품 보기](https://example.com/product/cy-100w)\n\n그릭요거트를 만들기 위해서는 다음\
+      \ 재료가 필요합니다.\n\n* 플레인 요거트(무가당)\n* 면 보자기 또는 요거트 전용 필터\n* 체(스테인리스 또는 플라스틱)\n*\
+      \ 볼(유청 받이용)\n* 뚜껑이 있는 용기(완성품 보관용)\n* 우유(요거트를 직접 발효할 경우)"

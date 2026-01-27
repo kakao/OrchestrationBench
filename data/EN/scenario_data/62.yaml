@@ -1,0 +1,223 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-04-02'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I’m doing research on animal abuse. Please find and summarize news articles
+      from the past three months, including today, related to animal abuse. Also,
+      look up the definition and characteristics of a psychopath and laws related
+      to animal abuse.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: news_agent\n      refined_query: \"Search for\
+      \ news related to animal abuse within the past 3 months, including today\"\n\
+      \nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: pending\n      name: news_agent\n      refined_query:\
+      \ \"Summarize news related to animal abuse within the past 3 months, including\
+      \ today\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: search_agent\n      refined_query: \"Search\
+      \ for the definition and characteristics of a psychopath and laws related to\
+      \ animal abuse\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"Search for news related\
+      \ to animal abuse within the past 3 months, including today\"\n  fromDate: \"\
+      2025-01-02\"\n  toDate: \"2025-04-02\"\n  limit: 5\ntool_call_result:\n  data:\n\
+      \    searchQuery: \"Search for news related to animal abuse within the past\
+      \ 3 months, including today\"\n    resultCount: 5\n    newsArticles:\n     \
+      \ - title: \"Rise in animal abuse cases sparks public concern\"\n        url:\
+      \ \"https://www.cnn.com/2025/03/28/us/animal-abuse-cases-increase\"\n      \
+      \  datePublished: \"2025-03-28\"\n      - title: \"Animal protection groups\
+      \ ramp up rescue efforts for abused animals\"\n        url: \"https://www.nytimes.com/2025/03/15/us/animal-rescue-efforts.html\"\
+      \n        datePublished: \"2025-03-15\"\n      - title: \"Bill strengthening\
+      \ penalties for animal abuse passes Congress\"\n        url: \"https://www.washingtonpost.com/2025/02/20/us/animal-abuse-penalties-bill\"\
+      \n        datePublished: \"2025-02-20\"\n      - title: \"Increase in abandoned\
+      \ pets highlights need for greater awareness of animal abuse\"\n        url:\
+      \ \"https://www.usatoday.com/2025/01/30/us/abandoned-pets-animal-abuse-awareness\"\
+      \n        datePublished: \"2025-01-30\"\n      - title: \"Nationwide campaign\
+      \ to prevent animal abuse continues to spread\"\n        url: \"https://abcnews.go.com/2025/01/10/us/national-animal-abuse-prevention-campaign\"\
+      \n        datePublished: \"2025-01-10\""
+- workflow_id: workflow_3
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: searchInfo\n    arguments:\n      refinedQuery:\
+      \ \"Definition and traits of a psychopath\"\n\n  - tool: searchInfo\n    arguments:\n\
+      \      refinedQuery: \"Animal cruelty legislation\"\n\ntool_call_result:\n \
+      \ - tool: searchInfo\n    data:\n      summary: >\n        A psychopath is a\
+      \ type of personality disorder characterized by lack of empathy, impulsivity,\
+      \ and antisocial behavior. \n        They often disregard the rights of others\
+      \ and repeatedly lie, manipulate, and act irresponsibly, showing little to no\
+      \ guilt or remorse. \n        Common traits include being superficially charming\
+      \ yet emotionally cold, behaving impulsively and aggressively, and avoiding\
+      \ responsibility.\n      details:\n        - Item: \"Definition\"\n        \
+      \  Content: \"A personality disorder marked by lack of empathy and antisocial\
+      \ behavior\"\n        - Item: \"Key Traits\"\n          Content: \"Impulsivity,\
+      \ irresponsibility, lying, manipulation, lack of remorse\"\n        - Item:\
+      \ \"Behavioral Patterns\"\n          Content: \"Disregard for others' rights,\
+      \ emotional coldness, aggression\"\n        - Item: \"Social Impact\"\n    \
+      \      Content: \"Crime, interpersonal issues, workplace conflicts\"\n\n  -\
+      \ tool: searchInfo\n    data:\n      summary: >\n        In the United States,\
+      \ animal cruelty laws are primarily governed by the federal Animal Welfare Act\
+      \ and various state-level statutes. \n        These laws aim to protect animals,\
+      \ define abusive acts, set penalties, and establish reporting and investigation\
+      \ procedures. \n        Penalties and enforcement can vary by state, with harsher\
+      \ punishments for repeat offenders in many jurisdictions.\n      details:\n\
+      \        - Item: \"Law Name\"\n          Content: \"Animal Welfare Act (federal)\
+      \ and state-specific animal cruelty laws\"\n        - Item: \"Key Provisions\"\
+      \n          Content: \"Ban on animal abuse, fines and imprisonment for violations,\
+      \ support for animal shelters\"\n        - Item: \"Stronger Penalties\"\n  \
+      \        Content: \"Harsher punishment for repeat offenders; penalties vary\
+      \ by state\"\n        - Item: \"Reporting and Investigation\"\n          Content:\
+      \ \"Mandatory reporting in many states and prompt investigation procedures\"\
+      \n      lastUpdated: \"2025-04-02\""
+- workflow_id: workflow_2
+  step_id: 6
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"Rise in animal abuse cases sparks public concern - news summary\"\n    \
+      \  url: \"https://www.cnn.com/2025/03/28/us/animal-abuse-cases-increase\"\n\n\
+      \  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Animal protection\
+      \ groups ramp up rescue efforts for abused animals - news summary\"\n      url:\
+      \ \"https://www.nytimes.com/2025/03/15/us/animal-rescue-efforts.html\"\n\n \
+      \ - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Bill strengthening\
+      \ penalties for animal abuse passes Congress - news summary\"\n      url: \"\
+      https://www.washingtonpost.com/2025/02/20/us/animal-abuse-penalties-bill\"\n\
+      \n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Increase in\
+      \ abandoned pets highlights need for greater awareness of animal abuse - news\
+      \ summary\"\n      url: \"https://www.usatoday.com/2025/01/30/us/abandoned-pets-animal-abuse-awareness\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"Nationwide\
+      \ campaign to prevent animal abuse continues to spread - news summary\"\n  \
+      \    url: \"https://abcnews.go.com/2025/01/10/us/national-animal-abuse-prevention-campaign\"\
+      \n\ntool_call_result:\n  - tool: summarizeNews\n    result: |\n      Reports\
+      \ show a recent increase in animal abuse cases, leading to heightened public\
+      \ awareness.  \n      Authorities are stepping up prevention and enforcement,\
+      \ with calls for greater social attention.\n\n  - tool: summarizeNews\n    result:\
+      \ |\n      Animal protection organizations are actively rescuing abused animals\
+      \ and providing various forms of support to improve their welfare.  \n     \
+      \ Broader public interest and cooperation are increasingly needed.\n\n  - tool:\
+      \ summarizeNews\n    result: |\n      A bill strengthening penalties for animal\
+      \ abuse has passed Congress, significantly increasing the legal consequences\
+      \ for such acts.  \n      This is recognized as an important step forward in\
+      \ animal protection.\n\n  - tool: summarizeNews\n    result: |\n      With the\
+      \ number of abandoned animals on the rise, there is a growing need for public\
+      \ concern and proactive responses with regard to animal abuse issues.  \n  \
+      \    Collaboration between authorities and citizens is becoming more crucial.\n\
+      \n  - tool: summarizeNews\n    result: |\n      Nationwide campaigns to prevent\
+      \ animal abuse are spreading, with citizens actively engaging and raising awareness.\
+      \  \n      These efforts are wielding a positive impact on animal protection."
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are the requested information and analysis regarding animal abuse.
+
+
+      ■ Summary of Major Animal Abuse-Related News in the Past 3 Months (2025-01-02
+      ~ 2025-04-02)
+
+
+      1. Rise in Animal Abuse Cases Sparks Public Concern
+
+       - Reports show a recent increase in animal abuse cases, leading to heightened
+      public awareness.
+
+       - Authorities are stepping up prevention and enforcement, with calls for greater
+      social attention.
+
+       - Read article: CNN
+
+
+      2. Animal Protection Groups Ramp up Rescue Efforts for Abused Animals
+
+       - Animal protection organizations are actively rescuing abused animals and
+      providing various forms of support to improve their welfare.
+
+       - Broader public interest and cooperation are increasingly needed.
+
+       - Read article: NY Times
+
+
+      3. Bill Strengthening Penalties for Animal Abuse Passes Congress
+
+       - A bill strengthening penalties for animal abuse has passed Congress, significantly
+      increasing the legal consequences for such acts.
+
+       - This is recognized as an important step forward in animal protection.
+
+       - Read article: Washington Post
+
+
+      4. Increase in Abandoned Pets Highlights Need for Greater Awareness of Animal
+      Abuse
+
+       - With the number of abandoned animals on the rise, there is a growing need
+      for public concern and proactive responses with regard to animal abuse issues.
+
+       - Collaboration between authorities and citizens is becoming more crucial.
+
+       - Read article: USA Today
+
+
+      5. Nationwide Campaign to Prevent Animal Abuse Continues to Spread
+
+       - Nationwide campaigns to prevent animal abuse are spreading, with citizens
+      actively engaging and raising awareness.
+
+       - These efforts are wielding a positive impact on animal protection.
+
+       - Read article: ABC News
+
+
+      ■ Definition and Characteristics of Psychopathy
+
+
+      • Definition: A personality disorder marked by lack of empathy, impulsivity,
+      and antisocial behavior.
+
+      • Key Traits:
+
+       - Impulsive and irresponsible
+
+       - Dishonesty, manipulation, lack of remorse
+
+       - Emotional coldness, aggression
+
+       - Social impact: crime, relationship issues, workplace conflicts
+
+
+      ■ Animal Abuse-Related Legislation (as of 2025-04-02, U.S. Standards)
+
+
+      • Law: Animal Welfare Act (federal) and state-specific animal cruelty laws
+
+      • Key Provisions:
+
+       - Ban on animal abuse, fines, and imprisonment for violations
+
+       - Support for animal shelters
+
+       - Harsher punishment for repeat offenders; penalties vary by state
+
+       - Mandatory reporting in many states and prompt investigation procedures'

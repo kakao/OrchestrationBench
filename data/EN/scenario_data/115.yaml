@@ -1,0 +1,227 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2027-12-20
+
+      userId: TENT2027'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I talked it over with my friends, and we decided that instead of staying
+      at a hotel, it would be better to do a car camping trip this time. Can you cancel
+      the hotel reservation we made for next week and let me know what gear we’ll
+      need for car camping?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"Check the\
+      \ hotel I booked for next week\"\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"Cancel the hotel reservation I made for next week\"\n\
+      \nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: search_agent\n      refined_query: \"Supplies needed\
+      \ for car camping\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Phone Number'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Car camping gear essentials\"\
+      \ntool_call_result:\n  searchResults:\n    - item: \"Car camping tent\"\n  \
+      \    description: \"A tent designed for attachment to your vehicle or to fit\
+      \ alongside it, giving extra space and weather protection.\"\n    - item: \"\
+      Sleeping bag\"\n      description: \"An insulated sleeping bag suitable for\
+      \ outdoor nights, ensuring warmth and comfort.\"\n    - item: \"Sleeping pad\
+      \ or air mattress\"\n      description: \"A cushioned pad or an inflatable mattress\
+      \ for comfort inside your tent or vehicle.\"\n    - item: \"LED camping lights\"\
+      \n      description: \"Portable lanterns or string lights to illuminate your\
+      \ campsite at night.\"\n    - item: \"Portable fire pit or camp stove\"\n  \
+      \    description: \"A compact fire pit or a stove for safe cooking and warmth\
+      \ while camping.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: To cancel the reservation, I need the phone number of the person who
+      booked it.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: (232) 555-4545
+- workflow_id: null
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationReservation\narguments:\n  refinedQuery: \"Check\
+      \ the hotel reservation I made for next week\"\n  contactNumber: \"(232) 555-4545\"\
+      \ntool_call_result:\n  reservationInfo:\n    reservationId: \"20271226\"\n \
+      \   reservationName: \"Charles Baker\"\n    contactNumber: \"(232) 555-4545\"\
+      \n    propertyName: \"Seaside Hotel\"\n    address: \"123 Ocean Drive, Seaside\
+      \ City, Coastal State, USA\"\n    roomType: \"Deluxe Ocean View Double\"\n \
+      \   guests:\n      adults: 4\n      children: 0\n    checkIn: \"2027-12-26T15:00\"\
+      \n    checkOut: \"2027-12-28T11:00\"\n    nights: 2\n    status: \"Confirmed\"\
+      \n    bookingChannel: \"Official Website\"\n    paymentMethod: \"Credit Card\
+      \ (Prepaid)\"\n    totalPrice: \"$298\"\n    bookedDate: \"2027-12-19\"\n  \
+      \  specialRequests:\n      - \"Request for a high-floor room\"\n      - \"Late\
+      \ check-in notice\"\n    policies:\n      cancellationPolicy: \"Free cancellation\
+      \ until 6 PM, 3 days before check-in. After that, the fee for one night will\
+      \ be charged.\"\n      modificationPolicy: \"One free change allowed until 1\
+      \ day before check-in (excluding peak season).\"\n    confirmationCode: \"GN-SEA-250818-0457\""
+- workflow_id: null
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: information on how to receive cancellation updates, reasons for
+      cancellation, and refund methods'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: Please tell me your preferred refund method, reason for cancellation,
+      and preferred notification method.
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: '-Refund using original payment method
+
+      -Text notification
+
+      -Personal reasons
+
+      Please cancel it like this'
+- workflow_id: null
+  step_id: 12
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelAccommodation\narguments:\n  refinedQuery: \"Cancel the\
+      \ hotel reservation I made for next week\"\n  reservationId: \"20271226\"\n\
+      \  cancelReason: \"Personal reasons\"\n  refundMethod: \"original_payment\"\n\
+      \  notifyVia: \"sms\"\ntool_call_result:\n  cancellationStatus: \"Success\"\n\
+      \  reservationId: \"20271226\"\n  placeName: \"Seaside Hotel\"\n  reservationDate:\
+      \ \"2027-12-26\"\n  cancelReason: \"Personal reasons\"\n  refundMethod: \"original_payment\"\
+      \n  notificationMethod: \"sms\"\n  notificationStatus: \"Sent\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Accommodation Reservation Cancellation Notice\n\n- Reservation ID:\
+      \ 20271226\n- Accommodation Name: Seaside Hotel\n- Reservation Date: December\
+      \ 26, 2027\n- Cancellation Reason: Personal reasons\n- Refund Method: Refunded\
+      \ using the original payment method\n- Notification Method: Cancellation notice\
+      \ sent via SMS\n\nYour reservation has been successfully canceled. If you have\
+      \ any further questions, please feel free to contact me anytime.\n\n▶ Essential\
+      \ Gear for Car Camping\n\n1. Car Camping Tent\n   - Description: A tent designed\
+      \ for attachment to your vehicle or set up alongside it for extra space and\
+      \ weather protection.\n\n2. Sleeping Bag\n   - Description: An insulated sleeping\
+      \ bag suitable for outdoor nights, ensuring warmth and comfort.\n\n3. Sleeping\
+      \ Pad or Air Mattress\n   - Description: A cushioned pad or an inflatable mattress\
+      \ for comfortable sleep inside your tent or vehicle.\n\n4. LED Camping Lights\n\
+      \   - Description: Portable lanterns or string lights to illuminate your campsite\
+      \ at night.\n\n5. Portable Fire Pit or Camp Stove\n   - Description: A compact\
+      \ fire pit or a stove for safe cooking and warmth while camping."
+- workflow_id: null
+  step_id: 14
+  agent: user
+  agent_type: user
+  data:
+    content: Oh, the car camping tent I ordered earlier doesn’t fit my car size, so
+      I’ll need to exchange it for a size L.
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: travel_agent\n      refined_query: \"Check\
+      \ the hotel I booked for next week\"\n    - status: completed\n      name: travel_agent\n\
+      \      refined_query: \"Cancel the hotel reservation I made for next week\"\n\
+      \nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n    - status:\
+      \ completed\n      name: search_agent\n      refined_query: \"Supplies needed\
+      \ for car camping\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"Check tent order history\"\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"Ordered tent size does not fit, request exchange for\
+      \ size L\""
+- workflow_id: workflow_3
+  step_id: 16
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check tent order\
+      \ history\"\n  userId: \"TENT2027\"\n  orderDate: \"2027/12/20\"\ntool_call_result:\n\
+      \  orderStatus: \"Preparing item\"\n  userId: \"TENT2027\"\n  productId: \"\
+      MENT2027-001\"\n  itemName: \"Car Camping Tent\"\n  size: \"S\"\n  orderDate:\
+      \ \"2027-12-20\"\n  exchangeRequested: true\n  requestStatus: \"Pending\"\n\
+      \  estimatedProcessingTime: \"2027-12-20\"\n  notificationStatus: \"Awaiting\
+      \ confirmation\""
+- workflow_id: null
+  step_id: 17
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: exchangeProducts\narguments:\n  refinedQuery: \"Ordered tent size\
+      \ does not fit, request exchange for size L\"\n  orderId: \"TENT2027\"\n  itemList:\n\
+      \    - productId: \"MENT2027-001\"\n      quantity: 1\n      reason: \"Size\
+      \ exchange\"\n  exchangeOption:\n    size: \"L\"\n  reasonCode: \"SIZE_ISSUE\"\
+      \ntool_call_result:\n  exchangeStatus: \"Success\"\n  orderId: \"TENT2027\"\n\
+      \  productId: \"MENT2027-001\"\n  itemName: \"Car Camping Tent\"\n  originalSize:\
+      \ \"S\"\n  newSize: \"L\"\n  quantityExchanged: 1\n  exchangeReason: \"Size\
+      \ exchange\"\n  estimatedProcessingTime: \"2027-12-22\"\n  notificationStatus:\
+      \ \"Sent\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Exchange Information for Your Ordered Tent
+
+
+      - ID: TENT2027
+
+      - Product Name: Car Camping Tent
+
+      - Original Size: S
+
+      - New Size: L
+
+      - Exchange Quantity: 1
+
+      - Exchange Status: Success
+
+      - Estimated Processing Date: December 22, 2027
+
+      - Notification Status: Sent
+
+
+      Your exchange has been successfully processed. You’ll receive a separate shipping
+      update once the item moves to dispatch.'

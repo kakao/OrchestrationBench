@@ -1,0 +1,160 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025/08/10'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I’m currently working as a contractual employee at an IT startup, and
+      I’m curious about what the advantages of joining a union are. Also, could you
+      summarize about five recent news stories related to union protests?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"Benefits\
+      \ for a contractual employee at an IT startup who joins a union\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: news_agent\n      refined_query: \"Search for 5 recent news articles\
+      \ about union-related protests\"\n    - status: pending\n      name: news_agent\n\
+      \      refined_query: \"Summarize 5 recent news articles about union-related\
+      \ protests\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Benefits of joining\
+      \ a union for contractual employees at IT startups\"\ntool_call_result:\n  info:\n\
+      \    title: \"Union Membership Benefits for Contractual Employees in IT Startups\"\
+      \n    summary: \"If you’re working as a contractual employee at an IT startup,\
+      \ joining a labor union can provide the following support:\"\n    benefits:\n\
+      \      - Participation in collective bargaining to improve job security\n  \
+      \    - Legal assistance and counseling in cases of unfair dismissal or contract\
+      \ termination\n      - Able to demand improvements in working conditions (pay,\
+      \ vacation, benefits, etc.)\n      - Oversight of internal policies on conversion\
+      \ into full-time positions and input into those decisions\n      - Collective\
+      \ action on workplace issues such as emotional labor and overwork\n      - Access\
+      \ to legal and rights education programs organized by the union\n    source:\
+      \ \"Sample labor union guideline document\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"Search for 5 recent\
+      \ news articles about labor union protests\"\n  limit: 5\ntool_call_result:\n\
+      \  news:\n    - title: \"Tech workers' union holds downtown rally demanding\
+      \ better working conditions\"\n      date: \"2025-08-05\"\n      source: \"\
+      New York Times\"\n      link: \"https://www.nytimes.com/2025/08/05/tech-workers-union-protest.html\"\
+      \n      summary: \"A tech industry union staged a large protest in downtown\
+      \ Manhattan, demanding an end to the excessive working hours and discrimination\
+      \ against contractual workers.\"\n\n    - title: \"National Teachers' Union\
+      \ protests education policy changes\"\n      date: \"2025-08-04\"\n      source:\
+      \ \"Washington Post\"\n      link: \"https://www.washingtonpost.com/2025/08/04/teachers-union-protest.html\"\
+      \n      summary: \"The teachers' union organized demonstrations across multiple\
+      \ states to oppose the federal government’s proposed curriculum reforms.\"\n\
+      \n    - title: \"Delivery workers' union goes on strike demanding higher pay\
+      \ rates\"\n      date: \"2025-08-03\"\n      source: \"Associated Press\"\n\
+      \      link: \"https://apnews.com/2025/08/03/delivery-union-strike\"\n     \
+      \ summary: \"The delivery workers' union launched a strike calling for higher\
+      \ delivery fees and fairer compensation.\"\n\n    - title: \"Auto parts union\
+      \ rallies for stronger workplace safety regulations\"\n      date: \"2025-08-02\"\
+      \n      source: \"Wall Street Journal\"\n      link: \"https://www.wsj.com/2025/08/02/auto-union-safety-protest\"\
+      \n      summary: \"A union representing auto parts manufacturers held rallies\
+      \ at plants, citing inadequate safety equipment and protections.\"\n\n    -\
+      \ title: \"Healthcare workers' union protests outside hospitals demanding more\
+      \ staff\"\n      date: \"2025-08-01\"\n      source: \"Los Angeles Times\"\n\
+      \      link: \"https://www.latimes.com/2025/08/01/healthcare-union-protest\"\
+      \n      summary: \"Healthcare workers staged protests in front of hospitals\
+      \ nationwide, demanding solutions to chronic staff shortages and overwork issues.\""
+- workflow_id: null
+  step_id: 6
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"Tech workers' union holds rally in downtown Manhattan demanding better working\
+      \ conditions — news summary\"\n      url: \"https://www.nytimes.com/2025/08/05/tech-workers-union-protest.html\"\
+      \n      date: \"2025-08-05\"\n\n  - tool: summarizeNews\n    arguments:\n  \
+      \    refinedQuery: \"National Teachers' Union protests changes in education\
+      \ policy — news summary\"\n      url: \"https://www.washingtonpost.com/2025/08/04/teachers-union-protest.html\"\
+      \n      date: \"2025-08-04\"\n\n  - tool: summarizeNews\n    arguments:\n  \
+      \    refinedQuery: \"Delivery workers' union goes on strike demanding higher\
+      \ pay rates — news summary\"\n      url: \"https://apnews.com/2025/08/03/delivery-union-strike\"\
+      \n      date: \"2025-08-03\"\n\n  - tool: summarizeNews\n    arguments:\n  \
+      \    refinedQuery: \"Auto parts union stages rally calling for stronger safety\
+      \ regulations — news summary\"\n      url: \"https://www.wsj.com/2025/08/02/auto-union-safety-protest\"\
+      \n      date: \"2025-08-02\"\n\n  - tool: summarizeNews\n    arguments:\n  \
+      \    refinedQuery: \"Healthcare workers' union protests outside hospitals demanding\
+      \ more staff — news summary\"\n      url: \"https://www.latimes.com/2025/08/01/healthcare-union-protest\"\
+      \n      date: \"2025-08-01\"\n\ntool_call_result:\n  - tool: summarizeNews\n\
+      \    result:\n      summary: \"The tech workers' union held a major rally in\
+      \ downtown Manhattan demanding better working conditions and fairer pay. Protesters\
+      \ called for shorter workweeks, fewer contractual positions and urged lawmakers\
+      \ to open dialogue.\"\n\n  - tool: summarizeNews\n    result:\n      summary:\
+      \ \"The National Teachers' Union organized demonstrations across several states\
+      \ against changes in education policy. Teachers criticized the heavy administrative\
+      \ burdens and extended teaching hours, demanding policy revisions.\"\n\n  -\
+      \ tool: summarizeNews\n    result:\n      summary: \"The delivery workers' union\
+      \ went on strike demanding higher pay rates and improved conditions. Several\
+      \ cities reported delivery delays as negotiations between union leaders and\
+      \ companies continue.\"\n\n  - tool: summarizeNews\n    result:\n      summary:\
+      \ \"The auto parts union staged rallies calling for stronger safety regulations.\
+      \ Members demanded equipment upgrades and safer working environments to reduce\
+      \ workplace accidents.\"\n\n  - tool: summarizeNews\n    result:\n      summary:\
+      \ \"Healthcare workers protested outside hospitals nationwide, calling for more\
+      \ staff and better working conditions. Union leaders emphasized the need for\
+      \ expanded government support to ensure patient safety and quality care.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ A contractual employee at an IT startup who joins a labor union can
+      receive the following benefits:
+
+
+      - Participation in collective bargaining to improve job security
+
+      - Legal support and counseling in cases of unfair dismissal or contract termination
+
+      - Able to demand better working conditions (salary, vacation, benefits, etc.)
+
+      - Oversight and input on internal policies regarding conversion into full-time
+      employment
+
+      - Collective response to workplace issues such as emotional labor and overwork
+
+      - Access to union-led legal education and rights training
+
+
+      ▶ Recent major union-related news includes:
+
+
+      1. IT industry union – Held a large rally in downtown New York demanding better
+      working conditions and higher wages, calling for reduced overtime and fewer
+      contractual positions.
+
+      2. National Teachers’ Union – Protested the changes in education policy, highlighting
+      the excessive administrative work and increased teaching hours as key issues.
+
+      3. Delivery Workers’ Union – Went on strike demanding higher delivery fees and
+      improved working conditions, causing delays in some regions.
+
+      4. Auto Parts Union – Organized a rally calling for stronger safety regulations,
+      urging replacement of outdated equipment and improvements to prevent workplace
+      accidents.
+
+      5. Healthcare Workers’ Union – Demanded more hospital staff and better working
+      conditions, emphasizing patient safety and improved quality of medical services.'

@@ -1,0 +1,64 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 유튜버 '피부는 민동성' 좁쌀여드름 관리 영상에 나온 기름종이들 올리브영에 팔고있나 알려줘
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"유튜버 '피부는\
+      \ 민동성' 좁쌀여드름 관리 영상에 나온 기름종이 검색\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: shopping_agent\n      refined_query: \"유튜버 '피부는 민동성' 좁쌀여드름 관리 영상에\
+      \ 나온 기름종이 올리브영 에서 판매 여부 검색\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"유튜버 '피부는 민동성' 좁쌀여드름\
+      \ 관리 영상에 나온 기름종이 검색\"\ntool_call_result:\n  data:\n    infoResults:\n      -\
+      \ title: \"좁쌀여드름 관리템 추천 | 피부과 의사가 알려주는 기름종이 사용법\"\n        source: \"YouTube\
+      \ - 피부는 민동성\"\n        date: \"2025-03-14\"\n        summary: \"'피부는 민동성' 유튜버가\
+      \ 추천한 기름종이는 '더랩바이블랑두 오일컷 필름'으로, 피지를 과도하게 제거하지 않으면서도 유분만 효과적으로 흡착한다고 설명한다.\"\n\
+      \        productMentioned: \"더랩바이블랑두 오일컷 필름\"\n        link: \"https://www.youtube.com/watch?v=efgh5678\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"유튜버 '피부는 민동성' 좁쌀여드름\
+      \ 관리 영상에 나온 기름종이 더랩바이블랑두 오일컷 필름 올리브영 판매 여부 검색\"\n  sortBy: \"latest\"\n  productCategory:\
+      \ \"스킨케어\"\n  productName: \"오일컷 필름\"\n  brand: \"더랩바이블랑두\"\n  source: \"피부는\
+      \ 민동성\"\ntool_call_result:\n  data:\n    products:\n      - productName: \"\
+      더랩바이블랑두 오일컷 필름\"\n        brand: \"더랩바이블랑두\"\n        price: \"3,500원\"\n  \
+      \      availability: \"올리브영 온라인몰 및 일부 매장 판매 중\"\n        purchaseLink: \"https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=BLDG_OILCUTFILM\"\
+      \n        reviewCount: 1243\n        rating: \"4.7 / 5.0\"\n        category:\
+      \ \"스킨케어 > 피지조절 > 기름종이\"\n        features:\n          - \"민감성 피부 사용 가능\"\n\
+      \          - \"과잉 피지 흡수\"\n          - \"파우치형 50매입\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '피부는 민동성'' 유튜브 영상에 소개된 기름종이 정보
+
+
+      더랩바이블랑두의 오일컷 필름은 올리브영 온라인몰과 일부 오프라인 매장에서 구매할 수 있습니다.
+
+      이 제품은 민감성 피부에도 적합하며 과잉 피지를 효과적으로 흡수해줍니다.
+
+      리뷰 수는 1,200건 이상이며, 평균 평점은 4.7로 사용자 만족도가 높은 편입니다.
+
+
+      더 자세한 정보와 구매를 원하시면 아래 링크를 클릭하세요:
+
+      [https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=BLDG\_OILCUTFILM](https://www.oliveyoung.co.kr/store/goods/getGoodsDetail.do?goodsNo=BLDG_OILCUTFILM)'

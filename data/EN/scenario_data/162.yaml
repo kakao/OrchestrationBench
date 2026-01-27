@@ -1,0 +1,120 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '-Today''s date: 2025-09-02'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Have the Cash4Life numbers been announced yet?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"Today's\
+      \ Cash4Life winning numbers\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getLotteryInfo\narguments:\n  refinedQuery: \"Cash4Life winning\
+      \ results for September 2, 2025\"\n  lotteryType: \"cash4life\"\n  drawDate:\
+      \ \"2025-09-02\"\ntool_call_result:\n  drawDate: \"2025-09-02\"\n  lotteryType:\
+      \ \"cash4life\"\n  results:\n    first_prize: [12, 23, 34, 45, 56, \"Cash Ball:\
+      \ 7\"]\n    second_prize:\n      - [12, 23, 34, 45, 55, \"Cash Ball: 7\"]\n\
+      \      - [12, 23, 34, 45, 57, \"Cash Ball: 7\"]\n    third_prize: [11, 22, 33,\
+      \ 44, 55, \"Cash Ball: 10\"]\n    fourth_prize: [5, 15, 25, 35, 45, \"Cash Ball:\
+      \ 5\"]\n    fifth_prize: [1, 2, 3, 4, 5, \"Cash Ball: 1\"]\n    additional_prizes:\n\
+      \      - prize_name: \"Special Prize\"\n        numbers:\n          - [7, 14,\
+      \ 21, 28, 35, \"Cash Ball: 7\"]\n          - [8, 16, 24, 32, 40, \"Cash Ball:\
+      \ 8\"]\n  status: \"completed\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "◾Cash4Life Winning Numbers – September 2, 2025\n\nHere are the winning\
+      \ numbers for the Cash4Life draw on September 2, 2025:\n\n* First Prize: 12,\
+      \ 23, 34, 45, 56, Cash Ball: 7\n* Second Prize:\n  * 12, 23, 34, 45, 55, Cash\
+      \ Ball: 7\n  * 12, 23, 34, 45, 57, Cash Ball: 7\n* Third Prize: 11, 22, 33,\
+      \ 44, 55, Cash Ball: 10\n* Fourth Prize: 5, 15, 25, 35, 45, Cash Ball: 5\n*\
+      \ Fifth Prize: 1, 2, 3, 4, 5, Cash Ball: 1\n\nAdditional Prizes – Special Prize:\n\
+      * 7, 14, 21, 28, 35, Cash Ball: 7\n* 8, 16, 24, 32, 40, Cash Ball: 8\n\nGood\
+      \ luck to everyone who played!"
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: Missed out again. I’ll have to try buying somewhere else. Can you find
+      me a lottery retailer in the Downtown Springfield area, and also show me one
+      news article about today’s winning numbers?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      Today's Cash4Life winning numbers\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: place_agent\n  \
+      \    refined_query: \"Find a lottery retailer in the Downtown Springfield area\"\
+      \n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: news_agent\n      refined_query: \"One news article about\
+      \ today's Cash4Life winning numbers\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Lottery retailers\
+      \ located in the Downtown Springfield area\"\n  sortBy: \"distance\"\n  placeCategory:\
+      \ \"Lottery retailer\"\n  location: \"Downtown Springfield\"\ntool_call_result:\n\
+      \  location: \"Downtown Springfield\"\n  sortBy: \"distance\"\n  placeCategory:\
+      \ \"Lottery retailer\"\n  results:\n    - shop_name: \"Lucky Lotto Shop\"\n\
+      \      address: \"101 Main Street, Downtown Springfield\"\n      distance: \"\
+      0.1 mi\"\n    - shop_name: \"Jackpot Corner\"\n      address: \"202 Elm Street,\
+      \ Downtown Springfield\"\n      distance: \"0.2 mi\"\n    - shop_name: \"Dream\
+      \ of Happiness\"\n      address: \"303 Maple Avenue, Downtown Springfield\"\n\
+      \      distance: \"0.35 mi\"\n  status: \"completed\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"One news article about\
+      \ today's Cash4Life winning numbers\"\n  limit: 1\ntool_call_result:\n  query:\
+      \ \"One news article about today's Cash4Life winning numbers\"\n  limit: 1\n\
+      \  articles:\n    - title: \"Cash4Life Winning Numbers – Who Hit the Jackpot\
+      \ Today?\"\n      description: \"The latest Cash4Life draw results have been\
+      \ announced, including today’s winning numbers and details about the top prize\
+      \ winner.\"\n      url: \"http://news.example.com/cash4life-today\"\n      source:\
+      \ \"Example News\"\n      published_at: \"2025-09-02T20:00:00-04:00\"\n  status:\
+      \ \"completed\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "◾Lottery Retailers in Downtown Springfield\n\nHere are some lottery\
+      \ retailers near you in the Downtown Springfield area:\n\n* Lucky Lotto Shop\n\
+      \  Address: 101 Main Street, Downtown Springfield\n  Distance: 0.1 mi\n\n* Jackpot\
+      \ Corner\n  Address: 202 Elm Street, Downtown Springfield\n  Distance: 0.2 mi\n\
+      \n* Dream of Happiness\n  Address: 303 Maple Avenue, Downtown Springfield\n\
+      \  Distance: 0.35 mi\n\nYou can visit any of these stores to buy your Cash4Life\
+      \ tickets.\n\n◾News Article about Today's Cash4Life Winning Numbers\n\nHere\
+      \ is one news article covering today’s Cash4Life draw:\n\n* Title: Cash4Life\
+      \ Winning Numbers – Who Hit the Jackpot Today?\n* Description: The latest Cash4Life\
+      \ draw results have been announced, including today’s winning numbers and details\
+      \ about the top prize winner.\n* Source: Example News\n* Published At: September\
+      \ 2, 2025, 8:00 PM EDT\n* URL: [Read the full article](http://news.example.com/cash4life-today)"

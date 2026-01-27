@@ -1,0 +1,421 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- current time: 2025-07-24T15:19:53
+
+      - phone: (202) 555-0000
+
+      - name: Chris Brown
+
+      - email: chwpark@kakao.com'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Next month on the second weekend, I’m going on a 2-day, 1-night trip
+      to Washington, D.C. with my girlfriend. Please book round-trip Amtrak tickets
+      departing from New York Penn Station, and reserve a 4-star hotel near Williamsburg.
+      Also, provide the weather forecast for Washington during that period and recommend
+      some good restaurants near the hotel.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Search\
+      \ for 2 round-trip train tickets from New York Penn Station to Washington Union\
+      \ Station on the second weekend of next month\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"Find a 4-star hotel near Williamsburg for a 2-day, 1-night\
+      \ stay with my girlfriend on the second weekend of next month\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: weather_agent\n      refined_query: \"Weather forecast for Washington\
+      \ on the second weekend of next month\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"Book 2 round-trip train\
+      \ tickets from New York Penn Station to Washington Union Station on the second\
+      \ weekend of next month\"\n\nworkflow_5:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"Reserve a 4-star hotel near Williamsburg for a 2-day,\
+      \ 1-night stay with my girlfriend on the second weekend of next month\"\n\n\
+      workflow_6:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_5\"\
+      \n  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Recommend good restaurants near the Hotel on the second weekend of next\
+      \ month\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransitSchedule\narguments:\n  refinedQuery: \"Round-trip train\
+      \ schedule for 2 people, 1 night 2 days, from New York Penn Station to Washington\
+      \ Union Station, August 9, 2025\"\n  transportType: \"train\"\n  departureStation:\
+      \ \"New York Penn Station\"\n  arrivalStation: \"Washington Union Station\"\n\
+      \  departureDate: \"2025-08-09\"\n  returnDate: \"2025-08-10\"\n  roundTrip:\
+      \ true\ntool_call_result:\n  status: success\n  data:\n    departureDate: \"\
+      2025-08-09\"\n    returnDate: \"2025-08-10\"\n    departureStation: \"New York\
+      \ Penn Station\"\n    arrivalStation: \"Washington Union Station\"\n    transportType:\
+      \ \"train\"\n    roundTrip: true\n    outbound:\n      date: \"2025-08-09\"\n\
+      \      route: \"New York Penn Station → Washington Union Station\"\n      trains:\n\
+      \        - trainNo: \"Acela 101\"\n          departureTime: \"07:00\"\n    \
+      \      arrivalTime: \"09:15\"\n          duration: \"2h 15m\"\n        - trainNo:\
+      \ \"Acela 109\"\n          departureTime: \"08:30\"\n          arrivalTime:\
+      \ \"10:47\"\n          duration: \"2h 17m\"\n        - trainNo: \"Acela 117\"\
+      \n          departureTime: \"10:00\"\n          arrivalTime: \"12:13\"\n   \
+      \       duration: \"2h 13m\"\n        - trainNo: \"Acela 125\"\n          departureTime:\
+      \ \"11:30\"\n          arrivalTime: \"13:50\"\n          duration: \"2h 20m\"\
+      \n    return:\n      date: \"2025-08-10\"\n      route: \"Washington Union Station\
+      \ → New York Penn Station\"\n      trains:\n        - trainNo: \"Acela 132\"\
+      \n          departureTime: \"16:00\"\n          arrivalTime: \"18:20\"\n   \
+      \       duration: \"2h 20m\"\n        - trainNo: \"Acela 140\"\n          departureTime:\
+      \ \"17:30\"\n          arrivalTime: \"19:44\"\n          duration: \"2h 14m\"\
+      \n        - trainNo: \"Acela 148\"\n          departureTime: \"18:45\"\n   \
+      \       arrivalTime: \"21:00\"\n          duration: \"2h 15m\"\n        - trainNo:\
+      \ \"Acela 154\"\n          departureTime: \"20:00\"\n          arrivalTime:\
+      \ \"22:13\"\n          duration: \"2h 13m\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"Book a 4-star\
+      \ hotel near Williamsburg for 2 adults, 1 night, from August 9, 2025\"\n  location:\
+      \ \"Williamsburg\"\n  checkInDate: \"2025-08-09\"\n  checkOutDate: \"2025-08-10\"\
+      \n  guestCount: 2\n  roomCount: 1\n  accommodationType: \"hotel\"\n  sortBy:\
+      \ \"highest_rating\"\ntool_call_result:\n  status: success\n  data:\n    accommodations:\n\
+      \      - accommodationId: \"US-CHES-HTL-001\"\n        name: \"Hyatt Regency\
+      \ Williamsburg Golf Resort, Spa & Marina\"\n        address: \"302 Francis St\
+      \ E, Williamsburg, VA 23185, USA\"\n        description: \"Waterfront 4-star\
+      \ resort on Choptank River (Williamsburg), featuring a private bayfront area\
+      \ as well as pools, spa, golf course, and marina.\"\n        room_type: \"Standard\
+      \ King Room, for 2 guests\"\n        roomTypeId: \"STANDARD_KING\"\n       \
+      \ price: 420\n        note: \"Estimated price in USD including taxes and resort\
+      \ fees for 1 night (Aug 9–10, 2025). Rates may vary by booking time and availability.\"\
+      \n\n      - accommodationId: \"US-CHES-HTL-002\"\n        name: \"Perry Cabin\
+      \ Hotel\"\n        address: \"308 Watkins Ln, St Michaels, MD 21663, USA\"\n\
+      \        description: \"Luxury bayside property with gardens and spa in historic\
+      \ St. Michaels; easy access to Williamsburg boating and dining.\"\n        room_type:\
+      \ \"Deluxe King Room, for 2 guests\"\n        roomTypeId: \"DELUXE_KING\"\n\
+      \        price: 720\n        note: \"Estimated price in USD including taxes\
+      \ and service fees for 1 night (Aug 9–10, 2025). Premium waterfront rooms may\
+      \ be priced higher; subject to availability.\"\n\n      - accommodationId: \"\
+      US-CHES-HTL-003\"\n        name: \"Annapolis Waterfront Hotel, Autograph Collection\"\
+      \n        address: \"80 Compromise St, Annapolis, MD 21401, USA\"\n        description:\
+      \ \"4-star waterfront hotel overlooking Annapolis Harbor with quick access to\
+      \ Bay cruises, restaurants, and historic downtown.\"\n        room_type: \"\
+      Waterfront King Room, for 2 guests\"\n        roomTypeId: \"WATERFRONT_KING\"\
+      \n        price: 385\n        note: \"Estimated price in USD including taxes\
+      \ and service fees for 1 night (Aug 9–10, 2025). Popular dates may sell out;\
+      \ prices can change at booking.\"\n\n      - accommodationId: \"US-CHES-HTL-004\"\
+      \n        name: \"Tides Inn\"\n        address: \"480 King Carter Dr, Irvington,\
+      \ VA 22480, USA\"\n        description: \"Classic Williamsburg resort on a private\
+      \ peninsula; bayfront activities, spa, and dining with scenic views.\"\n   \
+      \     room_type: \"Standard King Room, for 2 guests\"\n        roomTypeId: \"\
+      STANDARD_KING\"\n        price: 460\n        note: \"Estimated price in USD\
+      \ including taxes and service fees for 1 night (Aug 9–10, 2025). Rates vary\
+      \ by room type and availability.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"Check weather in Washington on August 9, 2025\"\n      location: \"Washington\"\
+      \n      date: \"2025-08-09\"\n  - tool: getDomesticWeather\n    arguments:\n\
+      \      refinedQuery: \"Check weather in Washington on August 10, 2025\"\n  \
+      \    location: \"Washington\"\n      date: \"2025-08-10\"\ntool_call_result:\n\
+      \  - tool: getDomesticWeather\n    result: \"On August 9, 2025, Washington will\
+      \ be clear with a high of 88°F and a low of 77°F.\"\n  - tool: getDomesticWeather\n\
+      \    result: \"On August 10, 2025, Washington will be cloudy with a chance of\
+      \ afternoon rain, with a high of 84°F and a low of 75°F.\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Round-trip schedule selection'
+- workflow_id: workflow_5
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reserved hotel selection'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s the round-trip train schedule between New York and Washington,
+      D.C. for the weekend of August 9th (Sat)–10th (Sun):
+
+
+      ▶ [Outbound – New York Penn Station → Washington Union Station (8/9)]
+
+      Acela 101: 07:00 → 09:15 (2h 15m)
+
+      Acela 109: 08:30 → 10:47 (2h 17m)
+
+      Acela 117: 10:00 → 12:13 (2h 13m)
+
+      Acela 125: 11:30 → 13:50 (2h 20m)
+
+
+      ▶ [Return – Washington Union Station → New York Penn Station (8/10)]
+
+      Acela 132: 16:00 → 18:20 (2h 20m)
+
+      Acela 140: 17:30 → 19:44 (2h 14m)
+
+      Acela 148: 18:45 → 21:00 (2h 15m)
+
+      Acela 154: 20:00 → 22:13 (2h 13m)
+
+
+      ▶ Recommended 4-star hotels near Williamsburg (1 night, 2 guests):
+
+
+      1. Hyatt Regency Williamsburg Golf Resort, Spa & Marina
+
+      Address: 302 Francis St E, Williamsburg, VA 23185, USA
+
+      Price: Approx. $420 (taxes & resort fees included)
+
+      Room: Standard King Room (2 guests)
+
+      Details: Waterfront resort featuring golf course, spa, pools, and private marina
+
+
+      2. Perry Cabin Hotel
+
+      Address: 308 Watkins Ln, St Michaels, MD 21663, USA
+
+      Price: Approx. $720 (taxes & service fees included)
+
+      Room: Deluxe King Room (2 guests)
+
+      Details: Luxury bayside property with gardens and spa, located in historic St.
+      Michaels
+
+
+      3. Annapolis Waterfront Hotel, Autograph Collection
+
+      Address: 80 Compromise St, Annapolis, MD 21401, USA
+
+      Price: Approx. $385 (taxes & service fees included)
+
+      Room: Waterfront King Room (2 guests)
+
+      Details: 4-star hotel overlooking Annapolis Harbor, close to cruises, dining,
+      and historic downtown
+
+
+      4. Tides Inn
+
+      Address: 480 King Carter Dr, Irvington, VA 22480, USA
+
+      Price: Approx. $460 (taxes & service fees included)
+
+      Room: Standard King Room (2 guests)
+
+      Details: Classic bayfront resort on a private peninsula with spa, dining, and
+      recreational activities
+
+
+      Please select your preferred train time and hotel for your stay.'
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: Book me a 10 AM departure from New York Penn Station, and a 5:30 PM departure
+      from Washington Union Station. For the hotel, I'll go with the most expensive
+      option!
+- workflow_id: workflow_4
+  step_id: 11
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookTransitTicket\narguments:\n  refinedQuery: \"Round-trip train\
+      \ tickets for 2 people: Departing from New York Penn Station at 10:00 AM on\
+      \ August 9, 2025, returning from Washington Union Station at 5:30 PM on August\
+      \ 10, 2025\"\n  transportType: \"train\"\n  departureStation: \"New York Penn\
+      \ Station\"\n  arrivalStation: \"Washington Union Station\"\n  departureDate:\
+      \ \"2025-08-09\"\n  departureTime: \"10:00\"\n  returnDate: \"2025-08-10\"\n\
+      \  returnTime: \"17:30\"\n  roundTrip: true\n  seatType: \"standard\"\n  passengerCount:\
+      \ 2\n  contactInfo: \"(202) 555-0000\"\ntool_call_result:\n  status: success\n\
+      \  data:\n    tickets:\n      - ticketId: \"82222-1027-10001-45\"\n        departureStation:\
+      \ \"New York Penn Station\"\n        arrivalStation: \"Washington Union Station\"\
+      \n        departureDate: \"2025-08-09\"\n        departureTime: \"10:00\"\n\
+      \        train: \"Acela 117\"\n        seats:\n          - \"Car 4 Seat 6C\"\
+      \n          - \"Car 4 Seat 6D\"\n      - ticketId: \"82222-1022-10012-88\"\n\
+      \        departureStation: \"Washington Union Station\"\n        arrivalStation:\
+      \ \"New York Penn Station\"\n        departureDate: \"2025-08-10\"\n       \
+      \ departureTime: \"17:30\"\n        train: \"Acela 140\"\n        seats:\n \
+      \         - \"Car 6 Seat 11A\"\n          - \"Car 6 Seat 11B\""
+- workflow_id: workflow_5
+  step_id: 12
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: bookAccommodation\narguments:\n  refinedQuery: \"Book a standard\
+      \ room for 2 people at Perry Cabin Hotel for 1 night, checking in on August\
+      \ 9, 2025 and checking out on August 10, 2025\"\n  accommodationID: \"AH102938B1\"\
+      \n  accommodationName: \"Perry Cabin Hotel\"\n  roomTypeId: \"DELUXE_KING\"\n\
+      \  checkInDate: \"2025-08-09\"\n  checkOutDate: \"2025-08-10\"\n  guestCount:\
+      \ 2\n  roomCount: 1\n  userInfo:\n    name: \"Chris Brown\"\n    contactNumber:\
+      \ \"(202) 555-0000\"\n    email: \"chwpark@kakao.com\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    reservationId: \"SH-20250816-AA1\""
+- workflow_id: workflow_6
+  step_id: 13
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Restaurant\
+      \ recommendations near Perry Cabin Hotel for 2 people on August 9 or 10, 2025\"\
+      \n  location: \"Perry Cabin Hotel\"\n  sortBy: \"highest_rated\"\n  reservationTime:\
+      \ \"August 9 or 10, 2025\"\n  partySize: \"2\"\ntool_call_result:\n  status:\
+      \ success\n  data:\n    restaurants:\n      - placeId: \"CHES001\"\n       \
+      \ name: \"The Crab Claw\"\n        description:\n          - \"Classic Williamsburg\
+      \ seafood house overlooking the harbor\"\n          - \"Recommended: Steamed\
+      \ Blue Crabs & Crab Cakes\"\n          - \"Outdoor deck seating available\"\n\
+      \          - \"Family-friendly atmosphere\"\n        contact: \"(410) 745-2900\"\
+      \n        address: \"304 Mill St, St. Michaels, MD 21663\"\n        link: \"\
+      https://www.thecrabclaw.com\"\n\n      - placeId: \"CHES002\"\n        name:\
+      \ \"Stars Restaurant at Inn at Perry Cabin\"\n        description:\n       \
+      \   - \"Fine dining with seasonal Chesapeake cuisine and waterfront views\"\n\
+      \          - \"Recommended: Rockfish with local vegetables\"\n          - \"\
+      Elegant atmosphere, perfect for couples\"\n          - \"Extensive wine list\"\
+      \n        contact: \"(410) 745-2200\"\n        address: \"308 Watkins Ln, St.\
+      \ Michaels, MD 21663\"\n        link: \"https://innatperrycabin.com/dining\"\
+      \n\n      - placeId: \"WDC001\"\n        name: \"Old Ebbitt Grill\"\n      \
+      \  description:\n          - \"Historic American tavern near the White House\"\
+      \n          - \"Recommended: Raw Oyster Bar & Prime Rib\"\n          - \"Classic\
+      \ D.C. dining experience\"\n          - \"Open late with lively bar\"\n    \
+      \    contact: \"(202) 347-4800\"\n        address: \"675 15th St NW, Washington,\
+      \ DC 20005\"\n        link: \"https://www.ebbitt.com\"\n\n      - placeId: \"\
+      WDC002\"\n        name: \"Fiola Mare\"\n        description:\n          - \"\
+      Upscale Italian seafood spot on the Georgetown waterfront\"\n          - \"\
+      Recommended: Lobster Ravioli & Whole Branzino\"\n          - \"Romantic setting\
+      \ with Potomac River views\"\n          - \"Michelin-star chef Fabio Trabocchi\"\
+      \n        contact: \"(202) 350-4982\"\n        address: \"3100 K St NW, Washington,\
+      \ DC 20007\"\n        link: \"https://www.fiolamaredc.com\"\n\n      - placeId:\
+      \ \"CHES003\"\n        name: \"Ava’s Pizzeria & Wine Bar\"\n        description:\n\
+      \          - \"Cozy neighborhood spot with gourmet pizza and local wines\"\n\
+      \          - \"Recommended: Crab Pizza & Local IPA\"\n          - \"Outdoor\
+      \ patio seating\"\n          - \"Vegetarian-friendly options\"\n        contact:\
+      \ \"(410) 745-3081\"\n        address: \"409 S Talbot St, St. Michaels, MD 21663\"\
+      \n        link: \"https://avaspizzeria.com\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s the information prepared for your request.
+
+
+      ▶ Round-trip Train Tickets Confirmed!
+
+
+      Outbound (Saturday, August 9, 2025)
+
+      → Train Acela 117, New York Penn Station departure 10:00 AM → Washington Union
+      Station arrival 12:13 PM
+
+      → Seats: Car 4 — 6C, 6D
+
+
+      Return (Sunday, August 10, 2025)
+
+      → Train Acela 140, Washington Union Station departure 5:30 PM → New York Penn
+      Station arrival 7:44 PM
+
+      → Seats: Car 6 — 11A, 11B
+
+
+      ▶ Hotel Reservation Confirmed
+
+
+      - Dates: August 9, 2025 (Sat) – August 10, 2025 (Sun), 1 night, 2 days
+
+      - Hotel: Perry Cabin Hotel
+
+      - Room: Deluxe King Room (for 2)
+
+      - Reservation Number: SH-20250816-AA1
+
+      - Your booking has been successfully completed.
+
+
+      ▶ Weather Forecast for Washington, Second Week of August
+
+
+      Here’s the weather outlook for your travel dates in Washington:
+
+      Washington Weather (Forecast)
+
+      August 9 (Sat): Clear skies, sunny and hot (High 88°F / Low 77°F)
+
+      August 10 (Sun): Cloudy with a chance of afternoon rain (High 84°F / Low 75°F)
+
+
+      ▶  Recommended Restaurants Near Perry Cabin Hotel
+
+
+      Here are some carefully selected spots close to your hotel:
+
+
+      - The Crab Claw
+
+
+      *Recommended Dish: Steamed Blue Crabs & Crab Cakes
+
+      *Highlight: A classic Williamsburg seafood house with outdoor deck seating and
+      family-friendly atmosphere.
+
+
+      - Stars Restaurant at Inn at Perry Cabin
+
+
+      *Recommended Dish: Rockfish with local vegetables
+
+      *Highlight: Fine dining with seasonal Chesapeake cuisine and beautiful waterfront
+      views—perfect for couples.
+
+
+      - Old Ebbitt Grill (Washington, D.C.)
+
+
+      *Recommended Dish: Raw Oyster Bar & Prime Rib
+
+      *Highlight: A historic American tavern near the White House, offering a lively
+      late-night bar scene.
+
+
+      - Fiola Mare (Washington, D.C.)
+
+
+      *Recommended Dish: Lobster Ravioli & Whole Branzino
+
+      *Highlight: Upscale Italian seafood with romantic Potomac River views, led by
+      a Michelin-star chef.
+
+
+      - Ava’s Pizzeria & Wine Bar
+
+
+      *Recommended Dish: Crab Pizza & Local IPA
+
+      *Highlight: Cozy neighborhood spot with gourmet pizza, local wines, and vegetarian-friendly
+      options.'

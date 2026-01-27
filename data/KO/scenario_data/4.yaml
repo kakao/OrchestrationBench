@@ -1,0 +1,113 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-04-21
+
+      - 현재 시간: 11:05'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 우리 엄마 생일 항상 음력으로 해가지고 날짜가 매번 바뀌어서 챙기기 어려워. 음력 3월 5일을 양력으로 변환해서 내년 일정에
+      등록해 줄래?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"내년 음력\
+      \ 3월 5일을 양력으로 변환\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"내년 음력 3월 5일의 양력 날짜를 엄마 생일 일정으로 등록\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getCalendar\narguments:\n  refinedQuery: \"내년 음력 3월 5일을 양력으로 변환\"\
+      \n  date: \"2026-03-05\"\n  calendarType: \"lunar\"\n  convertedCalendarType:\
+      \ \"solar\"\n  year: 2026\ntool_call_result:\n  data:\n    inputDate: \"2026-03-05\"\
+      \n    inputCalendarType: \"lunar\"\n    convertedDate: \"2026-04-21\"\n    convertedCalendarType:\
+      \ \"solar\"\n    note: \"2026년 3월 5일은 음력으로 2026년 4월 21일입니다.\"\n  source: \"\
+      한국천문연구원\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"내년 음력 3월 5일의 양력\
+      \ 날짜를 엄마 생일 일정으로 등록\"\n  title: \"엄마 생일\"\n  startDateTime: \"2026-04-21T11:05\"\
+      \n  endDateTime: \"2026-04-21T12:05\"\ntool_call_result:\n  data:\n    scheduleId:\
+      \ \"sch_94821\"\n    title: \"엄마 생일\"\n    startDateTime: \"2026-04-21T11:05\"\
+      \n    endDateTime: \"2026-04-21T12:05\"\n    status: \"등록 완료\"\n    note: \"\
+      2026년 음력 3월 5일에 해당하는 양력 날짜로 등록됨\"\n  source: \"캘린더 시스템\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '엄마 생일을 내년 음력 3월 5일 기준으로 등록해드렸어요.
+
+      2026년 음력 3월 5일은 양력으로 4월 21일이며,
+
+      이 날짜에 오전 11시 5분부터 오후 12시 5분까지 일정이 등록되었습니다.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 응? 아침 7시로 등록해주고 당일 7시에 꼭 알려줘
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: calendar_agent\n      refined_query: \"\
+      내년 음력 3월 5일을 양력으로 변환\"\n\nworkflow_2:\n  status: completed\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n      name:\
+      \ calendar_agent\n      refined_query: \"내년 음력 3월 5일의 양력 날짜를 엄마 생일 일정으로 등록\"\
+      \n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: calendar_agent\n      refined_query: \"엄마 생일 일정을 아침 7시로\
+      \ 시간 변경\"\n\nworkflow_4:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: calendar_agent\n      refined_query: \"\
+      2026년 4월 21일 오전 7시에 엄마 생일 알림\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: modifySchedule\narguments:\n  refinedQuery: \"엄마 생일 일정을 아침 7시로\
+      \ 시간 변경\"\n  scheduleID: \"sch_94821\"\n  newStartDateTime: \"2026-04-21T07:00\"\
+      \n  newEndDateTime: \"2026-04-21T08:00\"\ntool_call_result:\n  data:\n    scheduleID:\
+      \ \"sch_94821\"\n    title: \"엄마 생일\"\n    startDateTime: \"2026-04-21T07:00\"\
+      \n    endDateTime: \"2026-04-21T08:00\"\n    status: \"변경 완료\"\n    note: \"\
+      엄마 생일 일정이 아침 7시로 변경됨\"\n  source: \"캘린더 시스템\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"2026년 4월 21일 오전\
+      \ 7시에 엄마 생일 알림\"\n  reminderContent: \"엄마 생일\"\n  reminderTime: \"2026-04-21T07:00\"\
+      \n  repeatRule: \"none\"\n  priority: \"normal\"\n  deliveryMethod: \"chat\"\
+      \ntool_call_result:\n  status: success\n  data:\n    reminderId: \"rem_123456\"\
+      \n    reminderContent: \"엄마 생일\"\n    reminderTime: \"2026-04-21T07:00\"\n \
+      \   repeatRule: \"none\"\n    priority: \"normal\"\n    deliveryMethod: \"chat\"\
+      \n    status: \"알림 설정 완료\"\n    note: \"2026년 4월 21일 오전 7시에 엄마 생일 알림이 설정되었습니다.\"\
+      \n  source: \"알림 시스템\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 엄마 생일 일정의 시작 시간을 오전 7시로 성공적으로 변경했습니다. 또한, 2026년 4월 21일 오전 7시에 "엄마 생일"
+      알림이 설정되었습니다. 알림은 채팅을 통해 전달될 예정입니다!

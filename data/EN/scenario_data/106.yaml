@@ -1,0 +1,160 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2031/07/12'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'Why are wedding rings so expensive? Is it because gold prices are high?
+
+      What’s today’s gold price per ounce? Also, I’d like to book a consultation with
+      a local jeweler in Brooklyn, New York who makes custom wedding rings, not Cartier
+      or Tiffany.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"Check today’s\
+      \ gold price per ounce in USD\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Search for local jewelers in Brooklyn, New York that make custom wedding\
+      \ rings (excluding big brands like Cartier or Tiffany)\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"Book a consultation\
+      \ at a custom wedding ring shop in Brooklyn, New York (excluding big brands\
+      \ like Cartier or Tiffany)\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getGoldPrice\narguments:\n  refinedQuery: \"Check today's gold\
+      \ price per ounce in USD\"\n  unit: \"oz\"\n  date: \"2031-07-12\"\ntool_call_result:\n\
+      \  goldPrice:\n    date: \"2031-07-12\"\n    unit: \"1 oz\"\n    price: \"$1,950\"\
+      \n    source: \"Kitco\"\n    updateTime: \"2031-07-12T10:30:00\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Search for local jewelers\
+      \ in Brooklyn who make custom wedding rings, not big brands like Cartier or\
+      \ Tiffany\"\n  placeCategory: \"Jewelry Making\"\n  location: \"Brooklyn, NY\"\
+      \n  sortBy: \"distance\"\ntool_call_result:\n  data:\n    places:\n      - name:\
+      \ \"Brooklyn Workshop\"\n        address: \"18 Main Street, Brooklyn, NY\"\n\
+      \        phone: \"(718) 123-4567\"\n        website: \"http://brooklynworkshop.com\"\
+      \n        distance: \"230m\"\n        features:\n          - \"Handcrafted custom\
+      \ wedding rings\"\n          - \"Specializes in silversmithing and metalwork\"\
+      \n          - \"By appointment only\"\n\n      - name: \"Mono Jewelry Studio\"\
+      \n        address: \"132-12 Sunset Avenue, Brooklyn, NY\"\n        phone: \"\
+      (718) 876-5432\"\n        website: \"http://monojewelry.com\"\n        distance:\
+      \ \"410m\"\n        features:\n          - \"Custom design for couples’ and\
+      \ wedding bands\"\n          - \"One-on-one production in a small studio\"\n\
+      \          - \"Direct consultation with the designer available\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Business name, reservation date, reservation time, and contact
+      information'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Local Jewelers Making Custom Wedding Rings in Brooklyn (Not Cartier\
+      \ or Tiffany)\n\n1. Brooklyn Workshop\n\n   * Address: 18 Main Street, Brooklyn,\
+      \ NY\n   * Phone: (718) 123-4567\n   * Website: [brooklynworkshop.com](http://brooklynworkshop.com)\n\
+      \   * Distance: 230m\n   * Features:\n\n     * Handcrafted custom wedding rings\n\
+      \     * Specializes in silversmithing and metalwork\n     * By appointment only\n\
+      \n2. Mono Jewelry Studio\n\n   * Address: 132-12 Sunset Avenue, Brooklyn, NY\n\
+      \   * Phone: (718) 876-5432\n   * Website: [monojewelry.com](http://monojewelry.com)\n\
+      \   * Distance: 410m\n   * Features:\n\n     * Custom design for couples’ and\
+      \ wedding bands\n     * One-on-one production in a small studio\n     * Direct\
+      \ consultation with the designer available\n\nCould you please provide the business\
+      \ name, the date and time you want to reserve, and your contact information?"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 'I would like to book a consultation at Brooklyn Workshop on July 20th
+      at 3 PM.
+
+      Phone: (987) 654-3210
+
+
+      Please let them know that it’s for custom wedding ring production.'
+- workflow_id: null
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"Reserve a consultation\
+      \ for custom wedding ring making at Brooklyn Workshop, Brooklyn, NY, July 20th\
+      \ at 3 PM\"\n  placeName: \"Brooklyn Workshop\"\n  placeCategory: \"Jewelry\
+      \ Making\"\n  reservationDate: \"2031-07-20\"\n  reservationTime: \"15:00\"\n\
+      \  contactInfo: \"(987) 654-3210\"\n  option: \"Custom Wedding Ring Making\"\
+      \ntool_call_result:\n  reservation:\n    placeName: \"Brooklyn Workshop\"\n\
+      \    placeCategory: \"Jewelry Making\"\n    reservationDate: \"2031-07-20\"\n\
+      \    reservationTime: \"15:00\"\n    contact: \"(987) 654-3210\"\n    option:\
+      \ \"Custom Wedding Ring Making\"\n    status: \"Reservation Confirmed\"\n  \
+      \  reservationId: \"RSV-20310720-0001\"\n    message: \"Your consultation for\
+      \ custom wedding ring making at Brooklyn Workshop has been reserved for July\
+      \ 20th at 3 PM.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Current Gold Price
+
+
+      * Date: July 12, 2031
+
+      * Unit: 1 ounce
+
+      * Price: $1,950
+
+      * Source: Kitco
+
+      * Last Updated: 10:30 AM (local time)
+
+
+      This is the current market price for gold per ounce in USD.
+
+
+      ▶ Custom Wedding Ring Consultation Reservation
+
+
+      * Place: Brooklyn Workshop
+
+      * Category: Jewelry Making
+
+      * Reservation Date: July 20th, 2031
+
+      * Reservation Time: 3:00 PM
+
+      * Contact: (987) 654-3210
+
+      * Option: Custom Wedding Ring Making
+
+      * Status: Reservation Confirmed
+
+      * Reservation ID: RSV-20310720-0001
+
+      * Message: Your consultation for custom wedding ring making at Brooklyn Workshop
+      has been reserved for July 20th at 3 PM.'

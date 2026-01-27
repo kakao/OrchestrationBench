@@ -1,0 +1,138 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-01-12
+
+      Current time: 11:01 PM
+
+      Name: Michael Anderson
+
+      Contact: "(415)555-0136"
+
+      Current location: "555 Harbor Ln, Miami Beach, FL 33139, United States"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Something came up and I need to call for a designated driver. Please
+      book one from my current location to my home, scheduled for 45 minutes from
+      now. Also, change tomorrow’s morning soccer game from 8 AM to 9 AM.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Book\
+      \ a designated driver from my current location to home in 45 minutes\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: calendar_agent\n      refined_query: \"Check tomorrow’s early-morning\
+      \ soccer schedule\"\n    - status: pending\n      name: calendar_agent\n   \
+      \   refined_query: \"Change tomorrow’s early-morning soccer schedule to 9 AM\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Destination information, scheduled vehicle information'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check tomorrow's early\
+      \ soccer schedule\"\n  startDate: \"2025-01-13\"\n  endDate: \"2025-01-13\"\n\
+      \  keyword: \"early soccer\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Check tomorrow's early soccer schedule\"\n    startDate: \"2025-01-13\"\n\
+      \    endDate: \"2025-01-13\"\n    keyword: \"early soccer\"\n    status: \"\
+      Lookup complete\"\n    message: \"The 'early soccer' schedule for January 13,\
+      \ 2025 has been retrieved successfully.\"\n    schedules:\n      - scheduleID:\
+      \ \"sch20250113_001\"\n        title: \"Weekly Early Soccer Meetup\"\n     \
+      \   date: \"2025-01-13\"\n        time: \"08:00\"\n        location: \"Kendall\
+      \ Soccer Park, 8011 SW 127th Ave, Miami, FL 33183, United States\"\n       \
+      \ description: \"Weekly meetup of the Songpa Early Soccer Club\""
+- workflow_id: null
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: modifySchedule\narguments:\n  refinedQuery: \"Change tomorrow's\
+      \ early soccer game from 8 AM to 9 AM\"\n  scheduleID: \"sch20250113_001\"\n\
+      \  newStartDateTime: \"2025-01-13T09:00:00\"\n  newEndDateTime: \"2025-01-13T10:00:00\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Change tomorrow's early soccer\
+      \ game from 8 AM to 9 AM\"\n    scheduleID: \"sch20250113_001\"\n    title:\
+      \ \"Weekly Early Soccer Meetup\"\n    location: \"Kendall Soccer Park, 8011\
+      \ SW 127th Ave, Miami, FL 33183, United States\"\n    oldStartDateTime: \"2025-01-13T08:00:00\"\
+      \n    oldEndDateTime: \"2025-01-13T09:00:00\"\n    newStartDateTime: \"2025-01-13T09:00:00\"\
+      \n    newEndDateTime: \"2025-01-13T10:00:00\"\n    status: \"Change Completed\"\
+      \n    message: \"Start time moved from 8:00 AM to 9:00 AM on 2025-01-13; location\
+      \ confirmed to be Kendall Soccer Park.\"\n  source: \"Calendar System\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 'Please provide the destination details and vehicle information (make/model,
+      color, license plate, etc. For example: "White Toyota Corolla, plate 32A1234")'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 350 5th Ave, New York, NY 10118, United States — Black Toyota Corolla,
+      license plate 82GA8282
+- workflow_id: workflow_1
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callDesignatedDriver\narguments:\n  refinedQuery: \"Book a designated\
+      \ driver from my current location to home in 45 minutes\"\n  pickupLocation:\
+      \ \"555 Harbor Ln, Miami Beach, FL 33139, United States\"\n  dropoffLocation:\
+      \ \"350 5th Ave, New York, NY 10118, United States\"\n  pickupTime: \"2025-01-12T11:46\"\
+      \n  vehicleInfo: \"Black Toyota Corolla, plate 82GA8282\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Book a designated driver from my current location\
+      \ to home in 45 minutes\"\n    pickupLocation: \"555 Harbor Ln, Miami Beach,\
+      \ FL 33139, United States\"\n    dropoffLocation: \"350 5th Ave, New York, NY\
+      \ 10118, United States\"\n    pickupTime: \"2025-01-12T11:46\"\n    vehicleInfo:\
+      \ \"Black Toyota Corolla, plate 82GA8282\"\n    driverName: \"Daniel Kim\"\n\
+      \    driverContact: \"(115)123-0136\"\n    estimatedArrivalTime: \"2025-01-12T11:46\"\
+      \n    estimatedFare: \"$24\"\n    status: \"Reservation Confirmed\"\n    message:\
+      \ \"Driver Daniel Kim is scheduled to arrive at 11:46 on 2025-01-12, and the\
+      \ designated driving service will be provided with vehicle 'Black Casper, plate\
+      \ 82GA8282'. The estimated fare is $24.\"\n  source: \"Designated Driver Booking\
+      \ System\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Driver Daniel Kim is scheduled to arrive at 11:46 AM on January 12,
+      2025.
+
+      The vehicle is a Black Toyota Corolla (license plate 82GA8282). Pickup location:
+      555 Harbor Ln, Miami Beach, FL 33139, United States. Drop-off location: 350
+      5th Ave, New York, NY 10118, United States.
+
+      The estimated fare is $24. I’ll make sure you get home safely and comfortably.
+
+
+      ----------
+
+
+      ▶ Tomorrow’s regular early soccer club meeting has been rescheduled from 8:00
+      AM to 9:00 AM.
+
+      The new schedule is January 13, 2025, from 9:00 AM to 10:00 AM, and the venue
+      is Kendall Soccer Park, 8011 SW 127th Ave, Miami, FL 33183.
+
+      The schedule change has been confirmed, so please take note.'

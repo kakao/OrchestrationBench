@@ -1,0 +1,113 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Current date: 2025-11-29'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I need to send some documents by courier tomorrow at 3 PM. Please book
+      a same-day delivery service from New York Penn Station to Downtown Manhattan.
+      The sender is me, Jason Dawson. I’ll give you the recipient’s information later.
+      Also, please leave a note for the courier to call me upon departure.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"Schedule\
+      \ a same-day courier tomorrow at 3 PM from New York Penn Station to Downtown\
+      \ Manhattan. Sender: Jason Dawson\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: message_agent\n      refined_query: \"Send a text asking the courier\
+      \ to call me upon departure\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Sender''s contact information and recipient''s information (name
+      and contact number)'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: Alright, I’ll go ahead and book the courier service for you. To complete
+      the reservation, please provide your contact information as well as the name
+      and phone number of the person who will be receiving the documents.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 'My contact number is (212)555-1234.
+
+      The recipient is John Lee, and his contact number is (212)555-9876.'
+- workflow_id: null
+  step_id: 7
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: bookDeliveryService\narguments:\n  refinedQuery: \"Reserve a same-day\
+      \ courier for tomorrow at 3 PM from New York Penn Station to Downtown Manhattan.\
+      \ Sender: Jason Dawson ((212)555-1234), Recipient: John Lee ((212)555-9876)\"\
+      \n  deliveryType: \"express\"\n  reservation: true\n  pickupLocation: \"New\
+      \ York Penn Station\"\n  dropoffLocation: \"Downtown Manhattan\"\n  pickupTime:\
+      \ \"2025-11-30T15:00:00\"\n  senderInfo:\n    name: \"Jason Dawson\"\n    phone:\
+      \ \"(212)555-1234\"\n  receiverInfo:\n    name: \"John Lee\"\n    phone: \"\
+      (212)555-9876\"\n  itemDescription: \"Business documents\"\ntool_call_result:\n\
+      \  data:\n    status: \"confirmed\"\n    reservationId: \"EXP-20251130-00124\"\
+      \n    deliveryType: \"express\"\n    pickupTime: \"2025-11-30T15:00:00\"\n \
+      \   pickupLocation: \"New York Penn Station\"\n    dropoffLocation: \"Downtown\
+      \ Manhattan\"\n    itemDescription: \"Business documents\"\n    sender:\n  \
+      \    name: \"Jason Dawson\"\n      phone: \"(212)555-1234\"\n    receiver:\n\
+      \      name: \"John Lee\"\n      phone: \"(212)555-9876\"\n    driver:\n   \
+      \   name: \"David Park\"\n      phone: \"(212)555-8888\"\n      vehicle: \"\
+      Motorcycle\"\n    estimatedArrival: \"2025-11-30T15:45:00\"\n    note: \"The\
+      \ driver will receive a reminder 10 minutes before pickup. Please ensure that\
+      \ the documents are sealed before handoff.\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Send a text to the\
+      \ courier asking them to call me when they leave for pickup\"\n  phoneNumber:\
+      \ \"(212)555-8888\"\n  channel: \"sms\"\n  message: \"Driver, I’d appreciate\
+      \ it if you could give me a quick call when you head out to the pickup location.\
+      \ (From Jason Dawson)\"\n  repeatRule: \"none\"\n  priority: \"normal\"\ntool_call_result:\n\
+      \  data:\n    status: \"sent\"\n    channel: \"sms\"\n    phoneNumber: \"(212)555-8888\"\
+      \n    sentAt: \"2025-11-29T16:32:00\"\n    message: \"Driver, I’d appreciate\
+      \ it if you could give me a quick call when you head out to the pickup location.\
+      \ (From Jason Dawson)\"\n    messageId: \"MSG-20251129-00456\"\n    deliveryStatus:\
+      \ \"delivered\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Jason Dawson, all your requested courier service booking and text messages
+      have been successfully completed!
+
+
+      Courier booking confirmed: Your document delivery from Midtown Station to Downtown
+      has been successfully scheduled for tomorrow (November 30) at 3:00 PM. The courier,
+      David Park ((212)555-8888), will deliver it by motorcycle.
+
+
+      Text message sent: I’ve sent the following message to your courier (David Park,
+      (212)555-8888):
+
+      “Driver, I’d appreciate it if you could give me a quick call when you head out
+      to the pickup location. (From Jason Dawson)”'

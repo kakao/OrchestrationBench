@@ -1,0 +1,160 @@
+{
+  "agent_card": {
+    "name": "Daily Life Info",
+    "agent_id": "life_info_agent",
+    "description": "A smart assistant that easily provides information needed in daily life (lottery, world time, postal codes, international addresses, phone numbers, etc.).",
+    "url": "http://localhost:10006/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getLotteryInfo",
+        "name": "Lottery Information",
+        "description": "Provides winning numbers and related information for various lotteries such as Lotto, Pension Lottery, Powerball, and Speed Keno, based on draw number or date.",
+        "examples": [
+          "Tell me this week's Powerball numbers.",
+          "Give me the latest Mega Millions results.",
+          "What were the Lotto America numbers for draw 1120?",
+          "Can you tell me last Sunday's Speed Keno results?"
+        ]
+      },
+      {
+        "id": "getWorldTime",
+        "name": "World Time",
+        "description": "Provides the current time in major cities or countries around the world and the time difference from Seoul.",
+        "examples": [
+          "What time is it in Tokyo right now?",
+          "Tell me the current time in Paris.",
+          "What's the time difference between Vancouver and here?",
+          "What's the time difference between London and New York?"
+        ]
+      },
+      {
+        "id": "getPostalCode",
+        "name": "Find Postal Code",
+        "description": "Quickly looks up the postal code for a given address.",
+        "examples": [
+          "Find the postal code for Times Square in New York.",
+          "What's the postal code for downtown San Francisco?",
+          "Can you tell me the postal code for 1600 Pennsylvania Ave NW, Washington, DC?"
+        ]
+      },
+      {
+        "id": "getPhoneNumberInfo",
+        "name": "Phone Number Information",
+        "description": "Provides various information such as the area or whether a number is spam based on the entered phone number or its prefix.",
+        "examples": [
+          "What area code is 303?",
+          "Can I trust this number 2025551234?",
+          "Tell me if 8005550199 is a spam call.",
+          "Which area uses the 312 area code?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getLotteryInfo",
+      "description": "A tool to look up winning numbers, results, and information for lotteries based on type, draw number, or date. When calling for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined natural language query reflecting the previous conversation context and the user's request (e.g., 'Tell me yesterday's Powerball results', 'Check the latest Pension Lottery winning numbers')."
+          },
+          "lotteryType": {
+            "type": "string",
+            "enum": [
+              "powerball",
+              "mega_millions",
+              "lotto_america",
+              "cash4life",
+              "keno"
+            ],
+            "description": "The type of lottery to check."
+          },
+          "drawNumber": {
+            "type": "integer",
+            "description": "The draw number to check (e.g., 1104, 130) - optional field."
+          },
+          "drawDate": {
+            "type": "string",
+            "description": "The lottery draw date or desired date (e.g., '2026-01-09') - use ISO 8601 date format, optional field."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "lotteryType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getWorldTime",
+      "description": "A tool for retrieving the current time information for cities or countries around the world. If you need to call it repeatedly for multiple targets, you can structure them as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A time/time difference-related query reconstructed to reflect both the previous conversation context and the user's natural language request (e.g., 'What's the current time in Paris?', 'What's the time difference between London and New York?')"
+          },
+          "targetCity": {
+            "type": "string",
+            "description": "The name of the city or country you want to look up (e.g., 'Sydney', 'Bangkok', 'Los Angeles'). Required if not already specified in the refinedQuery."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPostalCode",
+      "description": "A tool that finds the postal code for a location based on the address information entered by the user. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined request sentence combining the previous conversation context and the user's natural language query about the address (e.g., 'Postal code for the library in Dongchun-dong, Yeonsu-gu, Incheon', 'Tell me the postal code for the cafe in Eonnam-dong, Seocho-gu, Seoul')"
+          },
+          "addressQuery": {
+            "type": "string",
+            "description": "Must include the full or partial address, and the user should enter the location for which they want to find the postal code (including street name, building name, or neighborhood name). (e.g., '396 World Cup Buk-ro, Mapo-gu, Seoul', '473 Jwadong Sunhwan-ro, Haeundae-gu, Busan')"
+          }
+        },
+        "required": [
+          "addressQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPhoneNumberInfo",
+      "description": "A tool that analyzes the entered phone number or area code to check related information. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query that includes the previous conversation context and the user's natural language question (e.g., 'Tell me about area code 303', \"I’m curious about a call from 312 in Chicago\")"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The full or partial phone number entered by the user (enter without hyphens, e.g., '312', '2025553333')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "phoneNumber"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

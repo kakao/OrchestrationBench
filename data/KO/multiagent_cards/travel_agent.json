@@ -1,0 +1,889 @@
+{
+  "agent_card": {
+    "name": "여행",
+    "agent_id": "travel_agent",
+    "description": "항공권, 숙소, 여행 일정 등 다양한 국내외 여행 서비스를 쉽고 빠르게 처리해주는 스마트 에이전트입니다.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "findFlightInfo",
+        "name": "항공권 정보",
+        "description": "원하는 항공권을 출발지, 도착지, 여행 일정, 항공사, 좌석 등급, 인원 등 조건에 맞게 찾아줍니다.",
+        "examples": [
+          "다음주 금요일 부산에서 로마로 가는 직항 항공편 알려줘.",
+          "인천에서 파리까지 비즈니스석으로 3명이 탈수 있는 표가 있나 찾아봐.",
+          "서울에서 뉴욕 왕복 비행기표 가격대별로 추천해줘."
+        ]
+      },
+      {
+        "id": "bookFlight",
+        "name": "항공권 예약",
+        "description": "선택한 항공 스케줄에 대해 승객 정보와 좌석, 수하물 옵션, 마일리지/쿠폰 등을 입력해 항공권을 예약합니다. '항공권 정보'를 통혜 예약할 항공편을 선택합니다.",
+        "examples": [
+          "5월 10일 바르셀로나행 오전 7시 직항 예약하고 성인 2명 예약 정보 입력해줘.",
+          "7월 3일에 LA 가는 대한항공 1등석 바로 예약해줘.",
+          "찾아준 뮌헨행 저녁 항공편으로 엄마랑 같이 예약할게."
+        ]
+      },
+      {
+        "id": "getFlightReservation",
+        "name": "항공권 예약 조회",
+        "description": "이름, 연락처 등으로 내가 예약한 항공권의 예약 내역 및 상태를 확인합니다.",
+        "examples": [
+          "어제 예약한 도쿄행 비행기 예약 상태 알려줘.",
+          "김지혜 이름으로 예약된 비행 일정 확인해줄래?",
+          "010-2222-3333로 예약된 항공권 정보를 보여줘."
+        ]
+      },
+      {
+        "id": "changeFlight",
+        "name": "항공권 변경",
+        "description": "이미 예약한 항공권의 일정, 좌석 종류, 수하물 옵션 등을 변경 요청할 수 있습니다. '항공권 예약 조회'를 통해 변경할 예약을 선택해야 합니다.",
+        "examples": [
+          "8월 12일 출발로 예약한 마드리드행 비행 날짜를 8월 14일로 변경해줘.",
+          "예약된 런던 왕복 일정의 좌석을 비즈니스로 업그레이드하고싶어.",
+          "태국 가는 항공권 출발일만 2일 뒤로 바꿔줘."
+        ]
+      },
+      {
+        "id": "cancelFlight",
+        "name": "항공권 취소",
+        "description": "확정된 항공권 예약 전체를 취소하고, 환불 및 결과 안내 방법을 지정합니다. '항공권 예약 조회'를 통해 취소할 예약을 선택해야 합니다.",
+        "examples": [
+          "3월 25일 로마행 항공권 전체 취소 부탁해.",
+          "‘RES20240722’ 예약번호로 된 비행기표 환불 요청하고 알림은 이메일로 받아보고 싶어.",
+          "일정 변경 때문에 발리 항공권 예약 취소해줄 수 있어?"
+        ]
+      },
+      {
+        "id": "getAccommodationInfo",
+        "name": "숙박 정보",
+        "description": "지역, 인원, 체크인/아웃 날짜, 숙소 유형, 평점, 가격, 애완동물 동반, 뷰 등 조건으로 숙박 시설을 추천합니다.",
+        "examples": [
+          "7월 말에 가족과 머물만한 제주 풀빌라를 예산 30만원 이내로 추천해줘.",
+          "7월 17일부터 2박 3일간 호텔급 숙소 찾고 싶어. 강릉 시내에 위치하면 좋겠어.",
+          "도쿄 신주쿠에서 커플이 가기 좋은 료칸이나 호텔 알려줘."
+        ]
+      },
+      {
+        "id": "getAccommodationReservation",
+        "name": "숙박 예약 조회",
+        "description": "이름, 전화번호 등 정보로 내가 예약한 숙박 내역이나 확인을 도와줍니다.",
+        "examples": [
+          "송다영 이름으로 예약된 숙소 정보 보여줘.",
+          "010-9876-5432로 지난달 예약한 숙소 내역 있을까?",
+          "부산 해운대 쪽 예약 조회해줄 수 있어?"
+        ]
+      },
+      {
+        "id": "bookAccommodation",
+        "name": "숙박 예약",
+        "description": "원하는 숙소와 객실 타입, 인원, 날짜, 요청사항을 입력해 숙박 예약을 진행합니다. '숙박 정보'를 통해 예약할 숙박 장소를 선택해야 합니다.",
+        "examples": [
+          "7월 18일~20일 2박 3일로 스탠다드 오션뷰 객실 2개 예약해줘.",
+          "다음달 초에 서울 강남에서 4인실 펜션 예약하고 싶어.",
+          "롯데시티호텔 부산에 3인 가족이 머물 방 예약할게."
+        ]
+      },
+      {
+        "id": "cancelAccommodation",
+        "name": "숙박 취소",
+        "description": "예약된 전체 숙박을 취소하고 환불 방식 및 결과 안내 방식을 선택할 수 있습니다.  '숙박 예약 조회'를 통해 취소할 예약을 선택해야 합니다.",
+        "examples": [
+          "제주도 호텔 예약 전체 취소해줘. 알림은 문자로 받고 싶어.",
+          "이번 주말 강릉 펜션 예약을 사정상 취소해야 해.",
+          "인원 변경으로 인해 오사카 숙소 예약을 취소하고 환불받고 싶어."
+        ]
+      },
+      {
+        "id": "modifyAccommodation",
+        "name": "숙박 변경",
+        "description": "기존 예약에서 날짜, 인원, 객실 수, 요청사항 등을 최대 3회까지 변경 요청할 수 있습니다. '숙박 예약 조회'를 통해 변경할 예약을 선택해야 합니다.",
+        "examples": [
+          "7월 10일로 예약한 전주 숙소 체크인을 7월 12일로 바꿔줄래?",
+          "부산 해운대 호텔 예약 인원을 2명에서 4명으로 늘리고 방도 하나 더 추가할 수 있을까?",
+          "예약된 강릉 펜션에 조용한 방 요청 추가해줘."
+        ]
+      },
+      {
+        "id": "planTravel",
+        "name": "여행 일정 계획",
+        "description": "여행지, 일정, 동행자, 기간 등을 기반으로 일정표 또는 맞춤 여행 코스를 추천합니다.",
+        "examples": [
+          "부모님과 함께 3박 4일 아시아 여행 일정 짜줄 수 있어?",
+          "친구들과 떠나는 제주 2박 3일 일정 추천해줘.",
+          "연인끼리 교토에서 가볼 만한 코스와 루트를 금요일~일요일 일정으로 알려줘."
+        ]
+      },
+      {
+        "id": "getPopularPlaceInfo",
+        "name": "명소 정보",
+        "description": "내외 도시·여행지 중심의 관광·명소·여행 테마 장소 추천하는 도구입니다.",
+        "examples": [
+          "파리에서 인기가 많은 전통시장 몇 곳 추천해줘.",
+          "오사카에서 관광객들이 많이 찾는 랜드마크 5곳 알려줘."
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "findFlightInfo",
+      "description": "사용자의 출발지, 도착지, 일정, 좌석 등 다양한 조건에 맞는 항공권 정보를 검색하고 필터링하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 함께 사용자의 자연어 요청을 포함한 정제된 항공권 검색 쿼리 (예: '8월 초 파리로 직항 비즈니스석 왕복')"
+          },
+          "departure": {
+            "type": "string",
+            "description": "출발 도시명 또는 공항 코드 (예: '부산', 'PUS', '김해'). 미입력 시  'ICN'이 기본값으로 사용됨."
+          },
+          "destination": {
+            "type": "string",
+            "description": "도착 도시명 또는 공항 코드 (예: '런던', 'LHR', '히드로')"
+          },
+          "departureDate": {
+            "type": "string",
+            "description": "출발일 (형식: 'YYYY-MM-DD'). 과거 날짜 및 오늘로부터 360일 이후 날짜는 입력 불가."
+          },
+          "returnDate": {
+            "type": "string",
+            "description": "귀국일(왕복에만 해당, 형식: 'YYYY-MM-DD'). 과거 날짜 및 오늘로부터 360일 이후 날짜는 입력 불가."
+          },
+          "airlines": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "선호 항공사 목록 (예: ['Asiana Airlines', 'Qatar Airways'])"
+          },
+          "directOnly": {
+            "type": "boolean",
+            "description": "직항만 검색할지 여부 (예: true 입력 시 경유 노선 제외)"
+          },
+          "seatClass": {
+            "type": "string",
+            "enum": [
+              "economy",
+              "business",
+              "first"
+            ],
+            "description": "좌석 등급 (예: 'economy', 'business', 'first')"
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "검색하는 항공권의 최대 가격 (예: 1500000)"
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "검색하는 항공권의 최소 가격 (예: 300000)"
+          },
+          "adultPassengerCount": {
+            "type": "integer",
+            "description": "성인(만 12세 이상) 탑승 인원 수(예: 2). 성인과 소아 탑승객 합계는 6명을 초과할 수 없음. 소아 단독탑승 불가."
+          },
+          "kidPassengerCount": {
+            "type": "integer",
+            "description": "소아(만 2세 이상 ~ 만 12세 미만) 인원 수(예: 1). 성인 없이는 소아 단독 탑승 불가. 성인+소아 합산 6명 초과 시 오류."
+          },
+          "babyPassengerCount": {
+            "type": "integer",
+            "description": "유아(만 2세 미만) 인원 수 (예: 1)"
+          },
+          "luggageOption": {
+            "type": "string",
+            "enum": [
+              "checked_included",
+              "carry_on_only",
+              "no_restriction"
+            ],
+            "description": "수하물 조건 (예: 'checked_included'는 위탁수화물 포함, 'carry_on_only'는 위탁수화물 불가, 'no_restriction'은 제한없음)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "departure",
+          "destination",
+          "departureDate"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookFlight",
+      "description": "항공권 예약을 위해 여정 ID, 승객 정보, 좌석 등급, 수하물 옵션, 마일리지 사용 여부, 그리고 기내 서비스 요청 등의 정보를 입력하여 항공권을 예약하는 도구입니다. '항공권 정보'를 통혜 예약할 항공편을 선택합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청과 이전 맥락을 반영한 항공권 예약 쿼리 (예: '5월 2일 제주 출발 울산 도착 가장 저렴한 비행기 예약')"
+          },
+          "tripID": {
+            "type": "string",
+            "description": "findFlightInfo로 조회한 예약할 항공 여정의 고유 ID 또는 코드 (예: 'KRSELN0502JL102')"
+          },
+          "passengerInfoList": {
+            "type": "array",
+            "description": "탑승하는 승객의 목록. 국제선 예약 시 각 승객에 대해 여권번호와 국적 코드가 반드시 포함되어야 합니다. 승객 수(성인+소아)는 최대 6명까지 입력 가능합니다.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "승객의 한글 또는 영문 성명 (예: '김민수', 'LEE JIHOON'), 국제선의 경우 영문 이름 필요"
+                },
+                "birthDate": {
+                  "type": "string",
+                  "description": "승객의 생년월일(YYYY-MM-DD 형식, 예: '2010-08-15')"
+                },
+                "gender": {
+                  "type": "string",
+                  "enum": [
+                    "male",
+                    "female",
+                    "other"
+                  ],
+                  "description": "승객의 성별"
+                },
+                "passportNumber": {
+                  "type": "string",
+                  "description": "국제선 예약 시 필수. 승객의 여권 번호 (예: 'M12345678')"
+                },
+                "nationality": {
+                  "type": "string",
+                  "description": "국제선 예약 시 필수. 승객의 국적을 2자리 국가 코드로 입력 (예: 'KR'은 대한민국, 'JP'는 일본)"
+                },
+                "contactNumber": {
+                  "type": "string",
+                  "description": "승객의 연락처 (예: '+821012345678' 또는 '01012345678')"
+                }
+              },
+              "required": [
+                "name",
+                "birthDate",
+                "gender",
+                "contactNumber"
+              ]
+            }
+          },
+          "seatClass": {
+            "type": "string",
+            "enum": [
+              "economy",
+              "business",
+              "first"
+            ],
+            "description": "좌석 등급 (economy: 이코노미, business: 비즈니스, first: 퍼스트)"
+          },
+          "baggageOption": {
+            "type": "string",
+            "enum": [
+              "basic",
+              "extra",
+              "carry_on_only"
+            ],
+            "description": "수하물 옵션 (basic: 무료 수하물만, extra: 추가 수하물, carry_on_only: 기내 반입 수하물만)"
+          },
+          "useMileage": {
+            "type": "boolean",
+            "description": "마일리지 사용 여부 (true: 사용, false: 미사용)"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "기내 서비스 또는 요청 사항 (예: '알레르기식 요청', '유아용 카시트 필요', '휠체어 지원 요청')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "tripID",
+          "passengerInfoList",
+          "seatClass",
+          "baggageOption",
+          "useMileage"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getFlightReservation",
+      "description": "항공권 예약 정보를 조회하고, 예약 상태나 탑승객 정보를 기준으로 필터링할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "현재 맥락과 사용자의 자연어 요청을 결합한 세부 조회 쿼리 (예: '서울 출발 예약 확인', '다음 주 국제선 예매 조회')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "항공권 예약 시 부여된 고유 예약 ID 또는 번호. 다른 정보가 있을 시 우선적으로 사용함 (예: 'RES87654321')"
+          },
+          "name": {
+            "type": "string",
+            "description": "탑승객의 영문 또는 한글 전체 이름 (예: 'HANA LEE', '이하나')"
+          },
+          "contactNumber": {
+            "type": "string",
+            "description": "항공권 예약 시 입력한 연락처 전화번호. 예약 ID나 이름 등 추가 정보가 없을 경우 필수로 사용됨 (예: '010-5678-1234')"
+          },
+          "passportNumber": {
+            "type": "string",
+            "description": "국제선 항공권의 경우 입력 가능한 탑승객 여권 번호 (예: 'P23456789')"
+          },
+          "statusFilter": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "canceled",
+              "pending"
+            ],
+            "description": "특정 예약 상태로 결과를 필터링 ('confirmed' = 확정, 'canceled' = 취소, 'pending' = 대기 중)"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "changeFlight",
+      "description": "항공권 예약의 출국일, 귀국일, 좌석 등급, 수하물 옵션 등을 변경하고, 변경 사항을 다양한 알림 수단(SMS, 이메일 등)으로 안내하는 도구입니다. '항공권 예약 조회'를 통해 변경할 예약을 선택해야 합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자 입력과 이전 맥락을 바탕으로 정제된 예약 변경 요청 쿼리 (예: '출발일을 9월 5일로 변경해 주세요', '좌석을 비즈니스 클래스로 바꿔주세요')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "변경하려는 기존 항공권 예약 ID. getFlightReservation을 통해 사전에 확인한 예약 ID를 입력해야 하며, 예약 상태가 'confirmed'이고 유효해야 함 (예: 'RES20240716')"
+          },
+          "departureDate": {
+            "type": "string",
+            "description": "새로운 출국일을 YYYY-MM-DD 형식으로 입력 (예: '2025-09-05'). 출발 전 1회만 변경 가능하며, 국내선은 출발 24시간 전, 국제선은 항공사 규정에 따라 통상 최소 48시간 전에 변경 신청이 필요"
+          },
+          "returnDate": {
+            "type": "string",
+            "description": "새로운 귀국일을 YYYY-MM-DD 형식으로 입력 (예: '2025-09-12')"
+          },
+          "seatClass": {
+            "type": "string",
+            "enum": [
+              "business",
+              "economy",
+              "first"
+            ],
+            "description": "변경할 좌석 등급을 선택. 'economy': 일반석, 'business': 비즈니스석, 'first': 퍼스트 클래스"
+          },
+          "baggageOption": {
+            "type": "string",
+            "enum": [
+              "basic",
+              "extra",
+              "carry_on_only"
+            ],
+            "description": "변경할 수하물 옵션을 선택. 'basic': 기본 수하물, 'extra': 추가 수하물, 'carry_on_only': 기내 수하물만"
+          },
+          "reason": {
+            "type": "string",
+            "description": "항공권 변경 사유. 항공사에 따라 필요한 경우가 있으니 구체적으로 입력 (예: '출장 일정 조정', '개인 사정', '긴급 상황 등')"
+          },
+          "notifyVia": {
+            "type": "string",
+            "description": "변경 완료 안내를 받을 메시지 수단 ('sms', 'kakaotalk', 'email' 중 선택. 예: 'kakaotalk')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelFlight",
+      "description": "예약된 항공권을 사용자의 요청에 따라 전체 일정 취소 및 환불을 진행하는 도구입니다. 취소 대상 예약의 ID, 취소 사유, 환불 방식, 안내 수단 등을 입력받아 처리하며, '항공권 예약 조회'를 통해 취소할 예약을 선택해야 합니다.여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자 의도 및 이전 맥락을 반영한 요청 쿼리 (예: '다음 주말 출발 예약된 인천-도쿄 항공권 취소 요청')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "취소하려는 항공권 예약의 ID로, getFlightReservation을 통해 조회 후 사용해야 하며, 'confirmed' 상태인 예약만 취소할 수 있습니다. (예: 'RES98765432')"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "항공권 취소 사유 (예: '개인 사정', '행사 일정 변경', '기타')"
+          },
+          "refundMethod": {
+            "type": "string",
+            "description": "환불 방식 지정 (예: 'original_payment', 'mileage', 'manual_bank'). 기본값은 original_payment임."
+          },
+          "notifyVia": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "kakaotalk",
+              "email"
+            ],
+            "description": "취소 결과 안내를 받을 수단을 지정 (예: 'sms', 'kakaotalk', 'email')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId",
+          "refundMethod"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getAccommodationInfo",
+      "description": "다양한 위치, 날짜, 인원, 숙소 유형 및 편의시설 조건에 맞춰 최적의 숙박 정보를 검색하는 도구입니다.  '숙박 정보'를 통해 예약할 숙박 장소를 선택해야 합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요구사항을 종합한 숙박 검색 쿼리 (예: '친구들과 함께 서울 명동에서 2박 3일 머물 저렴한 호텔', '강릉 바다 전망 펜션 수영장 포함')"
+          },
+          "location": {
+            "type": "string",
+            "description": "숙박 시설의 위치(도시, 동네, 행정구역 등) (예: '경주', '부산 해운대', '춘천 남이섬')"
+          },
+          "checkInDate": {
+            "type": "string",
+            "description": "체크인 날짜 (예: '2025-09-10'). 날짜 미지정 시 '오늘'이 기본값입니다.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "checkOutDate": {
+            "type": "string",
+            "description": "체크아웃 날짜 (예: '2025-09-12'). 날짜 미지정 시 1박으로 자동 설정됩니다.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "guestCount": {
+            "type": "number",
+            "description": "총 숙박 인원 수 (예: 2, 4). 객실당 최대 6명, 6명 초과 시 필요한 객실 수를 늘려서 설정."
+          },
+          "roomCount": {
+            "type": "number",
+            "description": "필요한 객실 수 (예: 1, 2). 총 인원이 6명을 초과할 경우 인원에 따라 자동 산정 가능."
+          },
+          "accommodationType": {
+            "type": "string",
+            "enum": [
+              "hotel",
+              "motel",
+              "pension",
+              "resort",
+              "guesthouse",
+              "camping",
+              "airbnb"
+            ],
+            "description": "숙소 유형 선택 (예: 'hotel', 'pension', 'camping' 등)"
+          },
+          "amenities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "필수 편의시설 명칭 배열 (예: ['pool', 'spa', 'kitchen', 'parking'])"
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "최소 숙박 가격 (예: 60000)"
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "최대 숙박 가격 (예: 200000)"
+          },
+          "ratingMin": {
+            "type": "number",
+            "description": "사용자 리뷰 기준 최소 평점 (예: 4.5)"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "lowest_price",
+              "highest_rating",
+              "most_reviewed",
+              "distance"
+            ],
+            "description": "정렬 옵션 (예: 'highest_rating'). 기본값은 평점순"
+          },
+          "petFriendly": {
+            "type": "boolean",
+            "description": "반려동물 동반 가능 숙소만 필터링 여부 (예: true)"
+          },
+          "viewType": {
+            "type": "string",
+            "enum": [
+              "ocean_view",
+              "mountain_view",
+              "city_view"
+            ],
+            "description": "전망 조건 (예: 'ocean_view', 'city_view')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "checkInDate",
+          "checkOutDate",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getAccommodationReservation",
+      "description": "숙박 예약 내역을 조회하고 다양한 조건으로 필터링할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락 또는 사용자의 자연어 질문을 모두 포함한 정제된 검색 쿼리 (예: '7월 10일 체크인 예약 확인', '제주도 예약 내역 조회')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "예약 고유 번호. userId, contactNumber, name 중 하나 이상의 정보와 함께 사용하여 예약 조회 가능"
+          },
+          "userId": {
+            "type": "string",
+            "description": "예약자의 식별 아이디. userId, reservationId, contactNumber, name 중 하나 이상의 정보 필수"
+          },
+          "name": {
+            "type": "string",
+            "description": "예약한 사람의 이름. userId, reservationId, contactNumber, name 중 하나 이상의 정보 필수 (예: '김지원')"
+          },
+          "contactNumber": {
+            "type": "string",
+            "description": "예약자의 연락처 번호. userId, reservationId, contactNumber, name 중 하나 이상의 정보 필수 (예: '01012345678')"
+          },
+          "checkInDate": {
+            "type": "string",
+            "format": "date",
+            "description": "체크인 날짜 (예: '2024-08-15'). 미입력 시 최근 3개월 내 예약 기준으로 조회"
+          },
+          "location": {
+            "type": "string",
+            "description": "숙소 위치 정보 (선택 사항, 예: '부산', '여수')"
+          },
+          "accommodationName": {
+            "type": "string",
+            "description": "숙소 이름 또는 키워드 (선택 사항, 예: '라마다 호텔')"
+          },
+          "statusFilter": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "canceled",
+              "completed"
+            ],
+            "description": "예약 상태 필터: 'confirmed'(확정), 'canceled'(취소됨), 'completed'(이용완료)"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookAccommodation",
+      "description": "사용자의 요청에 따라 숙박 시설 예약을 진행하는 도구입니다. 숙소, 객실 유형, 인원, 날짜, 요청사항 등 다양한 정보를 받아 예약을 완료할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 현재 사용자의 구체적 요청을 반영한 숙소 예약에 대한 정제된 질의 (예: '강릉에 있는 가족 단위 바닷가 리조트', '서울 도심 인근의 고급 호텔 예약')"
+          },
+          "accommodationID": {
+            "type": "string",
+            "description": "예약할 숙박 시설의 고유 ID (예: 'HOTEL543210', 'GUESTHOUSE7520')"
+          },
+          "accommodationName": {
+            "type": "string",
+            "description": "예약할 숙박 시설의 정확한 이름 (예: '파인힐 호텔', '블루오션 펜션')"
+          },
+          "location": {
+            "type": "string",
+            "description": "숙박 시설의 위치 또는 주소 (예: '제주도 서귀포시', '부산 해운대구')"
+          },
+          "roomTypeId": {
+            "type": "string",
+            "description": "선택한 객실 타입의 고유 ID (예: 'FAMILY_SUIT_VIEW', 'STANDARD_DOUBLE')"
+          },
+          "checkInDate": {
+            "type": "string",
+            "format": "date",
+            "description": "체크인 날짜, 당일 예약 불가. 오늘로부터 최대 12개월 이내의 날짜 입력 (예: '2025-08-15')"
+          },
+          "checkOutDate": {
+            "type": "string",
+            "format": "date",
+            "description": "체크아웃 날짜, 체크인 날짜 이후여야 하며 체크인~체크아웃 모두 12개월 이내 (예: '2025-08-17')"
+          },
+          "guestCount": {
+            "type": "integer",
+            "description": "전체 투숙 인원. 객실당 최대 6명, 6명 초과 시 객실 수를 추가해야 함 (예: 3, 5, 8)"
+          },
+          "roomCount": {
+            "type": "integer",
+            "description": "필요한 객실 수. 투숙 인원에 맞춰 객실당 최대 정원(6명) 기준으로 설정 (예: 1, 2), 객실의 최대 투숙 인원 수를 바탕으로 자동으로 지정 가능(예: 최대 2인 투숙 가능 > 4명이면 2개)"
+          },
+          "userInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "예약자 성함 (예: '홍길동')"
+              },
+              "contactNumber": {
+                "type": "string",
+                "description": "예약자 연락처, 휴대전화 번호 (예: '010-9876-5432')"
+              },
+              "email": {
+                "type": "string",
+                "description": "예약자 이메일 주소 (예: 'honggildong@example.com')"
+              }
+            },
+            "required": [
+              "name",
+              "contactNumber",
+              "email"
+            ],
+            "additionalProperties": false
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "추가 요청사항 또는 특이사항 (예: '금연 객실 희망', '조식 포함 요청', '야경 좋은 객실 부탁')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "accommodationName",
+          "roomTypeId",
+          "checkInDate",
+          "checkOutDate",
+          "guestCount",
+          "roomCount",
+          "userInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelAccommodation",
+      "description": "사용자의 숙박 예약을 다양한 환불 방식과 안내 수단으로 안전하게 취소할 수 있는 도구입니다. '숙박 예약 조회'를 통해 취소할 예약을 선택해야 합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 맥락과 취소 요청에 관한 사용자의 자연어를 명확하게 포함한 정제 쿼리 예시: '7월 22일 호텔 예약 취소하고 싶어요', '지난주 펜션 예약 철회 요청'"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "취소를 진행할 숙박 예약의 고유 ID. 예약 조회(getAccommodationReservation)에서 받은 값을 사용하며, 체크인 당일 또는 취소 불가 상품은 입력해도 취소 처리되지 않습니다. 예: 'RSV20250815_012'"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "숙박 취소의 사유(예: '예상치 못한 출장', '가족 행사', '기타 개인적 사정' 등)"
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "original_payment",
+              "bank_transfer",
+              "kakao_pay"
+            ],
+            "description": "환불이 진행될 방식. 결제 수단으로 환불('original_payment'), 계좌 입금('bank_transfer'), 카카오페이 송금('kakao_pay') 중 선택"
+          },
+          "notifyVia": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "kakaotalk",
+              "email"
+            ],
+            "description": "취소 결과 알림을 받을 수단 선택: 문자 메시지('sms'), 카카오톡('kakaotalk'), 이메일('email')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId",
+          "cancelReason",
+          "refundMethod",
+          "notifyVia"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyAccommodation",
+      "description": "숙박 예약의 체크인/체크아웃 날짜, 투숙 인원, 객실 수, 요청 사항 및 결제·알림 방식을 변경할 수 있는 도구입니다. '숙박 예약 조회'를 통해 변경할 예약을 선택해야 합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "변경 요청과 관련된 전체 맥락 및 사용자의 자연어 요청을 정제해 담은 쿼리 (예: '체크아웃 하루 연장', '성인 2명 추가 및 조용한 방 요청')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "getAccommodationReservation에서 확인된, 이번 변경에 사용할 예약의 고유 ID"
+          },
+          "modifiedCheckInDate": {
+            "type": "string",
+            "description": "변경하려는 새로운 체크인 날짜 (예: '2024-07-10', ISO 8601 형식)"
+          },
+          "modifiedCheckOutDate": {
+            "type": "string",
+            "description": "변경하려는 새로운 체크아웃 날짜 (예: '2024-07-13', ISO 8601 형식)"
+          },
+          "modifiedGuestCount": {
+            "type": "integer",
+            "description": "업데이트할 총 투숙 인원 수 (예: 3)"
+          },
+          "modifiedRoomCount": {
+            "type": "integer",
+            "description": "변경 후 예약할 객실 수 (예: 2)"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "새롭게 반영하고 싶은 요청 사항 또는 변경 요청 (예: '금연 객실 요청', '아기 욕조 추가', 요청이 없을 경우 비워둘 수 있음)"
+          },
+          "paymentAdjustmentMethod": {
+            "type": "string",
+            "enum": [
+              "credit_card",
+              "original_payment",
+              "kakao_pay"
+            ],
+            "description": "신규 금액이 발생하거나 환불이 필요할 때 사용할 결제 처리 방식"
+          },
+          "notifyVia": {
+            "type": "string",
+            "enum": [
+              "sms",
+              "kakaotalk",
+              "email"
+            ],
+            "description": "예약 변경 완료 시 알림을 받을 수단"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "이번 예약 변경의 사유 (필요시만 입력, 예: '여행 일정 조정', '동반 인원 변경', '객실 환경 변경 요청')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "planTravel",
+      "description": "여행 목적지, 출발일, 여행 동행 유형 등 다양한 조건을 바탕으로 맞춤 여행 일정을 계획해주는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 원문 요청과 이전 대화 맥락을 모두 반영한 정제된 여행 요청 문장 (예: '자연 경관이 아름다운 국가공원 위주로 일정', '아웃도어 액티비티 중심의 가족 여행')"
+          },
+          "destination": {
+            "type": "string",
+            "description": "여행을 희망하는 지역, 도시 또는 국가명 (예: '파리', '제주도', '하와이')"
+          },
+          "duration": {
+            "type": "string",
+            "description": "여행 일정 기간(박수 및 총일수, 예: '5박 6일'). 입력하지 않으면 기본값은 3박 4일이 적용됩니다."
+          },
+          "theme": {
+            "type": "string",
+            "description": "여행 주제나 목적 (예: '가족여행', '미식여행', '로맨틱')"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "여행 시작일 또는 출발일(예: '2024-07-15'). 선택 항목입니다."
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "여행 종료일 또는 귀국일(예: '2024-07-20'). 선택 항목입니다."
+          },
+          "companionType": {
+            "type": "string",
+            "enum": [
+              "child",
+              "pregnant",
+              "friends",
+              "elderly",
+              "solo",
+              "couple"
+            ],
+            "description": "동행자의 유형 (어린이: 'child', 임산부: 'pregnant', 친구: 'friends', 노년층: 'elderly', 혼자 여행: 'solo', 연인: 'couple'). 여행 코스에는 이 정보가 직접 반영됩니다."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "duration"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPopularPlaceInfo",
+      "description": "국내외 도시·여행지 중심의 관광·명소·여행 테마 장소 추천하는 도구입니다. 사진 찍기 좋은 장소, 드라이브 코스, 쇼핑 거리 등 다양한 목적과 테마에 따라 장소를 유형별로 찾을 수 있으며, 평점, 방문자 수, 지역 추천도 등을 기준으로 정렬할 수 있습니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요청을 종합한 정제된 장소 검색 쿼리입니다. 예: '서울 근교 드라이브 코스와 포토 스팟 추천', '도쿄에서 분위기 좋은 카페 top 3'"
+          },
+          "location": {
+            "type": "string",
+            "description": "조회할 지역 또는 도시명 (예: 'Kyoto', '서울 강남', 'Busan')"
+          },
+          "placeType": {
+            "type": "string",
+            "description": "검색할 장소 유형입니다. 한 번에 한 종류만 선택할 수 있습니다. (예: 관광지, 쇼핑, 포토스팟, 드라이브코스 등)"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "highest_rated",
+              "most_visited",
+              "locals_pick"
+            ],
+            "description": "결과 정렬 기준입니다. 별점, 방문자 수, 현지인 추천으로 정렬할 수 있으며, 기본값은 'highest_rated'입니다."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Can you tell me if the blotting papers featured in Hyram’s YouTube video
+      titled "How to Manage Small Pimples" are sold at Ulta?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"Search for\
+      \ the blotting papers featured in Hyram's YouTube video titled 'How to Manage\
+      \ Small Pimples'\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"Check if the blotting papers featured in Hyram's video\
+      \ 'How to Manage Small Pimples' are sold at Ulta\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Search for the blotting\
+      \ papers mentioned in Hyram's YouTube video 'How to Manage Small Pimples'\"\n\
+      tool_call_result:\n  data:\n    infoResults:\n      - title: \"Recommended Products\
+      \ for Managing Small Pimples | Explained by Hyram\"\n        source: \"YouTube\
+      \ - Hyram\"\n        date: \"2025-03-14\"\n        summary: \"In his video,\
+      \ Hyram recommended 'The Lab by Blanc Doux Oil Cut Film,' noting that it effectively\
+      \ absorbs excess oil without removing too much moisture from skin.\"\n     \
+      \   productMentioned: \"The Lab by Blanc Doux Oil Cut Film\"\n        link:\
+      \ \"https://www.youtube.com/watch?v=efgh5678\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Check if the blotting\
+      \ papers from 'The Lab by Blanc Doux' featured in Hyram's video 'How to Manage\
+      \ Small Pimples' are sold at Ulta\"\n  sortBy: \"latest\"\n  productCategory:\
+      \ \"skincare\"\n  productName: \"Oil Cut Film\"\n  brand: \"The Lab by Blanc\
+      \ Doux\"\n  source: \"Hyram\"\ntool_call_result:\n  data:\n    products:\n \
+      \     - productName: \"The Lab by Blanc Doux Oil Cut Film\"\n        brand:\
+      \ \"The Lab by Blanc Doux\"\n        price: \"$3\"\n        availability: \"\
+      Available at Ulta online and select physical stores\"\n        purchaseLink:\
+      \ \"https://www.ulta.com/p/the-lab-by-blanc-doux-oil-cut-film\"\n        reviewCount:\
+      \ 1243\n        rating: \"4.7 / 5.0\"\n        category: \"Skincare > Oil Control\
+      \ > Blotting Paper\"\n        features:\n          - \"Safe for sensitive skin\"\
+      \n          - \"Absorbs excess sebum\"\n          - \"50 sheets per pouch\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s the information based on your query about the blotting papers\
+      \ featured in a YouTube video on managing small pimples:\n\n▶ Featured Blotting\
+      \ Paper from YouTube\n\nProduct Name: The Lab by Blanc Doux Oil Cut Film  \n\
+      Brand: The Lab by Blanc Doux  \nSource Video: \"Recommended Products for Managing\
+      \ Small Pimples | Explained by Hyram\" (YouTube – Hyram)  \nDescription: Recommended\
+      \ for managing small acne bumps, it effectively absorbs excess oil without stripping\
+      \ too much moisture from skin.  \nYouTube Link: https://www.youtube.com/watch?v=efgh5678\
+      \  \nRelease/Video Date: March 14, 2025\n\n▶ Availability\n\nPrice: $3  \nAvailability:\
+      \ Available at Ulta online and select physical stores  \nPurchase Link: https://www.ulta.com/p/the-lab-by-blanc-doux-oil-cut-film\
+      \  \nRating: 4.7 / 5.0 (based on 1,243 reviews)  \nCategory: Skincare > Oil\
+      \ Control > Blotting Paper  \nFeatures:  \n  - Safe for sensitive skin  \n \
+      \ - Absorbs excess sebum  \n  - 50 sheets per pouch \n\nYou can check it out\
+      \ at Ulta if you want to try this blotting paper for managing small pimples."

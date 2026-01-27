@@ -1,0 +1,104 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: Current date (Thursday, July 17, 2025)
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: This Saturday, before the SummerStage concert kicks off, could you recommend
+      a good nearby spot for a quick bite? Also, what’s the chance of rain that day?
+      I’ll bring an umbrella if it looks rainy.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Check the location of the SummerStage concert this Saturday\"\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"Recommend a good\
+      \ nearby spot for a quick bite before the SummerStage concert this Saturday\"\
+      \n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: weather_agent\n      refined_query: \"Check the weather\
+      \ and chance of rain near the SummerStage concert this Saturday\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"Check the location\
+      \ of the SummerStage concert this Saturday\"\n  performanceTitle: \"SummerStage\"\
+      \n  date: \"2025-07-19\"\n  sortBy: \"soonest\"\ntool_call_result:\n  data:\n\
+      \    performanceTitle: \"SummerStage 2025\"\n    genre: \"Concert\"\n    venueName:\
+      \ \"Central Park SummerStage\"\n    location: \"Manhattan, New York City\"\n\
+      \    date: \"2025-07-19\"\n    showTime: \"2:00 PM\"\n    runningTime: \"480\
+      \ minutes\"\n    ageRating: \"All ages\"\n    cast: [\"Norah Jones\", \"The\
+      \ Roots\", \"Vampire Weekend\", \"H.E.R.\", \"Anderson .Paak\"]\n    status:\
+      \ \"Scheduled\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"Check the weather\
+      \ and chance of rain at Central Park this Saturday\"\n  location: \"Central\
+      \ Park\"\n  date: \"2025-07-19\"\ntool_call_result:\n  data:\n    location:\
+      \ \"Central Park, Manhattan, New York City\"\n    date: \"2025-07-19\"\n   \
+      \ weatherDescription: \"Cloudy with afternoon showers\"\n    minTemperature:\
+      \ \"75°F\"\n    maxTemperature: \"88°F\"\n    precipitationProbability: \"60%\"\
+      \n    airQualityIndex: \"Moderate\"\n    wind: \"Southwest wind 7 mph\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Recommend\
+      \ a good nearby spot for a quick bite before the SummerStage concert this Saturday\"\
+      \n  location: \"SummerStage\"\n  tag: \"Quick bites\"\n  sortBy: \"highest_rated\"\
+      \ntool_call_result:\n  data:\n    - name: \"Joe’s Pizza - Upper West Side\"\n\
+      \      category: \"New York-style pizza\"\n      location: \"216 Columbus Avenue,\
+      \ New York, NY 10023\"\n      distanceFromVenue: \"8-min walk\"\n      rating:\
+      \ 4.6\n      description: \"Classic NYC pizza joint serving thin-crust slices.\
+      \ Perfect for a fast, satisfying bite before the show.\"\n      signatureMenu:\
+      \ \"Cheese Slice\"\n      price: \"$4.00\"\n    - name: \"Gray’s Papaya\"\n\
+      \      category: \"Hot dogs\"\n      location: \"2090 Broadway, New York, NY\
+      \ 10023\"\n      distanceFromVenue: \"12-min walk\"\n      rating: 4.4\n   \
+      \   description: \"Iconic hot dog spot beloved by New Yorkers for decades. Quick,\
+      \ cheap, and perfect for grabbing on the go.\"\n      signatureMenu: \"Classic\
+      \ Hot Dog\"\n      price: \"$3.00\"\n    - name: \"Sweetgreen - Columbus Circle\"\
+      \n      category: \"Healthy fast casual\"\n      location: \"315 West 57th Street,\
+      \ New York, NY 10019\"\n      distanceFromVenue: \"10-min walk\"\n      rating:\
+      \ 4.5\n      description: \"Popular salad chain offering fresh, customizable\
+      \ bowls. A lighter option if you want something quick and healthy.\"\n     \
+      \ signatureMenu: \"Harvest Bowl\"\n      price: \"$11.00\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s a clear breakdown of what to expect this Saturday at SummerStage—both\
+      \ the weather and where to grab a quick bite before the show.\n\nWeather\n-\
+      \ Date/Location: July 19, 2025 – Central Park, Manhattan\n- Forecast: Cloudy\
+      \ with afternoon showers\n- Temperature: Low 75°F, High 88°F\n- Chance of Rain:\
+      \ 60% (a compact umbrella or a light rain jacket is a good idea)\n- Wind: Southwest\
+      \ at 7 mph\n- Air Quality: Moderate\n\n----------\n\nQuick Bite Options Near\
+      \ Central Park\n- Joe’s Pizza – Upper West Side (8-min walk)\n  Classic New\
+      \ York thin-crust pizza. A single cheese slice is fast, satisfying, and affordable.\n\
+      \  Signature item: Cheese Slice – $4.00\n\n- Gray’s Papaya (12-min walk)\n \
+      \ An iconic New York hot dog stand, quick and inexpensive with a long-standing\
+      \ local reputation.\n  Signature item: Classic Hot Dog – $3.00\n\n- Sweetgreen\
+      \ – Columbus Circle (10-min walk)\n  A popular choice for fresh, customizable\
+      \ salads and bowls, great if you want something lighter before the concert.\n\
+      \  Signature item: Harvest Bowl – $11.00\n\nTips\n- Showers are more likely\
+      \ in the afternoon, so it’s best to eat before heading in.\n- A small foldable\
+      \ umbrella will be convenient and easy to carry.\n- If you’ll be standing on\
+      \ the lawn, consider shoes that can handle damp grass.\n- Venue rules may limit\
+      \ outside drinks, so plan to grab water nearby."

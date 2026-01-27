@@ -1,0 +1,244 @@
+metadata:
+  total_steps: 16
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-09-01
+
+      현재시각: 오전 14:30
+
+      이름: 심주드'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 돈이 줄줄 새는것같아 저번 달 자동이체 목록 보여줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"저번 달 자동이체 목록 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출금 계좌 번호, 출금 계좌 예금주명'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '자동 이체 확인을 위해서는 계좌번호와 예금주명을 알려주셔야 합니다.
+
+      예를 들어, 아래와 같이 입력해 주시면 됩니다:
+
+
+      계좌번호: 000-000000-000
+
+
+      예금주: 심영탁'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 심주드, 123-123456-789야
+- workflow_id: null
+  step_id: 7
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"저번 달 자동이체 목록\
+      \ 조회\"\n  accountHolderName: \"심주드\"\n  fromAccountNumber: \"123-123456-789\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"저번 달 자동이체 목록 조회\"\n    accountHolderName:\
+      \ \"심주드\"\n    fromAccountNumber: \"123-123456-789\"\n    autoTransfers:\n \
+      \     - autoTransferId: \"AT20250801-001\"\n        recipientName: \"서울도시가스\"\
+      \n        amount: 45000\n        transferDate: \"2025-08-10\"\n        status:\
+      \ \"completed\"\n        description: \"8월 가스요금 자동이체\"\n      - autoTransferId:\
+      \ \"AT20250801-002\"\n        recipientName: \"한국전력공사\"\n        amount: 53000\n\
+      \        transferDate: \"2025-08-12\"\n        status: \"completed\"\n     \
+      \   description: \"8월 전기요금 자동이체\"\n      - autoTransferId: \"AT20250801-201\"\
+      \n        recipientName: \"프리미엄 뉴스레터 구독\"\n        amount: 15000\n        transferDate:\
+      \ \"2025-08-07\"\n        status: \"completed\"\n        description: \"월간 경제\
+      \ 전문 뉴스레터 구독료\"\n      - autoTransferId: \"AT20250801-202\"\n        recipientName:\
+      \ \"온라인 클라우드 저장소\"\n        amount: 9000\n        transferDate: \"2025-08-12\"\
+      \n        status: \"completed\"\n        description: \"추가 저장 공간 사용료\"\n   \
+      \   - autoTransferId: \"AT20250801-203\"\n        recipientName: \"전자책 구독 서비스\"\
+      \n        amount: 12000\n        transferDate: \"2025-08-18\"\n        status:\
+      \ \"completed\"\n        description: \"월간 전자책 읽기 서비스 구독료\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "저번 달 자동이체 내역입니다:\n\n- 서울도시가스: 45,000원 (8월 가스요금 자동이체)\n\n- 한국전력공사: 53,000원\
+      \ (8월 전기요금 자동이체)\n\n- 프리미엄 뉴스레터 구독: 15,000원 (월간 경제 전문 뉴스레터 구독료)\n  \n- 온라인 클라우드\
+      \ 저장소: 9,000원 (추가 저장 공간 사용료)\n \n- 전자책 구독 서비스: 12,000원 (월간 전자책 읽기 서비스 구독료)\n\
+      \n가스요금과 전기세 외에도 정기 구독 서비스들이 포함되어 있으니, 필요에 따라 자동이체를 재검토해 보시면 좋을 것 같습니다."
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 후... 뉴스레터 구독료랑 전자책 구독료 취소해줘
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: personal_banking_agent\n      refined_query:\
+      \ \"저번 달 자동이체 목록 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: personal_banking_agent\n     \
+      \ refined_query: \"뉴스레터 구록료와 전자책 구독료 취소\""
+- workflow_id: workflow_2
+  step_id: 11
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: cancelAutoTransfer\n    arguments:\n      refinedQuery:\
+      \ \"뉴스레터 구독료 취소\"\n      autoTransferId: \"AT20250801-201\"\n      recipientName:\
+      \ \"프리미엄 뉴스레터 구독\"\n\n  - tool: cancelAutoTransfer\n    arguments:\n      refinedQuery:\
+      \ \"전자책 구독료 취소\"\n      autoTransferId: \"AT20250801-203\"\n      recipientName:\
+      \ \"전자책 구독 서비스\"\n\ntool_call_result:\n  - tool: cancelAutoTransfer\n    result:\n\
+      \      refinedQuery: \"뉴스레터 구독료 취소\"\n      autoTransferId: \"AT20250801-201\"\
+      \n      recipientName: \"프리미엄 뉴스레터 구독\"\n      status: \"cancelled\"\n     \
+      \ message: \"프리미엄 뉴스레터 구독 자동이체가 성공적으로 취소되었습니다.\"\n\n  - tool: cancelAutoTransfer\n\
+      \    result:\n      refinedQuery: \"전자책 구독료 취소\"\n      autoTransferId: \"AT20250801-203\"\
+      \n      recipientName: \"전자책 구독 서비스\"\n      status: \"cancelled\"\n      message:\
+      \ \"전자책 구독 서비스 자동이체가 성공적으로 취소되었습니다.\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '안녕하세요, 심주드님!
+
+
+      요청하신 두 건의 자동이체 취소가 모두 정상 처리되었습니다.
+
+
+      1. 프리미엄 뉴스레터 구독 자동이체가 성공적으로 취소되었습니다.
+
+
+      2. 전자책 구독 서비스 자동이체도 문제없이 취소 완료되었습니다.
+
+
+      이제 해당 서비스들의 자동 결제가 더 이상 진행되지 않으니 안심하셔도 됩니다.
+
+
+      혹시 다른 자동이체 내역도 확인하거나 취소하실 부분이 있으면 언제든 편하게 말씀해 주세요!
+
+
+      감사합니다.'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: 매달 3만원으로 꾸준히 투자하기 좋은 미국 월배당 주식 정보 알려줘
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: personal_banking_agent\n      refined_query:\
+      \ \"저번 달 자동이체 목록 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: personal_banking_agent\n   \
+      \   refined_query: \"뉴스레터 구록료와 전자책 구독료 취소\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: finance_agent\n\
+      \      refined_query: \"매달 3만원으로 꾸준히 투자하기 좋은 미국 월배당 주식 정보\""
+- workflow_id: workflow_3
+  step_id: 15
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: searchFinanceInfo\narguments:\n  refinedQuery: \"매달 3만원으로 꾸준히\
+      \ 투자하기 좋은 미국 월배당 주식 정보\"\ntool_call_result:\n  data:\n    stocks:\n      - name:\
+      \ \"Realty Income Corporation\"\n        ticker: \"O\"\n        sector: \"리츠(REITs)\"\
+      \n        dividendYield: \"5.4%\"\n        dividendFrequency: \"월배당\"\n    \
+      \    description: \"미국 상업용 부동산에 투자하는 대표적 월배당 리츠로, 안정적인 배당 성향을 유지.\"\n      -\
+      \ name: \"STAG Industrial\"\n        ticker: \"STAG\"\n        sector: \"산업용\
+      \ REIT\"\n        dividendYield: \"4.1%\"\n        dividendFrequency: \"월배당\"\
+      \n        description: \"물류창고 및 산업시설 임대에 특화된 리츠, 장기 임대계약 기반 안정적인 현금흐름.\"\n \
+      \     - name: \"EPR Properties\"\n        ticker: \"EPR\"\n        sector: \"\
+      특수 부동산 REIT\"\n        dividendYield: \"7.2%\"\n        dividendFrequency: \"\
+      월배당\"\n        description: \"영화관, 놀이공원, 스키장 등 오락·여가 시설 부동산에 투자.\"\n      -\
+      \ name: \"LTC Properties\"\n        ticker: \"LTC\"\n        sector: \"헬스케어\
+      \ REIT\"\n        dividendYield: \"6.9%\"\n        dividendFrequency: \"월배당\"\
+      \n        description: \"노인요양시설 및 헬스케어 부동산에 투자하는 리츠.\"\n      - name: \"AGNC\
+      \ Investment Corp\"\n        ticker: \"AGNC\"\n        sector: \"모기지 REIT\"\n\
+      \        dividendYield: \"14.5%\"\n        dividendFrequency: \"월배당\"\n    \
+      \    description: \"미국 정부 보증 모기지 증권(MBS)에 투자, 고배당이지만 금리 변동에 민감.\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: '▶  매달 3만원으로 시작할 수 있는 미국 월배당 주식 추천
+
+
+      1. Realty Income (O)
+
+      - 분야: 상업용 부동산 리츠(REIT)
+
+      - 배당수익률: 약 5.4%
+
+      - 특징: "월급처럼 주는 배당"으로 유명한 대표 리츠. 안정적인 부동산 임대 수익을 기반으로 매달 배당 지급.
+
+
+      2. STAG Industrial (STAG)
+
+      - 분야: 산업용 창고 리츠
+
+      - 배당수익률: 약 4.1%
+
+      - 특징: 물류센터·창고 등 필수 산업시설에 투자. 경기 변동에 비교적 강하고 장기 임대계약이 많아 안정적.
+
+
+      3. EPR Properties (EPR)
+
+      - 분야: 오락·여가 시설 리츠
+
+      - 배당수익률: 약 7.2%
+
+      - 특징: 영화관, 놀이공원, 스키장 등 특수 부동산에 투자. 배당이 높지만 경기 상황에 영향을 받을 수 있음.
+
+
+      4. LTC Properties (LTC)
+
+      - 분야: 헬스케어·요양시설 리츠
+
+      - 배당수익률: 약 6.9%
+
+      - 특징: 고령화 수혜주로 장기적 성장 기대. 의료·요양시설 임대료로 안정적 현금 흐름 확보.
+
+
+      5. AGNC Investment Corp (AGNC)
+
+      - 분야: 모기지 REIT
+
+      - 배당수익률: 약 14.5%
+
+      - 특징: 매우 높은 배당이 장점이지만 금리 변동에 민감하니 주의 필요.
+
+
+      ▶  투자 팁
+
+      월배당주는 매달 현금이 들어오므로 심리적으로 안정감을 주고, 재투자를 통해 복리 효과를 만들 수 있습니다.
+
+      배당률이 높다고 무조건 좋은 것은 아니며, 사업 구조와 안정성도 꼭 확인하세요.
+
+      여러 종목에 나눠서 투자하면 위험을 줄일 수 있습니다.'

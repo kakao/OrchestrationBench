@@ -1,0 +1,64 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'dateTime : 2025-07-12T15:29'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 어제 나혼자산다에 나온 남자 아이돌 몇 살이야?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      어제 나혼자산다 출연 남자 아이돌\"\n\n    - status: pending\n      name: person_agent\n  \
+      \    refined_query: \"어제 나혼자산다 출연한 남자 아이돌 나이\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"2025년 7월 11일 방송된\
+      \ '나 혼자 산다'에 출연한 남자 아이돌\"\n  programTitle: \"나 혼자 산다\"\n  broadcastDate: \"\
+      2025-07-11\"\ntool_call_result:\n  data:\n    programTitle: \"나 혼자 산다\"\n  \
+      \  episodeNumber: \"231회\"\n    cast:\n      - name: \"백현\"\n        role: \"\
+      게스트\"\n        group: \"EXO\"\n        profession: \"가수\"\n      - name: \"\
+      박은빈\"\n        role: \"게스트\"\n        profession: \"배우\"\n      - name: \"양세찬\"\
+      \n        role: \"고정출연\"\n        profession: \"개그맨\"\n      - name: \"기안84\"\
+      \n        role: \"고정출연\"\n        profession: \"웹툰 작가\"\n    summary: \"2025년\
+      \ 7월 11일 방송된 '나 혼자 산다'에는 백현(EXO)이 싱글 라이프를 공개했고, 배우 박은빈은 첫 단독 출연으로 화제를 모았으며,\
+      \ 고정 출연자인 양세찬과 기안84도 함께 출연해 유쾌한 분위기를 이끌었습니다.\"\n  source: \"MBC 편성/출연진 DB\""
+- workflow_id: null
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"EXO의 멤버 백현 나이\"\n  personName:\
+      \ \"백현\"\n  groupName: \"EXO\"\n  roleType: \"가수\"\ntool_call_result:\n  status:\
+      \ success\n  data:\n    personName: \"변백현\"\n    stageName: \"백현\"\n    birthDate:\
+      \ \"1992-05-06\"\n    birthPlace: \"경기도 부천시\"\n    gender: \"male\"\n    groupName:\
+      \ \"EXO\"\n    agency: \"SM엔터테인먼트\"\n    debutYear: 2012\n    education: \"\
+      경희사이버대학교 문화예술경영학과\"\n    workType:\n      - \"가수\"\n      - \"배우\"\n      -\
+      \ \"예능 출연자\"\n      - \"솔로 아티스트\"\n    knownFor:\n      - \"EXO 및 EXO-CBX 멤버\"\
+      \n      - \"솔로 앨범 《City Lights》, 《Delight》, 《Bambi》\"\n      - \"드라마 《달의 연인\
+      \ - 보보경심 려》 출연\"\n      - \"‘비욘드 라이브’ 온라인 콘서트 개척\"\n    awards:\n      - \"\
+      2020 골든디스크 어워즈 베스트 솔로 아티스트상\"\n      - \"2021 서울가요대상 본상\"\n    socialMedia:\n\
+      \      instagram: \"https://instagram.com/baekhyunee_exo\"\n    profileImage:\
+      \ \"https://example.com/profile/baekhyun.jpg\"\n  source: \"엔터테인먼트 인물 프로필 DB\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 2025년 7월 11일 '나 혼자 산다' 231회에 출연한 남자 아이돌은 그룹 EXO의 맴버 백현입니다. 백현의 생년월일은
+      1992년 5월 6일로 만 33세, 한국식 나이로는 34세입니다.

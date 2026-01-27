@@ -1,0 +1,150 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-09-05
+
+      현재시각:14:30'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 우리 집 가스 요금 자동이체 날짜를 매월 10일에서 25일로 변경하고 싶어
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"우리 집 가스요금 자동이체 조회\"\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"우리 집 가스요금 자동이체 날짜를 매월 10일에서 25일로 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출금 계좌번호, 출금 계좌 예금주명'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '자동 이체 조회를 위해 아래 정보를 확인 부탁드립니다.
+
+
+      출금 계좌 예금주명:
+
+
+      출금 계좌번호:
+
+
+      정확한 정보 입력을 부탁드리며, 개인정보 보호를 위해 타인과의 공유는 주의해 주세요. 감사합니다.'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 조주드, 123-123456-789
+- workflow_id: null
+  step_id: 7
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"우리집 가스요금 자동이체\
+      \ 조회\"\n  fromAccountNumber: \"123-123456-789\"\n  accountHolderName: \"조주드\"\
+      \n  transferDay: \"10\"\ntool_call_result:\n  data:\n    autoTransfers:\n  \
+      \    - autoTransferId: \"ATF-202308150001\"\n        payeeName: \"서울도시가스\"\n\
+      \        serviceType: \"가스요금\"\n        transferSchedule: \"매월 10일\"\n     \
+      \   transferDay: \"10\"\n        lastPaymentDate: \"2025-07-10\"\n        lastPaymentAmount:\
+      \ \"42,300원\"\n        status: \"정상\"\n        registeredDate: \"2023-03-15\"\
+      \n  status: \"success\"\n  message: \"자동이체 내역을 정상적으로 조회하였습니다.\""
+- workflow_id: null
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyAutoTransfer\narguments:\n  refinedQuery: \"우리집 가스요금 자동이체\
+      \ 날짜를 매월 10일에서 25일로 변경\"\n  autoTransferId: \"ATF-202308150001\"\n  transferDay:\
+      \ \"25\"\ntool_call_result:\n  data:\n    autoTransferId: \"ATF-202308150001\"\
+      \n    previousTransferDay: \"10\"\n    updatedTransferDay: \"25\"\n    status:\
+      \ \"변경 완료\"\n    updatedAt: \"2025-09-05T14:30:00\"\n  status: \"success\"\n\
+      \  message: \"자동이체 날짜가 매월 25일로 성공적으로 변경되었습니다.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "▶  자동이체 이체일 변경 완료 안내\n요청하신 가스요금 자동이체 날짜를 매월 10일에서 매월 25일로 성공적으로 변경하였습니다.\n\
+      \n- 변경 전 이체일: 10일\n\n- 변경 후 이체일: 25일\n \n- 변경 일시: 2025년 9월 5일 14:30\n\n필요하신\
+      \ 다른 변경 사항이나 조회가 있으면 언제든 알려주세요.\n\n감사합니다."
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: 그리고 요즘 가스 요금 올린다는 소리가 들려... 뉴스 기사 좀 찾아봐봐
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: personal_banking_agent\n      refined_query:\
+      \ \"우리 집 가스요금 자동이체 조회\"\n    - status: completed\n      name: personal_banking_agent\n\
+      \      refined_query: \"우리 집 가스요금 자동이체 날짜를 매월 10일에서 25일로 변경\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: news_agent\n      refined_query: \"요즘 가스 요금 올린다는 뉴스 기사 찾기\""
+- workflow_id: workflow_2
+  step_id: 12
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"요즘 가스 요금 올린다는 뉴스기사 찾기\"\
+      \n  category: \"economy\"\n  limit: 5\ntool_call_result:\n  data:\n    articles:\n\
+      \      - title: \"도시가스 요금 10월부터 인상…가구당 월 3천원 부담 늘어\"\n        source: \"연합뉴스\"\
+      \n        url: \"https://www.yna.co.kr/view/AKR20250801012300002\"\n       \
+      \ publishedAt: \"2025-08-01\"\n        summary: \"정부가 에너지 수급 안정화를 위해 10월부터 도시가스\
+      \ 요금을 평균 4.2% 인상하기로 했다. 이에 따라 4인 가구 기준 월 3,200원의 부담이 늘어날 전망이다.\"\n\n      -\
+      \ title: \"가스공사, 원가 반영 미루다 결국 요금 인상…적자 해소 나서\"\n        source: \"서울경제\"\n \
+      \       url: \"https://www.sedaily.com/NewsView/29Q1GZK6Y3\"\n        publishedAt:\
+      \ \"2025-07-30\"\n        summary: \"한국가스공사는 그간 미뤄왔던 원가 반영을 실시하며 도시가스 요금을 인상한다고\
+      \ 발표했다. 이는 지난해 적자 누적 해소를 위한 조치로 해석된다.\"\n\n      - title: \"공공요금 줄줄이 인상…전기·가스\
+      \ 이어 수도요금도 오를 듯\"\n        source: \"한국일보\"\n        url: \"https://www.hankookilbo.com/News/Read/A2025072812450004321\"\
+      \n        publishedAt: \"2025-07-28\"\n        summary: \"전기요금에 이어 도시가스, 수도요금까지\
+      \ 줄줄이 인상될 것으로 보인다. 각 지자체는 요금 현실화와 적자 보전을 이유로 들고 있다.\"\n\n      - title: \"에너지\
+      \ 공공요금 인상에 서민 부담 커져…대책은?\"\n        source: \"KBS\"\n        url: \"https://news.kbs.co.kr/news/view.do?ncd=7896543\"\
+      \n        publishedAt: \"2025-07-25\"\n        summary: \"정부의 에너지 공공요금 인상 기조에\
+      \ 따라 서민들의 생계비 부담이 커지고 있다. 이에 대한 구체적인 대책이 필요하다는 지적이 나온다.\"\n\n      - title:\
+      \ \"도시가스 요금, 다음 달부터 지역별 차등 인상 적용\"\n        source: \"매일경제\"\n        url: \"\
+      https://www.mk.co.kr/news/economy/10892321\"\n        publishedAt: \"2025-07-23\"\
+      \n        summary: \"정부는 9월부터 도시가스 요금을 지역별로 차등 인상하기로 결정했다. 수도권과 지방 간 요금 격차가\
+      \ 확대될 가능성도 제기된다.\"\n\n  status: \"success\"\n  message: \"경제 카테고리에서 관련 뉴스 5건을\
+      \ 성공적으로 조회하였습니다.\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "요청하신  가스 요금 인상 관련 경제 뉴스 5건입니다:\n\n---\n\n1. 도시가스 요금 10월부터 인상…가구당 월 3천원\
+      \ 부담 늘어\n   출처: 연합뉴스 ｜ 2025.08.01\n   정부가 에너지 수급 안정을 위해 도시가스 요금을 평균 4.2% 인상하기로\
+      \ 했습니다. 4인 가구 기준 월 3,200원의 추가 부담이 발생할 것으로 예상됩니다.\n   링크: [https://www.yna.co.kr/view/AKR20250801012300002](https://www.yna.co.kr/view/AKR20250801012300002)\n\
+      \n---\n\n2. 가스공사, 원가 반영 미루다 결국 요금 인상…적자 해소 나서\n   출처: 서울경제 ｜ 2025.07.30\n  \
+      \ 한국가스공사는 그동안 미뤄왔던 원가 반영을 시행하며 요금 인상을 발표했습니다. 이는 누적된 적자를 해소하기 위한 조치입니다.\n  \
+      \ 링크: [https://www.sedaily.com/NewsView/29Q1GZK6Y3](https://www.sedaily.com/NewsView/29Q1GZK6Y3)\n\
+      \n---\n\n3. 공공요금 줄줄이 인상…전기·가스 이어 수도요금도 오를 듯\n   출처: 한국일보 ｜ 2025.07.28\n   전기요금에\
+      \ 이어 도시가스와 수도요금도 인상될 가능성이 높아졌습니다. 요금 현실화와 공기업 적자 보전이 주요 배경입니다.\n   링크: [https://www.hankookilbo.com/News/Read/A2025072812450004321](https://www.hankookilbo.com/News/Read/A2025072812450004321)\n\
+      \n---\n\n4. 에너지 공공요금 인상에 서민 부담 커져…대책은?\n   출처: KBS ｜ 2025.07.25\n   공공요금 인상으로\
+      \ 서민 생계비 부담이 커지고 있다는 우려가 있습니다. 이에 대한 정부 차원의 구체적인 대책 마련이 요구되고 있습니다.\n   링크: [https://news.kbs.co.kr/news/view.do?ncd=7896543](https://news.kbs.co.kr/news/view.do?ncd=7896543)\n\
+      \n---\n\n5. 도시가스 요금, 다음 달부터 지역별 차등 인상 적용\n   출처: 매일경제 ｜ 2025.07.23\n   정부는 9월부터\
+      \ 도시가스 요금을 지역별로 차등 인상하기로 결정했습니다. 이에 따라 수도권과 지방 간 요금 격차가 확대될 가능성이 제기됩니다.\n  \
+      \ 링크: [https://www.mk.co.kr/news/economy/10892321](https://www.mk.co.kr/news/economy/10892321)\n\
+      \n---\n\n필요하시면 특정 기사 내용을 더 자세히 요약하거나, 지역별 인상률만 정리해드릴 수도 있습니다."

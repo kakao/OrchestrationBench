@@ -1,0 +1,98 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: date:2025-08-11T16:42
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '당근에서 구매한 청소기 배송조회좀 해줘
+
+      운송장 011-02-101 CJ대한통운 이야 그리고 오늘 도착하면 청소 바로 해야될거 같아서 저녁에 축구모임 일정 등록했던거좀 내일 모레
+      저녁 8시로 바꿔줘'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"당근에서 구매한\
+      \ 청소기 CJ대한통운 011-02-101 배송조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"당근에서 구매한 청소기가 오늘 도착하면 금일 저녁 축구모임 일정 조회\"\n    - status:\
+      \ pending\n      name: calendar_agent\n      refined_query: \"당근에서 구매한 청소기가\
+      \ 오늘 도착하면 금일 저녁 축구모임 일정을 내일 모레 저녁 8시로 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"당근에서 구매한 청소기 CJ대한통운\
+      \ 011-02-101 배송조회\"\n  trackingNumber: \"011-02-101\"\n  carrier: \"CJ대한통운\"\
+      \ntool_call_result:\n  deliveryInfo:\n    trackingNumber: \"011-02-101\"\n \
+      \   carrier: \"CJ대한통운\"\n    status: \"배송중\"\n    lastUpdate: \"2025-08-11T09:42\"\
+      \n    sender: \"홍길동\"\n    recipient: \"상민\"\n    origin: \"서울 송파구 물류센터\"\n\
+      \    destination: \"경기 용인시 수지구\"\n    estimatedDeliveryDate: \"2025-08-11\"\n\
+      \    history:\n      - dateTime: \"2025-08-10T18:15\"\n        location: \"\
+      서울 송파구 물류센터\"\n        status: \"집화처리\"\n      - dateTime: \"2025-08-11T02:45\"\
+      \n        location: \"수원 HUB터미널\"\n        status: \"간선상차\"\n      - dateTime:\
+      \ \"2025-08-11T07:20\"\n        location: \"용인 수지구 집배점\"\n        status: \"\
+      배송출발\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"금일 저녁 축구모임 일정 조회\"\n\
+      \  startDate: \"2025-08-11\"\n  endDate: \"2025-08-11\"\n  keyword: \"축구모임\"\
+      \ntool_call_result:\n  schedules:\n    - scheduleID: \"20250811-0001\"\n   \
+      \   title: \"축구모임\"\n      startDateTime: \"2025-08-11T19:00\"\n      endDateTime:\
+      \ \"2025-08-11T20:00\"\n      location: \"수지 운동장\"\n      description: \"주말\
+      \ 정기 축구모임\"\n      status: \"확정\""
+- workflow_id: null
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: modifySchedule\narguments:\n  refinedQuery: \"금일 저녁 축구모임 일정을 내일\
+      \ 모레 저녁 8시로 변경\"\n  scheduleID: \"20250811-0001\"\n  newStartDateTime: \"2025-08-13T20:00\"\
+      \n  newEndDateTime: \"2025-08-13T21:00\"\ntool_call_result:\n  modificationResult:\n\
+      \    scheduleID: \"20250811-0001\"\n    oldStartDateTime: \"2025-08-11T19:00\"\
+      \n    oldEndDateTime: \"2025-08-11T20:00\"\n    newStartDateTime: \"2025-08-13T20:00\"\
+      \n    newEndDateTime: \"2025-08-13T21:00\"\n    title: \"축구모임\"\n    location:\
+      \ \"수지 운동장\"\n    status: \"변경완료\"\n    message: \"축구모임 일정이 2025-08-13 19:00~20:00으로\
+      \ 성공적으로 변경되었습니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '당근에서 구매한 청소기(CJ대한통운 011-02-101)는 현재 배송 중입니다.
+
+      마지막 업데이트는 2025-08-11 09:42이며, 오늘(2025-08-11) 도착 예정입니다.
+
+      현재까지의 배송 경로는 다음과 같습니다.
+
+
+      * 2025-08-10 18:15: 서울 송파구 물류센터 – 집화처리
+
+      * 2025-08-11 02:45: 수원 HUB터미널 – 간선상차
+
+      * 2025-08-11 07:20: 용인 수지구 집배점 – 배송출발
+
+
+
+      축구모임 일정이 변경되었습니다.
+
+      기존: 2025-08-11 19:00~20:00, 수지 운동장
+
+      변경: 2025-08-13 20:00~2100, 수지 운동장
+
+      축구모임 일정이 성공적으로 변경되었습니다.'

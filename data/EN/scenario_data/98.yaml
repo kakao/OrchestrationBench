@@ -1,0 +1,182 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2028/02/20'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Starting March 1, about 20 of us are heading out to Cape Cod for a 3-day
+      2-night company retreat. I’ve been asked to put together the schedule. Since
+      I don’t usually travel, I’m not sure where to begin—could you tell me what the
+      weather will be like during those days and suggest a good itinerary?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"Search\
+      \ for the weather in Cape Cod, MA from March 1 to March 3\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: travel_agent\n      refined_query: \"Recommend a 3-day, 2-night\
+      \ company retreat itinerary in Cape Cod for about 20 people from March 1 to\
+      \ March 3\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool_call: \n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"Weather in Cape Cod, MA on March 1, 2028\"\n      date: \"2028-03-01\"\n\
+      \      location: \"Cape Cod, MA\"\n\n  - tool: getDomesticWeather\n    arguments:\n\
+      \      refinedQuery: \"Weather in Cape Cod, MA on March 2, 2028\"\n      date:\
+      \ \"2028-03-02\"\n      location: \"Cape Cod, MA\"\n\n  - tool: getDomesticWeather\n\
+      \    arguments:\n      refinedQuery: \"Weather in Cape Cod, MA on March 3, 2028\"\
+      \n      date: \"2028-03-03\"\n      location: \"Cape Cod, MA\"\n\ntool_call_result:\n\
+      \  - tool: getDomesticWeather\n    result:\n      date: \"2028-03-01\"\n   \
+      \   location: \"Cape Cod, MA\"\n      condition: \"Clear\"\n      highTemp:\
+      \ \"45°F\"\n      lowTemp: \"30°F\"\n      precipitation: \"0 in\"\n      wind:\
+      \ \"West wind, 7 mph\"\n      humidity: \"45%\"\n\n  - tool: getDomesticWeather\n\
+      \    result:\n      date: \"2028-03-02\"\n      location: \"Cape Cod, MA\"\n\
+      \      condition: \"Cloudy, then snow\"\n      highTemp: \"37°F\"\n      lowTemp:\
+      \ \"28°F\"\n      precipitation: \"0.1 in\"\n      wind: \"Northeast wind, 9\
+      \ mph\"\n      humidity: \"60%\"\n\n  - tool: getDomesticWeather\n    result:\n\
+      \      date: \"2028-03-03\"\n      location: \"Cape Cod, MA\"\n      condition:\
+      \ \"Clear\"\n      highTemp: \"43°F\"\n      lowTemp: \"28°F\"\n      precipitation:\
+      \ \"0 in\"\n      wind: \"Southwest wind, 5 mph\"\n      humidity: \"50%\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"Recommend a company\
+      \ retreat schedule for about 20 people in Cape Cod from March 1 to March 3\"\
+      \n  destination: \"Cape Cod, MA\"\n  theme: \"Company Retreat\"\n  startDate:\
+      \ \"2028-03-01\"\n  endDate: \"2028-03-03\"\n  duration: \"3 days 2 nights\"\
+      \ntool_call_result:\n  itinerary:\n    destination: \"Cape Cod, MA\"\n    duration:\
+      \ \"3 days, 2 nights\"\n    participants: 20\n    theme: \"Company Retreat\"\
+      \n    period: \"2028-03-01 ~ 2028-03-03\"\n    schedule:\n      - day: \"Day\
+      \ 1\"\n        date: \"2028-03-01\"\n        activities:\n          - \"11:00\
+      \ - Arrive in Boston (South Station), transfer to Cape Cod by chartered bus\"\
+      \n          - \"12:30 - Lunch at a local seafood restaurant\"\n          - \"\
+      14:00 - Hotel check-in (Beachfront Resort)\"\n          - \"15:00 - Icebreakers\
+      \ & team-building activities\"\n          - \"18:00 - Group dinner and company\
+      \ gathering\"\n          - \"20:00 - Evening beach walk or free time\"\n\n \
+      \     - day: \"Day 2\"\n        date: \"2028-03-02\"\n        activities:\n\
+      \          - \"08:00 - Breakfast at the hotel\"\n          - \"09:30 - Seminar\
+      \ 1 (conference room)\"\n          - \"11:00 - Group workshop project work\"\
+      \n          - \"12:30 - Lunch (free dining at local market or cafes)\"\n   \
+      \       - \"14:00 - Afternoon activity: bike tour along the Cape Cod Rail Trail\
+      \ or visit to a local brewery/art gallery\"\n          - \"17:00 - Rest and\
+      \ group feedback sharing\"\n          - \"19:00 - Barbecue dinner & recreation\
+      \ (resort facilities)\"\n\n      - day: \"Day 3\"\n        date: \"2028-03-03\"\
+      \n        activities:\n          - \"08:00 - Breakfast and check-out preparation\"\
+      \n          - \"10:00 - Closing workshop: reflections and future planning\"\n\
+      \          - \"12:00 - Lunch, then transfer back to Boston\"\n          - \"\
+      13:30 - Depart from Boston South Station\"\n    accommodation: \"Beachfront\
+      \ Resort (conference rooms, group lodging, barbecue facilities available)\"\n\
+      \    transportRecommendation: \"Amtrak to Boston South Station, then chartered\
+      \ bus to Cape Cod\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "March 1–3, 2028, Company Retreat in Cape Cod\n\nThis is a 3-day, 2-night\
+      \ workshop with 20 participants.\nPlease check the weather forecast for each\
+      \ day as well.\n\n\n■ Day 1 – March 1 (Wed)\n\nWeather: Clear / High 45°F, Low\
+      \ 30°F / Precipitation 0 in (0 mm)\n\nSchedule Summary\n  - 11:00 Arrive in\
+      \ Boston (South Station), transfer to Cape Cod by chartered bus\n  - 12:30 Lunch\
+      \ at a local seafood restaurant\n  - 14:00 Check in at accommodation (Beachfront\
+      \ Resort)\n  - 15:00 Icebreakers & Team Building\n  - 18:00 Group Dinner & Company\
+      \ Gathering\n  - 20:00 Evening Beach Walk or Free Time\n\n\n■ Day 2 – March\
+      \ 2 (Thu)\n\nWeather: Cloudy, later snow / High 37°F, Low 28°F / Precipitation\
+      \ 0.1 in (≈ 2.5 mm)\n\nSchedule Summary\n  - 08:00 Breakfast at the hotel\n\
+      \  - 09:30 Seminar (conference room)\n  - 11:00 Group Workshop Project Work\n\
+      \  - 12:30 Lunch (free dining at local market or cafes)\n  - 14:00 Bike tour\
+      \ along the Cape Cod Rail Trail or visit to a local brewery/art gallery\n  -\
+      \ 17:00 Rest and Feedback Session\n  - 19:00 Barbecue Dinner & Recreation (resort\
+      \ facilities)\n\n\n■ Day 3 – March 3 (Fri)\n\nWeather: Clear / High 43°F, Low\
+      \ 28°F / Precipitation 0 in (0 mm)\n\nSchedule Summary\n  - 08:00 Breakfast\
+      \ and Check-out Preparation\n  - 10:00 Closing Workshop (Reflections & Future\
+      \ Planning)\n  - 12:00 Lunch, then transfer back to Boston\n  - 13:30 Depart\
+      \ from Boston South Station"
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: On Day 2, the bike ride along the Cape Cod Rail Trail sounds great, but
+      there’s way too much downtime before the barbecue. After we drop off the bikes,
+      could you recommend a few casual pubs in Orleans along the trail where a group
+      of about 20 can grab light bites and beer together?
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: weather_agent\n      refined_query: \"Search\
+      \ for the weather in Cape Cod, MA from March 1 to March 3\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: travel_agent\n      refined_query: \"Recommend a 3-day, 2-night\
+      \ company retreat itinerary in Cape Cod for about 20 people from March 1 to\
+      \ March 3\"\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"Recommend\
+      \ a few casual pubs in Orleans along the Cape Cod Rail Trail that can accommodate\
+      \ about 20 people for light bites and beer\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Recommend\
+      \ a few casual pubs in Orleans along the Cape Cod Rail Trail that can accommodate\
+      \ about 20 people for light bites and beer\"\n  location: \"Orleans, MA\"\n\
+      \  cuisineType: \"Pub\"\n  specificDishes: [\"Beer\"]\n  sortBy: \"highest_rated\"\
+      \n  partySize: \"Group\"\ntool_call_result:\n  data:\n    recommendations:\n\
+      \      - name: \"Hog Island Beer Co. (Orleans)\"\n        address: \"28 West\
+      \ Rd, Orleans, MA 02653\"\n        operatingHours: \"12:00 PM - 10:00 PM\"\n\
+      \        contact: \"(508)555-0142\"\n        cuisineType: \"Pub/Brewery\"\n\
+      \        capacity: \"Group seating available / Up to 24–30 people\"\n      \
+      \  popularDishes: [\"Draft Beer Flights\", \"Soft Pretzels\", \"Fish Tacos\"\
+      ]\n        reservationRequired: \"Call ahead for groups; limited reservations\"\
+      \n\n      - name: \"Lost Dog Pub - Orleans\"\n        address: \"63 MA-6A, Orleans,\
+      \ MA 02653\"\n        operatingHours: \"11:30 AM - 12:00 AM\"\n        contact:\
+      \ \"(508)555-0129\"\n        cuisineType: \"Pub\"\n        capacity: \"Up to\
+      \ 20–25 people; call to confirm\"\n        popularDishes: [\"Wings\", \"Nachos\"\
+      , \"Local Drafts\"]\n        reservationRequired: \"Often first-come, first-served;\
+      \ call for large parties\"\n\n      - name: \"Land Ho! Orleans\"\n        address:\
+      \ \"38 Main St, Orleans, MA 02653\"\n        operatingHours: \"11:30 AM - 11:00\
+      \ PM\"\n        contact: \"(508)555-0177\"\n        cuisineType: \"Pub\"\n \
+      \       capacity: \"Group seating available / Up to 20–24 people\"\n       \
+      \ popularDishes: [\"Clam Chowder\", \"Burgers\", \"Local Beer\"]\n        reservationRequired:\
+      \ \"Phone reservation recommended for groups\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "Recommended pubs in Orleans along the Cape Cod Rail Trail for a group\
+      \ of about 20:\n\n1. Hog Island Beer Co. (Orleans)\n  - Address: 28 West Rd,\
+      \ Orleans, MA 02653\n  - Hours: 12:00 PM – 10:00 PM\n  - Contact: (508)555-0142\n\
+      \  - Capacity: Group seating available / Up to 24–30 people\n  - Popular menu:\
+      \ Draft beer flights, soft pretzels, fish tacos\n  - Note: Call ahead for groups;\
+      \ limited reservations\n\n2. Lost Dog Pub – Orleans\n  - Address: 63 MA-6A,\
+      \ Orleans, MA 02653\n  - Hours: 11:30 AM – 12:00 AM\n  - Contact: (508)555-0129\n\
+      \  - Capacity: Up to 20–25 people; call to confirm\n  - Popular menu: Wings,\
+      \ nachos, local drafts\n  - Note: Often first-come, first-served; call for large\
+      \ parties\n\n3. Land Ho! Orleans\n  - Address: 38 Main St, Orleans, MA 02653\n\
+      \  - Hours: 11:30 AM – 11:00 PM\n  - Contact: (508)555-0177\n  - Capacity: Group\
+      \ seating available / Up to 20–24 people\n  - Popular menu: Clam chowder, burgers,\
+      \ local beer\n  - Note: Phone reservation recommended for groups\n\nLet me know\
+      \ if you want me to prioritize walk-in friendly spots or those that accept group\
+      \ reservations at a set time."

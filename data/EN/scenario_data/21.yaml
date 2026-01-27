@@ -1,0 +1,174 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-08-19
+
+      Current time: 1:19 PM
+
+      userid: U0DK23111'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I’ve put on some weight and need to make a change! Give me workout tips
+      from fitness influencer Eric Kim, order the cheapest 30-pack of hard-boiled
+      eggs, and set a daily voice reminder at 8 PM that says, "Time to work out!"
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"Workout\
+      \ tips from fitness influencer Eric Kim\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"Find the cheapest pack of 30 hard-boiled eggs\"\n  \
+      \  - status: pending\n      name: shopping_agent\n      refined_query: \"Order\
+      \ the cheapest pack of 30 hard-boiled eggs\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"Set a daily voice reminder at 8 PM that says 'Time to\
+      \ work out!'\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"Workout tips from\
+      \ fitness influencer Eric Kim\"\ntool_call_result:\n  data:\n    articles:\n\
+      \      - title: \"3-Minute Full-Body Workout Routine\"\n        source: \"Health\
+      \ Daily\"\n        url: \"https://health.chosun.com/news/article_kimge-ran_routine\"\
+      \n        summary: \"This quick routine includes bodyweight squats, push-ups,\
+      \ and burpees, targeting multiple muscle groups efficiently.\"\n      - title:\
+      \ \"Cardio + Strength Hybrid Program\"\n        source: \"Money Today\"\n  \
+      \      url: \"https://news.mt.co.kr/kimge-ran_workout\"\n        summary: \"\
+      Eric Kim recommends combining cardio and strength training for fat loss and\
+      \ muscle maintenance, such as interval running paired with dumbbell exercises.\"\
+      \n      - title: \"5 Tips for Fitness Beginners\"\n        source: \"The Daily\
+      \ Times\"\n        url: \"https://www.chosun.com/kimge-ran_tips\"\n        summary:\
+      \ \"For beginners, focus on a sustainable routine, maintain proper form, and\
+      \ allow sufficient rest instead of overexerting.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Find the cheapest\
+      \ pack of 30 hard-boiled eggs\"\n  productCategory: \"eggs\"\n  sortBy: \"low_price\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Find the cheapest pack of\
+      \ 30 hard-boiled eggs\"\n    productCategory: \"eggs\"\n    sortBy: \"low_price\"\
+      \n    products:\n      - productId: \"egg_hard_001\"\n        productName: \"\
+      Fresh Hard-Boiled Eggs (30 count)\"\n        brand: \"Happy Farm\"\n       \
+      \ price: 9.2\n        size: \"30 count\"\n        rating: 4.5\n        stockStatus:\
+      \ \"In Stock\"\n        deliveryEstimate: \"2025-08-20\"\n      - productId:\
+      \ \"egg_hard_002\"\n        productName: \"Premium Hard-Boiled Eggs (30 count)\"\
+      \n        brand: \"Delicious Farm\"\n        price: 10.4\n        size: \"30\
+      \ count\"\n        rating: 4.7\n        stockStatus: \"In Stock\"\n        deliveryEstimate:\
+      \ \"2025-08-20\"\n      - productId: \"egg_hard_003\"\n        productName:\
+      \ \"Kind Hard-Boiled Eggs (30 count)\"\n        brand: \"Our Farm\"\n      \
+      \  price: 10.8\n        size: \"30 count\"\n        rating: 4.3\n        stockStatus:\
+      \ \"In Stock\"\n        deliveryEstimate: \"2025-08-20\"\n    status: \"Search\
+      \ complete\"\n  source: \"Online Marketplace\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"Set a daily voice\
+      \ alarm at 8 PM that says 'Time to work out!'\"\n  reminderContent: \"Time to\
+      \ work out!\"\n  reminderTime: \"2025-08-19T20:00\"\n  repeatRule: \"daily\"\
+      \n  deliveryMethod: \"voice\"\n  priority: \"normal\"\ntool_call_result:\n \
+      \ status: \"success\"\n  message: \"A daily voice alarm has been set for 8 PM\
+      \ with the reminder 'Time to work out!'.\"\n  reminderDetails:\n    reminderContent:\
+      \ \"Time to work out!\"\n    reminderTime: \"2025-08-19T20:00\"\n    repeatRule:\
+      \ \"daily\"\n    deliveryMethod: \"voice\"\n    priority: \"normal\""
+- workflow_id: workflow_2
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Address, name, contact information'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'I’ll help you place the order.
+
+      Please provide the following information:
+
+
+      * Full name
+
+      * Shipping address
+
+      * Phone number
+
+
+      Once I confirm the details, I’ll proceed with your order.
+
+      (※ Your personal information will be handled securely.)'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: "John Smith  \n123 Maple Street, Apt 4B  \nBrooklyn, NY 11211, USA  \n\
+      Phone: (718)555-1234"
+- workflow_id: null
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"Order the cheapest\
+      \ pack of 30 hard-boiled eggs\"\n  productItems:\n    - productName: \"Fresh\
+      \ Hard-Boiled Eggs (30 count)\"\n      productId: \"egg_hard_001\"\n      quantity:\
+      \ 1\n      price: 9.2\n  userId: \"U0DK23111\"\n  shippingAddress:\n    recipient:\
+      \ \"John Smith\"\n    address: \"123 Maple Street, Apt 4B, Brooklyn, NY 11211,\
+      \ USA\"\n    phone: \"(718)555-1234\"\ntool_call_result:\n  data:\n    userId:\
+      \ \"U0DK23111\"\n    orderId: \"order_20250804_001\"\n    refinedQuery: \"Order\
+      \ the cheapest pack of 30 hard-boiled eggs\"\n    productItems:\n      - productName:\
+      \ \"Fresh Hard-Boiled Eggs (30 count)\"\n        productId: \"egg_hard_001\"\
+      \n        quantity: 1\n        price: 9.2\n    shippingAddress:\n      recipient:\
+      \ \"John Smith\"\n      address: \"123 Maple Street, Apt 4B, Brooklyn, NY 11211,\
+      \ USA\"\n      phone: \"(718)555-1234\"\n    totalAmount: 9.2\n    paymentStatus:\
+      \ \"Payment Completed\"\n    deliveryStatus: \"Preparing for Shipment\"\n  \
+      \  estimatedDelivery: \"2025-08-20\"\n    status: \"Order Completed\"\n  source:\
+      \ \"Online Marketplace Order System\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "Hello! You were curious about the workout tips recommended by fitness\
+      \ influencer Eric Kim. I’ve gathered some useful information for you.\n\n▶ Eric\
+      \ Kim’s Workout Routines & Tips\n\n* 3-Minute Full-Body Workout: A short but\
+      \ effective routine for busy people. It includes bodyweight squats, push-ups,\
+      \ and burpees to engage your whole body.\n\n* Cardio + Strength Combo Program:\
+      \ Perfect for those who want to lose weight while maintaining muscle. He recommends\
+      \ combining interval running with dumbbell training.\n\n* Advice for Beginners:\
+      \ Instead of overexerting yourself, it’s important to build a routine you can\
+      \ stick with. He also emphasizes proper form as well as the importance of rest.\n\
+      \n* For more details, check out the following articles:\n\n  ▶ [Eric Kim Reveals\
+      \ His 3-Minute Full-Body Workout (Health Daily)](https://health.chosun.com/news/article_kimge-ran_routine)\n\
+      \  ▶ [Fitness YouTuber Eric Kim Recommends Cardio + Strength Program (Money\
+      \ Today)](https://news.mt.co.kr/kimge-ran_workout)\n  ▶ [Eric Kim’s 5 Tips for\
+      \ Fitness Beginners (The Daily Times)](https://www.chosun.com/kimge-ran_tips)\n\
+      \n---\n\n2. Order Confirmation: Hard-Boiled Eggs\n   Your order has been placed\
+      \ successfully.\n\n* Product: Fresh Hard-Boiled Eggs (30 count)\n* Price: $9.20\n\
+      * Recipient: John Smith\n* Shipping Address: 123 Maple Street, Apt 4B, Brooklyn,\
+      \ NY 11211, USA\n* Contact: (718)555-1234\n* Delivery Status: Preparing for\
+      \ shipment\n* Estimated Delivery Date: August 20, 2025\n\nYour order ID is \"\
+      order_20250804_001\", and payment has been completed.\n\n---\n\n3. Workout Reminder\
+      \ Set\n   A daily voice reminder has been scheduled for 8:00 PM:\n\n* “Time\
+      \ to work out!”\n* Start Date: August 19, 2025\n* Repeat: Daily\n* Method: Voice\
+      \ Alert\n* Priority: Normal\n\nHope this helps you stay consistent with your\
+      \ workout routine!"

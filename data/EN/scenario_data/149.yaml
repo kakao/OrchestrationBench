@@ -1,0 +1,140 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: May 15, 2026'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Tomorrow I'm going biking with a friend at Riverside Park near the Upper
+      West Side. Can you tell me where the nearest bike rental station is around my
+      place, what the weather will be like there tomorrow, and if there are any cafés
+      along the way that sell bubble tea?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Bike\
+      \ rental stations near my home\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: weather_agent\n\
+      \      refined_query: \"Tomorrow's weather in Riverside Park, Upper West Side\"\
+      \n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"Cafes that sell bubble\
+      \ tea on the way to Riverside Park, Upper West Side\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Location information for bike rental'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"Weather in Riverside\
+      \ Park, Upper West Side on May 16, 2026\"\n  location: \"Riverside Park, Upper\
+      \ West Side\"\n  date: \"2026-05-16\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Weather in Riverside Park, Upper West Side on May 16, 2026\"\n    location:\
+      \ \"Riverside Park, Upper West Side\"\n    date: \"2026-05-16\"\n    weather:\n\
+      \      temperature:\n        high: \"73°F\"\n        low: \"59°F\"\n      conditions:\
+      \ \"Clear\"\n      precipitation: \"0%\"\n      humidity: \"45%\"\n      wind:\n\
+      \        speed: \"6 mph\"\n        direction: \"Northeast\"\n    summary: \"\
+      On May 16, 2026, the weather in Riverside Park, Upper West Side is expected\
+      \ to be clear with temperatures ranging from 59°F to 73°F.\"\n    status: \"\
+      Information retrieved successfully\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Cafes that\
+      \ sell bubble tea on the way to Riverside Park, Upper West Side\"\n  sortBy:\
+      \ \"highest_rated\"\n  cuisineType: \"Dessert Cafe\"\n  specificDishes: \"Bubble\
+      \ Tea\"\n  location: \"Riverside Park, Upper West Side\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Cafes that sell bubble tea on the way to Riverside\
+      \ Park, Upper West Side\"\n    sortBy: \"highest_rated\"\n    cuisineType: \"\
+      Dessert Cafe\"\n    specificDishes: \"Bubble Tea\"\n    location: \"Riverside\
+      \ Park, Upper West Side\"\n    recommendedCafes:\n      - cafeName: \"Gong Cha\"\
+      \n        rating: 4.8\n        address: \"261 Columbus Ave, New York, NY 10023\"\
+      \n        description: \"A popular global chain offering a wide variety of bubble\
+      \ teas and customizable toppings\"\n        popularDishes:\n          - \"Taro\
+      \ Bubble Tea\"\n          - \"Black Milk Tea Bubble Tea\"\n      - cafeName:\
+      \ \"Kung Fu Tea\"\n        rating: 4.7\n        address: \"273 Amsterdam Ave,\
+      \ New York, NY 10023\"\n        description: \"Well-known chain famous for high-quality\
+      \ bubble tea with bold flavors\"\n        popularDishes:\n          - \"Green\
+      \ Tea Bubble Tea\"\n          - \"Grapefruit Bubble Tea\"\n      - cafeName:\
+      \ \"Vivi Bubble Tea\"\n        rating: 4.6\n        address: \"465 Columbus\
+      \ Ave, New York, NY 10024\"\n        description: \"Trendy bubble tea spot offering\
+      \ creative drinks and desserts\"\n        popularDishes:\n          - \"Mango\
+      \ Bubble Tea\"\n          - \"Original Milk Tea Bubble Tea\"\n    status: \"\
+      Recommendation complete\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: To find a bike rental station, I’ll need the location where you’d like
+      to rent the bike.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: It's West Village
+- workflow_id: workflow_1
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransportInfo\narguments:\n  refinedQuery: \"Bike rental locations\
+      \ near West Village\"\n  location: \"West Village\"\n  includeModes: \"bike\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Bike rental locations near\
+      \ West Village\"\n    location: \"West Village\"\n    includeModes: \"bike\"\
+      \n    bikeRentalLocations:\n      - rentalName: \"West Village Citi Bike Station\"\
+      \n        address: \"34 Perry St, New York, NY 10014\"\n        distanceFromLocation:\
+      \ \"200m\"\n        availableBikes: 15\n      - rentalName: \"Hudson River Greenway\
+      \ Citi Bike Station\"\n        address: \"46 Hudson River Greenway, New York,\
+      \ NY 10014\"\n        distanceFromLocation: \"750m\"\n        availableBikes:\
+      \ 10\n      - rentalName: \"Christopher St. Pier Citi Bike Station\"\n     \
+      \   address: \"176 Christopher St, New York, NY 10014\"\n        distanceFromLocation:\
+      \ \"1.2km\"\n        availableBikes: 20\n    status: \"Search completed\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Weather Information for Riverside Park tomorrow\n\nHere’s the weather\
+      \ forecast for Riverside Park, Upper West Side on May 16, 2026. Expect clear\
+      \ skies with temperatures ranging from a low of 59°F to a high of 73°F. There’s\
+      \ 0% chance of rain, and humidity will be around 45%. Winds will come from the\
+      \ northeast at about 6 mph—perfect conditions for a bike ride along the Hudson.\n\
+      \n\n◾ Bike Rental Stations near West Village\n\n1. West Village Citi Bike Station\n\
+      \   - Address: 34 Perry St, New York, NY 10014\n   - Location: About 200m from\
+      \ West Village\n   - Available bikes: 15\n\n2. Hudson River Greenway Citi Bike\
+      \ Station\n   - Address: 46 Hudson River Greenway, New York, NY 10014\n   -\
+      \ Location: About 750m from West Village\n   - Available bikes: 10\n\n3. Christopher\
+      \ St. Pier Citi Bike Station\n   - Address: 176 Christopher St, New York, NY\
+      \ 10014\n   - Location: About 1.2km from West Village\n   - Available bikes:\
+      \ 20\n\n\n◾ Recommended Bubble Tea Cafés on the Way to Riverside Park\n\n1.\
+      \ Gong Cha\n   - Rating: 4.8\n   - Address: 261 Columbus Ave, New York, NY 10023\n\
+      \   - Description: A popular global chain offering a wide variety of bubble\
+      \ teas and customizable toppings.\n   - Popular menu: Taro bubble tea, Black\
+      \ milk tea bubble tea\n\n2. Kung Fu Tea\n   - Rating: 4.7\n   - Address: 273\
+      \ Amsterdam Ave, New York, NY 10023\n   - Description: Well-known chain famous\
+      \ for high-quality bubble tea with bold flavors.\n   - Popular menu: Green tea\
+      \ bubble tea, Grapefruit bubble tea\n\n3. Vivi Bubble Tea\n   - Rating: 4.6\n\
+      \   - Address: 465 Columbus Ave, New York, NY 10024\n   - Description: Trendy\
+      \ bubble tea spot offering creative drinks and desserts.\n   - Popular menu:\
+      \ Mango bubble tea, Original milk tea bubble tea"

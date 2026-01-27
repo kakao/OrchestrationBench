@@ -1,0 +1,216 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2027-03-13
+
+      name: Michael Carter
+
+      userId: 2027-MOV-3'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you check both my Iron Man 3 movie ticket booking and my reservation
+      at Mike’s Steakhouse?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Check Iron Man 3 movie ticket reservations\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Check reservation for Mike's Steakhouse\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Contact'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Contact'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: I need the user's contact information to confirm bookings and reservations.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: (555) 123-4567
+- workflow_id: workflow_1
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieBooking\narguments:\n  refinedQuery: \"Check Iron Man\
+      \ 3 movie booking\"\n  name: \"Michael Carter\"\n  contactNumber: \"(555) 123-4567\"\
+      \n  movieTitle: \"Iron Man 3\"\n  userId: \"2027-MOV-3\"\ntool_call_result:\n\
+      \  bookingInfo:\n    bookingId: \"MOV-20270313-00045\"\n    movieTitle: \"Iron\
+      \ Man 3\"\n    theater: \"AMC Times Square\"\n    screen: \"IMAX Theater\"\n\
+      \    seatNumbers:\n      - \"F12\"\n      - \"F13\"\n    showDateTime: \"2027-03-15T19:30\"\
+      \n    bookingDate: \"2027-03-13\"\n    ticketCount: 2\n    price: \"$28\"\n\
+      \    paymentMethod: \"Credit Card\"\n    status: \"Confirmed\"\n    bookedBy:\
+      \ \"Michael Carter\"\n    contactNumber: \"(555) 123-4567\""
+- workflow_id: null
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"Check reservation\
+      \ at Mike's Steakhouse\"\n  contactInfo: \"(555) 123-4567\"\n  placeCategory:\
+      \ \"Restaurant\"\n  placeName: \"Mike's Steakhouse\"\ntool_call_result:\n  reservationInfo:\n\
+      \    reservationId: \"RES-FOOD-20270315-00123\"\n    placeName: \"Mike's Steakhouse\"\
+      \n    placeCategory: \"Restaurant\"\n    reservationName: \"Michael Carter\"\
+      \n    contactInfo: \"(555) 123-4567\"\n    reservationDate: \"2027-03-15\"\n\
+      \    startDateTime: \"2027-03-15T19:00\"\n    endDateTime: \"2027-03-15T20:30\"\
+      \n    partySize: 2\n    table: \"Hall-04\"\n    status: \"Confirmed\"\n    notes:\n\
+      \      - \"Verify name upon arrival\"\n      - \"Reservation may be automatically\
+      \ canceled if you are more than 15 minutes late\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Iron Man 3 Movie Booking\n\n* Theater: AMC Times Square\n* Screen:\
+      \ IMAX Theater\n* Show Date & Time: March 15, 2027, 7:30 PM\n* Seats: F12, F13\n\
+      * Tickets: 2\n* Price: $28\n* Payment Method: Credit Card\n* Status: Confirmed\n\
+      * Booked by: Michael Carter\n* Contact: (555) 123-4567\n\n▶ Mike's Steakhouse\
+      \ Reservation\n\n* Reservation Name: Michael Carter\n* Date & Time: March 15,\
+      \ 2027, 7:00 PM – 8:30 PM\n* Party Size: 2\n* Table: Hall-04\n* Status: Confirmed\n\
+      * Notes:\n  * Verify name upon arrival\n  * Reservation may be automatically\
+      \ canceled if you are more than 15 minutes late\n  * Contact: (555) 123-4567"
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 'Ah, I accidentally booked tickets for the same time.
+
+      Please change the Iron Man 3 reservation to around 3 PM!'
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Check Iron Man 3 movie ticket reservations\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: place_agent\n\
+      \      refined_query: \"Check reservation for Mike's Steakhouse\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: entertainment_agent\n      refined_query: \"Check Iron Man 3 movie\
+      \ showtime on March 15 at 3 PM\"\n\nworkflow_4:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n\
+      \      name: entertainment_agent\n      refined_query: \"Change Iron Man 3 movie\
+      \ reservation to a showtime of around 3 PM\""
+- workflow_id: workflow_3
+  step_id: 13
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"Show Iron Man 3 screenings\
+      \ on March 15 around 3 PM at AMC Times Square\"\n  movieTitle: \"Iron Man 3\"\
+      \n  theaterLocation: \"AMC Times Square\"\n  sortBy: \"releaseDate\"\n  screeningDate:\
+      \ \"2027-03-15\"\ntool_call_result:\n  movieInfo:\n    movieTitle: \"Iron Man\
+      \ 3\"\n    theater: \"AMC Times Square\"\n    screeningDate: \"2027-03-15\"\n\
+      \    screenings:\n      - screen: \"IMAX Theater\"\n        showDateTime: \"\
+      2027-03-15T15:10\"\n        availableSeats: 42\n        totalSeats: 120\n  \
+      \      format: \"IMAX 3D\"\n      - screen: \"Auditorium 7\"\n        showDateTime:\
+      \ \"2027-03-15T15:25\"\n        availableSeats: 58\n        totalSeats: 100\n\
+      \        format: \"2D\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Need time to reschedule'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: 'The movie Iron Man 3 will be screened on March 15, 2027 at AMC Times
+      Square as follows:
+
+
+      *IMAX Theater: 3:10 PM (42 seats left / 120 total, IMAX 3D)
+
+      *Auditorium 7: 3:25 PM (58 seats left / 100 total, 2D)
+
+
+      Please let me know which time slot you’d like to switch to for your reservation
+      change.'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: Change it to Auditorium 7, 3:25 showtime
+- workflow_id: null
+  step_id: 17
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyMovieBooking\narguments:\n  refinedQuery: \"Change the existing\
+      \ booking for Iron Man 3 to 3:25 PM in Auditorium 7\"\n  bookingId: \"MOV-20270313-00045\"\
+      \n  modifiedShowTime: \"15:25\"\n  changeReason: \"Requested change of showtime\"\
+      \ntool_call_result:\n  modificationResult:\n    bookingId: \"MOV-20270313-00045\"\
+      \n    movieTitle: \"Iron Man 3\"\n    theater: \"AMC Times Square\"\n    screen:\
+      \ \"Auditorium 7\"\n    oldShowDateTime: \"2027-03-15T19:30\"\n    newShowDateTime:\
+      \ \"2027-03-15T15:25\"\n    seatNumbers:\n      - \"F12\"\n      - \"F13\"\n\
+      \    ticketCount: 2\n    price: \"$28.00\"\n    paymentMethod: \"Credit Card\"\
+      \n    status: \"Change Completed\"\n    changeFee: \"$0\"\n    message: \"The\
+      \ showtime has been successfully changed to 2027-03-15 3:25 PM.\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: 'The showtime for your Iron Man 3 booking has been successfully updated.
+      Here are the details:
+
+
+      * Movie: Iron Man 3
+
+      * Theater: AMC Times Square
+
+      * Screen: Auditorium 7
+
+      * Seats: F12, F13
+
+      * New Showtime: March 15, 2027, 3:25 PM
+
+      * Ticket Count: 2
+
+      * Price: $28.00
+
+      * Payment Method: Credit Card
+
+      * Status: Change Completed
+
+      * Change Fee: $0
+
+
+      Your reservation has been updated without any additional charges.'

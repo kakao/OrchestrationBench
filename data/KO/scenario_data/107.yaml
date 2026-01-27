@@ -1,0 +1,124 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025/08/10'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 내가 지금 IT스타트업에서 계약직으로 일하고 있는데, 노조에 가입하면 어떤 장점이 있는지 궁금해, 그리고 최근에 노조 관련
+      시위 뉴스들도 5개정도만 요약해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"IT스타트업 회사\
+      \ 계약직 사원이 노조에 가입하면 받을 수 있는 장점\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: news_agent\n      refined_query:\
+      \ \"최근 노조 관련 시위 뉴스 5개 검색\"\n    - status: pending\n      name: news_agent\n\
+      \      refined_query: \"최근 노조 관련 시위 뉴스 5개 요약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"IT스타트업 회사 계약직 사원이 노조에\
+      \ 가입하면 받을 수 있는 장점\"\ntool_call_result:\n  info:\n    title: \"IT 스타트업 계약직 사원의\
+      \ 노동조합 가입 혜택\"\n    summary: \"계약직으로 근무하는 IT 스타트업 직원이 노동조합에 가입할 경우 아래와 같은 도움을\
+      \ 받을 수 있습니다.\"\n    benefits:\n      - 고용 안정성 향상을 위한 집단 교섭 참여\n      - 부당 해고\
+      \ 또는 계약 종료 시 법적 지원 및 상담\n      - 근로 조건(급여, 휴가, 복지 등) 개선 요구 가능\n      - 정규직 전환에\
+      \ 대한 내부 정책 감시 및 의견 반영\n      - 감정노동, 과로 등 노동환경 문제에 대한 단체 대응\n      - 노조에서 주관하는\
+      \ 법률 교육 및 권리 교육 참여\n    source: \"가상의 노동조합 가이드라인 문서\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"최근 노조 관련 시위 뉴스 5개 검색\"\
+      \n  limit: 5\ntool_call_result:\n  news:\n    - title: \"IT 업계 노조, 근로 환경 개선\
+      \ 요구하며 서울 도심 집회\"\n      date: \"2025-08-05\"\n      source: \"한국경제\"\n    \
+      \  link: \"https://www.hankyung.com/news/20250805-001\"\n      summary: \"IT\
+      \ 업계 노조가 장시간 근로와 계약직 차별 해소를 요구하며 서울 광화문에서 대규모 시위를 벌였다.\"\n\n    - title: \"\
+      전국교직원노동조합, 교육정책 변경 반대 시위\"\n      date: \"2025-08-04\"\n      source: \"경향신문\"\
+      \n      link: \"https://www.khan.co.kr/news/20250804-002\"\n      summary: \"\
+      전교조가 정부의 교육과정 개편안에 반대하며 전국 각지에서 동시다발 시위를 진행했다.\"\n\n    - title: \"택배노조, 배송\
+      \ 수수료 인상 요구하며 파업\"\n      date: \"2025-08-03\"\n      source: \"연합뉴스\"\n   \
+      \   link: \"https://www.yna.co.kr/view/20250803-003\"\n      summary: \"택배 기사\
+      \ 노조가 낮은 수수료 문제 해결을 촉구하며 파업에 돌입했다.\"\n\n    - title: \"자동차 부품 노조, 안전 규정 강화 요구\
+      \ 집회\"\n      date: \"2025-08-02\"\n      source: \"조선일보\"\n      link: \"https://www.chosun.com/news/20250802-004\"\
+      \n      summary: \"자동차 부품 제조업체 노조가 안전 장비 미비를 문제 삼으며 사내 집회를 개최했다.\"\n\n    -\
+      \ title: \"보건의료노조, 인력 확충 촉구하며 병원 앞 시위\"\n      date: \"2025-08-01\"\n      source:\
+      \ \"한겨레\"\n      link: \"https://www.hani.co.kr/news/20250801-005\"\n      summary:\
+      \ \"보건의료노조가 병원 인력 부족과 과로 문제 해결을 요구하며 전국 병원 앞에서 시위를 벌였다.\""
+- workflow_id: null
+  step_id: 6
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"IT 업계 노조, 근로 환경 개선 요구하며 서울 도심 집회 뉴스 요약\"\n      url: \"https://www.hankyung.com/news/20250805-001\"\
+      \n      date: \"2025-08-05\"\n\n  - tool: summarizeNews\n    arguments:\n  \
+      \    refinedQuery: \"전국교직원노동조합, 교육정책 변경 반대 시위 뉴스 요약\"\n      url: \"https://www.khan.co.kr/news/20250804-002\"\
+      \n      date: \"2025-08-04\"\n\n  - tool: summarizeNews\n    arguments:\n  \
+      \    refinedQuery: \"택배노조, 배송 수수료 인상 요구하며 파업 뉴스 요약\"\n      url: \"https://www.yna.co.kr/view/20250803-003\"\
+      \n      date: \"2025-08-03\"\n\n  - tool: summarizeNews\n    arguments:\n  \
+      \    refinedQuery: \"자동차 부품 노조, 안전 규정 강화 요구 집회 뉴스 요약\"\n      url: \"https://www.chosun.com/news/20250802-004\"\
+      \n      date: \"2025-08-02\"\n\n  - tool: summarizeNews\n    arguments:\n  \
+      \    refinedQuery: \"보건의료노조, 인력 확충 촉구하며 병원 앞 시위 뉴스 요약\"\n      url: \"https://www.hani.co.kr/news/20250801-005\"\
+      \n      date: \"2025-08-01\"\ntool_call_result:\n  - tool: summarizeNews\n \
+      \   result:\n      summary: \"IT 업계 노조가 근로 환경 개선과 임금 인상을 요구하며 서울 도심에서 대규모 집회를\
+      \ 열었습니다. 참가자들은 장시간 근로와 계약직 비율 축소를 주장했고, 정부에 대화를 촉구했습니다.\"\n\n  - tool: summarizeNews\n\
+      \    result:\n      summary: \"전국교직원노동조합이 교육정책 변경에 반대하며 시위를 벌였습니다. 교사들은 과도한\
+      \ 행정업무와 수업 시수 증가를 문제로 지적하며 정책 재검토를 요구했습니다.\"\n\n  - tool: summarizeNews\n  \
+      \  result:\n      summary: \"택배노조가 배송 수수료 인상과 근무 조건 개선을 요구하며 파업에 돌입했습니다. 일부\
+      \ 지역에서는 배송 지연이 발생했고, 노사 간 협상이 진행 중입니다.\"\n\n  - tool: summarizeNews\n    result:\n\
+      \      summary: \"자동차 부품 노조가 안전 규정 강화를 촉구하며 집회를 열었습니다. 노조는 산업재해 예방을 위한 설비 교체와\
+      \ 작업 환경 개선을 요구했습니다.\"\n\n  - tool: summarizeNews\n    result:\n      summary:\
+      \ \"보건의료노조가 병원 인력 확충과 근무 환경 개선을 요구하며 시위를 벌였습니다. 환자 안전과 의료 서비스 질 향상을 위해 정부 지원\
+      \ 확대를 촉구했습니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ IT 스타트업 계약직 사원이 노동조합에 가입하면 다음과 같은 혜택을 받을 수 있습니다.
+
+
+      * 고용 안정성 향상을 위한 집단 교섭 참여
+
+      * 부당 해고 또는 계약 종료 시 법적 지원 및 상담
+
+      * 근로 조건(급여, 휴가, 복지 등) 개선 요구 가능
+
+      * 정규직 전환에 대한 내부 정책 감시 및 의견 반영
+
+      * 감정노동, 과로 등 노동환경 문제에 대한 단체 대응
+
+      * 노조에서 주관하는 법률 교육 및 권리 교육 참여
+
+
+      ▶ 최근 노조 관련 주요 뉴스는 다음과 같습니다.
+
+
+      1. IT 업계 노조 – 근로 환경 개선과 임금 인상을 요구하며 서울 도심에서 대규모 집회 개최, 장시간 근로와 계약직 비율 축소 주장.
+
+
+      2. 전국교직원노동조합 – 교육정책 변경 반대 시위, 과도한 행정업무와 수업 시수 증가를 문제로 지적.
+
+
+      3. 택배노조 – 배송 수수료 인상과 근무 조건 개선을 요구하며 파업, 일부 지역 배송 지연 발생.
+
+
+      4. 자동차 부품 노조 – 안전 규정 강화를 요구하며 집회, 산업재해 예방을 위한 설비 교체와 환경 개선 촉구.
+
+
+      5. 보건의료노조 – 병원 인력 확충과 근무 환경 개선 요구, 환자 안전과 의료 서비스 질 향상 촉구.'

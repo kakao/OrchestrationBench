@@ -1,0 +1,347 @@
+{
+  "agent_card": {
+    "name": "Calendar",
+    "agent_id": "calendar_agent",
+    "description": "A calendar agent that provides various features related to daily schedules, such as checking lunar and solar calendars, adding/viewing/canceling/modifying events, and setting custom reminders.",
+    "url": "http://localhost:10008/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": true
+    },
+    "skills": [
+      {
+        "id": "getCalendar",
+        "name": "View Calendar (Lunar, Solar)",
+        "description": "Look up or convert solar and lunar dates, as well as various holidays, seasonal divisions, and anniversaries.",
+        "examples": [
+          "Can you convert today's date to the lunar calendar?",
+          "Tell me when Lunar New Year is this year.",
+          "When is the start of spring?",
+          "When is the Summer Solstice in 2026?",
+          "When is the 15th day of the 7th lunar month in the solar calendar?"
+        ]
+      },
+      {
+        "id": "createSchedule",
+        "name": "Add Event",
+        "description": "Record a new event such as an appointment, reservation, or anniversary in the calendar for a specified date and time.",
+        "examples": [
+          "Add a movie night with friends next Tuesday at 6pm.",
+          "Schedule a dinner at Downtown Station on August 3rd at 8pm.",
+          "Book a hospital appointment tomorrow at 9am.",
+          "Create a jogging schedule for 7am on the first Monday of next month.",
+          "Add my birthday dinner party on July 15th to the calendar."
+        ]
+      },
+      {
+        "id": "getSchedule",
+        "name": "View Events",
+        "description": "Search registered events by period, keyword, calendar type, and other conditions.",
+        "examples": [
+          "Show me all the appointments scheduled this month.",
+          "What events are booked for this afternoon?",
+          "Find events with 'meeting' in my personal calendar.",
+          "Summarize all events for next week.",
+          "Check when my friend's birthday is scheduled."
+        ]
+      },
+      {
+        "id": "cancelSchedule",
+        "name": "Cancel Event",
+        "description": "Delete a specific event from the saved events. Use 'View Events' to select the event to cancel.",
+        "examples": [
+          "Cancel tomorrow morning's meeting.",
+          "Delete the dinner appointment from my schedule."
+        ]
+      },
+      {
+        "id": "modifySchedule",
+        "name": "Modify Event",
+        "description": "Edit details (time, location, etc.) of a registered event. Use 'View Events' to select the event to modify.",
+        "examples": [
+          "Change the start time of next Wednesday's evening gathering to 8pm.",
+          "Can you change today's lunch meeting location to 'Cafe at City Hall Station'?"
+        ]
+      },
+      {
+        "id": "remindSchedule",
+        "name": "Reminder",
+        "description": "Set up scheduled reminders based on specified time, message, and repeat conditions.",
+        "examples": [
+          "Set a reminder to submit documents at 10am.",
+          "Remind me every Monday at 11am before the meeting.",
+          "Add a reminder to 'Call Mom' next Friday at 5pm.",
+          "Send me a chat reminder to work out at 7pm tonight."
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getCalendar",
+      "description": "A tool that converts between lunar and solar dates, searches for specific seasonal divisions, holidays, or anniversaries, and provides lunar/solar information for a given reference date. When calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query including the user's natural language request or previous context (e.g., 'Tell me the date for the first day of the 3rd lunar month', 'Convert today's date to solar')."
+          },
+          "date": {
+            "type": "string",
+            "description": "A specific reference date (e.g., '2025-07-12'). Use ISO 8601 (YYYY-MM-DD) format."
+          },
+          "calendarType": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "lunar"
+            ],
+            "description": "The calendar type of the given date: choose lunar or solar."
+          },
+          "convertedCalendarType": {
+            "type": "string",
+            "enum": [
+              "solar",
+              "lunar"
+            ],
+            "description": "The calendar type to convert to: choose lunar or solar."
+          },
+          "targetEvent": {
+            "type": "string",
+            "description": "Name of the holiday, seasonal division, or anniversary (e.g., \"Chinese New Year\", \"Diwali\", \"Thanksgiving\")."
+          },
+          "year": {
+            "type": "integer",
+            "description": "The year to look up. Enter as a 4-digit number; defaults to the current year if omitted."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "year"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "createSchedule",
+      "description": "A tool that creates a new event for the user and saves it to the calendar with various options (location, recurrence, memo, etc.). If called repeatedly for multiple targets, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined request that combines the natural language input and previous conversation context to determine the schedule information (e.g., 'Add a morning meeting on 08/13 at 9:00am', 'Schedule a meeting with a friend at 6:00pm')"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title or a brief summary of the event (max 50 characters, e.g., 'Marketing Team Lunch Meeting', 'Fitness Training')"
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "The date and time when the event starts (e.g., '2025-08-13T09:00', must be after the current time). If no specific time is given, set based on the current time.",
+            "format": "date-time"
+          },
+          "endDateTime": {
+            "type": "string",
+            "description": "The date and time when the event ends (e.g., '2025-08-13T10:00'). If not provided, it defaults to 1 hour after the start time.",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string",
+            "description": "The place or location where the event will take place (e.g., 'Cafe near Downtown Station', 'HQ 3rd Floor Conference Room')"
+          },
+          "memo": {
+            "type": "string",
+            "description": "A free memo or detailed description of the event (max 300 characters, e.g., 'Go straight to the office after the meeting', 'Shower facilities available after workout')"
+          },
+          "calendarType": {
+            "type": "string",
+            "description": "The type of calendar to save to (e.g., 'personal', 'work', 'shared'), used as a filter only if mentioned in the user's request"
+          },
+          "repeatRule": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daily",
+              "weekly",
+              "monthly",
+              "yearly"
+            ],
+            "description": "The recurrence frequency of the event (e.g., 'none' (no recurrence), 'weekly' (repeat every week), etc.), extracted only if explicitly mentioned in the user's request"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "title",
+          "startDateTime",
+          "endDateTime"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getSchedule",
+      "description": "A tool that searches for events based on the user's natural language query, filtered by a specific date range, keyword, and calendar type. When calling repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined schedule search query combining the previous conversation context and the current user question (e.g., 'First week of August meeting schedule', 'Tasks that must be done')"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The date to start searching for events. Enter in ISO 8601 format (e.g., '2025-05-25'). If a natural language period (e.g., 'today', 'this week') is entered, it should be converted to an actual date."
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The date to end searching for events. ISO 8601(e.g., '2025-05-29'). If only startDate is provided, endDate should be treated as the same as startDate."
+          },
+          "keyword": {
+            "type": "string",
+            "description": "A search keyword contained in the event title or notes (e.g., 'meeting', 'anniversary', 'seminar')"
+          },
+          "calendarType": {
+            "type": "string",
+            "enum": [
+              "personal",
+              "work",
+              "shared",
+              "anniversary"
+            ],
+            "description": "The type of calendar to search (e.g., 'personal' for personal events, 'work' for work events, 'shared' for shared calendars, 'anniversary' for anniversaries)"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelSchedule",
+      "description": "A tool for canceling a specific schedule. It can find and delete the schedule associated with the user's cancellation request. Use 'getSchedule' to select the schedule to cancel. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query that includes both the user's natural language cancellation request and contextual information (e.g., 'Cancel the meeting tomorrow', 'Cancel the family event next Friday')."
+          },
+          "scheduleID": {
+            "type": "string",
+            "description": "The unique ID of the schedule to be canceled. Used to accurately identify and cancel the schedule."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "scheduleID"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifySchedule",
+      "description": "A tool to modify the start/end time, location, title, etc. of an existing schedule. Select the schedule to change via 'getSchedule'. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A summary query generated based on the user's natural language request (e.g., 'Move the meeting to Friday at 10:00 am and change the location to online')"
+          },
+          "scheduleID": {
+            "type": "string",
+            "description": "The unique ID of the schedule to be modified (e.g., 'evt_30711', 'sched208')"
+          },
+          "newStartDateTime": {
+            "type": "string",
+            "description": "Updated start time (e.g., \"2025-07-18T10:00:00\")"
+          },
+          "newEndDateTime": {
+            "type": "string",
+            "description": "Updated end time. Defaults to 1 hour after the start time (e.g., \"2025-07-18T11:00:00\")"
+          },
+          "newLocation": {
+            "type": "string",
+            "description": "Updated location (e.g., Google HQ, 3rd Floor Conference Room)"
+          },
+          "newTitle": {
+            "type": "string",
+            "description": "Updated schedule title (e.g., 'Project Kickoff')"
+          },
+          "note": {
+            "type": "string",
+            "description": "Additional notes or comments (e.g., 'Lunch after the meeting')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "scheduleID"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "remindSchedule",
+      "description": "A tool that notifies the user in the form of a reminder about a message, task, appointment, etc., at a specific time. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined reminder request sentence that includes the previous context and the user's natural language request (e.g., 'Reminder to work out at 7 AM', 'Reminder to buy milk before leaving work')"
+          },
+          "reminderContent": {
+            "type": "string",
+            "description": "The main message or task content to display in the reminder (e.g., 'Start workout at 7 AM', 'Buy milk before leaving work')"
+          },
+          "reminderTime": {
+            "type": "string",
+            "description": "The exact time the reminder should occur (ISO 8601 format e.g., '2025-12-01T07:00:00')"
+          },
+          "repeatRule": {
+            "type": "string",
+            "enum": [
+              "none",
+              "daily",
+              "weekly",
+              "monthly",
+              "yearly"
+            ],
+            "description": "'none' (default): no repeat, 'daily': repeat every day, 'weekly': repeat every week, 'monthly': repeat every month, 'yearly': repeat every year"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "high",
+              "normal"
+            ],
+            "description": "'normal' (default): normal reminder, 'high': important (shown at the top of the notification list) reminder"
+          },
+          "deliveryMethod": {
+            "type": "string",
+            "enum": [
+              "push",
+              "voice",
+              "chat"
+            ],
+            "description": "'chat' (default): chat notification, 'push': push notification, 'voice': voice notification"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reminderContent",
+          "reminderTime",
+          "repeatRule",
+          "priority",
+          "deliveryMethod"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

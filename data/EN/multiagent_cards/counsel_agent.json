@@ -1,0 +1,214 @@
+{
+  "agent_card": {
+    "name": "Counseling & Fortune",
+    "agent_id": "counsel_agent",
+    "description": "An integrated agent that provides various counseling and fortune-telling information, including psychological counseling, Chinese zodiac signs, Western star signs, and MBTI.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getCounseling",
+        "name": "Psychological Counseling",
+        "description": "Provides psychological counseling for concerns such as career changes, relationships, depression, and more.",
+        "examples": [
+          "I've been feeling down lately and need some help",
+          "Work has been tough—should I keep going or quit?",
+          "I had a big fight with my spouse and want to know how to resolve it",
+          "My child can't seem to focus—could there be a problem?",
+          "How can I get tested for adult ADHD?"
+        ]
+      },
+      {
+        "id": "getZodiacInfo",
+        "name": "Chinese Zodiac Info",
+        "description": "Identifies the Chinese zodiac sign based on birth year and provides related information.",
+        "examples": [
+          "What is the Chinese zodiac sign for someone born in 2003?",
+          "I want to know Yoo Jae-suk's Chinese zodiac sign"
+        ]
+      },
+      {
+        "id": "getCompatibilityInfo",
+        "name": "Compatibility",
+        "description": "Provides relationship or compatibility insights based on the Western zodiac signs or birth details of two people.",
+        "examples": [
+          "Tell me the compatibility between a Leo man and a Virgo woman",
+          "Can you check if Timothée Chalamet and I are a good match?"
+        ]
+      },
+      {
+        "id": "getStarSignInfo",
+        "name": "Western Star Sign",
+        "description": "Provides personality traits, fortunes, and compatibility information for each Western star sign.",
+        "examples": [
+          "What's today's fortune for Pisces?",
+          "How is the match between a Sagittarius woman and a Virgo man?",
+          "Which star sign does July 14 fall under?"
+        ]
+      },
+      {
+        "id": "getMbtiInfo",
+        "name": "MBTI Interpretation",
+        "description": "Provides tendencies, traits, and recommended careers based on MBTI type.",
+        "examples": [
+          "What jobs are suitable for an INFP?",
+          "Tell me the main personality traits of an ENTJ",
+          "Which MBTI type is most common in the IT field?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getCounseling",
+      "description": "A tool that accepts natural language requests about the user's concerns, emotions, interpersonal issues, or psychological symptoms, and provides appropriate guidance or information if professional counseling is needed. If called repeatedly for multiple subjects, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A natural language request describing in detail the concern, situation, emotion, psychological symptom, or interpersonal issue you want counseling for (e.g., 'I've been feeling very anxious lately and want to know how to cope', 'I'm having major conflicts with a coworker and need counseling', 'I'm worried my child has trouble focusing', 'Please tell me how to self-check for adult ADHD', 'I've been feeling depressed for a long time—should I seek counseling?')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getZodiacInfo",
+      "description": "A tool that determines the person's Chinese Zodiac (12 animals) based on their birth year or related information. If calling for multiple people, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query that includes the user's natural language request and previous context. Example: 'Tell me the zodiac sign for someone born in 2001', 'What is John Smith's zodiac sign?'"
+          },
+          "year": {
+            "type": "integer",
+            "description": "The birth year (4 digits, between 1900 and 2025) of the person whose zodiac sign you want to know"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "year"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getCompatibilityInfo",
+      "description": "A tool that provides relationship or compatibility insights based on the Western zodiac signs or birth details of two people. If calling repeatedly for multiple pairs, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined compatibility question that incorporates both the previous context and the user's natural language request (e.g., 'Tell me the compatibility between a Leo man and a Gemini woman', 'I want to see my compatibility with Sarah Johnson')."
+          },
+          "personA": {
+            "type": "object",
+            "properties": {
+              "birthDate": {
+                "type": "string",
+                "description": "The first person's date of birth (YYYY-MM-DD format, required)."
+              },
+              "birthTime": {
+                "type": "string",
+                "description": "The first person's time of birth (optional, HH:mm format)."
+              },
+              "gender": {
+                "type": "string",
+                "description": "The first person's gender identity if relevant (optional, e.g., 'male', 'female')."
+              }
+            },
+            "required": [
+              "birthDate"
+            ]
+          },
+          "personB": {
+            "type": "object",
+            "properties": {
+              "birthDate": {
+                "type": "string",
+                "description": "The second person's date of birth (YYYY-MM-DD  format, required)."
+              },
+              "birthTime": {
+                "type": "string",
+                "description": "The second person's time of birth (optional, HH:mm format)."
+              },
+              "gender": {
+                "type": "string",
+                "description": "The second person's gender identity if relevant (optional, e.g., 'male', 'female')."
+              }
+            },
+            "required": [
+              "birthDate"
+            ]
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "personA",
+          "personB"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getStarSignInfo",
+      "description": "A tool that provides zodiac sign information, horoscopes, and compatibility between signs. Depending on the user's curiosity, it can provide information about their own sign, the sign corresponding to a given birthday, or compatibility with another sign. If calling repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "The final query sentence containing both the previous conversation context and the user's natural language request. (e.g., 'Tell me this week's Aquarius horoscope', 'What zodiac sign is May 8?')"
+          },
+          "starSign": {
+            "type": "string",
+            "description": "The name of the specific zodiac sign you want horoscope or information for. (e.g., 'Aries', 'Leo')"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Birthday information for which you need to determine the zodiac sign. Can use 'MM-DD' or 'YYYY-MM-DD' format. (e.g., '03-22', '2002-09-18')"
+          },
+          "partnerStarSign": {
+            "type": "string",
+            "description": "The name of the other person's zodiac sign for which you want to know compatibility. Only used for compatibility requests. (e.g., 'Virgo', 'Capricorn')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getMbtiInfo",
+      "description": "A tool that provides various information based on the user's question or request, such as characteristics, tendencies, recommended careers, and preferred fields for each MBTI type. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A specific question or request about MBTI generated by reflecting the previous conversation context and the user's intent (e.g., 'Recommend hobbies that suit an ENFJ', 'Tell me the key relationship traits of each MBTI type')."
+          },
+          "mbtiType": {
+            "type": "string",
+            "description": "The 4-letter abbreviation used to specify an MBTI personality type (e.g., 'infj', 'esfp'), which should be entered in lowercase letters."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

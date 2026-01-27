@@ -1,0 +1,738 @@
+{
+  "agent_card": {
+    "name": "교통(transport)",
+    "agent_id": "transport_agent",
+    "description": "이 에이전트는 실시간 교통상황, 길찾기, 교통수단비교, 주차장 및 택시/대리운전 예약 등 이동 및 운전 관련 요청을 통합적으로 처리합니다.",
+    "url": "http://localhost:10005/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getTrafficInfo",
+        "name": "실시간 교통 정보",
+        "description": "사용자가 지정한 지역, 도로, 시간대의 교통상황(정체, 사고, 공사, 집회 등)을 다양한 교통수단별로 보여줍니다.",
+        "examples": [
+          "서초IC 지금 교통 흐름 어때?",
+          "성수대교 일대 사고 소식 있어?",
+          "퇴근시간 올림픽대로 정체 심한 구간 보여줘"
+        ]
+      },
+      {
+        "id": "getDirections",
+        "name": "길찾기",
+        "description": "출발지와 목적지 기준으로 가장 빠른 또는 원하는 경로(대중교통, 자동차, 도보, 자전거 등)와 소요시간을 안내하고, 내비게이션 연동도 지원합니다.",
+        "examples": [
+          "여의도공원까지 가장 빠른 지하철 경로 알려줘",
+          "서초역에서 COEX까지 최단거리 운전 경로 찾아줄 수 있어?",
+          "동대문디자인플라자까지 버스랑 지하철 중 뭐가 더 빨라?",
+          "이화여대까지 바로 가는 버스 노선 있어?"
+        ]
+      },
+      {
+        "id": "getTransportInfo",
+        "name": "교통수단 정보",
+        "description": "공유 자전거, 공유 킥보드, 택시, 렌터카, 공유 차량 등의 교통수단의 요금, 대여 위치, 운영 가능 여부, 차량 종류 등 상세 정보를 제공하는 도구입니다. 경로 탐색 목적이 아니라, 특정 교통수단의 이용 조건 확인에 적합합니다. .",
+        "examples": [
+          "서울역에서 한남동까지 택시 타면 요금 얼마나 나와?",
+          "부산에서 오늘 렌터카 하루 대여요금 알려줘",
+          "광화문 근처에서 전기 공유자전거 어디서 빌릴 수 있지?",
+          "근방에 킥보드 대여소 찾아줘",
+          "친환경 SUV 렌터카 하루 요금 비교해줄 수 있어?"
+        ]
+      },
+      {
+        "id": "getParkingInfo",
+        "name": "주차장 정보",
+        "description": "지정 위치 반경 내 주차장 검색, 공영/사설 구분, 요금(시간제·일일·월정액) 및 예약 가능 여부까지 안내합니다. 전기차 충전 및 특수 차량 필터도 포함됩니다.",
+        "examples": [
+          "이 근처 주차요금 가장 저렴한 곳 어디인가요?",
+          "서울대학교 앞 도보 5분 거리에 주차장 있나요?",
+          "이태원역 일대 이번 주 금요일 하루 예약 가능한 주차장 찾아볼래?",
+          "홍대입구 근처 전기차 충전 가능한 주차장 알려줘",
+          "송파구 반경 1km 내 월 정기주차 되는 곳 중 인기 많은 주차장 추천해줘"
+        ]
+      },
+      {
+        "id": "callTaxi",
+        "name": "택시 예약",
+        "description": "지정 출발지에서 목적지까지 일반, 블랙, 밴, 휠체어, 프리미엄 등 다양한 택시 호출 및 사전예약이 가능하며, 인원·짐·예약 플랫폼 선택도 지원합니다.",
+        "examples": [
+          "삼성역에서 김포공항까지 택시 지금 바로 불러줘",
+          "내일 오전 7시에 인천공항 갈 수 있게 모범택시 미리 예약해줘",
+          "서울역 가는 캐리어 3개인데 밴 택시 급하게 잡아줄래?"
+        ]
+      },
+      {
+        "id": "callDesignatedDriver",
+        "name": "대리운전 예약",
+        "description": "대리운전 기사 예약 및 호출을 도와주는 도구입니다.",
+        "examples": [
+          "지금 강남역 출발해서 우리집까지 대리운전 필요한데 불러줄래?",
+          "오늘 밤 11시에 광화문에서 분당 아파트로 미리 대리 예약하고 싶어",
+          "현위치에서 삼성동까지 대리기사 부를 수 있니? 차량은 쏘나타야"
+        ]
+      },
+      {
+        "id": "bookRentalCar",
+        "name": "렌터카 예약",
+        "description": "사용자가 원하는 조건에 따라 렌터카를 예약합니다.",
+        "examples": [
+          "다음 주 토요일 오전 10시에 제주공항에서 SUV 빌릴거야.",
+          "부산역에서 내일 아침에 전기차 하루 대여하고 싶은데 자차 보험 포함으로 예약해줘.",
+          "3박 4일간 하이패스 포함된 소형차 빌릴 수 있어?"
+        ]
+      },
+      {
+        "id": "bookTransitTicket",
+        "name": "대중교통 예매",
+        "description": "열차, 고속/시외버스 등 육상 교통수단의 티켓을 예매하는 도구입니다.",
+        "examples": [
+          "이번 주 토요일 오전 9시에 서울에서 부산 가는 KTX 예약해줘",
+          "수원에서 대전까지 고속버스 예매할 수 있을까?",
+          "내일 오후 3시에 천안에서 대구 가는 버스표 부탁해"
+        ]
+      },
+      {
+        "id": "getTransitSchedule",
+        "name": "대중교통 시간표 조회",
+        "description": "출발지와 도착지를 기준으로 열차(KTX, SRT 등) 및 고속/시외버스의 상행/하행 및 왕복 시간표를 조회합니다.",
+        "examples": [
+          "9월 10일에 서울에서 대구까지 KTX 시간표 알려줘",
+          "다음 주 금요일에 동대구에서 수서 가는 열차 몇 시에 있어?",
+          "이번 주 토요일에 서울-부산 왕복 고속버스 시간표 보여줘",
+          "내일 오후 4시쯤 천안에서 대전 가는 버스 있어?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getTrafficInfo",
+      "description": "실시간 및 특정 시간대의 교통 상황, 교통사고, 공사, 통제, 집회 등 다양한 교통 정보를 조회할 수 있는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청과 대화 맥락을 함께 반영한 정제된 검색 쿼리 (예: '문정역 주변 혼잡한 구간 알려줘', '합정역에서 강변북로까지 오늘 저녁 사고 났는지 알아봐')"
+          },
+          "location": {
+            "type": "string",
+            "description": "교통 정보를 조회할 지역 또는 도로명, 명칭이 없는 경우 '내 위치(GPS)'로 입력됨 (예: '광화문', '올림픽대로', '삼성역', '내 위치(GPS)')"
+          },
+          "timeRange": {
+            "type": "string",
+            "description": "조회를 원하는 시간 범위, 날짜 및 시간 형식(예: '2025-08-02T07:00~09:00'). 자연어 입력시 '아침', '정오', '저녁', '심야' 등은 자동으로 대응되는 시간 범위('아침'=06:00~09:59, '정오'=12:00~13:59, '오후'=14:00~17:59, '저녁'=18:00~20:59, '밤'=21:00~23:59, '심야'=00:00~05:59)로 변환됩니다. 미입력 시 현재 시각(예: '2025-08-02T07:00) 기준."
+          },
+          "trafficType": {
+            "type": "string",
+            "enum": [
+              "자동차",
+              "버스",
+              "지하철",
+              "보행자",
+              "자전거",
+              "전체"
+            ],
+            "description": "조회할 교통 수단의 유형(예: '버스', '지하철', '자동차' 등). 미입력시 기본값은 '자동차'입니다."
+          },
+          "incidentType": {
+            "type": "string",
+            "enum": [
+              "사고",
+              "공사",
+              "통제",
+              "집회"
+            ],
+            "description": "사고, 공사, 통제, 집회 중 포함할 교통 이슈 유형. 입력하지 않으면 모든 유형을 포함하여 조회합니다."
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "delay_level",
+              "congestion_score",
+              "incident_recent",
+              "report_count"
+            ],
+            "description": "조회 결과 정렬 기준(delay_level=지연 정도, congestion_score=혼잡도 점수, incident_recent=최근 발생한 이슈, report_count=신고/제보 건수 등)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "trafficType",
+          "timeRange"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getDirections",
+      "description": "사용자가 입력한 출발지, 도착지 정보와 조건을 바탕으로 다양한 교통수단 경로 및 소요 시간을 안내하거나 내비게이션 실행 요청을 지원하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자 입력 전체와 최근 맥락을 결합해 만든 세밀한 경로 요청 쿼리. (예: '논현동에서 홍대까지 가장 저렴하게 가는 법 알려줘', '지하철로 강남까지 빠르게 가고 싶어')"
+          },
+          "origin": {
+            "type": "string",
+            "description": "출발지의 주소, 장소명 등 정보. 예: '서울역', '가톨릭대학교', '경기도 용인시 수지구 신봉로 123번지'"
+          },
+          "destination": {
+            "type": "string",
+            "description": "도착지의 장소명 또는 주소. 예: '코엑스', '여의도 파크원', '롯데월드타워'"
+          },
+          "departureTime": {
+            "type": "string",
+            "description": "출발을 원하는 시간('HH:MM'). 지정이 없으면 현재 시간 기준."
+          },
+          "arrivalTime": {
+            "type": "string",
+            "description": "도착 희망 시간('HH:MM'). 지정이 없으면 미사용."
+          },
+          "transportModes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "subway",
+                "bus",
+                "car",
+                "walk",
+                "bike"
+              ]
+            },
+            "description": "비교 또는 선택할 이동 수단들. 기본값은 car로 지정"
+          },
+          "optimizeBy": {
+            "type": "string",
+            "enum": [
+              "fastest",
+              "least_transfer",
+              "least_walk",
+              "lowest_cost"
+            ],
+            "description": "경로 안내 시 최적화 기준. 'fastest': 가장 빠름(기본값), 'least_transfer': 환승 최소, 'least_walk': 도보 최소, 'lowest_cost': 비용 최소"
+          },
+          "directRouteOnly": {
+            "type": "boolean",
+            "description": "직행(환승 없는) 경로만 안내 여부. true로 설정 시 환승 없는 버스·지하철 등만 안내."
+          },
+          "navigationMode": {
+            "type": "boolean",
+            "description": "내비게이션(카카오맵/카카오내비 등) 바로 실행 요청 여부. true로 설정 시 실제 앱과 연동하여 바로 안내 시작."
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "카카오맵",
+              "카카오내비",
+              "네이버지도",
+              "서울시 교통정보"
+            ],
+            "description": "경로 검색에 사용할 데이터 소스 또는 트래픽·지도 플랫폼 지정. 예: '네이버지도', '카카오맵'"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "transportModes",
+          "optimizeBy",
+          "origin",
+          "destination",
+          "departureTime"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getTransportInfo",
+      "description": "공유 자전거, 공유 킥보드, 택시, 렌터카, 공유 차량 등의 교통수단의 요금, 대여 위치, 운영 가능 여부, 차량 종류 등 상세 정보를 제공하는 도구입니다. 경로 탐색 목적이 아니라, 특정 교통수단의 이용 조건 확인에 적합합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자 질문과 이전 맥락을 반영한 교통 정보 탐색 쿼리 (예: '서울역 근처 공유 킥보드 위치 알려줘', '공항에서 호텔까지 렌터카 가격 비교', '홍대입구역까지 택시비')"
+          },
+          "location": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "출발지 또는 검색 위치 (예: '광화문', '인천국제공항')"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lng": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "lat",
+                  "lng"
+                ],
+                "description": "위도/경도로 표기된 위치 (예: {lat:37.57,lng:126.98})"
+              }
+            ],
+            "description": "출발지 또는 검색 위치 정보이며, 미입력 시 현재 위치를 기본값으로 사용"
+          },
+          "destination": {
+            "type": "string",
+            "description": "도착지 정보. 입력 시 이동 거리 기반 요금 추정이 가능 (예: '인천공항', '에버랜드')"
+          },
+          "departureTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "출발 예정 시간 (예: '2024-08-10T09:00'). 현재 혹은 미래의 날짜·시간만 허용"
+          },
+          "includeModes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "bike",
+                "kickboard",
+                "taxi",
+                "rental_car",
+                "car_sharing"
+              ]
+            },
+            "description": "탐색할 교통수단 유형 목록 (예: ['taxi'], ['bike', 'kickboard'])"
+          },
+          "rentalDuration": {
+            "type": "string",
+            "description": "대여 기간 또는 예상 사용시간. '1일', '하루' 등은 '24시간'으로 변환해 입력 (예: '3시간', '24시간')"
+          },
+          "vehicleType": {
+            "type": "string",
+            "description": "세부 교통수단 유형 (예: '전기 킥보드', '유아용 자전거', '중형 SUV 렌터카', '프리미엄 택시')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "location",
+          "includeModes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getParkingInfo",
+      "description": "주차장 정보를 검색하여 위치, 시간, 유형, 요금, 예약 가능 여부 등 다양한 조건에 따라 맞춤형 주차장 옵션을 제공합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 자연어 요청이나 이전 대화 맥락을 모두 통합한 주차장 검색 쿼리 (예: '서초역 주변 저렴한 주차장', '전기차 충전 가능한 주차장')"
+          },
+          "location": {
+            "type": "string",
+            "description": "관심 지역명 또는 구체적인 현재 위치 정보 (예: '강남역', '상암동')"
+          },
+          "searchRadius": {
+            "type": "number",
+            "description": "검색 반경(미터 단위). 기본값은 500m이며, 예: 300, 700"
+          },
+          "parkingType": {
+            "type": "string",
+            "enum": [
+              "public",
+              "private",
+              "valet",
+              "all"
+            ],
+            "description": "주차장 유형 선택: public(공영), private(사설), valet(발렛), all(전체)"
+          },
+          "priceType": {
+            "type": "string",
+            "enum": [
+              "hourly",
+              "daily",
+              "monthly",
+              "flat"
+            ],
+            "description": "요금 기준 방식. hourly(시간당)은 일일/월정액 주차장을 제외하고 검색 results를 제공합니다."
+          },
+          "date": {
+            "type": "string",
+            "description": "주차를 원하는 날짜(YYYY-MM-DD). 요청일의 익일부터 최대 30일 이내 날짜만 허용 (예: '2025-08-10')"
+          },
+          "timeRange": {
+            "type": "string",
+            "description": "주차를 원하는 시간대 (예: '08:00~14:00', '00:00~23:59')"
+          },
+          "reservationRequired": {
+            "type": "boolean",
+            "description": "예약 가능한 주차장만 찾을 경우 true로 설정 (예: true → 예약 필수)"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "lowest_price",
+              "nearest",
+              "availability",
+              "most_searched"
+            ],
+            "description": "검색 결과 정렬 기준. 기본값은 nearest (가장 가까운 순)"
+          },
+          "vehicleType": {
+            "type": "string",
+            "enum": [
+              "compact",
+              "SUV",
+              "EV",
+              "cargo"
+            ],
+            "description": "차량 유형 선택. EV(전기차) 선택 시 추가적으로 충전기 유무 필터를 사용할 수 있음"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "카카오맵",
+              "서울주차정보시스템",
+              "모두의주차장"
+            ],
+            "description": "정보 출처 또는 플랫폼 명시 (예: '카카오맵')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "searchRadius",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "callTaxi",
+      "description": "승차 위치, 목적지, 탑승 시간 등 다양한 조건을 기반으로 택시를 예약하거나 즉시 호출할 수 있는 도구입니다. 일반, 블랙, 대형, 휠체어, 프리미엄 차량 유형 선택이 가능하며, 사전 예약 시 연락처가 필요합니다. 예약 취소 및 변경은 불가능합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "이전 대화 맥락과 사용자의 자연어 요청이 포함된 정제된 쿼리 (예: '야탑역에서 호텔신라까지 택시 부탁해', '다음주 금요일 새벽 6시에 남부터미널 가는 택시 필요')"
+          },
+          "pickupLocation": {
+            "type": [
+              "string",
+              "object"
+            ],
+            "description": "승차 장소명 또는 좌표 정보 (예: '서울숲역 2번 출구', {lat:37.5485, lng:127.0429})"
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "description": "목적지명 또는 하차 지점 (예: '부산역', '홍대입구역')"
+          },
+          "pickupTime": {
+            "type": "string",
+            "description": "희망하는 탑승 시간. 즉시 호출 시에는 현재 시간을 ISO 8601 형식으로 입력, 예약 호출 시에는 요청한 시간을 ISO 8601 형식으로 입력(예: 2025-08-21T03:30), 예약은 최소 30분 이후부터 가능"
+          },
+          "passengerCount": {
+            "type": "integer",
+            "description": "인원 수(최소 1명, 기본값 1). 4인 이상은 자동으로 van(대형택시) 권장, 5인 이상부터 van만 선택 가능"
+          },
+          "taxiType": {
+            "type": "string",
+            "enum": [
+              "general",
+              "black",
+              "van",
+              "wheelchair",
+              "premium"
+            ],
+            "description": "원하는 택시 유형 (기본값은 'general'; 'van'은 5인 이상, 수하물 3개 이상 또는 4인 이상 권장)"
+          },
+          "luggageCount": {
+            "type": "integer",
+            "description": "캐리어 등 짐의 개수(기본값 없음; 예: 3이면 '캐리어 3개'). 3개 이상일 경우 van으로 호출 권장"
+          },
+          "reservation": {
+            "type": "boolean",
+            "description": "사전 예약 여부. true일 경우 예약 호출이며 pickupTime 명시 필요"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예약 시 필수인 연락처 정보 (예: '010-2345-6789')"
+          },
+          "source": {
+            "type": "string",
+            "description": "호출에 사용된 플랫폼 또는 연동 서비스(예: '카카오T', '타다', '우버')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "passengerCount",
+          "taxiType",
+          "pickupTime",
+          "pickupLocation",
+          "dropoffLocation",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "callDesignatedDriver",
+      "description": "대리운전 기사 예약 및 호출을 도와주는 도구입니다. 출발 위치와 차량 정보를 입력하면 원하는 시간에 맞춰 대리운전을 예약하거나 즉시 호출할 수 있습니다. 도착지 입력 시 예상 소요 시간과 요금을 함께 예측할 수 있으며, 차량 정보가 없을 경우 예약이 불가능합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "현재 맥락과 사용자의 요청을 자연스럽게 포함한 정제된 예약 요청 문장 (예: '분당 서현역에서 우리집까지 오늘 밤 대리운전 불러줘', '현재 위치에서 남부터미널로 대리운전 기사 예약하기')"
+          },
+          "pickupLocation": {
+            "type": [
+              "string",
+              "object"
+            ],
+            "description": "대리운전 기사가 차량을 픽업할 출발 위치 (지명, 주소, 위도/경도 좌표 포함. 예: '잠실새내역 2번 출구', {lat:37.511,lng:127.086})"
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "description": "도착지 주소 또는 지명 (예: '노원구 상계동 현대아파트'). 입력 시 예상 시간·요금 산출 및 기사 배정에 참고됨."
+          },
+          "pickupTime": {
+            "type": "string",
+            "description": "희망 출발 시간. 즉시 호출은 'now', 특정 시각 예약은 ISO 8601 형식으로 입력 (예: 'now', '2025-12-24T22:00'). 최소 예약 가능 시점은 현재 시간 기준 30분~2시간 이내"
+          },
+          "vehicleInfo": {
+            "type": "string",
+            "description": "운행 예정 차량의 상세 정보(차종, 색상, 번호판 등. 예: '쏘나타 흰색 32가1234'). 예약 필수값이며 미입력 시 요청 불가."
+          },
+          "passengerCount": {
+            "type": "integer",
+            "description": "동승자 포함 총 탑승 인원 수 (예: 1, 3)"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "기사 연락을 위한 전화번호(예: '010-9876-1234')"
+          },
+          "reservation": {
+            "type": "boolean",
+            "description": "사전 예약 여부를 명시 (예: true → '오늘 밤 11시 대리운전 미리 예약')"
+          },
+          "source": {
+            "type": "string",
+            "description": "서비스 호출 플랫폼 또는 앱 이름 (예: '티맵대리', '카카오T대리', '대리고')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "pickupLocation",
+          "vehicleInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookRentalCar",
+      "description": "사용자가 원하는 조건에 따라 렌터카를 예약합니다. 대여 위치, 날짜, 시간, 차종, 보험, 운전자 정보, 옵션 등을 입력하면 예약 요청을 처리합니다. 예약 취소 및 변경은 렌터카 업체에 직접 연락을 통해서만 가능합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "렌터카 예약 요청을 자연어로 정제한 쿼리 (예: '다음 주 토요일 오전 10시에 제주공항에서 SUV 차량 빌려줘')"
+          },
+          "pickupLocation": {
+            "type": "string",
+            "description": "차량을 픽업할 위치 (예: '제주공항', '부산역')"
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "description": "차량을 반납할 위치 (선택값, 미지정 시 픽업 장소와 동일)"
+          },
+          "pickupDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "차량 픽업 일시 (예: '2025-08-24T10:00')"
+          },
+          "returnDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "차량 반납 일시 (예: '2025-08-26T16:00')"
+          },
+          "carType": {
+            "type": "string",
+            "description": "원하는 차량 유형 또는 모델명 (예: '소형', 'SUV', '전기차', '쏘렌토')"
+          },
+          "driverAge": {
+            "type": "integer",
+            "description": "운전자의 나이 (보험 조건에 따라 필수)"
+          },
+          "insuranceOption": {
+            "type": "string",
+            "enum": [
+              "basic",
+              "partial",
+              "full"
+            ],
+            "description": "보험 옵션 선택 ('basic': 자차 제외, 'partial': 자차 포함, 'full': 완전 면책)"
+          },
+          "additionalOptions": {
+            "type": "string",
+            "description": "추가 옵션 요청사항 (예: '아동 카시트 포함', '하이패스 지원 차량 요청')"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예약자 연락처 (형식: 010-1234-5678)",
+            "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "pickupLocation",
+          "pickupDateTime",
+          "returnDateTime",
+          "carType",
+          "driverAge",
+          "insuranceOption",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getTransitSchedule",
+      "description": "출발지, 도착지, 날짜, 교통수단 종류를 기준으로 열차(KTX, SRT) 및 고속/시외버스의 왕복 시간표를 조회하는 도구입니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "사용자의 요청을 반영한 정제된 문장 (예: '9월 10일 서울에서 대구까지 KTX 왕복 시간표 알려줘')"
+          },
+          "transportType": {
+            "type": "string",
+            "enum": [
+              "train",
+              "bus"
+            ],
+            "description": "'train': 열차 (KTX, SRT 등), 'bus': 고속버스 또는 시외버스"
+          },
+          "departureStation": {
+            "type": "string",
+            "description": "출발역 또는 터미널 이름 (예: '서울역', '센트럴시티터미널')"
+          },
+          "arrivalStation": {
+            "type": "string",
+            "description": "도착역 또는 터미널 이름 (예: '부산역', '동대구터미널')"
+          },
+          "departureDate": {
+            "type": "string",
+            "description": "출발 날짜 (형식: 'YYYY-MM-DD')"
+          },
+          "returnDate": {
+            "type": "string",
+            "description": "복귀 날짜 (형식: 'YYYY-MM-DD', 선택사항. roundTrip이 true일 경우 설정 가능)"
+          },
+          "roundTrip": {
+            "type": "boolean",
+            "description": "왕복 여부. true이면 도착지 → 출발지 경로도 함께 조회"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "transportType",
+          "departureStation",
+          "arrivalStation",
+          "departureDate"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookTransitTicket",
+      "description": "열차, 고속/시외버스 등 육상 교통수단의 티켓을 예매하는 도구입니다. 출발지, 도착지, 날짜 및 시간, 교통수단 종류, 좌석 등급, 인원 수 등을 입력받아 예매 요청을 처리하며, 왕복 예매도 지원합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "자연어 예매 요청을 정제한 문장 (예: '9월 10일 서울에서 대구까지 KTX 왕복 예매해줘')"
+          },
+          "transportType": {
+            "type": "string",
+            "enum": [
+              "train",
+              "bus"
+            ],
+            "description": "'train': 열차 (KTX, SRT 등), 'bus': 고속버스 또는 시외버스"
+          },
+          "departureStation": {
+            "type": "string",
+            "description": "출발지 역 또는 터미널 이름 (예: '서울역')"
+          },
+          "arrivalStation": {
+            "type": "string",
+            "description": "도착지 역 또는 터미널 이름 (예: '동대구역')"
+          },
+          "departureDate": {
+            "type": "string",
+            "description": "출발 날짜 (형식: 'YYYY-MM-DD')"
+          },
+          "departureTime": {
+            "type": "string",
+            "description": "출발 시간 또는 희망 시간대 (예: '오후', '17:00')"
+          },
+          "returnDate": {
+            "type": "string",
+            "description": "복귀 날짜 (형식: 'YYYY-MM-DD', 선택값), roundTrip가 true인 경우 필수",
+            "default": null
+          },
+          "returnTime": {
+            "type": "string",
+            "description": "복귀 시간 또는 희망 시간대 (예: '오전', '22:00', 선택값), roundTrip가 true인 경우 필수",
+            "default": null
+          },
+          "roundTrip": {
+            "type": "boolean",
+            "description": "왕복 여부. true이면 복귀 티켓도 함께 예매",
+            "default": false
+          },
+          "seatType": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "premium",
+              "business"
+            ],
+            "description": "좌석 등급 ('standard': 일반(기본값), 'premium': 우등 또는 특실, 'business': SRT 비즈니스)",
+            "default": "standard"
+          },
+          "passengerCount": {
+            "type": "integer",
+            "description": "탑승 인원 수"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "예약자 연락처 (예: '010-1234-5678')",
+            "pattern": "^01[016789]-\\d{3,4}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "transportType",
+          "departureStation",
+          "arrivalStation",
+          "departureDate",
+          "departureTime",
+          "seatType",
+          "roundTrip",
+          "passengerCount",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

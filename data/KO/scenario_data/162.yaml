@@ -1,0 +1,188 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 트와이스 정연의 프로필을 알려주고 정연 MBTI에 대해서 설명해줘
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"트와이스 정연\
+      \ 프로필 및 MBTI 정보\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: counsel_agent\n\
+      \      refined_query: \"트와이스 정연 MBTI 특징 설명\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"트와이스 정연 프로필 및 MBTI 정보\"\
+      \n  personName: \"정연\"\n  groupName: \"트와이스\"\n  roleType: \"가수\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    basic_info:\n      name: \"유정연\"\n      birth_name:\
+      \ \"유경완\"\n      date_of_birth: \"1996년 11월 1일\"\n      place_of_birth: \"대한민국\
+      \ 경기도 수원시 장안구\"\n      nationality: \"대한민국\"\n      physical:\n        height:\
+      \ \"167cm\"\n        blood_type: \"O형\"\n      family:\n        father: \"유창준\"\
+      \n        mother: \"(일반인)\"\n        sisters:\n          - \"공승연 (배우)\"\n  \
+      \        - \"유서연\"\n      education:\n        - \"정자초등학교 (졸업)\"\n        - \"\
+      이목중학교 (졸업)\"\n        - \"압구정고등학교 (졸업)\"\n    professional_info:\n      agency:\
+      \ \"JYP 엔터테인먼트\"\n      group: \"트와이스 (TWICE)\"\n      position: \"리드보컬\"\n\
+      \      debut:\n        year: \"2015년\"\n        album: \"THE STORY BEGINS\"\n\
+      \    individual_activities:\n      lyrics_credits:\n        - \"LOVE LINE\"\n\
+      \        - \"SWEET TALKER\"\n        - \"LA LA LA\"\n        - \"21:29\"\n \
+      \       - \"SWEET SUMMER DAY\"\n      awards:\n        - \"2016년 SBS 연예대상 여자\
+      \ 신인상 (인기가요)\"\n    misc:\n      mbti: \"ISFJ\"\n      nicknames:\n        -\
+      \ \"유또막\"\n        - \"타조\"\n        - \"정연맘\"\n        - \"걸크러쉬\"\n      hobbies:\n\
+      \        - \"먹방 및 동영상 보기\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getMbtiInfo\narguments:\n  refinedQuery: \"트와이스 정연 MBTI인 ISFJ\
+      \ 특징 설명\"\n  mbtiType: \"isfj\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    profile:\n      type: \"ISFJ\"\n      name_ko: \"용감한 수호자\"\n      name_en:\
+      \ \"The Defender / The Protector\"\n      functions: \"내향(I) - 감각(S) - 감정(F)\
+      \ - 판단(J)\"\n      summary: \"조용하고 차분하며 따뜻하고 친근한 성격. 다른 사람을 돕는 것에서 큰 만족을 느끼며,\
+      \ 책임감과 인내력이 매우 강함. 전통과 안정을 중시하며, 헌신적으로 자신이 속한 집단과 사랑하는 사람들을 돌보는 유형.\"\n    characteristics:\n\
+      \      - \"성실하고 꾸준하며, 맡은 바 임무를 완수하기 위해 최선을 다함.\"\n      - \"구체적이고 현실적인 정보에 강하며,\
+      \ 뛰어난 기억력을 가지고 있음.\"\n      - \"타인의 감정을 잘 살피고, 공감 능력이 뛰어남.\"\n      - \"안정적인\
+      \ 환경을 선호하며, 급작스러운 변화에 스트레스를 받는 경향이 있음.\"\n      - \"겉으로는 차분해 보이지만, 내면의 정이 많고\
+      \ 가까운 사람에게는 헌신적임.\"\n      - \"자신을 드러내기보다는 뒤에서 묵묵히 지원하는 역할을 선호함.\"\n    strengths:\n\
+      \      - \"지원적인: 타인을 돕고 지지하는 데에서 큰 기쁨을 느낌.\"\n      - \"신뢰성: 한번 뱉은 말이나 약속은 반드시\
+      \ 지키려고 노력함.\"\n      - \"인내심: 목표를 위해 꾸준히 노력할 수 있는 강한 인내력을 소유함.\"\n      - \"\
+      관찰력: 사람이나 상황의 세부 사항을 놓치지 않고 잘 파악함.\"\n      - \"실용성: 공허한 이론보다 실질적인 해결책을 찾는 데\
+      \ 능숙함.\"\n      - \"충실함: 가족, 친구, 조직에 대한 충성심이 매우 강함.\"\n    weaknesses:\n   \
+      \   - \"과도한 이타심: 자신의 필요를 무시하면서까지 남을 도우려 해 번아웃에 취약.\"\n      - \"변화에 대한 저항: 전통과\
+      \ 익숙한 방식을 고수하며, 새로운 변화를 받아들이기 어려워함.\"\n      - \"감정 억제: 자신의 감정이나 어려움을 표현하는 데\
+      \ 서툴러 내면에 쌓아두는 경우가 많음.\"\n      - \"지나친 겸손: 자신의 공로나 성과를 드러내지 않아 정당한 평가를 받지 못할\
+      \ 수 있음.\"\n      - \"상처받기 쉬움: 비판이나 부정적인 피드백을 개인적으로 받아들이고 깊게 상처받는 경향이 있음.\"\n\
+      \    relationships:\n      - \"연애: 장기적이고 안정적인 관계를 추구하며, 파트너에게 매우 헌신적이고 충실함.\
+      \ 실질적인 행동으로 애정을 표현하는 것을 선호함.\"\n      - \"우정: 소수의 깊은 관계를 중시하며, 친구의 어려움을 진심으로\
+      \ 걱정하고 돕고자 함. 신뢰를 바탕으로 오랜 기간 관계를 유지함.\"\n      - \"궁합: 일반적으로 ESTP, ESFP와 좋은\
+      \ 관계를 맺을 수 있다고 알려져 있음. 안정감과 예측 가능성을 공유할 수 있는 유형과 잘 맞음.\"\n    career_paths:\n\
+      \      - 추천 분야: \"타인을 돌보고 안정적인 환경에서 기여할 수 있는 직업.\"\n      - 직업 예시:\n       \
+      \ - \"의료/보건: 간호사, 물리치료사, 약사, 의사\"\n        - \"교육: 초등교사, 특수교사, 사서\"\n      \
+      \  - \"사회복지: 사회복지사, 상담사\"\n        - \"사무/행정: 행정직 공무원, 인사 담당자, 회계사\"\n     \
+      \   - \"서비스: 인테리어 디자이너, 요리사\"\n    additional_traits_ko:\n      - \"거절을 매우 어려워해서\
+      \ 부탁을 받으면 대부분 들어주려고 함.\"\n      - \"다른 사람에게는 관대하지만, 자기 자신에게는 매우 엄격한 잣대를 적용함.\"\
+      \n      - \"계획이 틀어지는 것에 큰 스트레스를 받으며, 늘 플랜 B를 생각해 둠.\"\n      - \"겉으로 싫은 티를 잘\
+      \ 내지 못하지만, 한번 마음속에서 선을 그으면 다시는 돌아보지 않음.\"\n      - \"남들이 보기엔 사소한 칭찬에도 하루 종일\
+      \ 기분이 좋고, 반대로 사소한 비판에 깊게 상처받음.\"\n      - \"자신의 이야기를 하기보다는 주로 다른 사람의 이야기를 들어주는\
+      \ 역할.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "# \U0001F496 트와이스 정연 프로필 & MBTI 분석 \U0001F496\n\n걸그룹 트와이스(TWICE)의 멤버\
+      \ 정연의 프로필과 그녀의 MBTI 유형인 ISFJ에 대해 자세히 알려드립니다.\n\n## \U0001F464 트와이스 정연 프로필\n\n\
+      * 이름: 유정연 (Yoo Jeong-yeon) \U0001F4DB\n* 출생: 1996년 11월 1일 \U0001F382\n* 출생지:\
+      \ 경기도 수원시 장안구 \U0001F1F0\U0001F1F7\n* 신체: 167cm, O형 \U0001F4CF\n* 가족: 아버지(유창준\
+      \ 셰프), 어머니, 언니 공승연(배우), 유서연 \U0001F468‍\U0001F469‍\U0001F467‍\U0001F467\n* 학력:\
+      \ 압구정고등학교 (졸업) \U0001F393\n* 소속사: JYP 엔터테인먼트 \U0001F3E2\n* 소속 그룹: 트와이스 (TWICE)\
+      \ \U0001F3B6\n* 포지션: 리드보컬 \U0001F3A4\n* 데뷔: 2015년 트와이스 미니 1집 《THE STORY BEGINS》\
+      \ \U0001F4BF\n* 별명: 유또막, 타조\U0001F426, 정연맘\U0001F469‍\U0001F467‍\U0001F466,\
+      \ 걸크러쉬\U0001F60E\n* 취미: 먹방 및 동영상 보기 \U0001F4FA\U0001F35C\n* 주요 활동:\n    * ✍️\
+      \ 작사 참여: LOVE LINE, SWEET TALKER, LA LA LA, 21:29, SWEET SUMMER DAY 등\n    *\
+      \ \U0001F3C6 수상: 2016년 SBS 연예대상 여자 신인상 (인기가요)\n\n---\n\n## \U0001F9E0 정연 MBTI:\
+      \ ISFJ (용감한 수호자) \U0001F6E1️\n\n정연의 MBTI는 ISFJ로, '용감한 수호자' 유형에 해당합니다. ISFJ는\
+      \ 조용하고 차분하며 따뜻하고 친근한 성격으로, 다른 사람을 돕는 것에서 큰 만족을 느끼는 특징이 있습니다.\n\n### ✨ ISFJ (용감한\
+      \ 수호자) 유형의 주요 특징 ✨\n\nISFJ는 다음과 같은 성향을 보이는 경우가 많습니다.\n\n* ✅ 헌신적이고 성실함: 책임감과\
+      \ 인내력이 매우 강하며, 자신이 속한 집단과 사랑하는 사람들을 위해 헌신적으로 노력합니다. 맡은 임무는 완벽하게 해내려는 성향이 강해요.\n\
+      * ✅ 뛰어난 공감 능력: 타인의 감정을 세심하게 살피고 공감하는 능력이 뛰어납니다. 말하기보다는 주로 들어주는 역할을 하며, 주변 사람들을\
+      \ 편안하게 해줍니다.\n* ✅ 현실적이고 체계적: 구체적이고 현실적인 정보에 강하며, 뛰어난 기억력을 가지고 있습니다. 계획이 틀어지는\
+      \ 것에 스트레스를 받아, 늘 대비책을 세워두는 경향이 있습니다.\n* ✅ 내유외강 스타일: 겉으로는 차분하고 무뚝뚝해 보일 수 있지만,\
+      \ 내면에는 정이 많고 따뜻합니다. 자신을 드러내기보다는 뒤에서 묵묵히 지원하는 역할을 선호합니다.\n* ✅ 변화보다는 안정 선호: 안정적인\
+      \ 환경을 선호하며, 급작스러운 변화에 스트레스를 받는 경향이 있습니다. 전통과 익숙한 방식을 고수하려는 특징도 보입니다.\n* ✅ 여린\
+      \ 내면: 거절을 잘 못 하고, 타인에게는 관대하지만 자신에게는 엄격한 잣대를 적용합니다. 사소한 칭찬에도 큰 기쁨을 느끼는 반면, 비판이나\
+      \ 부정적인 피드백에는 깊은 상처를 받기 쉽습니다.\n\n\U0001F449 이러한 ISFJ의 특징들은 트와이스 멤버들을 살뜰히 챙기는\
+      \ '정연맘'이라는 별명이나, 무대 위에서의 프로페셔널한 모습과 잘 어울리는 것으로 보입니다."
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 정연이랑 MBTI 합이 잘 맞는 멤버는 누구야?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: person_agent\n      refined_query: \"트와이스\
+      \ 정연 프로필 및 MBTI 정보\"\n\nworkflow_2:\n  status: completed\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n      name:\
+      \ counsel_agent\n      refined_query: \"트와이스 정연 MBTI 특징 설명\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: counsel_agent\n      refined_query: \"정연이와 잘 맞는 MBTI 유형 찾기\"\n \
+      \   - status: pending\n      name: person_agent\n      refined_query: \"트와이스\
+      \ 멤버 중 정연이랑 MBTI 합이 잘 맞는 멤버\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getMbtiInfo\narguments:\n  refinedQuery: \"ISFJ와 잘 맞는 MBTI 유형\
+      \ 찾기\"\n  mbtiType: \"isfj\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    best_matches:\n      - type: \"ESTP\"\n        nickname: \"모험을 즐기는 사업가\"\
+      \n        description: \"활동적이고 에너지가 넘치는 ESTP는 ISFJ에게 새로운 경험과 즐거움을 선사합니다. 반면,\
+      \ ISFJ는 다소 충동적일 수 있는 ESTP에게 안정감과 현실적인 조언을 제공하며 균형을 잡아줍니다. 서로 다른 성향이 오히려 신선한\
+      \ 자극이 되어 긍정적인 시너지를 만들어내는 조합입니다.\"\n      - type: \"ESFP\"\n        nickname:\
+      \ \"자유로운 영혼의 연예인\"\n        description: \"사교적이고 낙천적인 ESFP는 ISFJ가 내면의 감정을 표현하고\
+      \ 세상과 더 활발하게 교류하도록 돕습니다. ISFJ의 따뜻한 배려심과 헌신적인 모습은 ESFP에게 깊은 안정감과 신뢰를 줍니다. 두 유형\
+      \ 모두 감정을 중시하고 타인에게 공감하는 능력이 뛰어나 서로를 잘 이해하고 따뜻한 관계를 유지할 수 있습니다.\"\n    good_matches:\n\
+      \      - type: \"ISTJ\"\n        nickname: \"청렴결백한 논리주의자\"\n        description:\
+      \ \"두 유형은 내향(I), 감각(S), 판단(J)이라는 세 가지 지표를 공유하여 가치관과 생활 방식이 비슷합니다. 갈등이 적고 서로를\
+      \ 깊이 이해하며 안정적인 관계를 오래 지속할 수 있습니다. 다만, 둘 다 내향적이라 감정 표현에 서툴 수 있으므로, 의식적으로 소통하려는\
+      \ 노력이 필요합니다.\"\n      - type: \"ISFP\"\n        nickname: \"호기심 많은 예술가\"\n \
+      \       description: \"내향(I), 감각(S), 감정(F) 지표를 공유하는 두 유형은 서로에게 깊은 유대감을 느낍니다.\
+      \ 타인의 감정을 중시하고 조화로운 관계를 추구하여 서로를 배려하고 존중하는 아름다운 관계를 만들어갈 수 있습니다. ISFP의 즉흥적인\
+      \ 성향과 ISFJ의 계획적인 성향이 때때로 부딪힐 수 있지만, 서로의 다름을 이해하고 존중한다면 충분히 극복 가능합니다.\""
+- workflow_id: null
+  step_id: 9
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"트와이스 멤버 MBTI\"\n  groupName:\
+      \ \"트와이스\"\ntool_call_result:\n  groupName: \"트와이스\"\n  members:\n    - name:\
+      \ \"나연\"\n      realName: \"임나연\"\n      birthDate: \"1995-09-22\"\n      nationality:\
+      \ \"대한민국\"\n      position: [\"리드보컬\", \"리드댄서\"]\n      mbti: \"ISTP\"\n   \
+      \ - name: \"정연\"\n      realName: \"유정연\"\n      birthDate: \"1996-11-01\"\n\
+      \      nationality: \"대한민국\"\n      position: [\"리드보컬\"]\n      mbti: \"ISFJ\"\
+      \n    - name: \"모모\"\n      realName: \"히라이 모모\"\n      birthDate: \"1996-11-09\"\
+      \n      nationality: \"일본\"\n      position: [\"메인댄서\", \"서브보컬\"]\n      mbti:\
+      \ \"INFP\"\n    - name: \"사나\"\n      realName: \"미나토자키 사나\"\n      birthDate:\
+      \ \"1996-12-29\"\n      nationality: \"일본\"\n      position: [\"서브보컬\"]\n  \
+      \    mbti: \"ENFP\"\n    - name: \"지효\"\n      realName: \"박지효\"\n      birthDate:\
+      \ \"1997-02-01\"\n      nationality: \"대한민국\"\n      position: [\"리더\", \"메인보컬\"\
+      ]\n      mbti: \"ESFP\"\n    - name: \"미나\"\n      realName: \"묘이 미나\"\n   \
+      \   birthDate: \"1997-03-24\"\n      nationality: \"일본/미국\"\n      position:\
+      \ [\"서브보컬\"]\n      mbti: \"ISFP\"\n    - name: \"다현\"\n      realName: \"김다현\"\
+      \n      birthDate: \"1998-05-28\"\n      nationality: \"대한민국\"\n      position:\
+      \ [\"리드래퍼\", \"서브보컬\"]\n      mbti: \"ISFJ\"\n    - name: \"채영\"\n      realName:\
+      \ \"손채영\"\n      birthDate: \"1999-04-23\"\n      nationality: \"대한민국\"\n  \
+      \    position: [\"메인래퍼\", \"서브보컬\"]\n      mbti: \"INFP\"\n    - name: \"쯔위\"\
+      \n      realName: \"저우쯔위\"\n      birthDate: \"1999-06-14\"\n      nationality:\
+      \ \"대만\"\n      position: [\"리드댄서\", \"서브보컬\", \"막내\"]\n      mbti: \"ISFP\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "정연님의 MBTI는 ISFJ(잇프제)로, '용감한 수호자' 유형입니다. ISFJ와 잘 맞는 MBTI 유형 및 해당 멤버는\
+      \ 다음과 같습니다.\n\n❤️ 최고의 궁합 (Best Matches)\nISFJ는 정반대의 성향을 가진 ESTP나 ESFP와 만났을 때\
+      \ 서로에게 없는 점을 보완해주며 가장 좋은 시너지를 냅니다.\n\n- 지효 (ESFP - 자유로운 영혼의 연예인)\n    - 사교적이고\
+      \ 낙천적인 지효님은 정연님이 내면의 감정을 표현하고 더 활발하게 세상과 교류하도록 도울 수 있습니다.\n    - 반대로 정연님의 따뜻한\
+      \ 배려심은 지효님에게 깊은 안정감을 줄 수 있어, 서로를 잘 이해하며 따뜻한 관계를 유지할 수 있는 최고의 조합입니다.\n\n\U0001F44D\
+      \ 좋은 궁합 (Good Matches)\n비슷한 성향을 공유하는 ISTJ나 ISFP와도 안정적이고 편안한 관계를 유지할 수 있습니다.\n\
+      \n- 미나, 쯔위 (ISFP - 호기심 많은 예술가)\n    - 내향(I), 감각(S), 감정(F) 지표를 공유하여 서로 깊은 유대감을\
+      \ 느낄 수 있습니다.\n    - 두 사람 모두 타인의 감정을 중시하고 조화로운 관계를 추구하기 때문에 서로를 배려하고 존중하는 아름다운\
+      \ 관계를 만들어 갈 수 있습니다.\n\n결론적으로, MBTI 궁합으로 볼 때 정연님과 가장 잘 맞는 멤버는 지효님이며, 미나님과 쯔위님과도\
+      \ 좋은 관계를 유지할 수 있습니다."

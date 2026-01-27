@@ -1,0 +1,360 @@
+metadata:
+  total_steps: 22
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- date: 2026-06-06
+
+      - 이름: 주모옥
+
+      - 연락처: 010-9998-8889
+
+      - 시간: 20:33'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 우리 집 우편번호랑 영문 주소 알려줘. 미국에 있는 친구가 2주 뒤에 한국 오는데 주말에 서울에서하는 추천할만한 뮤지컬 공연도
+      알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"우리 집\
+      \ 우편번호 찾기\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: life_info_agent\n      refined_query: \"\
+      우리 집 주소를 영문 주소로 변환\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"2주 뒤 주말에 서울에서 하는 추천할 만한 뮤지컬 공연 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주소'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주소'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 날짜'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '정확한 우편번호와 영문 주소를 생성하려면
+
+      현재 거주하시는 주소를 알려주세요.
+
+
+      그리고 2주 뒤 주말에 서울에서 하는 뮤지컬을 추천해 드리기 위해서는 원하시는 뮤지컬 공연 날짜가 필요합니다.
+
+
+      예) 2026년 6월 20일(토) 또는 6월 21일(일)'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 아 우리집 주소 서울특별시 서초구 반포대로28길 15, 더블하임빌라 301호 (반포동) 이거야 날짜는 6월20일 토요일
+- workflow_id: workflow_1
+  step_id: 9
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPostalCode\narguments:\n  refinedQuery: \"서울특별시 서초구 반포대로28길\
+      \ 15, 더블하임빌라 301호 (반포동) 우편번호 찾기\"\n  addressQuery: \"서울특별시 서초구 반포대로28길 15, 더블하임빌라\
+      \ 301호 (반포동)\"\ntool_call_result:\n  data:\n    postalCodeResult:\n      address:\
+      \ \"서울특별시 서초구 반포대로28길 15, 더블하임빌라 301호 (반포동)\"\n      postalCode: \"06594\"\n\
+      \      status: \"success\""
+- workflow_id: workflow_2
+  step_id: 10
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: convertToEnglishAddress\narguments:\n  refinedQuery: \"서울특별시 서초구\
+      \ 반포대로28길 15, 더블하임빌라 301호 (반포동) 를 영문 주소로 변환\"\n  addressQuery: \"서울특별시 서초구 반포대로28길\
+      \ 15, 더블하임빌라 301호 (반포동)\"\ntool_call_result:\n  data:\n    englishAddressResult:\n\
+      \      originalAddress: \"서울특별시 서초구 반포대로28길 15, 더블하임빌라 301호 (반포동)\"\n      englishAddress:\
+      \ \"15, Banpo-daero 28-gil, Seocho-gu, Seoul, Double Heim Villa Apt. 301 (Banpo-dong)\"\
+      \n      status: \"success\""
+- workflow_id: workflow_3
+  step_id: 11
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"6월 20일 토요일 추천할\
+      \ 만한 서울 뮤지컬 공연\"\n  genre: \"뮤지컬\"\n  location: \"서울\"\n  date: \"2026-06-20\"\
+      \n  isCurrentlyRunning: true\n  sortBy: \"soonest\"\ntool_call_result:\n  data:\n\
+      \    query: \"6월 20일 토요일 추천할 만한 서울 뮤지컬 공연\"\n    genre: \"뮤지컬\"\n    location:\
+      \ \"서울\"\n    date: \"2026-06-20\"\n    isCurrentlyRunning: true\n    sortBy:\
+      \ \"soonest\"\n    performances:\n      - title: \"레미제라블\"\n        venue: \"\
+      샤롯데씨어터\"\n        startDate: \"2026-05-01\"\n        endDate: \"2026-07-31\"\
+      \n        description: \"세계적인 명작 뮤지컬, 감동적인 스토리와 음악\"\n        runningTime: \"\
+      2시간 45분\"\n        ticketPriceRange: \"50,000원~150,000원\"\n        showtimes:\n\
+      \          - \"14:00\"\n          - \"19:00\"\n      - title: \"오페라의 유령\"\n\
+      \        venue: \"충무아트센터 대극장\"\n        startDate: \"2026-06-10\"\n        endDate:\
+      \ \"2026-08-15\"\n        description: \"화려한 무대와 아름다운 음악의 클래식 뮤지컬\"\n      \
+      \  runningTime: \"2시간 30분\"\n        ticketPriceRange: \"60,000원~160,000원\"\n\
+      \        showtimes:\n          - \"15:00\"\n          - \"20:00\"\n  source:\
+      \ \"공연 정보 시스템\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '우리 집 우편번호와 영문 주소, 그리고 2주 뒤 토요일(2026년 6월 20일)에 서울에서 볼 만한 뮤지컬 공연 추천 내용을
+      정리해 드릴게요.
+
+
+      [우리 집 우편번호]
+
+      서울특별시 서초구 반포대로28길 15, 더블하임빌라 301호 (반포동)
+
+
+      우편번호: 06594
+
+
+
+      [영문 주소]
+
+      15, Banpo-daero 28-gil, Seocho-gu, Seoul, Double Heim Villa Apt. 301 (Banpo-dong)
+
+
+
+      [2주 뒤 토요일(2026년 6월 20일) 서울 뮤지컬 공연 추천]
+
+
+      1. 레미제라블 (샤롯데씨어터)
+
+
+      • 감동적인 스토리와 음악으로 세계적인 명작입니다.
+
+      • 공연 시간: 2시간 45분
+
+      • 공연 시간표: 오후 2시 / 오후 7시
+
+      • 티켓 가격: 50,000원~150,000원
+
+      • 공연 기간: 2026년 5월 1일 ~ 7월 31일
+
+
+      2. 오페라의 유령 (충무아트센터 대극장)
+
+
+      • 화려한 무대와 아름다운 음악의 클래식 뮤지컬입니다.
+
+      • 공연 시간: 2시간 30분
+
+      • 공연 시간표: 오후 3시 / 오후 8시
+
+      • 티켓 가격: 60,000원~160,000원
+
+      • 공연 기간: 2026년 6월 10일 ~ 8월 15일
+
+
+      필요하면 티켓 예매도 도와드릴 수 있으니 편하게 말씀해 주세요!'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: 고마워 그럼 우리집 우편번호랑 영문 주소 팀버레이크한테 바로 이메일 보내줘. 그리고 레미제라블 2시꺼 2명 예매할게. 그날
+      저기에 배우 누구 나오는지 라인업 알려줘
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      우리 집 우편번호 찾기\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: life_info_agent\n      refined_query:\
+      \ \"우리 집 주소를 영문 주소로 변환\"\n\nworkflow_3:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"2주 뒤 주말 추천할 만한 서울 뮤지컬 공연 검색\"\n\nworkflow_4:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"우리 집 우편번호와 영문 주소를 팀버레이크에게 바로 이메일 전송\"\n\nworkflow_5:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: entertainment_agent\n      refined_query: \"뮤지컬 레미제라블 6월 20일 오후\
+      \ 2시 공연 2인 예매\"\n\nworkflow_6:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"6월 20일 토요일 서울 샤롯데씨어터 뮤지컬 레미제라블 배우 라인업 검색\""
+- workflow_id: workflow_4
+  step_id: 15
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 이메일'
+- workflow_id: workflow_5
+  step_id: 16
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 관람자 유형(adult/child/senior/disabled), 좌석 등급(R석, VIP석, S석, A석)'
+- workflow_id: workflow_6
+  step_id: 17
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"6월 20일 토요일 서울\
+      \ 샤롯데씨어터 뮤지컬 레미제라블 배우 라인업 검색\"\n  performanceTitle: \"레미제라블\"\n  genre: \"뮤지컬\"\
+      \n  venueName: \"샤롯데씨어터\"\n  location: \"서울\"\n  date: \"2026-06-20\"\n  isCurrentlyRunning:\
+      \ true\n  sortBy: \"soonest\"\ntool_call_result:\n  data:\n    performanceTitle:\
+      \ \"레미제라블\"\n    genre: \"뮤지컬\"\n    venueName: \"샤롯데씨어터\"\n    location: \"\
+      서울\"\n    date: \"2026-06-20\"\n    isCurrentlyRunning: true\n    sortBy: \"\
+      soonest\"\n    castLineup:\n      - role: \"장발장\"\n        actor: \"홍길동\"\n\
+      \      - role: \"자베르\"\n        actor: \"김철수\"\n      - role: \"코제트\"\n    \
+      \    actor: \"이영희\"\n      - role: \"마리우스\"\n        actor: \"박준형\"\n      -\
+      \ role: \"에포닌\"\n        actor: \"최수진\"\n      - role: \"테나르디에 부인\"\n      \
+      \  actor: \"정민아\"\n      - role: \"테나르디에\"\n        actor: \"이동현\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: '팀버레이크에게 이메일을 보내려면 수신자 이메일 주소가 필요해요.
+
+
+
+      또한, 레미제라블 예매를 진행하려면 몇 가지 정보가 더 필요해요.
+
+
+      1. 관람자 유형 (성인/어린이/경로/장애인 중 선택)
+
+      2. 원하는 좌석 등급 (VIP석/R석/S석/A석 중 선택)'
+- workflow_id: null
+  step_id: 19
+  agent: user
+  agent_type: user
+  data:
+    content: timberlake@gmail.com, 우리 다 성인이고, VIP
+- workflow_id: workflow_4
+  step_id: 20
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"우리 집 우편번호 06594와 영문\
+      \ 주소 15, Banpo-daero 28-gil, Seocho-gu, Seoul, Double Heim Villa Apt. 301 (Banpo-dong)을\
+      \ 팀버레이크에게 바로 이메일 전송\"\n  email: \"timberlake@gmail.com\"\n  channel: \"email\"\
+      \n  message: \"팀버레이크, 우리 집 우편번호랑 영문 주소야. 우편번호 06594, 영문 주소 15, Banpo-daero 28-gil,\
+      \ Seocho-gu, Seoul, Double Heim Villa Apt. 301 (Banpo-dong)\"\n  repeatRule:\
+      \ \"none\"\n  priority: \"normal\"\ntool_call_result:\n  data:\n    status:\
+      \ \"success\"\n    message: \"이메일이 timberlake@gmail.com 주소로 성공적으로 전송되었습니다.\"\
+      \n    sendTime: \"2026-06-06T20:33\"\n    channel: \"email\"\n    recipient:\
+      \ \"timberlake@gmail.com\""
+- workflow_id: workflow_5
+  step_id: 21
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookPerformance\narguments:\n  refinedQuery: \"뮤지컬 레미제라블 6월 20일\
+      \ 오후 2시 공연 2인 예매\"\n  performanceTitle: \"레미제라블\"\n  venueName: \"샤롯데씨어터\"\n\
+      \  showDate: \"2026-06-20\"\n  showTime: \"14:00\"\n  audienceCount: 2\n  audienceTypes:\
+      \ [\"adult\", \"adult\"]\n  seatGrade: \"VIP석\"\n  userInfo:\n    name: \"주모옥\"\
+      \n    contactNumber: \"010-9998-8889\"\ntool_call_result:\n  data:\n    status:\
+      \ \"success\"\n    message: \"뮤지컬 레미제라블 6월 20일 오후 2시 샤롯데씨어터 공연 2인 VIP석 예매가 완료되었습니다.\"\
+      \n    reservationDetails:\n      performanceTitle: \"레미제라블\"\n      venueName:\
+      \ \"샤롯데씨어터\"\n      showDate: \"2026-06-20\"\n      showTime: \"14:00\"\n  \
+      \    audienceCount: 2\n      audienceTypes: [\"adult\", \"adult\"]\n      seatGrade:\
+      \ \"VIP석\"\n      seatNumbers: [\"VIP12\", \"VIP13\"]\n      userInfo:\n   \
+      \     name: \"주모옥\"\n        contactNumber: \"010-9998-8889\""
+- workflow_id: null
+  step_id: 22
+  agent: main
+  agent_type: main
+  data:
+    content: '1. 이메일 전송 결과
+
+
+      • 수신자: timberlake@gmail.com
+
+      • 발송 시간: 20:33
+
+      • 전송 채널: 이메일
+
+      • 전송 내용:
+
+      팀버레이크, 우리 집 우편번호랑 영문 주소야.
+
+      우편번호: 06594
+
+      영문 주소: 15, Banpo-daero 28-gil, Seocho-gu, Seoul, Double Heim Villa Apt. 301
+      (Banpo-dong)
+
+
+      이메일이 정상적으로 전송되었습니다!
+
+
+
+      2. 뮤지컬 예매 결과
+
+
+      • 공연 제목: 레미제라블
+
+      • 공연 일시: 2026년 6월 20일 (토요일) 오후 2시
+
+      • 공연장: 샤롯데씨어터
+
+      • 예매 인원: 2명 (성인 2명)
+
+      • 좌석 등급: VIP석
+
+      • 좌석 번호: VIP12, VIP13
+
+      • 예매자 정보:
+
+      이름: 주모옥
+
+      연락처: 010-9998-8889
+
+
+      예매가 성공적으로 완료되었습니다!
+
+
+
+      3. 배우 라인업 정보 (2026-06-20 기준)
+
+
+      • 장발장 역: 홍길동
+
+      • 자베르 역: 김철수
+
+      • 코제트 역: 이영희
+
+      • 마리우스 역: 박준형
+
+      • 에포닌 역: 최수진
+
+      • 테나르디에 부인 역: 정민아
+
+      • 테나르디에 역: 이동현
+
+
+      공연장: 샤롯데씨어터 (서울)
+
+      공연 날짜: 2026-06-20'

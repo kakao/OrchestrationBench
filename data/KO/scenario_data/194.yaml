@@ -1,0 +1,433 @@
+metadata:
+  total_steps: 23
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-07-25
+
+      현재시각: 오후 13:19분
+
+      현위치: 종로3가역'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 금 시세 얼마나 하지? 금 90돈 정도 있는데 팔 수 있는 근처 금은방 찾아봐봐. 대출금이 많네
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"오늘 금 90돈\
+      \ 시세 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"금 90돈\
+      \ 팔 근처 금은방 찾기\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getGoldPrice\narguments:\n  refinedQuery: \"오늘 금 90돈 시세 조회\"\n\
+      \  unit: \"don\"\n  date: \"2025-07-25\"\ntool_call_result:\n  data:\n    unit:\
+      \ \"순금(24K) 90돈 (337.5g)\"\n    date: \"2025-07-25\"\n    pricePerDon: 661000\n\
+      \    totalPrice: 59490000\n    currency: \"KRW\"\n    notes: \"2025년 7월 25일\
+      \ 기준 시세이며, 요청하신 날짜의 실제 시세와는 다를 수 있습니다. 금 시세는 매일 변동됩니다.\"\n    source: \"한국무역금거래소\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"금 90돈 팔 근처 금은방 찾기\"\
+      \n  placeCategory: \"금은방\"\n  location: \"종로3가역\"\n  sortBy: \"distance\"\n\
+      tool_call_result:\n  data:\n    query: \"종로3가역 근처 금은방\"\n    recommendations:\n\
+      \      - placeId: \"ChIJ9yr6O96ifDURdKrVvYhgwk0\"\n        name: \"종로3가귀금속상가\"\
+      \n        address: \"서울특별시 종로구 종로3가\"\n        distance: \"19m\"\n        rating:\
+      \ \"4.0\"\n        phone: \"+82 10-4833-5180\"\n        website: \"http://www.dorocy.co.kr/\"\
+      \n        operatingHours: \"월-금 24시간 영업 (주말 휴무)\"\n      - placeId: \"ChIJWVZQFN6ifDURUgSgssyz31I\"\
+      \n        name: \"귀금속\"\n        address: \"서울특별시 종로구 종로1.2.3.4가동 돈화문로6가길 8\"\
+      \n        distance: \"110m\"\n        rating: \"4.2\"\n        phone: \"\"\n\
+      \        website: \"\"\n        operatingHours: \"매일 오전 10:30 ~ 오후 8:00\"\n\
+      \      - placeId: \"ChIJk_w-6u-jfDURBR0kmw7LviI\"\n        name: \"금은방\"\n \
+      \       address: \"서울특별시 종로구 율곡로10길 105 호 디아망빌딩 106호\"\n        distance: \"\
+      280m\"\n        rating: \"3.3\"\n        phone: \"+82 10-3374-2034\"\n     \
+      \   website: \"http://www.kumeunbang.com/\"\n        operatingHours: \"월-금 오전\
+      \ 10:00 ~ 오후 8:00, 토요일 오전 10:30 ~ 오후 5:00 (일요일 휴무)\"\n      - placeId: \"ChIJPQoHgd-ifDUR5Iq67wSl780\"\
+      \n        name: \"종묘귀금속전문백화점\"\n        address: \"서울특별시 종로구 종로1가\"\n      \
+      \  distance: \"450m\"\n        rating: \"4.1\"\n        phone: \"+82 2-764-7098\"\
+      \n        website: \"http://goldsome.net/\"\n        operatingHours: \"매일 오전\
+      \ 10:30 ~ 오후 6:30\"\n      - placeId: \"ChIJ97zq6t-ifDURP-Odzm9IhXA\"\n    \
+      \    name: \"중앙사금은방\"\n        address: \"서울특별시 종로구 종로4가\"\n        distance:\
+      \ \"450m\"\n        rating: \"\"\n        phone: \"+82 2-2274-1807\"\n     \
+      \   website: \"\"\n        operatingHours: \"매일 오전 10:30 ~ 오후 8:00\"\n    source:\
+      \ \"장소 검색 시스템\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 문의하신 내용에 대해 순서대로 답변해 드릴게요.
+
+
+      먼저, 순금 90돈(337.5g)의 예상 매입 시세는 약 59,490,000원입니다. (1돈당 661,000원 기준)
+
+      다만 이 가격은 오늘(7월 25일) 기준이며, 금은방에서 실제로 ''파실 때''의 가격은 매일 변동되고 가게마다 조금씩 다를 수 있으니
+      참고용으로 확인해 주세요.
+
+
+      ----------
+
+
+      ▶ 금을 파실 만한 곳으로, 문의하신 종로3가역 근처의 금은방들을 찾아봤습니다.
+
+
+      1. 종로3가귀금속상가
+
+
+      거리: 19m
+
+      평점: 4.0
+
+      운영시간: 월-금 24시간 영업 (주말 휴무)
+
+
+      2. 귀금속
+
+
+      거리: 110m
+
+      평점: 4.2
+
+      운영시간: 매일 오전 10:30 ~ 오후 8:00
+
+
+      3. 금은방
+
+
+      거리: 280m
+
+      평점: 3.3
+
+      운영시간: 월-금 오전 10:00 ~ 오후 8:00, 토요일 오전 10:30 ~ 오후 5:00 (일요일 휴무)
+
+
+      4. 종묘귀금속전문백화점
+
+
+      거리: 450m
+
+      평점: 4.1
+
+      운영시간: 매일 오전 10:30 ~ 오후 6:30
+
+
+      5. 중앙사금은방
+
+
+      거리: 450m
+
+      평점: 정보 없음
+
+      운영시간: 매일 오전 10:30 ~ 오후 8:00
+
+
+      팁: 방문하시기 전에 가게에 미리 전화해서 오늘의 정확한 매입 시세를 확인하고 가시는 것을 추천해 드려요. 좋은 가격에 거래하시길 바랍니다!'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 좋은 거래였다! KB국민은행에 주택 담보 대출금 얼마 남았는지 확인해 줘. 그리고 내 입출금 통장에 잔액 얼마 있는지 확인하고,
+      주택 담보 대출금 3천만원 송금해 줘
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"금\
+      \ 90돈 시세 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: place_agent\n      refined_query: \"금\
+      \ 90돈 팔 근처 금은방 찾기\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: personal_banking_agent\n     \
+      \ refined_query: \"KB국민은행 주택 담보 대출 조회\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"입출금 통장 잔액 얼마 있는지 확인\"\n\nworkflow_5:\n  status: pending\n\
+      \  type: dependent\n  depend_on: [\"workflow_3\", \"workflow_4\"]\n  steps:\n\
+      \    - status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"입출금 통장에서 주택 담보 대출금 3천만원 송금\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 대출 계좌 번호, 대출자 성함'
+- workflow_id: workflow_4
+  step_id: 10
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 조회 은행, 계좌번호, 성함'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 계좌 잔액 또는 대출 정보 조회를 위해 다음과 같은 정보가 필요합니다. 아래 항목들을 확인하신 후 입력해 주세요.
+
+
+      ▶ 일반 계좌 잔액 조회 시
+
+      조회할 은행명 (예: 신한은행, 국민은행 등)
+
+
+      계좌번호 (예: 110-1234-5678)
+
+
+      예금주 성함 (예: 홍길동)
+
+
+      ▶ 대출 계좌 조회 시
+
+      대출 계좌번호 또는 대출 상품명
+
+
+      대출자 성함 (예: 홍길동)
+
+
+      정확한 정보 제공을 위해 필수 항목들이니 누락 없이 입력해 주시길 부탁드립니다.
+
+      감사합니다 .'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: '이름은 주드, 대출 계좌는 203-456-987654야
+
+      일반 계좌는 123-123-123444'
+- workflow_id: workflow_3
+  step_id: 13
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getLoanBalance\narguments:\n  refinedQuery: \"KB국민은행 주택 담보 대출\
+      \ 조회\"\n  loanAccountNumber: \"203-456-987654'\"\n  borrowerName: \"주드\"\n \
+      \ loanType: \"mortgage\"\ntool_call_result:\n  data:\n    loanId: \"L-MORT-2025-001\"\
+      \n    borrowerName: \"주드\"\n    loanType: \"주택담보대출\"\n    loanStatus: \"정상\"\
+      \n    principalBalance: 75200000\n    originalPrincipal: 100000000\n    interestRate:\
+      \ 3.85\n    nextPaymentDate: \"2025-08-10\"\n    nextPaymentAmount: 650000\n\
+      \    maturityDate: \"2045-05-20\"\n    currency: \"KRW\"\n    retrievalDateTime:\
+      \ \"2025-07-25T09:00:00\"\n    source: \"KB국민은행 대출 정보 시스템\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 은행명'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 주드님, 요청하신 주택 담보 대출 및 입출금 통장 정보를 확인했습니다.
+
+
+      주택 담보 대출 현황
+
+      주드님의 주택 담보 대출 정보를 조회한 결과입니다.
+
+
+      대출 잔액: 현재 75,200,000원이 남아 있습니다.
+
+
+      원래 대출 금액: 100,000,000원
+
+
+      이자율: 연 3.85%
+
+
+      다음 납부일: 2025년 8월 10일
+
+
+      다음 납부액: 650,000원
+
+
+      만기일: 2045년 5월 20일
+
+
+      ----------
+
+
+      ▶ 죄송하지만 요청하신 은행 정보가 없어서 잔액을 확인해 드릴 수 없습니다.
+
+
+      조회할 은행명을 알려주세요'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 아 그럼 잠깐만! 주택 담보 대출 중도 상환 절차좀 알아봐봐
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"금\
+      \ 90돈 시세 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: place_agent\n      refined_query: \"금\
+      \ 90돈 팔 근처 금은방 찾기\"\n\nworkflow_3:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: personal_banking_agent\n   \
+      \   refined_query: \"KB국민은행 주택 담보 대출 조회\"\n\nworkflow_4:\n  status: paused\n\
+      \  type: independent\n  steps:\n    - status: paused\n      name: personal_banking_agent\n\
+      \      refined_query: \"입출금 통장 잔액 얼마 있는지 확인\"\n\ninterrupted_workflow_4-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: search_agent\n      refined_query: \"주택 담보 대출 중도 상환 절차\"\n\nworkflow_5:\n\
+      \  status: pending\n  type: dependent\n  depend_on: [\"workflow_3\", \"workflow_4\"\
+      ]\n  steps:\n    - status: pending\n      name: personal_banking_agent\n   \
+      \   refined_query: \"입출금 통장에서 주택 담보 대출금 3천만원 송금\""
+- workflow_id: workflow_4
+  step_id: 18
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"주택 담보 대출 중도 상환 절차\"\n\
+      tool_call_result:\n  - tool: searchInfo\n    data:\n      refinedQuery: \"주택\
+      \ 담보 대출 중도 상환 절차\"\n      title: \"주택 담보 대출 중도 상환 절차 안내\"\n      summary: |\n\
+      \        주택 담보 대출을 중도에 상환하려면 아래 절차를 따릅니다\n\n        1. 대출 은행에 사전 문의  \n    \
+      \       중도상환 수수료 유무 및 금액을 확인합니다\n\n        2. 중도상환 신청서 작성  \n           은행에\
+      \ 방문하거나 인터넷뱅킹 또는 모바일 앱을 통해 신청합니다\n\n        3. 상환 금액 납부  \n           남은 원금과\
+      \ 이자 그리고 필요한 경우 중도상환 수수료를 함께 납부합니다\n\n        4. 담보 해지 처리  \n           대출이\
+      \ 전액 상환되면 은행이 담보 설정을 해지합니다\n\n        일부 금융기관은 중도상환 수수료가 없거나 일정 기간 이후 면제되기도\
+      \ 합니다\n      source: \"우리은행 국민은행 NH농협은행 대출상품 약관 요약\"\n      status: \"success\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 주택 담보 대출을 중도에 상환하려면 아래 절차를 따르시면 됩니다.
+
+
+      1. 대출 은행에 먼저 문의하세요
+
+      중도상환 수수료가 발생하는지, 있다면 얼마인지 확인하는 것이 좋습니다.
+
+
+      2. 중도상환 신청서를 작성합니다
+
+      은행 창구나 모바일 앱, 인터넷뱅킹을 통해 신청할 수 있습니다.
+
+
+      3. 상환 금액을 납부합니다
+
+      남아 있는 원금과 이자, 그리고 필요한 경우 중도상환 수수료까지 납부해야 합니다.
+
+
+      4 담보 해지를 요청합니다
+
+      대출이 모두 상환되면, 은행이 설정해 둔 담보(예: 집)에 대한 저당권이 해지됩니다.
+
+
+      ※ 일부 은행은 대출 기간이 일정 이상 지났거나, 수수료 면제 조건이 있을 수 있으니 꼭 확인해 보세요.
+
+
+      ----------
+
+
+      ▶ 죄송하지만 요청하신 은행 정보가 없어서 잔액을 확인해 드릴 수 없습니다.
+
+
+      조회할 은행명을 알려주세요'
+- workflow_id: null
+  step_id: 20
+  agent: user
+  agent_type: user
+  data:
+    content: "아 우리은행이야 \n그냥 송금하면 되겠다"
+- workflow_id: workflow_4
+  step_id: 21
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"우리은행 입출금 통장 잔액\
+      \ 얼마 있는지 확인\"\n  accountNumber: \"123-123-123444\"\n  accountHolderName: \"\
+      주드\"\n  bankName: \"우리은행\"\n  accountType: \"checking\"\n  includeTransactions:\
+      \ false\ntool_call_result:\n  data:\n    accountBalanceResult:\n      bankName:\
+      \ \"우리은행\"\n      accountNumber: \"123-123-123444\"\n      accountHolderName:\
+      \ \"주드\"\n      balance: \"₩70,000,000\"\n      currency: \"KRW\"\n      sourceAccountId:\
+      \ \"acc-20250724-001\"\n      status: \"success\""
+- workflow_id: workflow_5
+  step_id: 22
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"우리은행 입출금 통장에서 주택\
+      \ 담보 대출금 3천만원 송금\"\n  recipientName: \"주드\"\n  bankName: \"KB국민은행\"\n  accountNumber:\
+      \ \"203-456-987654\"\n  amount: 30000000\n  sourceAccountId: \"acc-20250724-001\"\
+      \ntool_call_result:\n  data:\n    transferResult:\n      status: \"success\"\
+      \n      message: \"₩30,000,000원이 정상적으로 송금되었습니다.\"\n      senderAccount:\n  \
+      \      bankName: \"우리은행\"\n        accountNumber: \"123-123-123444\"\n     \
+      \   accountHolderName: \"주드\"\n        sourceAccountId: \"acc-20250724-001\"\
+      \n        remainingBalance: \"₩40,000,000\"\n      recipientAccount:\n     \
+      \   bankName: \"KB국민은행\"\n        accountNumber: \"203-456-987654\"\n      \
+      \  accountHolderName: \"주드\"\n      transaction:\n        transactionId: \"\
+      TXN-20250729-0001\"\n        amount: \"₩30,000,000\"\n        currency: \"KRW\"\
+      \n        transactionDateTime: \"2025-07-25T13:19:00\"\n        transactionType:\
+      \ \"대출상환\""
+- workflow_id: null
+  step_id: 23
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 입출금 통장 잔액 현황
+
+      우리은행 123-123-123444 계좌에는 현재 70,000,000원이 있습니다.
+
+
+      ----------
+
+
+      ▶ 대출 잔액은 7,520만원이고, 현재 통장 잔액은 7,000만원이네요. 혹시 궁금한 점이 더 있으신가요?
+
+
+      ----------
+
+
+      ▶ 주드님, 요청하신 ₩30,000,000의 주택담보대출 상환금 송금이 정상적으로 완료되었습니다.
+
+
+      출금 계좌: 우리은행 123-123-123444 (예금주: 주드)
+
+
+      입금 계좌: KB국민은행 203-456-987654 (예금주: 주드)
+
+
+      송금 금액: ₩30,000,000
+
+
+      잔액: ₩40,000,000
+
+
+      거래 일시: 2025년 7월 25일 13:19
+
+
+      거래 ID: TXN-20250729-0001
+
+
+      거래 유형: 대출상환
+
+
+      다른 문의나 추가 상환 요청이 있으시면 언제든지 알려주세요.'

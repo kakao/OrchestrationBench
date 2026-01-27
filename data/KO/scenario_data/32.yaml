@@ -1,0 +1,107 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2024-07-07
+
+      - 연락처: 010-4848-8484'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 일산 호수공원 근처 오피스텔 전세 매물을 찾고 있는데 준공 10년 이내, 방 2개여야 하고, 3억~6억5천으로 찾아봐줘. 그리고
+      호수부동산 예약 취소해야겠어. 취소된 건 내 캘린더에도 반영해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"일산 호수공원 근처\
+      \ 준공 10년 이내, 방 2개, 3억에서 6억 5천의 오피스텔 전세 매물\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"호수부동산 예약 조회\"\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"호수부동산 예약 취소\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"호수부동산 방문 일정 조회\"\n    - status: pending\n      name:\
+      \ calendar_agent\n      refined_query: \"호수부동산 방문 일정 취소\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getRealEstateInfo\narguments:\n  refinedQuery: \"일산 호수공원 근처 준공\
+      \ 10년 이내, 방 2개, 3억에서 6억 5천의 오피스텔 전세 매물\"\n  propertyType: \"오피스텔\"\n  transactionType:\
+      \ \"전세\"\n  location: \"일산 호수공원\"\n  minPrice: 300000000\n  maxPrice: 650000000\n\
+      \  options: \n      rooms: 2\n      builtYearFrom: 2014\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"일산 호수공원 근처 준공 10년 이내, 방 2개, 3억에서 6억 5천의 오피스텔 전세\
+      \ 매물\"\n    propertyType: \"오피스텔\"\n    transactionType: \"전세\"\n    location:\
+      \ \"일산 호수공원\"\n    minPrice: 300000000\n    maxPrice: 650000000\n    options:\n\
+      \      rooms: 2\n      builtYearFrom: 2014\n    listings:\n      - id: \"RE20231101\"\
+      \n        title: \"M타워오피스텔\"\n        address: \"경기도 고양시 일산동구 호수로 123\"\n  \
+      \      price: 450000000\n        area: \"25평\"\n        rooms: 2\n        builtYear:\
+      \ 2018\n        contact: \"031-123-4567\"\n        description: \"깨끗하고 관리 잘\
+      \ 된 신축 오피스텔, 호수공원 도보 5분 거리\"\n      - id: \"RE20231102\"\n        title: \"\
+      위너스에비뉴\"\n        address: \"경기도 고양시 일산동구 중앙로 456\"\n        price: 620000000\n\
+      \        area: \"27평\"\n        rooms: 2\n        builtYear: 2015\n        contact:\
+      \ \"031-234-5678\"\n        description: \"넓은 평수와 좋은 전망, 생활 편의시설 인접\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"호수부동산 예약\
+      \ 조회\"\n  contactInfo: \"010-4848-8484\"\n  placeName: \"호수부동산\"\n  placeCategory:\
+      \ \"부동산\"\ntool_call_result:\n  data:\n    refinedQuery: \"호수부동산 예약 조회\"\n \
+      \   contactInfo: \"010-4848-8484\"\n    placeName: \"호수부동산\"\n    placeCategory:\
+      \ \"부동산\"\n    reservations:\n      - reservationId: \"RSV20240710\"\n     \
+      \   date: \"2024-07-10\"\n        time: \"15:00\"\n        status: \"확정\"\n\
+      \        guests: 2\n        notes: \"부동산 상담 예약\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"호수부동산 방문 일정 조회\"\n\
+      \  keyword: \"호수부동산\"\ntool_call_result:\n  data:\n    refinedQuery: \"호수부동산\
+      \ 방문 일정 조회\"\n    keyword: \"호수부동산\"\n    schedules:\n      - scheduleID: \"\
+      SCH20240710\"\n        date: \"2024-07-10\"\n        time: \"15:00\"\n     \
+      \   title: \"호수부동산 방문\"\n        status: \"확정\"\n        participants: 2\n \
+      \       notes: \"부동산 상담 일정\""
+- workflow_id: workflow_2
+  step_id: 7
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelPlaceReservation\narguments:\n  refinedQuery: \"호수부동산 예약\
+      \ 취소\"\n  reservationId: \"RSV20240710\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"호수부동산 예약 취소\"\n    reservationId: \"RSV20240710\"\n    status: \"취소 완료\"\
+      \n    message: \"호수부동산 예약이 정상적으로 취소되었습니다.\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelSchedule\narguments:\n  refinedQuery: \"호수부동산 방문 일정 취소\"\
+      \n  scheduleID: \"SCH20240710\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"호수부동산 방문 일정 취소\"\n    scheduleID: \"SCH20240710\"\n    status: \"취소 완료\"\
+      \n    message: \"호수부동산 방문 일정이 정상적으로 취소되었습니다.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "다음은 요청하신 부동산 매물 정보와 예약 취소 관련 처리 결과입니다:\n\n■ 일산 호수공원 근처 오피스텔 전세 매물 (준공\
+      \ 10년 이내, 방 2개, 3억~6.5억)\n\n1. M타워오피스텔\n\n• 가격: 4억 5천만\n• 주소: 경기도 고양시 일산동구 호수로\
+      \ 123\n• 면적: 25평\n• 준공연도: 2018년\n• 연락처: 031-123-4567\n• 특징: 깨끗하고 관리 상태 우수, 호수공원\
+      \ 도보 5분 거리\n\n2. 위너스에비뉴\n\n• 가격: 6억 2천만\n• 주소: 경기도 고양시 일산동구 중앙로 456\n• 면적: 27평\n\
+      • 준공연도: 2015년\n• 연락처: 031-234-5678\n• 특징: 넓은 평수, 전망 좋음, 생활 편의시설 인접\n\n■ 호수부동산\
+      \ 예약 및 일정 취소 처리 결과\n\n• 예약 정보:\n  - 날짜: 2024년 7월 10일\n  - 시간: 오후 3시\n  - 인원:\
+      \ 2명\n  - 내용: 부동산 상담\n\n• 취소 상태:\n  - 예약: 취소 완료\n  - 캘린더 일정: 취소 완료 (캘린더에서도 반영됨)\n\
+      \n추가로 관심 있는 매물에 대한 방문 예약이나 다른 조건의 매물 검색도 도와드릴 수 있습니다."

@@ -1,0 +1,130 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- current time: 2025-07-18T13:44:00-04:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Summarize the episode-by-episode details of *Too Hot to Handle* season
+      6, and organize the cast information along with updates about real-life couples
+      after the show.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Summary of cast members and episode details for Season 6 of 'Too Hot to Handle'\"\
+      \n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: person_agent\n      refined_query: \"Updates on Season\
+      \ 6 'Too Hot to Handle' cast members after the show (real-life relationship\
+      \ news)\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"Summary of cast\
+      \ members and episode details for Season 6 of 'Too Hot to Handle'\"\n  programTitle:\
+      \ \"Too Hot to Handle\"\n  episodeNumber: \"Season 6\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    episodes:\n      - episodeNumber: 1\n     \
+      \   title: \"No Kissing Allowed\"\n        summary: \"Season 6 kicks off with\
+      \ a group of singles arriving at a luxury villa, unaware that they are under\
+      \ Lana’s rules. Once revealed, the no-touching rule shocks the contestants,\
+      \ and the first sparks of attraction create instant tension.\"\n      - episodeNumber:\
+      \ 2\n        title: \"Temptation Rising\"\n        summary: \"As couples begin\
+      \ to form, temptation grows. A costly rule break sets the tone for a season\
+      \ of passion versus self-control.\"\n      - episodeNumber: 3\n        title:\
+      \ \"Trust and Tests\"\n        summary: \"Workshops push the contestants to\
+      \ explore emotional vulnerability. Some couples grow stronger, while others\
+      \ question their choices.\"\n      - episodeNumber: 4\n        title: \"Drama\
+      \ in Paradise\"\n        summary: \"A dramatic fallout shakes the villa as jealousy\
+      \ and betrayals come to light. Lana issues a stern warning after repeated rule\
+      \ breaking.\"\n      - episodeNumber: 5\n        title: \"Second Chances\"\n\
+      \        summary: \"New arrivals test existing connections. Some bonds survive\
+      \ the challenge, while others fall apart.\"\n      - episodeNumber: 6\n    \
+      \    title: \"Deeper Connections\"\n        summary: \"Contestants dig into\
+      \ their past traumas during a workshop, bringing unexpected tears and breakthroughs.\"\
+      \n      - episodeNumber: 7\n        title: \"The Price of Love\"\n        summary:\
+      \ \"Another massive deduction from the prize fund forces everyone to reconsider\
+      \ their priorities.\"\n      - episodeNumber: 8\n        title: \"Final Choices\"\
+      \n        summary: \"The season concludes with final decisions. Some couples\
+      \ prove they’ve grown, while others fail to resist temptation, leaving Lana\
+      \ to reveal the final prize money.\"\n\n    cast:\n      - name: \"Sophie\"\n\
+      \        age: 24\n        job: \"Model from London\"\n      - name: \"Leo\"\n\
+      \        age: 27\n        job: \"Personal trainer from New York\"\n      - name:\
+      \ \"Amelia\"\n        age: 26\n        job: \"Marketing executive from Toronto\"\
+      \n      - name: \"Carlos\"\n        age: 28\n        job: \"Bartender from Madrid\"\
+      \n      - name: \"Priya\"\n        age: 25\n        job: \"Law student from\
+      \ Mumbai\"\n      - name: \"Ethan\"\n        age: 29\n        job: \"Entrepreneur\
+      \ from Los Angeles\"\n      - name: \"Maya\"\n        age: 23\n        job:\
+      \ \"Influencer from Sydney\"\n      - name: \"Jack\"\n        age: 26\n    \
+      \    job: \"Carpenter from Dublin\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"Information on cast\
+      \ members of Too Hot to Handle Season 6 after the show (real-life relationship\
+      \ news)\"\ntool_call_result:\n  status: success\n  data:\n    topic: \"Updates\
+      \ on Too Hot to Handle Season 6 cast relationships\"\n    summary: >\n     \
+      \ After Season 6 of *Too Hot to Handle*, some couples tried to continue their\
+      \ romances in real life.\n      The pair \"Leo ♥ Sophie\" were frequently spotted\
+      \ together on social media, and they confirmed that they are still dating.\n\
+      \      Meanwhile, \"Amelia ♥ Carlos\" ended their relationship a few months\
+      \ after filming, stating in interviews that the distance made things difficult.\n\
+      \      \"Priya ♥ Ethan\" did not officially couple on the show, but fans noticed\
+      \ them traveling together afterward; both later clarified that they remain close\
+      \ friends.\n\n    confirmedCouples:\n      - couple: [\"Leo\", \"Sophie\"]\n\
+      \        status: \"Currently dating\"\n        evidence: \"Regular posts together\
+      \ on Instagram, confirmed in July 2025 interview\"\n        lastConfirmed: \"\
+      July 2025\"\n      - couple: [\"Amelia\", \"Carlos\"]\n        status: \"Broken\
+      \ up\"\n        evidence: \"Announced in separate interviews about long-distance\
+      \ challenges\"\n        lastConfirmed: \"June 2025\"\n    \n    unofficialMentions:\n\
+      \      - pair: [\"Priya\", \"Ethan\"]\n        status: \"Still friends\"\n \
+      \       note: \"Fan communities shared photos of them traveling together; later\
+      \ clarified in Q&A sessions\"\n\n    references:\n      - \"https://www.instagram.com/toohottohandleofficial\"\
+      \n      - \"https://www.reddit.com/r/TooHotToHandleNetflix/\"\n      - \"https://www.cosmopolitan.com/entertainment/tv/a-toohottohandle-season6-cast-updates\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "Final Guide: Too Hot to Handle — Season 6\n\nEpisode-by-Episode Summary\n\
+      \n1) No Kissing Allowed — Season 6 kicks off with a group of singles arriving\
+      \ at a luxury villa, unaware of Lana’s rules. Once revealed, the no-touching\
+      \ rule shocks the contestants, and the first sparks of attraction create instant\
+      \ tension.\n\n2) Temptation Rising — As couples begin to form, temptation grows.\
+      \ A costly rule break sets the tone for a season of passion versus self-control.\n\
+      \n3) Trust and Tests — Workshops push the contestants to explore emotional vulnerability.\
+      \ Some couples grow stronger, while others question their choices.\n\n4) Drama\
+      \ in Paradise — A dramatic fallout shakes the villa as jealousy and betrayals\
+      \ come to light. Lana issues a stern warning after repeated rule breaking.\n\
+      \n5) Second Chances — New arrivals test existing connections. Some bonds survive\
+      \ the challenge, while others fall apart.\n\n6) Deeper Connections — Contestants\
+      \ dig into their past traumas during a workshop, bringing unexpected tears and\
+      \ breakthroughs.\n\n7) The Price of Love — Another massive deduction from the\
+      \ prize fund forces everyone to reconsider their priorities.\n\n8) Final Choices\
+      \ — Final decisions are made. Some couples prove they’ve grown, others fail\
+      \ to resist temptation; Lana reveals the final prize.\n\nCast\n- Sophie, 24\
+      \ — Model (London)\n- Leo, 27 — Personal Trainer (New York)\n- Amelia, 26 —\
+      \ Marketing Executive (Toronto)\n- Carlos, 28 — Bartender (Madrid)\n- Priya,\
+      \ 25 — Law Student (Mumbai)\n- Ethan, 29 — Entrepreneur (Los Angeles)\n- Maya,\
+      \ 23 — Influencer (Sydney)\n- Jack, 26 — Carpenter (Dublin)\n\nAfter-Show Relationship\
+      \ Updates\n- Leo ♥ Sophie — Currently dating.\n  Evidence: Regular posts together\
+      \ on Instagram; confirmed in July 2025 interview.\n- Amelia ♥ Carlos — Broken\
+      \ up.\n  Evidence: Separate interviews citing long-distance challenges (last\
+      \ confirmed June 2025).\n- Priya ♥ Ethan — Still friends.\n  Note: Traveled\
+      \ together post-show per fan photos; later clarified that they’re close friends.\n\
+      \nSources\n- https://www.instagram.com/toohottohandleofficial\n- https://www.reddit.com/r/TooHotToHandleNetflix/\n\
+      - https://www.cosmopolitan.com/entertainment/tv/a-toohottohandle-season6-cast-updates"

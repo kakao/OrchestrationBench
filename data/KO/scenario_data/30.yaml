@@ -1,0 +1,117 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-05-09
+
+      - 시간: 오후 4시 30분'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 1170회 로또 추첨 결과 알려줘. 그리고 친척이 외국에 놀러갔는데 거기는 지금 시간과 오늘 날씨 궁금해. 그리고 다음 주
+      수요일에 목포에 가는데 그날 목포 날씨도 같이 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"1170회\
+      \ 로또 추첨 결과 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: life_info_agent\n      refined_query: \"\
+      외국 현재 시간 조회\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: weather_agent\n      refined_query: \"오늘\
+      \ 외국 날씨\"\n\nworkflow_4:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: weather_agent\n      refined_query: \"다음\
+      \ 주 수요일 목포 날씨\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getLotteryInfo\narguments:\n  refinedQuery: \"1170회 로또 추첨 결과 조회\"\
+      \n  lotteryType: \"lotto\"\n  drawNumber: 1170\ntool_call_result:\n  data:\n\
+      \    lotteryType: \"lotto\"\n    drawNumber: 1170\n    winningNumbers:\n   \
+      \   - 3\n      - 13\n      - 28\n      - 34\n      - 38\n      - 42\n    bonusNumber:\
+      \ 26"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: targetCity가 없을 경우 "도시명을 입력해주세요" 안내 필요'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 정보를 확인하려는 해외 도시 혹은 국가명'
+- workflow_id: workflow_4
+  step_id: 7
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"다음 주 수요일 목포\
+      \ 날씨\"\n  location: \"목포\"\n  date: \"2025-05-14\"\ntool_call_result:\n  data:\n\
+      \    location: \"목포\"\n    date: \"2025-05-14\"\n    weatherSummary: \"2025년\
+      \ 5월 14일 목포는 대체로 맑고 낮 기온은 22도, 밤 기온은 14도입니다. 강수 확률은 낮으며, 미세먼지 농도는 보통 수준입니다.\"\
+      \n    temperature:\n      max: 22\n      min: 14\n    precipitationProbability:\
+      \ 10\n    airQuality:\n      pm10: \"보통\"\n      pm2_5: \"보통\"\n    wind:\n\
+      \      speed: 3.5\n      direction: \"남동풍\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '외국 시간과 오늘 날씨를 확인하려면 방문하신 해외 도시나 국가명이 필요해요.
+
+      친척이 방문하신 곳의 도시명이나 국가명을 알려주시면 바로 도와드리겠습니다!'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 베트남
+- workflow_id: workflow_2
+  step_id: 10
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getWorldTime\narguments:\n  refinedQuery: \"베트남 현재 시간 조회\"\n \
+      \ targetCity: \"베트남\"\ntool_call_result:\n  data:\n    targetCity: \"베트남\"\n\
+      \    currentTime: \"2025-05-09T14:30:00+07:00\"\n    timeZone: \"ICT (Indochina\
+      \ Time)\"\n    utcOffset: \"+07:00\""
+- workflow_id: workflow_3
+  step_id: 11
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getGlobalWeather\narguments:\n  refinedQuery: \"오늘 베트남 날씨\"\n\
+      \  location: \"Vietnam\"\n  date: \"오늘\"\ntool_call_result:\n  data:\n    location:\
+      \ \"Vietnam\"\n    date: \"2025-05-09\"\n    weatherSummary: \"2025년 5월 9일 베트남은\
+      \ 대체로 흐리고 낮 기온은 33도, 밤 기온은 26도입니다. 소나기 가능성이 있으며, 습도가 높습니다.\"\n    temperature:\n\
+      \      max: 33\n      min: 26\n    precipitationProbability: 40\n    airQuality:\n\
+      \      pm10: \"좋음\"\n      pm2_5: \"좋음\"\n    wind:\n      speed: 5.0\n    \
+      \  direction: \"남서풍\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "다음은 요청하신 정보입니다:\n\n■ 제1170회 로또 추첨 결과\n\n• 당첨 번호: 3, 13, 28, 34, 38,\
+      \ 42\n• 보너스 번호: 26\n\n■ 베트남 현재 현지 시각 및 날씨\n\n• 현재 시간: 2025년 5월 9일 14:30 (ICT,\
+      \ UTC+7)\n• 오늘 날씨: 대체로 흐림\n - 낮 최고 33도 / 밤 최저 26도\n - 소나기 가능성 있음 (강수 확률 40%)\n\
+      \ - 습도 높음\n - 미세먼지: 좋음 (PM10 / PM2.5)\n - 바람: 남서풍, 풍속 5.0m/s\n\n■  다음 주 수요일(5월\
+      \ 14일) 목포 날씨\n\n• 날씨: 대체로 맑음\n• 낮 최고 22도 / 밤 최저 14도\n• 강수 확률 10%\n• 미세먼지: 보통\
+      \ (PM10 / PM2.5)\n• 바람: 남동풍, 풍속 3.5m/s\n\n다른 정보가 필요하시면 언제든지 말씀해 주세요."

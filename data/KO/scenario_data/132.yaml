@@ -1,0 +1,244 @@
+metadata:
+  total_steps: 24
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2026년 5월 25일
+
+      - userId: U0DK15389'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '새로 이사한 집 주소가 ''경기도 성남시 분당구 정자동 6, 610동 1102호''인데 이거 도로명 주소로 변환해줄 수 있어?
+
+      그리고 임대차계약신고 하는 거 잊지 않게 다음 주 월요일에 한번 더 중요 알림으로 리마인드 해주고, 임대료 자동이체로 빠져나가고 있던 것도
+      해지해줘.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"'경기도\
+      \ 성남시 분당구 정자동 6, 610동 1102호'를 도로명 주소로 변환\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"다음 주 월요일에 임대차계약신고 중요 알림으로 리마인드\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ personal_banking_agent\n      refined_query: \"자동이체 등록 내역 조회\"\n    - status:\
+      \ pending\n      name: personal_banking_agent\n      refined_query: \"임대료 자동이체\
+      \ 해지\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: convertToRoadAddress\narguments:\n  refinedQuery: \"'경기도 성남시 분당구\
+      \ 정자동 6, 610동 1102호'를 도로명 주소로 변환\"\n  originalAddress: \"경기도 성남시 분당구 정자동 6,\
+      \ 610동 1102호\"\n  conversionType: \"toRoad\"\ntool_call_result:\n  data:\n \
+      \   refinedQuery: \"'경기도 성남시 분당구 정자동 6, 610동 1102호'를 도로명 주소로 변환\"\n    originalAddress:\
+      \ \"경기도 성남시 분당구 정자동 6, 610동 1102호\"\n    conversionType: \"toRoad\"\n    roadAddress:\
+      \ \"경기도 성남시 분당구 정자일로 248, 파크뷰 610동 1102호\"\n    notes: \"도로명 주소는 행정안전부 고시 기준에\
+      \ 따라 변환되었습니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 리마인드 알림을 보낼 시간'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출금 계좌 예금주명, 출금 계좌번호'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 리마인드 알림을 받으실 시간을 알려주시기 바랍니다. 또한 자동이체 등록 내역을 조회하기 위해서는 출금 계좌 예금주명과 출금
+      계좌번호 정보가 필요합니다.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 아침 10시에 부탁해. 예금주명은 박온유, 계좌번호는 110-987-123456이야.
+- workflow_id: workflow_2
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"6월 1일 월요일 오전 10시에\
+      \ 임대차계약신고 중요 알림으로 리마인드\"\n  reminderContent: \"임대차 계약신고하기\"\n  reminderTime:\
+      \ \"2026-06-01T10:00\"\n  repeatRule: \"none\"\n  priority: \"high\"\n  deliveryMethod:\
+      \ \"chat\"\ntool_call_result:\n  data:\n    refinedQuery: \"6월 1일 월요일 오전 10시에\
+      \ 임대차계약신고 중요 알림으로 리마인드\"\n    reminderContent: \"임대차 계약신고하기\"\n    reminderTime:\
+      \ \"2026-06-01T10:00\"\n    repeatRule: \"none\"\n    priority: \"high\"\n \
+      \   deliveryMethod: \"chat\"\n    status: \"scheduled\"\n    confirmationMessage:\
+      \ \"2026년 6월 1일 월요일 오전 10시에 '임대차 계약신고하기' 리마인드 알림을 챗으로 보내드릴게요. 중요한 알림으로 등록되었습니다.\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"자동이체 등록 내역\
+      \ 조회\"\n  accountHolderName: \"박온유\"\n  fromAccountNumber: \"110-987-123456\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"자동이체 등록 내역 조회\"\n    accountHolderName:\
+      \ \"박온유\"\n    fromAccountNumber: \"110-987-123456\"\n    autoTransfers:\n \
+      \     - payeeName: \"KT\"\n        payeeAccount: \"100-222-333444\"\n      \
+      \  transferAmount: 35000\n        transferDate: \"매월 25일\"\n        memo: \"\
+      휴대폰 요금\"\n        autoTransferId: \"AT1001\"\n      - payeeName: \"한국전력공사\"\n\
+      \        payeeAccount: \"200-123-456789\"\n        transferAmount: 62000\n \
+      \       transferDate: \"매월 21일\"\n        memo: \"전기요금\"\n        autoTransferId:\
+      \ \"AT1002\"\n      - payeeName: \"신한카드\"\n        payeeAccount: \"300-555-666777\"\
+      \n        transferAmount: 150000\n        transferDate: \"매월 5일\"\n        memo:\
+      \ \"카드 대금\"\n        autoTransferId: \"AT1003\"\n      - payeeName: \"김건주\"\n\
+      \        payeeAccount: \"055-333-444555\"\n        transferAmount: 800000\n\
+      \        transferDate: \"매월 1일\"\n        memo: \"오피스텔 임대료\"\n        autoTransferId:\
+      \ \"AT1004\"\n    status: \"success\"\n    notes: \"총 4건의 자동이체가 등록되어 있습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelAutoTransfer\narguments:\n  refinedQuery: \"임대료 자동이체 해지\"\
+      \n  autoTransferId: \"AT1004\"\n  recipientName: \"김건주\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"임대료 자동이체 해지\"\n    autoTransferId: \"AT1004\"\n\
+      \    recipientName: \"김건주\"\n    status: \"cancellation successful\"\n    message:\
+      \ \"김건주 님에게 설정된 임대료 자동이체가 성공적으로 해지되었습니다.\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "◾도로명 주소 변환\n요청하신 주소에 대한 도로명 주소 변환이 성공적으로 완료되었습니다.\n변환된 도로명 주소: 경기도 성남시\
+      \ 분당구 정자일로 248, 파크뷰 610동 1102호\n\n◾임대차 계약신고 리마인드 설정\n2026년 6월 1일 월요일 오전 10시에\
+      \ '임대차 계약신고하기' 리마인드 알림이 설정되었습니다. 알림은 챗을 통해 전달되며, 중요한 알림으로 등록되었습니다. 필요 시 추가로\
+      \ 수정이나 확인 가능합니다.\n\n◾자동이체 내역 조회 후 임대료 자동이체 해지\n\n박온유 님의 계좌(110-987-123456)에서\
+      \ 등록된 자동이체 내역은 다음과 같습니다:\n\n1. 매월 25일, 35,000원 - KT (휴대폰 요금)\n2. 매월 21일, 62,000원\
+      \ - 한국전력공사 (전기요금)\n3. 매월 5일, 150,000원 - 신한카드 (카드 대금)\n4. 매월 1일, 800,000원 - 김건주\
+      \ (오피스텔 임대료)\n\n총 4건의 자동이체가 등록되어 있습니다. \n\n자동이체 등록 내역 조회 후, 요청하신 내역에 대해 해지 완료하였습니다!\n\
+      - 김건주 님에게 설정된 임대료 자동이체가 성공적으로 해지되었습니다. 앞으로는 자동이체로 임대료가 지출되지 않으니 참고하시기 바랍니다."
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: 어, 전기요금 자동이체도 같이 해지해야겠네.
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      '경기도 성남시 분당구 정자동 6, 610동 1102호'를 도로명 주소로 변환\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: calendar_agent\n\
+      \      refined_query: \"다음 주 월요일에 임대차계약신고 중요 알림으로 리마인드\"\n\nworkflow_3:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ personal_banking_agent\n      refined_query: \"자동이체 등록 내역 조회\"\n    - status:\
+      \ completed\n      name: personal_banking_agent\n      refined_query: \"임대료\
+      \ 자동이체 해지\"\n\nworkflow_4:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"전기요금 자동이체 해지\""
+- workflow_id: workflow_4
+  step_id: 15
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelAutoTransfer\narguments:\n  refinedQuery: \"전기요금 자동이체 해지\"\
+      \n  autoTransferId: \"AT1002\"\n  recipientName: \"한국전력공사\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"전기요금 자동이체 해지\"\n    autoTransferId: \"AT1002\"\
+      \n    recipientName: \"한국전력공사\"\n    status: \"cancellation successful\"\n \
+      \   message: \"한국전력공사에 설정된 전기요금 자동이체가 성공적으로 해지되었습니다.\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: 한국전력공사에 설정된 전기요금 자동이체가 성공적으로 해지되었습니다.
+- workflow_id: null
+  step_id: 17
+  agent: user
+  agent_type: user
+  data:
+    content: 생각해보니 올리브영 주문했던 거도 배송지를 이사온 집 주소로 바꿔야해. 아까 도로명 주소 변환한 거 참고해서 변경 좀 부탁해.
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: life_info_agent\n      refined_query: \"\
+      '경기도 성남시 분당구 정자동 6, 610동 1102호'를 도로명 주소로 변환\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: calendar_agent\n\
+      \      refined_query: \"다음 주 월요일에 임대차계약신고 중요 알림으로 리마인드\"\n\nworkflow_3:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ personal_banking_agent\n      refined_query: \"자동이체 등록 내역 조회\"\n    - status:\
+      \ completed\n      name: personal_banking_agent\n      refined_query: \"임대료\
+      \ 자동이체 해지\"\n\nworkflow_4:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: personal_banking_agent\n      refined_query:\
+      \ \"전기요금 자동이체 해지\"\n\nworkflow_5:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"올리브영 주문 내역 조회\"\n    - status: pending\n      name: shopping_agent\n   \
+      \   refined_query: \"올리브영 주문 내역 배송지 변경\""
+- workflow_id: workflow_5
+  step_id: 19
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"올리브영 주문 내역 조회\"\n\
+      \  userId: \"U0DK15389\"\ntool_call_result:\n  data:\n    refinedQuery: \"올리브영\
+      \ 주문 내역 조회\"\n    userId: \"U0DK15389\"\n    orderStatus: \"배송 전\"\n    orderId:\
+      \ \"OY12345678\"\n    notes: \"현재 올리브영에서 주문하신 상품은 아직 배송 전 상태입니다.\""
+- workflow_id: null
+  step_id: 20
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수령인 연락처'
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: 주문하신 상품을 수령하실 분의 연락처를 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 22
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1234-5678
+- workflow_id: null
+  step_id: 23
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyOrder\narguments:\n  refinedQuery: \"올리브영 주문 내역 배송지 변경\"\
+      \n  orderId: \"OY12345678\"\n  newShippingAddress:\n    recipient: \"박온유\"\n\
+      \    address: \"경기도 성남시 분당구 정자일로 248, 파크뷰 610동 1102호\"\n    phone: \"01012345678\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"올리브영 주문 내역 배송지 변경\"\n    orderId:\
+      \ \"OY12345678\"\n    newShippingAddress:\n      recipient: \"박온유\"\n      address:\
+      \ \"경기도 성남시 분당구 정자일로 248, 파크뷰 610동 1102호\"\n      phone: \"01012345678\"\n \
+      \   status: \"success\"\n    message: \"배송지가 성공적으로 변경되었습니다.\""
+- workflow_id: null
+  step_id: 24
+  agent: main
+  agent_type: main
+  data:
+    content: "올리브영 주문(OY12345678)의 배송지가 성공적으로 변경되었습니다. 변경된 주소는 다음과 같습니다:\n\n수령인: 박온유\
+      \  \n주소: 경기도 성남시 분당구 정자일로 248, 파크뷰 610동 1102호  \n연락처: 010-1234-5678\n\n주문 진행\
+      \ 상황은 계속해서 확인 가능합니다."

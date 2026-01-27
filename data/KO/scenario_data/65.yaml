@@ -1,0 +1,65 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 가수 장원영 사주 좀 봐줘
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"가수 장원영의\
+      \ 생년월일과 성별 정보 조회\"\n    - status: pending\n      name: counsel_agent\n     \
+      \ refined_query: \"가수 장원영 사주\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"장원영의 생년월일과 성별\"\n  personName:\
+      \ \"장원영\"\n  roleType: \"가수\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    personName: \"장원영\"\n    birthDate: \"2004-08-31\"\n    birthPlace: \"\
+      서울특별시\"\n    gender: \"female\"\n    groupName: \"IVE\"\n    agency: \"스타쉽엔터테인먼트\"\
+      \n    workType:\n      - \"가수\"\n      - \"모델\"\n      - \"방송인\"\n    knownFor:\n\
+      \      - \"아이브(IVE) 멤버\"\n      - \"전 아이즈원(IZ*ONE) 멤버\"\n      - \"뮤직뱅크 MC\"\
+      \n    profileImage: \"https://example.com/jang-wonyoung.jpg\"\n  source: \"\
+      엔터테인먼트 인물 프로필 DB\"\n  timestamp: \"2025-07-11T10:12:30+09:00\""
+- workflow_id: null
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getSajuInfo\narguments:\n  refinedQuery: \"2004년 08월 31일생 여자 가수\
+      \ 장원영 사주\"\n  birthDate: \"2004-08-31\"\n  gender: \"female\"\n  calendarType:\
+      \ \"solar\"\ntool_call_result:\n  status: success\n  data:\n    dayMaster: \"\
+      병화(丙火)\"\n    sajuType: \"정관격(正官格)\"\n    elementBalance:\n      wood: 1\n \
+      \     fire: 4\n      earth: 2\n      metal: 0\n      water: 1\n    characteristics:\n\
+      \      일주성격:\n        - \"병화(丙火)는 태양을 상징하며, 밝고 따뜻한 에너지를 타고난 성향입니다.\"\n     \
+      \   - \"스스로를 드러내는 능력과 표현력, 리더십이 뛰어나며 대중적 매력을 지녔습니다.\"\n        - \"명예와 자존심을\
+      \ 중시하고, 스포트라이트를 받을 때 가장 큰 힘을 발휘합니다.\"\n      격국해석:\n        - \"정관격은 품위 있고 단정한\
+      \ 성향을 띠며, 규칙과 질서를 중시합니다.\"\n        - \"공적인 자리, 사회적 활동에서 인정받는 운을 타고났으며, 대인 신뢰도가\
+      \ 높습니다.\"\n        - \"다만 사주의 균형이 깨지면 고지식하거나 지나치게 책임을 짊어지는 경향도 생깁니다.\"\n   \
+      \   오행분석:\n        - \"화(火)의 기운이 매우 강하고 금(金)의 기운이 전혀 없어 의사결정력과 이성적 판단에서 약점을\
+      \ 보일 수 있습니다.\"\n        - \"화다금절(火多金絶) 사주는 추진력은 뛰어나지만, 신중함이나 갈등 조율에는 취약할 수 있습니다.\"\
+      \n        - \"목(木) 기운은 적당하여 창의성과 이상을 추구하는 능력이 있으며, 물(水)은 적지만 생명력을 보충해줍니다.\"\n\
+      \    luckyDirections:\n      - \"남쪽\"\n      - \"동남쪽\"\n    favorableColors:\n\
+      \      - \"주황\"\n      - \"분홍\"\n      - \"황토색\"\n    yearlyFortune_2025:\n\
+      \      general: \"2025년은 정관운이 강하게 작용하는 해로, 사회적 입지와 명성에 매우 유리한 흐름입니다.\"\n   \
+      \   career: \"공식적인 활동이나 계약, 방송, 홍보 등 외부 활동에서 성공 가능성이 큽니다. 사회적 책임감이 증가하는 시기입니다.\"\
+      \n      health: \"화기(火氣)가 많은 사주이므로 스트레스와 심리적 피로에 유의해야 합니다. 충분한 수면과 물기운 보완(수영,\
+      \ 명상 등)이 도움됩니다.\"\n      relationships: \"매력적이고 화제성이 높아\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 가수 장원영 님은 2004년 8월 31일생으로, 태양을 상징하는 병화(丙火) 일간에 정관격(正官格) 사주를 지녔습니다. 밝고
+      당당한 성격으로 리더십과 표현력이 뛰어나며, 대중 앞에서 빛나는 운입니다. 화(火)의 기운이 강한 반면 금(金)이 부족해 신중함이 필요한
+      면도 있습니다. 2025년은 사회적 명성과 활동운이 크게 상승하는 해로, 새로운 기회가 많아질 시기입니다. 건강과 감정 관리에만 유의한다면
+      한층 더 도약할 수 있을 거예요.

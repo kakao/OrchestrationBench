@@ -1,0 +1,110 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2026-02-02
+
+      - 연락처: 010-9996-3336'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 2월 8일에 오전 5시30분으로 프리미엄 택시 예약해줘. 그리고 2월 8일 대회 일정 등록한 거에 정보 다 있으니까 확인해서
+      그날 있을 대회장 근처 주차장 정보 찾아줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"2월 8일\
+      \ 오전 5시 30분 프리미엄 택시 예약\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"2월 8일 대회 일정 조회\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"2월 8일 대회장 근처 주차장 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 승차 장소명, 목적지명'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"2월 8일 대회 일정 조회\"\n\
+      \  startDate: \"2026-02-08\"\n  keyword: \"대회\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"2월 8일 대회 일정 조회\"\n    startDate: \"2026-02-08\"\n    endDate:\
+      \ \"2026-02-08\"\n    keyword: \"대회\"\n    schedules:\n      - title: \"삼겹살\
+      \ 가장 얇게 썰기 대회\"\n        location: \"수원메쎄\"\n        date: \"2026-02-08\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"2월 8일 수원메쎄 근처 주차장\
+      \ 검색\"\n  location: \"수원메쎄\"\n  searchRadius: 500\n  date: \"2026-02-08\"\n\
+      \  sortBy: \"nearest\"\ntool_call_result:\n  data:\n    refinedQuery: \"2월 8일\
+      \ 수원메쎄 근처 주차장 검색\"\n    location: \"수원메쎄\"\n    searchRadius: 500\n    date:\
+      \ \"2026-02-08\"\n    sortBy: \"nearest\"\n    parkingLots:\n      - name: \"\
+      수원메쎄 공영주차장\"\n        distance: 120\n        fee: \"시간당 2,000원\"\n        availableSpaces:\
+      \ 15\n        reservationAvailable: true\n      - name: \"수원역 사설주차장\"\n    \
+      \    distance: 450\n        fee: \"시간당 1,500원\"\n        availableSpaces: 8\n\
+      \        reservationAvailable: false"
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '프리미엄 택시 예약을 위해서는 아래 정보가 필요합니다.
+
+
+      • 승차 장소: 어디서 출발하시나요?
+
+      • 목적지: 도착지는 어디인가요?
+
+
+      확인되는 대로 바로 진행하겠습니다.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 서울송례초등학교에서 수원메쎄로 갈거야
+- workflow_id: workflow_1
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callTaxi\narguments:\n  refinedQuery: \"2월 8일 오전 5시 30분 서울송례초등학교에서\
+      \ 수원메쎄까지 프리미엄 택시 예약\"\n  pickupLocation: \"서울송례초등학교\"\n  dropoffLocation: \"\
+      수원메쎄\"\n  pickupTime: \"2026-02-08T05:30\"\n  passengerCount: 1\n  taxiType:\
+      \ \"premium\"\n  reservation: true\n  contactInfo: \"010-9996-3336\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"2월 8일 오전 5시 30분 서울송례초등학교에서 수원메쎄까지 프리미엄 택시 예약\"\
+      \n    pickupLocation: \"서울송례초등학교\"\n    dropoffLocation: \"수원메쎄\"\n    pickupTime:\
+      \ \"2026-02-08T05:30\"\n    passengerCount: 1\n    taxiType: \"premium\"\n \
+      \   reservation: true\n    contactInfo: \"010-9996-3336\"\n    bookingStatus:\
+      \ \"예약 완료\"\n    bookingId: \"TX202602080530001\"\n    estimatedFare: \"45,000원\"\
+      \n    driverInfo:\n      name: \"고길동\"\n      phone: \"010-1234-5678\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "2월 8일 일정 및 교통 안내입니다.\n\n◾ 대회 일정\n- 제목: 삼겹살 가장 얇게 썰기 대회  \n- 장소: 수원메쎄\
+      \  \n- 날짜: 2026-02-08\n\n◾ 주차장 정보 (수원메쎄 근처)\n1. 수원메쎄 공영주차장  \n  - 거리: 약 120m\
+      \  \n  - 요금: 시간당 2,000원  \n  - 잔여 공간: 15대  \n  - 예약 가능  \n2. 수원역 사설주차장  \n \
+      \ - 거리: 약 450m  \n  - 요금: 시간당 1,500원  \n  - 잔여 공간: 8대  \n  - 예약 불가\n\n◾ 택시 예약\
+      \ 완료\n- 출발: 서울송례초등학교 (2026-02-08 오전 5:30)  \n- 도착: 수원메쎄  \n- 택시 종류: 프리미엄  \n\
+      - 예상 요금: 45,000원  \n- 기사님: 고길동 (010-1234-5678)  \n- 예약번호: TX202602080530001\n\
+      \n필요한 추가 안내나 변경 사항 있으면 말씀해 주세요!"

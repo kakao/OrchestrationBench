@@ -1,0 +1,67 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: "2024-12-15"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 판교역 근처에 학군 좋은 아파트 매물 좀 알려줘. 전세 시세랑 대출금리도 같이 비교해보고 싶어.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"판교역 근처 학군\
+      \ 좋은 아파트 매물의 전세 시세\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: finance_agent\n      refined_query:\
+      \ \"전세 대출 금리 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getRealEstateInfo\narguments:\n  refinedQuery: \"판교역 근처 학군 좋은\
+      \ 아파트 전세 매물 정보 알려줘\"\n  propertyType: \"아파트\"\n  transactionType: \"전세\"\n \
+      \ location: \"판교역\"\n  sortBy: \"latest\"\ntool_call_result:\n  listings:\n\
+      \    - buildingName: \"판교 푸르지오 그랑블\"\n      area: \"전용 84㎡\"\n      price: \"\
+      7억\"\n      floor: \"12층 / 25층\"\n      schoolDistrict: \"보평초, 보평중 인근\"\n  \
+      \    availableFrom: \"즉시 입주 가능\"\n      link: \"https://example.com/listing/pg1\"\
+      \n    - buildingName: \"힐스테이트 판교역\"\n      area: \"전용 75㎡\"\n      price: \"\
+      6억 5천\"\n      floor: \"8층 / 20층\"\n      schoolDistrict: \"판교초, 운중중 도보 거리\"\
+      \n      availableFrom: \"8월 중순 이후\"\n      link: \"https://example.com/listing/pg2\"\
+      \n    - buildingName: \"판교 더샵 퍼스트파크\"\n      area: \"전용 59㎡\"\n      price:\
+      \ \"5억 8천\"\n      floor: \"10층 / 18층\"\n      schoolDistrict: \"운중초, 보평중 인접\"\
+      \n      availableFrom: \"즉시 입주\"\n      link: \"https://example.com/listing/pg3\""
+- workflow_id: null
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getInterestRates\narguments:\n  refinedQuery: \"전세 대출 평균 금리\"\n\
+      \  country: \"Korea\"\n  rateType: \"loan\"\n  date: \"2024-12-15\"\ntool_call_result:\n\
+      \  interestRates:\n    - bankName: \"국민은행\"\n      rate: \"4.25%\"\n      term:\
+      \ \"5년 고정\"\n    - bankName: \"우리은행\"\n      rate: \"4.05%\"\n      term: \"\
+      변동금리 (6개월)\"\n    - bankName: \"하나은행\"\n      rate: \"4.15%\"\n      term: \"\
+      3년 혼합형\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "판교역 근처 학군 좋은 아파트 전세 매물을 찾았습니다:\n\n  1. **판교 푸르지오 그랑블**  \n     - 전용\
+      \ 84㎡, 12층, 전세 7억  \n     - 보평초·보평중 인근  \n     - 즉시 입주 가능  \n     - [매물 보기](https://example.com/listing/pg1)\n\
+      \n  2. **힐스테이트 판교역**  \n     - 전용 75㎡, 전세 6억 5천  \n     - 판교초·운중중 도보 거리  \n\
+      \     - 8월 중순 이후 입주  \n     - [매물 보기](https://example.com/listing/pg2)\n\n \
+      \ 3. **판교 더샵 퍼스트파크**  \n     - 전용 59㎡, 전세 5억 8천  \n     - 운중초·보평중 인접  \n   \
+      \  - 즉시 입주 가능  \n     - [매물 보기](https://example.com/listing/pg3)\n\n  \U0001F3E6\
+      \ 전세 대출 금리 비교 (2024년 12월 기준):\n\n  - 국민은행: 4.25% (5년 고정)  \n  - 우리은행: 4.05%\
+      \ (6개월 변동)  \n  - 하나은행: 4.15% (3년 혼합형)"

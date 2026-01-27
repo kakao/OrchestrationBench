@@ -1,0 +1,106 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2024-07-14
+
+      - Current Time: 2:40 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Is there a bus or a subway that goes straight to the Statue of Liberty?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Check\
+      \ for a direct bus or subway to the Statue of Liberty\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure location information'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 'To give you accurate directions, please tell me your starting point.
+
+      For example, you can say "home," "Grand Central Terminal," or "current location."'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: New York World Trade Center
+- workflow_id: null
+  step_id: 7
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Check for a direct\
+      \ bus or subway to the Statue of Liberty\"\n  origin: \"New York World Trade\
+      \ Center\"\n  destination: \"Statue of Liberty, New York, NY\"\n  departureTime:\
+      \ \"14:40\"\n  transportModes: [\"bus\", \"subway\"]\n  directRouteOnly: true\n\
+      \  optimizeBy: \"fastest\"\ntool_call_result:\n  data:\n    routes:\n      -\
+      \ routeID: \"route_NY_001\"\n        status: \"Search complete\"\n        origin:\
+      \ \"New York World Trade Center\"\n        destination: \"Statue of Liberty,\
+      \ New York, NY\"\n        departureTime: \"2024-07-14T14:40\"\n        transportMode:\
+      \ \"subway\"\n        directRoute: true\n        subwayLine: \"1\"\n       \
+      \ estimatedTime: \"About 35 minutes\"\n        fare: \"$2.75\"\n        note:\
+      \ \"You can take the 1 subway line directly from Westfield World Trade Center\
+      \ to South Ferry, then transfer to the ferry to reach the Statue of Liberty.\"\
+      \n      - routeID: \"route_NY_002\"\n        status: \"Search complete\"\n \
+      \       origin: \"New York World Trade Center\"\n        destination: \"Statue\
+      \ of Liberty, New York, NY\"\n        departureTime: \"2025-07-14T14:40\"\n\
+      \        transportMode: \"bus\"\n        directRoute: false\n        busNumber:\
+      \ \"M20\"\n        estimatedTime: \"About 50 minutes including transfer\"\n\
+      \        fare: \"$2.75\"\n        note: \"Take the M20 bus and transfer to the\
+      \ Staten Island Ferry to reach the Statue of Liberty.\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'Information on Fastest Direct Route to the Statue of Liberty:
+
+
+      1. By Subway (Recommended)
+
+      • Line: 1
+
+      • Estimated Travel Time: About 35 minutes
+
+      • Fare: $2.75
+
+      • Note: Take the 1 subway line directly from Westfield World Trade Center to
+      South Ferry, then transfer to the ferry to reach the Statue of Liberty.
+
+
+      2. By Bus
+
+      • Bus Number: M20
+
+      • Estimated Travel Time: About 50 minutes (including transfer)
+
+      • Fare: $2.75
+
+      • Note: Take the M20 bus and transfer to the Staten Island Ferry to reach the
+      Statue of Liberty.
+
+
+      Departure time is based on 2:40 PM today. Please note that actual travel time
+      may vary slightly depending on traffic conditions.'

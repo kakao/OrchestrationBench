@@ -1,0 +1,176 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2024-10-01
+
+      - 이름: 김사장'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 기업은행 대출 얼마 남았는지 봐주고, 신입 직원이 와서 내 우리은행 계좌에 자동이체 내역 확인해보고, '우리은행 1002-123-456789,
+      소작공'이 없으면 이 직원 통장으로 자동이체 등록해줘. 그리고 이친구 원래 아이돌 가수였다는데 찾아봐줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"기업은행 남은 대출 잔액 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: personal_banking_agent\n     \
+      \ refined_query: \"내 우리은행 계좌 자동이체 등록 내역 조회\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: personal_banking_agent\n      refined_query: \"우리은행 계좌 자동이체 등록\
+      \ 내역에 '우리은행 1002-123-456789, 소작공'이 없으면 해당 계좌로 자동이체 등록\"\n\nworkflow_4:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ person_agent\n      refined_query: \"아이돌 가수 소작공 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 대출 계좌번호'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출금 계좌번호'
+- workflow_id: workflow_4
+  step_id: 6
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"아이돌 가수 소작공 검색\"\n  personName:\
+      \ \"소작공\"\n  roleType: \"가수\"\ntool_call_result:\n  data:\n    personName: \"\
+      소작공\"\n    roleType: \"가수\"\n    profile:\n      stageName: \"소작공\"\n      birthName:\
+      \ \"소작공\"\n      birthDate: \"1998-04-15\"\n      debutYear: 2017\n      group:\
+      \ \"작두\"\n      position: \"메인 보컬\"\n      notableWorks:\n        - \"칼날 춤\"\
+      \n        - \"불꽃처럼\"\n        - \"한밤의 외침\"\n      awards:\n        - \"2019년\
+      \ 신인 가수상\"\n        - \"2021년 베스트 보컬상\"\n      biography: \"소작공은 2017년 그룹 작두로\
+      \ 데뷔한 메인 보컬로, 강렬한 퍼포먼스와 독특한 음색으로 팬들의 사랑을 받고 있습니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '다음 업무 처리를 위해 몇 가지 정보가 더 필요합니다.
+
+
+      1. 기업은행 대출 상환내역 조회를 위해
+
+       → 대출 계좌번호를 알려주세요.
+
+
+      2. 자동이체 등록 내역 확인을 위해
+
+       → 출금 계좌인 본인 명의의 우리은행 계좌번호가 필요합니다.
+
+        (예: 1002-xxx-xxxxxx)
+
+
+      정보 확인되는 대로 바로 처리 도와드리겠습니다.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 기업은행 023-312456-78-901, 우리은행 1002-874-563210
+- workflow_id: workflow_1
+  step_id: 9
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getLoanBalance\narguments:\n  refinedQuery: \"기업은행 023-312456-78-901\
+      \ 남은 대출 잔액 조회\"\n  loanAccountNumber: \"023-312456-78-901\"\n  borrowerName:\
+      \ \"김사장\"\ntool_call_result:\n  data:\n    loanAccountNumber: \"023-312456-78-901\"\
+      \n    borrowerName: \"김사장\"\n    loanBalance: 13000000\n    loanStatus: \"상환\
+      \ 중\"\n    lastPaymentDate: \"2024-09-25\"\n    nextDueDate: \"2024-10-25\"\n\
+      \    monthlyPaymentAmount: 500000\n    remarks: \"2024년 10월 1일 기준 정상 상환 중입니다.\""
+- workflow_id: workflow_2
+  step_id: 10
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"우리은행 1002-874-563210\
+      \ 계좌 자동이체 등록 내역 조회\"\n  fromAccountNumber: \"1002-874-563210\"\n  accountHolderName:\
+      \ \"김사장\"\ntool_call_result:\n  data:\n    fromAccountNumber: \"1002-874-563210\"\
+      \n    accountHolderName: \"김사장\"\n    autoTransfers:\n      - autoTransferId:\
+      \ \"AT20240801001\"\n        toAccountNumber: \"1002-123-456789\"\n        toAccountHolderName:\
+      \ \"소작공\"\n        bankName: \"우리은행\"\n        transferAmount: 2500000\n   \
+      \     transferDate: \"매월 5일\"\n        status: \"등록 완료\"\n      - autoTransferId:\
+      \ \"AT20240801002\"\n        toAccountNumber: \"1005-987-654321\"\n        toAccountHolderName:\
+      \ \"허솨비\"\n        bankName: \"국민은행\"\n        transferAmount: 2500000\n   \
+      \     transferDate: \"매월 5일\"\n        status: \"등록 완료\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '요청하신 사항들을 다음과 같이 확인 및 처리했습니다.
+
+
+      ■ 기업은행 대출 상환 내역
+
+
+      • 대출 계좌번호: 023-312456-78-901
+
+      • 대출자: 김사장
+
+      • 남은 잔액: 13,000,000원
+
+      • 월 상환액: 500,000원
+
+      • 최근 납입일: 2024-09-25
+
+      • 다음 납입 예정일: 2024-10-25
+
+      • 상태: 정상 상환 중 (2024년 10월 1일 기준)
+
+
+      ■ 자동이체 등록 현황 (우리은행 1002-874-563210)
+
+
+      • 소작공 (1002-123-456789) 계좌로의 자동이체는 이미 등록되어 있습니다.
+
+       → 매월 5일, 2,500,000원 자동이체 중
+
+
+      별도 등록은 필요하지 않습니다.
+
+
+      ■ 소작공 프로필 정보
+
+
+      • 예명: 소작공
+
+      • 본명: 소작공
+
+      • 출생: 1998년 4월 15일
+
+      • 데뷔: 2017년, 그룹 작두의 메인 보컬
+
+      • 대표곡: 칼날 춤, 불꽃처럼, 한밤의 외침
+
+      • 수상 내역:
+
+       · 2019년 신인 가수상
+
+       · 2021년 베스트 보컬상
+
+      • 소개: 강렬한 퍼포먼스와 독특한 음색으로 팬들에게 사랑받는 아티스트입니다.
+
+
+      필요한 추가 확인 사항이 있다면 알려주세요.'

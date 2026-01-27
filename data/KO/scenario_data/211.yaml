@@ -1,0 +1,224 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-08-12
+
+      현재시각: 오후 15:33'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 해외 축구 봐야 하는데 현재 영국 날씨랑 시간은 어때?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"현재 영국 날씨\"\
+      \n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: life_info_agent\n      refined_query: \"현재 영국 시간\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getGlobalWeather\narguments:\n  refinedQuery: \"현재 영국 날씨\"\n \
+      \ location: \"United Kingdom\"\n  date: \"현재\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"현재 영국 날씨\"\n    location: \"United Kingdom\"\n    date:\
+      \ \"현재\"\n    weather:\n      temperatureCelsius: 18\n      condition: \"흐림\"\
+      \n      humidityPercent: 72\n      windSpeedKmh: 20\n      uvIndex: 4\n    \
+      \  sunrise: \"05:52\"\n      sunset: \"20:24\"\n      notes: \"흐린 날씨로 약간 선선하며,\
+      \ 가벼운 외투를 챙기는 것이 좋습니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getWorldTime\narguments:\n  refinedQuery: \"현재 영국 시간\"\n  targetCity:\
+      \ \"영국\"\ntool_call_result:\n  data:\n    refinedQuery: \"현재 영국 시간\"\n    targetCity:\
+      \ \"영국\"\n    currentTime: \"2025-08-12T01:45:00+01:00\"\n    timeZone: \"British\
+      \ Summer Time (BST)\"\n    utcOffset: \"+01:00\"\n    notes: \"영국은 3월 말부터 10월\
+      \ 말까지 서머타임(BST, UTC+1)을 적용하며, 그 외 기간은 GMT(UTC+0)를 사용합니다.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 현재 영국의 상황을 알려드릴게요.
+
+
+      - 날씨 정보
+
+      -기온: 18℃로 약간 선선한 편입니다.
+
+      -날씨: 흐림
+
+      -습도: 72%
+
+      -바람: 시속 20km
+
+      -자외선 지수: 4 (보통 수준)
+
+      -일출: 오전 5시 52분
+
+      -일몰: 오후 8시 24분
+
+      -참고: 오늘은 햇빛이 강하지 않고 기온이 낮아, 가벼운 외투를 챙기시면 좋겠습니다.
+
+
+      ▶ 현재 시각
+
+
+      -영국 시각: 2025년 8월 12일 오전 1시 45분
+
+      -시간대: British Summer Time (BST, UTC+1)
+
+      -특징: 영국은 매년 3월 말부터 10월 말까지 서머타임을 적용하고, 그 외 기간에는 GMT(UTC+0)를 사용합니다.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 EPL 경기 일정이랑 리그 순위좀 보여줘봐
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: weather_agent\n      refined_query: \"현재\
+      \ 영국 날씨\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: life_info_agent\n      refined_query:\
+      \ \"현재 영국 시간\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: sports_agent\n      refined_query: \"오늘\
+      \ EPL 경기 일정\"\n\nworkflow_4:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: sports_agent\n      refined_query: \"오늘\
+      \ EPL 리그 순위\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"오늘 EPL 경기 일정\"\
+      \n  league: \"EPL\"\n  targetDate: \"2025-08-12\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"오늘 EPL 경기 일정\"\n    league: \"EPL\"\n    targetDate: \"\
+      2025-08-12\"\n    matches:\n      - homeTeam: \"리버풀\"\n        awayTeam: \"\
+      첼시\"\n        matchTime: \"2025-08-12T20:00:00+01:00\"\n        venue: \"안필드\"\
+      \n      - homeTeam: \"아스널\"\n        awayTeam: \"맨체스터 유나이티드\"\n        matchTime:\
+      \ \"2025-08-12T21:00:00+01:00\"\n        venue: \"에미레이츠 스타디움\"\n    notes: \"\
+      경기 시간은 영국 현지 기준이며, 실제 일정은 변동될 수 있습니다.\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportRank\narguments:\n  refinedQuery: \"오늘 EPL 리그 순위\"\n \
+      \ league: \"EPL\"\n  targetDate: \"2025-08-12\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"오늘 EPL 리그 순위 - 팀명과 순위\"\n    league: \"EPL\"\n    targetDate:\
+      \ \"2025-08-12\"\n    rankings:\n      - rank: 1\n        team: \"맨체스터 시티\"\n\
+      \      - rank: 2\n        team: \"리버풀\"\n      - rank: 3\n        team: \"첼시\"\
+      \n      - rank: 4\n        team: \"맨체스터 유나이티드\"\n      - rank: 5\n        team:\
+      \ \"아스널\"\n      - rank: 6\n        team: \"토트넘\"\n      - rank: 7\n       \
+      \ team: \"에버턴\"\n      - rank: 8\n        team: \"레스터 시티\"\n      - rank: 9\n\
+      \        team: \"웨스트햄\"\n      - rank: 10\n        team: \"뉴캐슬 유나이티드\"\n   \
+      \   - rank: 11\n        team: \"사우샘프턴\"\n      - rank: 12\n        team: \"\
+      본머스\"\n      - rank: 13\n        team: \"크리스털 팰리스\"\n      - rank: 14\n    \
+      \    team: \"애스턴 빌라\"\n      - rank: 15\n        team: \"왓포드\"\n      - rank:\
+      \ 16\n        team: \"리즈 유나이티드\"\n      - rank: 17\n        team: \"브라이튼\"\n\
+      \      - rank: 18\n        team: \"노리치 시티\"\n      - rank: 19\n        team:\
+      \ \"번리\"\n      - rank: 20\n        team: \"셰필드 유나이티드\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '안녕하세요! 오늘 2025년 8월 12일 기준으로 잉글리시 프리미어리그(EPL) 경기 일정과 리그 순위를 알려드릴게요.
+
+
+      ▶ 오늘의 경기 일정
+
+
+      - 오후 8시: 리버풀 vs 첼시 (장소: 안필드)
+
+
+      - 오후 9시: 아스널 vs 맨체스터 유나이티드 (장소: 에미레이츠 스타디움)
+
+
+      - 모든 경기 시간은 영국 현지 시간 기준이며, 실제 일정은 변동될 수 있으니 참고 부탁드립니다.
+
+
+      ----------
+
+
+      ▶ 현재 EPL 리그 순위
+
+
+      1.맨체스터 시티
+
+
+      2. 리버풀
+
+
+      3.첼시
+
+
+      4.맨체스터 유나이티드
+
+
+      5. 아스널
+
+
+      6. 토트넘
+
+
+      7. 에버턴
+
+
+      8. 레스터 시티
+
+
+      9.웨스트햄
+
+
+      10. 뉴캐슬 유나이티드
+
+
+      11. 사우샘프턴
+
+
+      12. 본머스
+
+
+      13. 크리스털 팰리스
+
+
+      14. 애스턴 빌라
+
+
+      15. 왓포드
+
+
+      16. 리즈 유나이티드
+
+
+      17. 브라이튼
+
+
+      18. 노리치 시티
+
+
+      19. 번리
+
+
+      20. 셰필드 유나이티드
+
+
+      경기와 순위 모두 시즌 상황에 따라 변동될 수 있으니, 더 자세한 정보나 다른 일정이 필요하시면 언제든지 말씀해 주세요!'

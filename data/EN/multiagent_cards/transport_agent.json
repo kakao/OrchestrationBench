@@ -1,0 +1,737 @@
+{
+  "agent_card": {
+    "name": "Transportation",
+    "agent_id": "transport_agent",
+    "description": "This agent handles all travel and driving-related requests in one place, including real-time traffic updates, directions, transportation comparisons, parking, and taxi/designated driver bookings.",
+    "url": "http://localhost:10005/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getTrafficInfo",
+        "name": "Real-time Traffic Information",
+        "description": "Displays traffic conditions (congestion, accidents, construction, events, etc.) for a specified area, road, or time period, categorized by different modes of transportation.",
+        "examples": [
+          "How's the traffic flow at the Main Street Interchange right now?",
+          "Any accident reports around River Bridge?",
+          "Show me the most congested sections of Highway 50 during rush hour."
+        ]
+      },
+      {
+        "id": "getDirections",
+        "name": "Directions",
+        "description": "Provides the fastest or preferred route (public transit, car, walking, cycling, etc.) and travel time between a starting point and destination, with optional navigation integration.",
+        "examples": [
+          "What's the fastest subway route to Central Park?",
+          "Can you find me the shortest driving route from Downtown Station to the Convention Center?",
+          "Which is faster to the Metropolitan Museum of Art — bus or subway?",
+          "Is there a direct bus route to State University?"
+        ]
+      },
+      {
+        "id": "getTransportInfo",
+        "name": "Transport Mode Information",
+        "description": "Provides detailed information on transportation options such as bike share, e-scooter share, taxis, rental cars, and car sharing — including fares, rental locations, availability, and vehicle types. Best for checking usage conditions rather than route planning.",
+        "examples": [
+          "How much would a taxi cost from Union Station to Midtown?",
+          "What's the daily rental rate for a car in Miami today?",
+          "Where can I rent an electric bike near City Hall?",
+          "Find me a nearby e-scooter rental station.",
+          "Can you compare daily rates for eco-friendly SUV rentals?"
+        ]
+      },
+      {
+        "id": "getParkingInfo",
+        "name": "Parking Information",
+        "description": "Searches for parking lots within a set radius, distinguishing public/private, showing rates (hourly, daily, monthly), and indicating reservation availability. Includes filters for EV charging and special vehicles.",
+        "examples": [
+          "Where's the cheapest parking nearby?",
+          "Is there a parking lot within a 5-minute walk of State University?",
+          "Find me a parking spot in Downtown that I can reserve for this Friday.",
+          "Show me parking near Penn Station with EV charging.",
+          "Recommend popular monthly parking options within 1 mile of Uptown."
+        ]
+      },
+      {
+        "id": "callTaxi",
+        "name": "Taxi Booking",
+        "description": "Allows you to hail or pre-book various types of taxis (standard, black car service, van, wheelchair-accessible, luxury) from a set pickup to drop-off location, with options for passenger count, luggage, and booking platform.",
+        "examples": [
+          "Book me a taxi from Midtown Station to the airport right now.",
+          "Reserve a premium taxi for tomorrow at 7:00 am to the airport.",
+          "I have 3 suitcases — can you quickly get me a van taxi to Central Station?"
+        ]
+      },
+      {
+        "id": "callDesignatedDriver",
+        "name": "Designated Driver Booking",
+        "description": "Helps you book and call a chauffeur service.",
+        "examples": [
+          "I need a designated driver from Downtown to my home right now — can you arrange it?",
+          "I want to pre-book a designated driver tonight at 11:00 pm from City Center to my apartment.",
+          "Can you get me a driver from my current location to Uptown? The car is a Tesla Model 3."
+        ]
+      },
+      {
+        "id": "bookRentalCar",
+        "name": "Rental Car Booking",
+        "description": "Books a rental car according to the user's desired conditions.",
+        "examples": [
+          "I want to rent an SUV at Orlando Airport next Saturday at 10:00 am.",
+          "Book me an electric car for a day tomorrow morning at Union Station with full insurance.",
+          "Can I rent a compact car with toll pass included for 4 days and 3 nights?"
+        ]
+      },
+      {
+        "id": "bookTransitTicket",
+        "name": "Public Transit Ticket Booking",
+        "description": "Books tickets for ground transportation such as trains and intercity buses.",
+        "examples": [
+          "Book me an Amtrak Acela ticket from New York to Boston this Saturday at 9:00 am.",
+          "Can I reserve an express bus from Springfield to Hartford?",
+          "Get me a bus ticket from Richmond to Charlotte tomorrow at 3:00 pm."
+        ]
+      },
+      {
+        "id": "getTransitSchedule",
+        "name": "Public Transit Schedule Lookup",
+        "description": "Retrieves schedules for trains (e.g., Amtrak, regional express) and express/intercity buses based on departure and arrival points, including outbound, inbound, and round-trip times.",
+        "examples": [
+          "Show me the train schedule from New York to Philadelphia on 09/10/2025.",
+          "What trains are available from Chicago to St. Louis next Friday?",
+          "Show me the round-trip express bus schedule between LA and San Diego this Saturday.",
+          "Is there a bus from Albany to Buffalo around 4:00 pm tomorrow?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getTrafficInfo",
+      "description": "A tool to check real-time or specific time traffic conditions, accidents, construction, closures, events, and more. Can be called repeatedly for multiple targets in list form.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query that incorporates the user's natural language request and conversation context (e.g., 'Show me congested areas near Central Station', 'Check if there were any accidents from Midtown to Riverside Drive this evening')."
+          },
+          "location": {
+            "type": "string",
+            "description": "The area or road name to check traffic for. If unnamed, enter 'My Location (GPS)' (e.g., 'Downtown', 'Highway 50', 'Central Station', 'My Location (GPS)')."
+          },
+          "timeRange": {
+            "type": "string",
+            "description": "The desired time range in date and time format (e.g., '2025-08-02T07:00-09:00'). Natural language inputs like 'morning', 'afternoon', 'evening', 'night', 'late night' are automatically converted to corresponding time ranges ('morning'=06:00 am - 09:59 am, 'noon'= 12:00 pm - 1:59 pm, 'afternoon'= 2:00 pm - 5:59pm, 'evening'= 6:00 pm - 8:59 pm, 'night'= 9:00 pm - 11:59 pm, 'late night'= 12:00 am - 5:59 am). If not entered, defaults to the current time (e.g., '2025-08-02T07:00')."
+          },
+          "trafficType": {
+            "type": "string",
+            "enum": [
+              "Car",
+              "Bus",
+              "Subway",
+              "Pedestrian",
+              "Bicycle",
+              "All"
+            ],
+            "description": "The type of transportation to check (e.g., 'Bus', 'Subway', 'Car'). Defaults to 'Car' if not entered."
+          },
+          "incidentType": {
+            "type": "string",
+            "enum": [
+              "Accident",
+              "Construction",
+              "RoadClosure",
+              "Event"
+            ],
+            "description": "The type of traffic issue to include: accident, construction, closure, or event. If not entered, all types are included."
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "delay_level",
+              "congestion_score",
+              "incident_recent",
+              "report_count"
+            ],
+            "description": "Sorting criteria for results (delay_level=degree of delay, congestion_score=congestion score, incident_recent=most recent issues, report_count=number of reports)."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "trafficType",
+          "timeRange"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getDirections",
+      "description": "A tool that provides various transportation routes and travel times based on the user's departure, destination, and conditions, or supports navigation execution requests. If calling repeatedly for multiple targets, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A detailed route request query created by combining the user's full input with recent context. (e.g., 'Tell me the cheapest way to get from Chelsea to Brooklyn', 'I want to get to Midtown quickly by subway')"
+          },
+          "origin": {
+            "type": "string",
+            "description": "Information such as the address or place name of the departure point. e.g., 'Home', 'Grand Central Terminal', 'Columbia University', 'Current location'"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Place name or address of the destination. e.g., 'Times Square', 'Central Park', 'Empire State Building'"
+          },
+          "departureTime": {
+            "type": "string",
+            "description": "Desired departure time ('HH:MM'). If not specified, defaults to the current time."
+          },
+          "arrivalTime": {
+            "type": "string",
+            "description": "Desired arrival time ('HH:MM'). If not specified, not used."
+          },
+          "transportModes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "subway",
+                "bus",
+                "car",
+                "walk",
+                "bike"
+              ]
+            },
+            "description": "Transportation modes to compare or select. Default is 'car'."
+          },
+          "optimizeBy": {
+            "type": "string",
+            "enum": [
+              "fastest",
+              "least_transfer",
+              "least_walk",
+              "lowest_cost"
+            ],
+            "description": "Criteria for route optimization. 'fastest': quickest (default), 'least_transfer': minimum transfers, 'least_walk': minimum walking, 'lowest_cost': lowest cost"
+          },
+          "directRouteOnly": {
+            "type": "boolean",
+            "description": "Whether to provide only direct (no transfer) routes. If set to true, only direct buses, subways, etc., are shown."
+          },
+          "navigationMode": {
+            "type": "boolean",
+            "description": "Whether to launch navigation immediately (e.g., Google Maps/Apple Maps). If set to true, links directly to the app to start guidance."
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "Google Maps",
+              "Apple Maps",
+              "City Transit Info"
+            ],
+            "description": "Data source or traffic/map platform to use for route search. e.g., 'Google Maps', 'Apple Maps'"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "transportModes",
+          "optimizeBy",
+          "origin",
+          "destination",
+          "departureTime"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getTransportInfo",
+      "description": "A tool that provides detailed information on transportation options such as shared bikes, shared kickboards, taxis, rental cars, and car sharing — including fares, rental locations, availability, and vehicle types. It is suitable for checking the usage conditions of specific transportation modes rather than for route planning. If calling repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A transportation information search query that reflects the user's question and previous context (e.g., 'Show me shared shared e-scooter locations near Penn   Station', 'Compare rental car prices from the LAX Airport to the hotel', 'Taxi fare to JFK International Airport')"
+          },
+          "location": {
+            "oneOf": [
+              {
+                "type": "string",
+                "description": "Departure point or search location (e.g., 'Gwanghwamun', 'Incheon International Airport', 'My location')"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "lat": {
+                    "type": "number"
+                  },
+                  "lng": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "lat",
+                  "lng"
+                ],
+                "description": "Location specified by latitude/longitude (e.g., {lat:37.57,lng:126.98})"
+              }
+            ],
+            "description": "Departure point or search location information; defaults to current location if not provided"
+          },
+          "destination": {
+            "type": "string",
+            "description": "Destination information. If provided, fare estimates based on travel distance are possible (e.g., 'JFK International Airport', 'Disneyland')"
+          },
+          "departureTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Planned departure time (e.g., '08/10/2024T09:00'). Only current or future date/time is allowed"
+          },
+          "includeModes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "bike",
+                "e-scooter",
+                "taxi",
+                "rental_car",
+                "car_share"
+              ]
+            },
+            "description": "List of transportation modes to search (e.g., ['taxi'], ['bike', 'kickboard'])"
+          },
+          "rentalDuration": {
+            "type": "string",
+            "description": "Rental period or expected usage time. '1 day' should be converted to '24 hours' for input (e.g., '3 hours', '24 hours')"
+          },
+          "vehicleType": {
+            "type": "string",
+            "description": "Specific transportation type (e.g., 'electric scooter', 'children's bike', 'mid-size SUV rental car', 'premium taxi')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "location",
+          "includeModes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getParkingInfo",
+      "description": "Searches for parking lot information and provides customized parking options based on various conditions such as location, time, type, price, and reservation availability. When calling for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A parking search query that integrates the user's natural language request or previous conversation context (e.g., 'affordable parking near Union Square', 'parking with EV charging available')"
+          },
+          "location": {
+            "type": "string",
+            "description": "Name of the area of interest or current location information (e.g., 'Times Square', 'Downtown', 'current location')"
+          },
+          "searchRadius": {
+            "type": "number",
+            "description": "Search radius (in meters). Default is 500m, e.g., 300, 700"
+          },
+          "parkingType": {
+            "type": "string",
+            "enum": [
+              "public",
+              "private",
+              "valet",
+              "all"
+            ],
+            "description": "Select parking type: public (municipal), private, valet, all"
+          },
+          "priceType": {
+            "type": "string",
+            "enum": [
+              "hourly",
+              "daily",
+              "monthly",
+              "flat"
+            ],
+            "description": "Pricing basis. 'hourly' excludes daily/monthly flat-rate parking lots from search results."
+          },
+          "date": {
+            "type": "string",
+            "description": "Desired parking date (YYYY-MM-DD). Only dates from the day after the request date up to 30 days ahead are allowed (e.g., '2025-10-18')"
+          },
+          "timeRange": {
+            "type": "string",
+            "description": "Desired parking time range (e.g., '08:00-14:00', '00:00-23:59')"
+          },
+          "reservationRequired": {
+            "type": "boolean",
+            "description": "Set to true to find only parking lots that allow reservations (e.g., true → reservation required)"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "lowest_price",
+              "nearest",
+              "availability",
+              "most_searched"
+            ],
+            "description": "Sorting criteria for search results. Default is 'nearest' (closest first)"
+          },
+          "vehicleType": {
+            "type": "string",
+            "enum": [
+              "compact",
+              "SUV",
+              "EV",
+              "truck"
+            ],
+            "description": "Select vehicle type. If EV (electric vehicle) is selected, you can additionally filter by charger availability"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "GoogleMaps",
+              "ParkWhiz",
+              "SpotHero"
+            ],
+            "description": "Specify the information source or platform (e.g., 'GoogleMaps')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "searchRadius",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "callTaxi",
+      "description": "A tool to book or immediately hail a taxi based on pickup location, destination, pickup time, and other conditions. You can choose from general, black, van, wheelchair-accessible, and premium vehicle types. Contact information is required for advance bookings. Cancellations and changes are not allowed. For multiple requests, you can provide them in a list format.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query containing the previous conversation context and the user's natural language request (e.g., 'Please get me a taxi from Midtown to The Plaza Hotel', 'I need a taxi to the bus terminal at 6:00 am next Friday')"
+          },
+          "pickupLocation": {
+            "type": [
+              "string",
+              "object"
+            ],
+            "description": "Pickup location name or coordinates (e.g., 'Central Park South Entrance', {lat:40.758, lng:-73.9855})"
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "description": "Destination name or drop-off point (e.g., 'Union Station', 'LAX Terminal 4')"
+          },
+          "pickupTime": {
+            "type": "string",
+            "description": "Desired pickup time. For immediate requests, use the current time. For reservations, use ISO 8601 format (e.g., '2025-08-21T03:30') and book at least 30 minutes in advance."
+          },
+          "passengerCount": {
+            "type": "integer",
+            "description": "Number of passengers (minimum 1, default 1). For 4 or more passengers, a van is recommended; for 5 or more, only a van is available."
+          },
+          "taxiType": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "black",
+              "van",
+              "wheelchair_accessible",
+              "luxury"
+            ],
+            "description": "Desired taxi type (default is 'standard'; 'van' is recommended for 4 or more passengers or 3+ pieces of luggage)."
+          },
+          "luggageCount": {
+            "type": "integer",
+            "description": "Number of luggage items (no default; e.g., 3 means '3 suitcases'). For 3 or more, a van is recommended."
+          },
+          "reservation": {
+            "type": "boolean",
+            "description": "Whether this is an advance booking. If true, pickupTime must be specified."
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Contact information required for reservations (e.g., '(202) 555-0189')."
+          },
+          "source": {
+            "type": "string",
+            "description": "Platform or service used to place the request (e.g., 'Uber', 'Lyft', 'Via')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "passengerCount",
+          "taxiType",
+          "pickupTime",
+          "pickupLocation",
+          "dropoffLocation",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "callDesignatedDriver",
+      "description": "A tool that helps you book and call a designated driver. By entering the pickup location and vehicle information, you can book a driver for a specific time or request one immediately. If you enter the destination, the tool can also estimate travel time and fare. Booking is not possible without vehicle information. For multiple requests, you can provide them as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined booking request sentence that naturally includes the current context and the user's request (e.g., 'Book a chauffeur service from JFK Airport to my home tonight.', 'Reserve a personal driver from my current location to LAX Terminal 4.')"
+          },
+          "pickupLocation": {
+            "type": [
+              "string",
+              "object"
+            ],
+            "description": "The starting location where the driver will pick up the car (place name, 'current location', or latitude/longitude coordinates. e.g., 'Grand Central Terminal', '{lat:37.511,lng:127.086}')"
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "description": "Destination address or place name (e.g., 'Times Square', 'Friend's house'). Used for estimating time and fare, and for driver assignment."
+          },
+          "pickupTime": {
+            "type": "string",
+            "description": "Desired departure time. Use 'now' for immediate requests, or ISO 8601 format for specific times (e.g., 'now', '2025-12-24T22:00:00'). The earliest booking time is 30 minutes to 2 hours from now."
+          },
+          "vehicleInfo": {
+            "type": "string",
+            "description": "Detailed information about the vehicle to be driven (make, color, license plate, etc. e.g., 'Black Tesla Model 3, plate ABC-1234'). Required for booking; requests without this will be rejected."
+          },
+          "passengerCount": {
+            "type": "integer",
+            "description": "Total number of passengers including the requester (e.g., 1, 3)"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Phone number for the driver to contact you (e.g., '(202) 555-0198')"
+          },
+          "reservation": {
+            "type": "boolean",
+            "description": "Indicates whether this is a pre-booking (e.g., true → 'Pre-book a designated driver for 11 PM tonight')"
+          },
+          "source": {
+            "type": "string",
+            "description": "The service platform or app name used to make the booking (e.g., \"Uber Black\", \"Lyft Lux\", \"Silvercar by Audi\", \"GroundLink\")"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "pickupLocation",
+          "vehicleInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookRentalCar",
+      "description": "Books a rental car based on the user's desired conditions. Enter pickup location, date, time, car type, insurance, driver information, options, etc., and the booking request will be processed. Cancellations and changes can only be made by directly contacting the rental car company. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A natural language refined query for the rental car booking request (e.g., 'Next Saturday at 10:00 am, rent me an SUV at JFK Airport')"
+          },
+          "pickupLocation": {
+            "type": "string",
+            "description": "The location where the car will be picked up (e.g., 'JFK Airport', 'Union Station')"
+          },
+          "dropoffLocation": {
+            "type": "string",
+            "description": "The location where the car will be returned (optional, defaults to pickup location if not specified)"
+          },
+          "pickupDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Pickup date and time (e.g., '2025-08-24T10:00')"
+          },
+          "returnDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Return date and time (e.g., '2025-08-26T16:00')"
+          },
+          "carType": {
+            "type": "string",
+            "description": "Desired car type or model name (e.g., 'compact', 'SUV', 'electric', 'economy')"
+          },
+          "driverAge": {
+            "type": "integer",
+            "description": "Driver's age (required depending on insurance conditions)"
+          },
+          "insuranceOption": {
+            "type": "string",
+            "enum": [
+              "basic",
+              "partial",
+              "full"
+            ],
+            "description": "Insurance option ('basic': excludes collision damage waiver, 'partial': includes collision damage waiver, 'full': full coverage)"
+          },
+          "additionalOptions": {
+            "type": "string",
+            "description": "Additional option requests (e.g., \"child safety seat\", \"include E-ZPass/FasTrak toll pass\", \"add an additional driver\")"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Contact information of the person booking (format: (202) 555-0173)",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "pickupLocation",
+          "pickupDateTime",
+          "returnDateTime",
+          "carType",
+          "driverAge",
+          "insuranceOption",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getTransitSchedule",
+      "description": "A tool that retrieves round-trip schedules for trains (Amtrak, commuter rail) and intercity buses (Greyhound, Megabus, FlixBus), based on departure location, arrival location, date, and type of transportation. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence reflecting the user's request (e.g., 'Show me the round-trip Amtrak schedule from New York to Washington, D.C. on 09/10/2025')"
+          },
+          "transportType": {
+            "type": "string",
+            "enum": [
+              "train",
+              "bus"
+            ],
+            "description": "'train': trains (Amtrak, commuter rail etc), 'bus': express or intercity buses"
+          },
+          "departureStation": {
+            "type": "string",
+            "description": "Name of the departure station or terminal (e.g., 'Washington Union Station', 'Port Authority Bus Terminal')"
+          },
+          "arrivalStation": {
+            "type": "string",
+            "description": "Name of the arrival station or terminal (e.g., 'Philadelphia 30th Street Station', 'Boston South Station')"
+          },
+          "departureDate": {
+            "type": "string",
+            "description": "Departure date (format: 'YYYY-MM-DD')"
+          },
+          "returnDate": {
+            "type": "string",
+            "description": "Return date (format: 'YYYY-MM-DD', optional. Can be set if roundTrip is true)"
+          },
+          "roundTrip": {
+            "type": "boolean",
+            "description": "Whether it is a round trip. If true, also retrieves the schedule for the return route from arrival to departure."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "transportType",
+          "departureStation",
+          "arrivalStation",
+          "departureDate"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookTransitTicket",
+      "description": "A tool for booking tickets for land transportation such as trains (Amtrak, commuter rail), intercity buses (Greyhound, Megabus, FlixBus). It processes booking requests by taking departure location, arrival location, date and time, type of transportation, seat class, number of passengers, etc., and also supports round-trip bookings. If making repeated calls for multiple targets, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence of the natural language booking request (e.g., \"Book a round-trip Amtrak ticket from New York to Washington, D.C. on 09/10/2025\")"
+          },
+          "transportType": {
+            "type": "string",
+            "enum": [
+              "train",
+              "bus"
+            ],
+            "description": "'train': Train (Amtrak, commuter rail, etc.), 'bus': Intercity bus (Greyhound, Megabus, etc.)"
+          },
+          "departureStation": {
+            "type": "string",
+            "description": "Name of the departure station or terminal (e.g., 'New York Penn Station')"
+          },
+          "arrivalStation": {
+            "type": "string",
+            "description": "Name of the arrival station or terminal (e.g., 'Boston South Station')"
+          },
+          "departureDate": {
+            "type": "string",
+            "description": "Departure date (format: 'YYYY-MM-DD')"
+          },
+          "departureTime": {
+            "type": "string",
+            "description": "Departure time or preferred time range (e.g., 'afternoon', '5:00 pm')"
+          },
+          "returnDate": {
+            "type": "string",
+            "description": "Return date (format: 'YYYY-MM-DD', optional), required if roundTrip is true",
+            "default": null
+          },
+          "returnTime": {
+            "type": "string",
+            "description": "Return time or preferred time range (e.g., 'morning', '10:00 pm', optional), required if roundTrip is true",
+            "default": null
+          },
+          "roundTrip": {
+            "type": "boolean",
+            "description": "Whether it is a round trip. If true, also book the return ticket",
+            "default": false
+          },
+          "seatType": {
+            "type": "string",
+            "enum": [
+              "standard",
+              "premium",
+              "business"
+            ],
+            "description": "Seat class ('standard': regular (default), 'premium': First Class / Acela First, 'business': Amtrak Business Class)",
+            "default": "standard"
+          },
+          "passengerCount": {
+            "type": "integer",
+            "description": "Number of passengers"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Contact information of the person booking (e.g., '(202) 555-0173')",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "transportType",
+          "departureStation",
+          "arrivalStation",
+          "departureDate",
+          "departureTime",
+          "seatType",
+          "roundTrip",
+          "passengerCount",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

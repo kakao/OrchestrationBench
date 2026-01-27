@@ -1,0 +1,129 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-07-18'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Show me next Wednesday’s MLB game schedule and the current team standings.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"Next Wednesday's\
+      \ MLB game schedule\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: sports_agent\n      refined_query:\
+      \ \"Current MLB team rankings\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"Next Wednesday\
+      \ MLB game schedule\"\n  league: \"MLB\"\n  targetDate: \"Next Wednesday\"\n\
+      tool_call_result:\n  data:\n    league: \"MLB\"\n    date: \"2025-07-23 (Wednesday)\"\
+      \n    games:\n      - home: \"Boston Red Sox\"\n        away: \"New York Yankees\"\
+      \n        time: \"7:10 PM ET\"\n        venue: \"Fenway Park, Boston, MA\"\n\
+      \n      - home: \"Atlanta Braves\"\n        away: \"New York Mets\"\n      \
+      \  time: \"7:20 PM ET\"\n        venue: \"Truist Park, Atlanta, GA\"\n\n   \
+      \   - home: \"San Francisco Giants\"\n        away: \"Los Angeles Dodgers\"\n\
+      \        time: \"6:45 PM PT\"\n        venue: \"Oracle Park, San Francisco,\
+      \ CA\"\n\n      - home: \"St. Louis Cardinals\"\n        away: \"Chicago Cubs\"\
+      \n        time: \"7:45 PM CT\"\n        venue: \"Busch Stadium, St. Louis, MO\"\
+      \n\n      - home: \"Texas Rangers\"\n        away: \"Houston Astros\"\n    \
+      \    time: \"7:05 PM CT\"\n        venue: \"Globe Life Field, Arlington, TX\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportRank\narguments:\n  refinedQuery: \"Current KBO team standings\"\
+      \n  league: \"MLB\"\n  season: \"2025\"\ntool_call_result:\n  data:\n    league:\
+      \ \"MLB\"\n    season: 2025\n    date: \"2025-07-18\"\n    rankings:\n     \
+      \ - rank: 1\n        team: \"Milwaukee Brewers\"\n        wins: 82\n       \
+      \ losses: 50\n        draws: 0\n        winRate: 0.621\n        gamesBehind:\
+      \ 0.0\n\n      - rank: 2\n        team: \"Detroit Tigers\"\n        wins: 78\n\
+      \        losses: 55\n        draws: 0\n        winRate: 0.586\n        gamesBehind:\
+      \ 4.5\n\n      - rank: 3\n        team: \"Toronto Blue Jays\"\n        wins:\
+      \ 77\n        losses: 55\n        draws: 0\n        winRate: 0.583\n       \
+      \ gamesBehind: 5.0\n\n      - rank: 4\n        team: \"Philadelphia Phillies\"\
+      \n        wins: 76\n        losses: 55\n        draws: 0\n        winRate: 0.580\n\
+      \        gamesBehind: 5.5\n\n      - rank: 5\n        team: \"Chicago Cubs\"\
+      \n        wins: 76\n        losses: 55\n        draws: 0\n        winRate: 0.580\n\
+      \        gamesBehind: 5.5\n\n      - rank: 6\n        team: \"Los Angeles Dodgers\"\
+      \n        wins: 75\n        losses: 57\n        draws: 0\n        winRate: 0.568\n\
+      \        gamesBehind: 7.0\n\n      - rank: 7\n        team: \"San Diego Padres\"\
+      \n        wins: 74\n        losses: 58\n        draws: 0\n        winRate: 0.561\n\
+      \        gamesBehind: 8.0\n\n      - rank: 8\n        team: \"Houston Astros\"\
+      \n        wins: 72\n        losses: 59\n        draws: 0\n        winRate: 0.550\n\
+      \        gamesBehind: 9.5\n\n      - rank: 9\n        team: \"Boston Red Sox\"\
+      \n        wins: 72\n        losses: 60\n        draws: 0\n        winRate: 0.545\n\
+      \        gamesBehind: 10.0\n\n      - rank: 10\n        team: \"New York Yankees\"\
+      \n        wins: 71\n        losses: 60\n        draws: 0\n        winRate: 0.542\n\
+      \        gamesBehind: 10.5"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '● MLB Game Schedule & Team Standings
+
+      ■ The schedule for next Wednesday, July 23 is as follows:
+
+
+      ▶ New York Yankees vs Boston Red Sox — 7:10 PM ET
+
+      Fenway Park, Boston, MA
+
+      ▶ New York Mets vs Atlanta Braves — 7:20 PM ET
+
+      Truist Park, Atlanta, GA
+
+      ▶ Los Angeles Dodgers vs San Francisco Giants — 6:45 PM PT
+
+      Oracle Park, San Francisco, CA
+
+      ▶ Chicago Cubs vs St. Louis Cardinals — 7:45 PM CT
+
+      Busch Stadium, St. Louis, MO
+
+      ▶ Houston Astros vs Texas Rangers — 7:05 PM CT
+
+      Globe Life Field, Arlington, TX
+
+
+      ● MLB (as of Jul 18, 2025)
+
+
+      League: MLB • Season: 2025
+
+
+      1. Milwaukee Brewers — 82–50 (.621), GB 0.0
+
+      2. Detroit Tigers — 78–55 (.586), GB 4.5
+
+      3. Toronto Blue Jays — 77–55 (.583), GB 5.0
+
+      4. Philadelphia Phillies — 76–55 (.580), GB 5.5
+
+      5. Chicago Cubs — 76–55 (.580), GB 5.5
+
+      6. Los Angeles Dodgers — 75–57 (.568), GB 7.0
+
+      7. San Diego Padres — 74–58 (.561), GB 8.0
+
+      8. Houston Astros — 72–59 (.550), GB 9.5
+
+      9. Boston Red Sox — 72–60 (.545), GB 10.0
+
+      10. New York Yankees — 71–60 (.542), GB 10.5'

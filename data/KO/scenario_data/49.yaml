@@ -1,0 +1,111 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'dateTime: 2026-09-21T17:30:00+09:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 급속 충전 가능한 가장 가까운 전기차 충전소 찾아줘. 거기로 가는 길 알려주고, 차 충전하는 동안 밥 먹을만한 곳도 추천해줄래?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"급속 충전 가능한\
+      \ 가장 가까운 전기차 충전소 검색\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"검색된 전기차 충전소로 가는 길 안내\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"전기차 충전소 근처 맛집 추천\""
+- workflow_id: null
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 현위치'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 현재 위치를 알려주시면 가장 가까운 전기차 충전소를 안내해드릴게요.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 나 지금 판교 코트야드 바이메리어트 호텔이야.
+- workflow_id: workflow_1
+  step_id: 7
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"코트야드 바이메리어트 판교에서 가장\
+      \ 가까운 급속 충전 가능 전기차 충전소 검색\"\n  placeCategory: \"전기차 충전소\"\n  location: \"코트야드\
+      \ 바이메리어트 판교\"\n  sortBy: \"distance\"\n  specialCondition: \"급속 충전\"\ntool_call_result:\n\
+      \  data:\n    - placeName: \"카카오 판교 오피스 주차장\"\n      category: \"주차장\"\n   \
+      \   address: \"경기 성남시 분당구 판교역로 235\"\n      distance: \"250m\"\n      specialInfo:\
+      \ \"전기차 급속 충전 가능\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"카카오 판교 오피스 주차장으로\
+      \ 가는 길 안내\"\n  origin: \"코트야드 바이메리어트 판교\"\n  destination: \"카카오 판교 오피스 주차장\"\
+      \n  departureTime: \"17:30\"\n  transportModes: \"car\"\n  optimizeBy: \"fastest\"\
+      \ntool_call_result:\n  data:\n    origin: \"코트야드 바이 메리어트 판교\"\n    destination:\
+      \ \"카카오 판교 오피스 주차장\"\n    departureTime: \"17:30\"\n    transportMode: \"car\"\
+      \n    duration: \"7분\"\n    distance: \"2.3km\"\n    estimatedArrivalTime: \"\
+      17:37\"\n    directions:\n      - step: 1\n        instruction: \"호텔 정문에서 우회전하여\
+      \ 분당내곡로로 진입\"\n        distance: \"300m\"\n      - step: 2\n        instruction:\
+      \ \"첫 번째 교차로에서 좌회전하여 삼평동길로 진입\"\n        distance: \"800m\"\n      - step: 3\n\
+      \        instruction: \"삼평교를 지나 직진 후, 판교역로로 우회전\"\n        distance: \"900m\"\
+      \n      - step: 4\n        instruction: \"카카오 판교 오피스 건물 주차장 입구로 우회전 진입\"\n \
+      \       distance: \"300m\"\n    trafficCondition: \"보통\"\n    toll: \"없음\"\n\
+      \    note: \"주차장 진입 시 건물 우측 램프 이용\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"카카오 판교 오피스\
+      \ 주차장 근처 맛집 추천\"\n  location: \"경기 성남시 분당구 판교역로 235 카카오 판교 오피스 주차장\"\n  sortBy:\
+      \ \"highest_rated\"\ntool_call_result:\n  data:\n    location: \"카카오 판교 오피스\
+      \ 주차장\"\n    sortBy: \"highest_rated\"\n    recommendations:\n      - name:\
+      \ \"스시효 판교\"\n        category: \"일식 / 오마카세\"\n        rating: 4.8\n       \
+      \ distance: \"도보 3분 (230m)\"\n        address: \"경기 성남시 분당구 판교역로 146번길 20\"\n\
+      \        openingHours: \"11:30–22:00\"\n        priceRange: \"₩₩₩₩\"\n     \
+      \   note: \"정통 스시 오마카세, 예약 필수\"\n\n      - name: \"봉피양 판교\"\n        category:\
+      \ \"한식 / 평양냉면, 불고기\"\n        rating: 4.7\n        distance: \"도보 5분 (400m)\"\
+      \n        address: \"경기 성남시 분당구 대왕판교로 606번길 58\"\n        openingHours: \"11:00–21:30\"\
+      \n        priceRange: \"₩₩₩\"\n        note: \"담백한 평양냉면과 숯불 불고기로 유명\"\n\n  \
+      \    - name: \"피에프창 판교점\"\n        category: \"아시안 퓨전 / 중식\"\n        rating:\
+      \ 4.6\n        distance: \"도보 6분 (500m)\"\n        address: \"경기 성남시 분당구 판교역로\
+      \ 192번길 16 알파돔시티 1층\"\n        openingHours: \"11:00–22:00\"\n        priceRange:\
+      \ \"₩₩₩\"\n        note: \"미국식 중화요리 브랜드, 가족 단위 외식에 적합\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "요청하신 가장 가까운 전기차 충전소와 가는 길, 그리고 충전하시는 동안 식사하실만한 곳을 함께 찾아드렸습니다.\n\n1.\
+      \ 가장 가까운 전기차 충전소\n* 충전소: '카카오 판교 오피스 주차장'\n* 주소: 경기 성남시 분당구 판교역로 235\n* 정보:\
+      \ 현재 위치에서 약 250m 거리에 있으며, 급속 충전이 가능합니다.\n\n2. 충전소로 가는 길\n* 코트야드 바이 메리어트 판교에서\
+      \ 카카오 판교 오피스 주차장까지는 차량으로 약 7분(2.3km) 정도 걸립니다.\n - 출발 시각: 17:30 → 도착 예상 시각: 17:37\n\
+      \ - 경로 요약: 분당내곡로 → 삼평동길 → 판교역로 → 주차장 진입\n - 교통 상황: 보통\n - 주의사항: 주차장 입구는 건물 우측\
+      \ 램프를 이용하세요.\n\n3. 주변 맛집 추천\n카카오 판교 오피스 주차장 근처 평점 높은 맛집 3곳을 추천드릴게요:\n* 스시효 판교\
+      \ – 정통 스시 오마카세 (도보 3분, ★4.8)\n* 봉피양 판교 – 평양냉면과 숯불 불고기 전문 (도보 5분, ★4.7)\n* 피에프창\
+      \ 판교점 – 분위기 좋은 아시안 퓨전 중식당 (도보 6분, ★4.6)\n각 식당 모두 점심·저녁 영업하며, 예약 또는 웨이팅 참고하시면\
+      \ 좋아요! \U0001F37D️\n\n편안하게 충전하시고 맛있는 식사도 즐기시길 바랍니다!"

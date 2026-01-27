@@ -1,0 +1,85 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'dateTime: 2025-04-21T11:30:00+09:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 목요일에 잠실야구장 경기랑 주변 공영 주차장 정보 찾아주고, 내일 오전 10시에 다시 한 번 알려줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sport_agent\n      refined_query: \"목요일 잠실야구장\
+      \ 경기\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n  \
+      \  - status: pending\n      name: transport_agent\n      refined_query: \"잠실\
+      \ 야구장 공영 주변 주차장 정보\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: [\"workflow_1\", \"workflow_2\"]\n  steps:\n    - status: pending\n\
+      \      name: calendar_agent\n      refined_query: \"내일 오전 10시에 목요일 잠실야구장 경기\
+      \ 및 주차장 정보 알림 요청\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"이번 주 목요일 잠실야구장\
+      \ 경기 일정 알려줘\"\n  league: \"KBO\"\n  targetDate: \"2025-04-24\"\ntool_call_result:\n\
+      \  gameInfo:\n    - date: \"2025-04-24\"\n      time: \"18:30\"\n      location:\
+      \ \"잠실야구장\"\n      homeTeam: \"LG 트윈스\"\n      awayTeam: \"두산 베어스\"\n      eventType:\
+      \ \"정규시즌\"\n      ticketLink: \"https://www.ticketlink.co.kr/sports/baseball/lg\"\
+      \n    - date: \"2025-04-24\"\n      time: \"18:30\"\n      location: \"문학야구장\"\
+      \n      homeTeam: \"SSG 랜더스\"\n      awayTeam: \"KIA 타이거즈\"\n      eventType:\
+      \ \"정규시즌\"\n      ticketLink: \"https://www.ticketlink.co.kr/sports/baseball/ssg\"\
+      \n    - date: \"2025-04-24\"\n      time: \"18:30\"\n      location: \"사직야구장\"\
+      \n      homeTeam: \"롯데 자이언츠\"\n      awayTeam: \"한화 이글스\"\n      eventType:\
+      \ \"정규시즌\"\n      ticketLink: \"https://www.ticketlink.co.kr/sports/baseball/lotte\"\
+      \n    - date: \"2025-04-24\"\n      time: \"18:30\"\n      location: \"고척스카이돔\"\
+      \n      homeTeam: \"키움 히어로즈\"\n      awayTeam: \"삼성 라이온즈\"\n      eventType:\
+      \ \"정규시즌\"\n      ticketLink: \"https://www.ticketlink.co.kr/sports/baseball/kiwoom\"\
+      \n    - date: \"2025-04-24\"\n      time: \"18:30\"\n      location: \"수원KT위즈파크\"\
+      \n      homeTeam: \"KT 위즈\"\n      awayTeam: \"NC 다이노스\"\n      eventType: \"\
+      정규시즌\"\n      ticketLink: \"https://www.ticketlink.co.kr/sports/baseball/kt\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"잠실야구장 주변 주차장 정보\"\
+      \n  location: \"잠실야구장\"\n  parkingType: \"public\"\n  date: \"2025-04-24\"\n\
+      \  sortBy: \"nearest\"\n  searchRadius: 500\ntool_call_result:\n  parkingOptions:\n\
+      \    - name: \"잠실종합운동장 제2주차장\"\n      address: \"서울 송파구 올림픽로 25\"\n      hourlyRate:\
+      \ \"1,000원/10분\"\n      availableSpots: 43\n      reservationAvailable: false\n\
+      \    - name: \"잠실야구장 공영주차장\"\n      address: \"서울 송파구 올림픽로 25길 10\"\n      hourlyRate:\
+      \ \"3,000원/시간\"\n      availableSpots: 20\n      reservationAvailable: false"
+- workflow_id: workflow_3
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"내일 오전 10시에 잠실야구장\
+      \ 목요일 경기와 주변 주차장 정보 알림\"\n  reminderContent: |\n    \U0001F4E3 4월 24일(목) 18:30\
+      \ LG vs 두산 경기 (잠실야구장)\n    \U0001F3AB 예매: https://www.ticketlink.co.kr/sports/baseball\
+      \  \n    \U0001F17F️ 주차장:\n    - 잠실종합운동장 제2주차장 (1,000원/10분)\n    - 잠실야구장 공영주차장\
+      \ (3,000원/시간)\n  reminderTime: \"2025-04-22T10:00:00+09:00\"\n  deliveryMethod:\
+      \ \"chat\"\n  repeatRule: \"none\"\n  priority: \"normal\"\ntool_call_result:\n\
+      \  status: \"scheduled\"\n  reminderId: \"reminder-20250424-jamsil\"\n  note:\
+      \ \"내일 오전 10시에 알림이 전송될 예정입니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "4월 24일(목) 잠실야구장 경기 일정과 주차장 정보를 확인했습니다.\n\n  - 경기: LG 트윈스 vs 두산 베어스,\
+      \ 오후 6시 30분, 잠실야구장  \n  - 예매 링크: [ticketlink](https://www.ticketlink.co.kr/sports/baseball)\n\
+      \  - 주차장 안내:\n    - 잠실종합운동장 제2주차장 (1,000원/10분)\n    - 잠실야구장 공영주차장 (3,000원/시간)\n\
+      \n 이 내용은 내일 오전 10시에 알림으로 다시 안내드릴게요."

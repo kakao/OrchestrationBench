@@ -1,0 +1,59 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2016-01-27'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 요즘 제일 인기 있는 범죄 수사 드라마가 뭐야? 그리고 그 드라마 남자 주인공 프로필도 찾아줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      요즘 가장 인기 있는 범죄 수사 드라마 정보 검색\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: person_agent\n\
+      \      refined_query: \"요즘 가장 인기 있는 범죄 수사 드라마 남자 주인공 프로필 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"요즘 가장 인기 있는 범죄\
+      \ 수사 드라마 정보 검색\"\n  genre: \"범죄 수사\"\ntool_call_result:\n  data:\n    programTitle:\
+      \ \"시그널\"\n    genre:\n      - \"드라마\"\n      - \"범죄 수사\"\n      - \"스릴러\"\n\
+      \    synopsis: \"과거로부터 걸려온 간절한 신호로 연결된 현재와 과거의 형사들이 오래된 미제 사건들을 다시 파헤치는 이야기\"\
+      \n    cast:\n      - \"이제훈\"\n      - \"김혜수\"\n    airDate: \"2016-01-22\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"시그널 주인공 이제훈 프로필 검색\"\
+      \n  personName: \"이제훈\"\n  roleType: \"배우\"\ntool_call_result:\n  data:\n  \
+      \  personName: \"이제훈\"\n    roleType: \"배우\"\n    birthDate: \"1984-07-04\"\n\
+      \    nationality: \"대한민국\"\n    agency: \"컴퍼니온\"\n    knownFor:\n      - \"\
+      파수꾼\"\n      - \"건축학개론\"\n      - \"시그널\"\n      - \"모범택시\"\n    filmography:\n\
+      \      - title: \"시그널\"\n        type: \"드라마\"\n        year: 2016\n      -\
+      \ title: \"모범택시\"\n        type: \"드라마\"\n        year: 2021\n      - title:\
+      \ \"건축학개론\"\n        type: \"영화\"\n        year: 2012"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "네, 요청하신 내용을 바탕으로 답변을 정리해 드릴게요.\n\n요즘 가장 인기 있는 범죄 수사 드라마 중 하나는 '시그널'입니다.\n\
+      \n드라마 정보 (시그널)\n* 소개: 과거와 현재의 형사들이 무전으로 연결되어 오래된 미제 사건들을 함께 파헤치는 이야기\n* 장르:\
+      \ 드라마, 범죄 수사, 스릴러\n* 주요 출연진: 이제훈, 김혜수\n\n이어서 '시그널'의 주인공 이제훈 배우의 프로필을 알려드릴게요.\n\
+      \n인물 정보 (이제훈)\n* 직업: 배우\n* 출생: 1984년 7월 4일\n* 소속사: 컴퍼니온\n* 대표작:\n    * 드라마:\
+      \ 시그널, 모범택시\n    * 영화: 파수꾼, 건축학개론\n\n더 궁금한 점이 있으시면 언제든지 다시 물어보세요!"

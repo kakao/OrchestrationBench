@@ -1,0 +1,100 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: '요즘 이영지 노래 너무 좋아서 많이 듣고있는데, 이영지 나온 예능 있나? 좀 알려줘
+
+      이영지 small girl 뮤직비디오 링크도 줘'
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      이영지가 나온 예능 추천\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"이영지의 small girl 뮤직비디오 링크\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"이영지가 나온 예능 추천\"\
+      \n  genre: \"예능\"\ntool_call_result:\n  tvPrograms:\n    - title: \"진격의 언니들\"\
+      \n      broadcaster: \"채널S\"\n      genre: \"예능\"\n      airDate: \"2023-05-16\"\
+      \n      description: \"이영지가 고정 패널로 출연하여 다양한 여성 게스트들의 사연을 듣고 솔직한 조언을 해주는 토크쇼\
+      \ 프로그램.\"\n      link: \"https://www.channelS.co.kr/show/attackSisters\"\n\n\
+      \    - title: \"놀면 뭐하니?\"\n      broadcaster: \"MBC\"\n      genre: \"예능\"\n\
+      \      airDate: \"2022-10-08\"\n      description: \"이영지가 프로젝트 멤버로 출연해 다양한 예능\
+      \ 콘텐츠에 도전하며 활약을 보여줌.\"\n      link: \"https://program.imbc.com/entertainus\"\
+      \n\n    - title: \"피크타임\"\n      broadcaster: \"JTBC\"\n      genre: \"예능\"\n\
+      \      airDate: \"2023-03-01\"\n      description: \"이영지가 래퍼 멘토로 출연해 경연 참가자들을\
+      \ 지도하며 인상 깊은 조언을 전함.\"\n      link: \"https://tv.jtbc.co.kr/peaktime\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"이영지의 small girl 뮤직비디오\
+      \ 링크\"\ntool_call_result:\n  videos:\n    - title: \"이영지 (Lee Young Ji) - 'Small\
+      \ girl (feat. DOH KYUNG SOO)' Official Music Video\"\n      uploadDate: \"2024-06-21\"\
+      \n      views: \"5.4M\"\n      link: \"https://www.youtube.com/watch?v=wsk95Mq0Cys\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 이영지 예능 출연작\n\n1. 진격의 언니들\n\n   * 채널: 채널S\n   * 방송일: 2023-05-16\n \
+      \  * 설명: 고정 패널로 출연해 여성 게스트들의 사연에 솔직한 조언을 해주는 토크쇼\n   * 링크: [진격의 언니들 바로가기](https://www.channelS.co.kr/show/attackSisters)\n\
+      \n2. 놀면 뭐하니?\n\n   * 채널: MBC\n   * 방송일: 2022-10-08\n   * 설명: 프로젝트 멤버로 참여하여 다양한\
+      \ 콘텐츠에 도전\n   * 링크: [놀면 뭐하니 바로가기](https://program.imbc.com/entertainus)\n\n\
+      3. 피크타임\n\n   * 채널: JTBC\n   * 방송일: 2023-03-01\n   * 설명: 래퍼 멘토로 출연해 경연 참가자 지도\n\
+      \   * 링크: [피크타임 바로가기](https://tv.jtbc.co.kr/peaktime)\n\n\n▶ 이영지 'small girl'\
+      \ 뮤직비디오 보러가기\n\nhttps://www.youtube.com/watch?v=wsk95Mq0Cys"
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 저 스몰걸에 피처링한 가수 도경수는 누구야?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"이영지가 나온 예능 추천\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"이영지의 small girl 노래 뮤직비디오 링크\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: person_agent\n \
+      \     refined_query: \"이영지의 small girl에 피처링한 가수 도경수 인물 정보\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"이영지의 small gril에 피처링한\
+      \ 가수 도경수 인물 정보\"\n  personName: \"도경수\"\n  roleType: \"가수\"\ntool_call_result:\n\
+      \  person:\n    name: \"도경수\"\n    stageName: \"디오 (D.O.)\"\n    birthDate:\
+      \ \"1993-01-12\"\n    nationality: \"대한민국\"\n    profession: [\"가수\", \"배우\"\
+      ]\n    group: \"EXO\"\n    debutYear: 2012\n    notableWorks:\n      - \"EXO\
+      \ 활동 (Growl, Love Shot 등)\"\n      - \"영화 <형>, <스윙키즈>\"\n      - \"드라마 <백일의\
+      \ 낭군님>\"\n    recentActivity: \"이영지의 'Small girl' 피처링 참여 (2024)\"\n    agency:\
+      \ \"SM엔터테인먼트\"\n    officialLinks:\n      - name: \"EXO 공식 홈페이지\"\n        url:\
+      \ \"https://exo.smtown.com\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "도경수 (D.O.) 인물 정보\n\n- 본명: 도경수\n- 예명: 디오 (D.O.)\n- 생년월일: 1993년 1월 12일\n\
+      - 국적: 대한민국\n- 직업: 가수, 배우\n- 소속 그룹: EXO\n- 데뷔 연도: 2012년\n- 주요 활동:\n  • EXO 활동\
+      \ - Growl, Love Shot 등\n  • 드라마 - 백일의 낭군님\n  • 영화 - 형, 스윙키즈\n- 최근 활동: 이영지 'Small\
+      \ girl' 피처링 참여 (2024)\n- 소속사: SM엔터테인먼트\n- 공식 링크: https://exo.smtown.com"

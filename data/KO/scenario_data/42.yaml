@@ -1,0 +1,254 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2023-11-24
+
+      - 시간: 15:30'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 한진택배로 지금 택배 예약해줘. 우리 이모한테 어린이 도서 좀 보내려고. 그리고 청주에서 어린이들이 보러 가기 좋은 공연 지금
+      미리 예매하게 추천 좀 해줘. 7살 아이들이야
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"지금 한진택배로\
+      \ 이모에게 보낼 어린이 도서 택배 예약\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"청주에서 7살 어린이들이 보러 가기 좋은 공연 추천\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: entertainment_agent\n      refined_query: \"청주에서 7살 어린이들이 보러 가기\
+      \ 좋은 공연 예매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 물품을 픽업할 장소, 물품을 받을 장소, 보내는 사람의 이름과 전화번호, 받는 사람의 이름과 전화번호'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"청주에서 7살 어린이들이\
+      \ 보러 가기 좋은 공연 추천\"\n  location: \"청주\"\n  ageRating: \"전체 관람가\"\n  sortBy: \"\
+      soonest\"\ntool_call_result:\n  data:\n    refinedQuery: \"청주에서 7살 어린이들이 보러\
+      \ 가기 좋은 공연 추천\"\n    location: \"청주\"\n    ageRating: \"전체 관람가\"\n    sortBy:\
+      \ \"soonest\"\n    status: \"추천 완료\"\n    performances:\n      - performanceID:\
+      \ \"PERF20231130_001\"\n        title: \"마법의 숲 이야기\"\n        venue: \"청주 문화예술회관\
+      \ 대극장\"\n        date: \"2023-11-30\"\n        time: \"14:00\"\n        ageRating:\
+      \ \"전체 관람가\"\n        description: \"아이들의 상상력을 자극하는 마법과 모험 이야기 공연\"\n      -\
+      \ performanceID: \"PERF20231205_002\"\n        title: \"꼬마 음악가들의 합주\"\n    \
+      \    venue: \"청주 어린이극장\"\n        date: \"2023-12-05\"\n        time: \"11:00\"\
+      \n        ageRating: \"전체 관람가\"\n        description: \"7살 어린이들이 즐길 수 있는 신나는\
+      \ 음악 합주 공연\"\n      - performanceID: \"PERF20231210_003\"\n        title: \"\
+      동화나라 인형극\"\n        venue: \"청주 작은극장\"\n        date: \"2023-12-10\"\n     \
+      \   time: \"15:00\"\n        ageRating: \"전체 관람가\"\n        description: \"\
+      아이들을 위한 재미있는 동화 인형극 공연\"\n  source: \"공연 정보 시스템\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예매를 희망하는 공연 정보, 예약을 원하는 총 인원 수, 관람자별 유형 목록(adult, child, senior,
+      disabled), 원하는 좌석 등급(R석, VIP석, S석, A석), 예매자 이름과 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 청주 7세 아동 추천 공연 안내
+
+
+      1) 마법의 숲 이야기
+
+
+      일시: 2023-11-30(목) 14:00
+
+      장소: 청주 문화예술회관 대극장
+
+      관람등급: 전체 관람가
+
+      소개: 아이들의 상상력을 자극하는 마법과 모험 이야기 공연
+
+
+      2) 꼬마 음악가들의 합주
+
+
+      일시: 2023-12-05(화) 11:00
+
+      장소: 청주 어린이극장
+
+      관람등급: 전체 관람가
+
+      소개: 7살 어린이들이 즐길 수 있는 신나는 음악 합주 공연
+
+
+      3) 동화나라 인형극
+
+
+      일시: 2023-12-10(일) 15:00
+
+      장소: 청주 작은극장
+
+      관람등급: 전체 관람가
+
+      소개: 아이들을 위한 재미있는 동화 인형극 공연
+
+
+      ▶ 택배 예약과 공연 예매를 진행하기 위해 아래 정보가 필요합니다.
+
+
+      1) 한진택배 예약
+
+
+      • 물품 픽업 장소
+
+      • 물품 수령(배송) 장소
+
+      • 보내는 사람 이름
+
+      • 보내는 사람 전화번호
+
+      • 받는 사람 이름
+
+      • 받는 사람 전화번호
+
+
+      2) 공연 예매
+
+
+      • 예매를 희망하는 공연 정보
+
+      • 예약 인원 수 (총 인원)
+
+      • 관람자별 유형 목록 (성인, 어린이, 노인, 장애인)
+
+      • 원하는 좌석 등급 (R석 / VIP석 / S석 / A석)
+
+      • 예매자 이름
+
+      • 예매자 연락처'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: '1. 한진택배 예약
+
+
+      • 물품 픽업 장소: 경기 이천시 향교로120번길 15 102호
+
+      • 물품 수령(배송) 장소: 충북 청주시 흥덕구 비하동 501호
+
+      • 보내는 사람 이름: 전원두
+
+      • 보내는 사람 전화번호: 010-4625-4312
+
+      • 받는 사람 이름: 장두식
+
+      • 받는 사람 전화번호: 010-5621-5235
+
+
+      2. 공연 예매
+
+
+      • 예매를 희망하는 공연 정보: 마법의 숲 이야기
+
+      • 예약 인원 수 (총 인원): 3명
+
+      • 관람자별 유형 목록 (성인, 어린이, 노인, 장애인): 성인1, 어린이 2
+
+      • 원하는 좌석 등급 (R석 / VIP석 / S석 / A석): A석
+
+      • 예매자 이름: 전원두
+
+      • 예매자 연락처: 010-4625-4312'
+- workflow_id: workflow_1
+  step_id: 9
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: bookDeliveryService\narguments:\n  refinedQuery: \"지금 한진택배로 장두식에게\
+      \ 보낼 어린이 도서 택배 예약\"\n  deliveryType: \"parcel\"\n  pickupLocation: \"경기 이천시\
+      \ 향교로120번길 15 102호\"\n  dropoffLocation: \"충북 청주시 흥덕구 비하동 501호\"\n  pickupTime:\
+      \ \"now\"\n  senderInfo:\n    name: 전원두\n    phone: 010-4625-4312\n  receiverInfo:\n\
+      \    name: 장두식\n    phone: 010-5621-5235\n  itemDescription: \"어린이 도서\"\n  reservation:\
+      \ false\n  source: \"한진택배\"\ntool_call_result:\n  data:\n    refinedQuery: \"\
+      지금 한진택배로 장두식에게 보낼 어린이 도서 택배 예약\"\n    deliveryType: \"parcel\"\n    pickupLocation:\
+      \ \"경기 이천시 향교로120번길 15 102호\"\n    dropoffLocation: \"충북 청주시 흥덕구 비하동 501호\"\n\
+      \    pickupTime: \"now\"\n    senderInfo:\n      name: \"전원두\"\n      phone:\
+      \ \"010-4625-4312\"\n    receiverInfo:\n      name: \"장두식\"\n      phone: \"\
+      010-5621-5235\"\n    itemDescription: \"어린이 도서\"\n    reservation: false\n \
+      \   status: \"예약 완료\"\n    trackingNumber: \"HJ202311240001\"\n    estimatedPickupTime:\
+      \ \"2023-11-24T15:30\"\n    message: \"한진택배로 어린이 도서 택배 예약이 성공적으로 완료되었습니다. 운송장\
+      \ 번호는 HJ202311240001이며, 픽업 예정 시간은 2023년 11월 24일 15시 30분입니다.\"\n  source: \"\
+      한진택배 예약 시스템\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookPerformance\narguments:\n  refinedQuery: \"마법의 숲 이야기 성인 1명\
+      \ 어린이 2명 A석으로 공연 예매\"\n  performanceTitle: \"마법의 숲 이야기\"\n  venueName: \"청주\
+      \ 문화예술회관 대극장\"\n  showDate: \"2023-11-30\"\n  showTime: \"14:00\"\n  audienceCount:\
+      \ 3\n  audienceTypes: [\"adult\", \"child\", \"child\"]\n  seatGrade: \"A석\"\
+      \n  userInfo:\n    name: 전원두\n    contactNumber: 010-4625-4312\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"마법의 숲 이야기 성인 1명 어린이 2명 A석으로 공연 예매\"\n    performanceTitle:\
+      \ \"마법의 숲 이야기\"\n    venueName: \"청주 문화예술회관 대극장\"\n    showDate: \"2023-11-30\"\
+      \n    showTime: \"14:00\"\n    audienceCount: 3\n    audienceTypes: [\"adult\"\
+      , \"child\", \"child\"]\n    seatGrade: \"A석\"\n    userInfo:\n      name: \"\
+      전원두\"\n      contactNumber: \"010-4625-4312\"\n    status: \"예매 완료\"\n    reservationID:\
+      \ \"PERF20231130_001_A3\"\n    message: \"청주 문화예술회관 대극장에서 2023년 11월 30일 '마법의\
+      \ 숲 이야기' 공연 A석 3석(성인 1명, 어린이 2명) 예매가 성공적으로 완료되었습니다.\"\n  source: \"공연 예매 시스템\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '요청하신 택배 예약과 공연 예매가 모두 완료되었습니다.
+
+
+      1. 한진택배 예약
+
+
+      • 품목: 어린이 도서
+
+      • 보내는 분: 전원두 (010-4625-4312)
+
+      • 받는 분: 장두식 (010-5621-5235)
+
+      • 운송장 번호: HJ202311240001
+
+      • 픽업 예정 시간: 2023년 11월 24일 15:30
+
+
+      2. 공연 예매
+
+
+      • 공연명: 마법의 숲 이야기
+
+      • 장소: 청주 문화예술회관 대극장
+
+      • 일시: 2023년 11월 30일 14:00
+
+      • 좌석: A석 3석 (성인 1명, 어린이 2명)
+
+      • 예매자: 전원두 (010-4625-4312)
+
+      • 예매 번호: PERF20231130_001_A3'

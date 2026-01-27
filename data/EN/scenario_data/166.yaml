@@ -1,0 +1,79 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Tell me what zodiac sign October 10 falls under, and recommend a birthday
+      gift that suits that sign. For reference, it’s for a woman, and the budget should
+      be at least $50.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"Zodiac\
+      \ sign information for someone born on October 10\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"Birthday gift\
+      \ recommendations worth at least $50 that suit the zodiac sign of a woman born\
+      \ on October 10\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getStarSignInfo\narguments:\n  refinedQuery: \"Horoscope information\
+      \ for someone born on October 10\"\n  birthDate: \"10-10\"\ntool_call_result:\n\
+      \  birthDate: \"10-10\"\n  starSign: \"Libra\"\n  characteristics:\n    - \"\
+      Values harmony\"\n    - \"Fair and balanced attitude\"\n    - \"Sociable and\
+      \ values relationships\"\n  dateRange: \"September 23 - October 22\"\n  status:\
+      \ \"completed\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"Recommend a birthday\
+      \ gift worth over $50 for a woman whose zodiac sign is Libra\"\n  gender: \"\
+      female\"\n  minPrice: 50\ntool_call_result:\n  refinedQuery: \"Recommend a birthday\
+      \ gift worth over $50 for a woman whose zodiac sign is Libra\"\n  gender: \"\
+      female\"\n  minPrice: 50\n  recommendations:\n    - product: \"Luxury Perfume\
+      \ Set\"\n      price: 75\n      description: \"A premium fragrance set perfect\
+      \ for Libras who appreciate balance in scents.\"\n    - product: \"Designer\
+      \ Jewelry\"\n      price: 95\n      description: \"Elegant jewelry with a refined\
+      \ design, ideal for sociable Libras.\"\n    - product: \"Premium Spa Voucher\"\
+      \n      price: 80\n      description: \"A spa experience offering rest and rejuvenation,\
+      \ perfect for Libras who value harmony.\"\n    - product: \"Art Deco Lamp\"\n\
+      \      price: 70\n      description: \"A stylish interior lamp for Libras with\
+      \ a strong sense of aesthetics.\"\n    - product: \"Mindfulness Journal\"\n\
+      \      price: 55\n      description: \"A self-reflection and journaling tool\
+      \ for Libras who seek a balanced life.\"\n  status: \"completed\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "◾Zodiac Information\n\nPeople born on October 10 fall under the sign\
+      \ of Libra.\n\n* Date range: September 23 – October 22\n* Key traits:\n  * Value\
+      \ harmony\n  * Fair and balanced attitude\n  * Social and relationship-oriented\n\
+      \nLibras appreciate balance and harmony in life. They thrive in social settings\
+      \ and value fairness, often admired for their sense of style and relationships.\n\
+      \n\n◾Birthday Gift Ideas Worth over $50 for Women with the Libra Zodiac Sign\n\
+      \nConsidering Libra’s traits of harmony, fairness, and sociability, here are\
+      \ some thoughtful gift ideas:\n\n1. Luxury Perfume Set\n   * Price: $75\n  \
+      \ * Description: A premium fragrance collection, reflecting Libra’s love of\
+      \ balance in scents.\n\n2. Designer Jewelry\n   * Price: $95\n   * Description:\
+      \ Elegant, stylish jewelry that highlights Libra’s refined and social nature.\n\
+      \n3. Premium Spa Voucher\n   * Price: $80\n   * Description: A rejuvenating\
+      \ spa experience, perfect for Libras who value harmony and relaxation.\n\n4.\
+      \ Art Deco Lamp\n   * Price: $70\n   * Description: A chic, stylish interior\
+      \ lamp for Libras with a strong sense of aesthetics.\n\n5. Mindfulness Journal\n\
+      \   * Price: $55\n   * Description: A journaling tool for reflection and balance,\
+      \ supporting Libra’s thoughtful lifestyle.\n\nThese options are tailored to\
+      \ Libra’s personality, so they will make for meaningful and memorable birthday\
+      \ gifts."

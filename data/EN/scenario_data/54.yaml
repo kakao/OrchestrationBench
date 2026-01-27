@@ -1,0 +1,84 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Contact: (202)222-3332
+
+      - Date: 2025-07-30'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I’m curious about the star sign of my female friend who was born on June
+      7, 1991. Also, what was the name of that exhibition we saw last time? I heard
+      YouTuber Underworld posted a video about visiting it—can you tell me?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"Check the\
+      \ star sign of my female friend who was born on June 7, 1991\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: entertainment_agent\n      refined_query: \"Look up the name of\
+      \ the last exhibition I visited\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: entertainment_agent\n      refined_query: \"Search for a video\
+      \ where YouTuber Underworld visited the last exhibition I saw\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getStarSignInfo\narguments:\n  refinedQuery: \"Check the star\
+      \ sign of my female friend who was born on June 7, 1991\"\n  birthDate: \"1991-06-07\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Check the star sign of my\
+      \ female friend who was born on June 7, 1991\"\n    birthDate: \"1991-06-07\"\
+      \n    starSign: \"Gemini\"\n    description: \"Gemini is known for being intellectual,\
+      \ highly social, and receptive to change and new experiences.\"\n    source:\
+      \ \"star Information System\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionReservationInfo\narguments:\n  refinedQuery: \"Look\
+      \ up the name of the last exhibition I visited\"\n  contactInfo: \"(202)222-3332\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Look up the name of the last\
+      \ exhibition I visited\"\n    contactInfo: \"(202)222-3332\"\n    exhibitions:\n\
+      \      - title: \"World of Cats\"\n        dateVisited: \"2025-04-20\"\n   \
+      \     location: \"Smithsonian National Museum\"\n        theme: \"Cats\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"YouTuber Underworld\
+      \ visiting the Cat World Exhibition\"\ntool_call_result:\n  result:\n    title:\
+      \ \"A Visit to the Cat World Exhibition with Chunbong\"\n    url: \"https://www.youtube.com/watch?v=example_cat_world\"\
+      \n    channel: \"Underworld\"\n    uploadDate: \"2025-05-20\"\n    description:\
+      \ \"A video where YouTuber Underworld visits the Cat World Exhibition and introduces\
+      \ various cat-themed artworks and displays.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "◾star of a Female Friend who was Born on June 7, 1991\n\n• star Sign:\
+      \ Gemini\n→ Geminis are known for being intellectual, sociable,\nand receptive\
+      \ to change and new experiences.\n\n\n◾Recent Exhibition History\nI found your\
+      \ most recent exhibition visit.\n\n1. The World of Cats\n  • April 20, 2025,\
+      \ Smithsonian National Museum\n  • Cat-themed exhibition\n\n\n◾YouTuber Underworld’s\
+      \ Exhibition Visit Video\nI found a video by YouTuber Underworld visiting *The\
+      \ World of Cats* exhibition!\n\n• Video Title: Visiting The World of Cats Exhibition\
+      \ with Chunbongcheomji\n• Channel: Underworld\n• Upload Date: May 20, 2025\n\
+      • Description: In this video, YouTuber Underworld personally visits the exhibition\
+      \ and introduces a variety of cat-themed artworks and displays.\n\nVideo Link:\
+      \ https://www.youtube.com/watch?v=example"

@@ -1,0 +1,121 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 연락처: 010-4242-7272
+
+      - 이름: 이이롬
+
+      - 날짜: 2024-07-02'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 예약되어 있는 호텔 취소 좀 해야겠어. 그날 가족모임이 있더라고. 그리고 전시도 예매한 거 있는데 취소할래
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"호텔 예약 내역\
+      \ 조회\"\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"가족 모임으로 호텔 예약 취소\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"전시 예매 내역 조회\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"전시 예매 취소\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationReservation\narguments:\n  refinedQuery: \"호텔\
+      \ 예약 내역 조회\"\n  name: \"이이롬\"\n  contactNumber: \"010-4242-7272\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"호텔 예약 내역 조회\"\n    name: \"이이롬\"\n    contactNumber:\
+      \ \"010-4242-7272\"\n    reservations:\n      - reservationId: \"ACCOM20240715\"\
+      \n        hotelName: \"롯데호텔 서울\"\n        roomType: \"디럭스 더블\"\n        checkInDate:\
+      \ \"2024-07-20\"\n        checkOutDate: \"2024-07-23\"\n        status: \"확정\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionReservationInfo\narguments:\n  refinedQuery: \"전시\
+      \ 예매 내역 조회\"\n  contactInfo: \"010-4242-7272\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"전시 예매 내역 조회\"\n    contactInfo: \"010-4242-7272\"\n   \
+      \ reservations:\n      - reservationId: \"EXH20240722-001\"\n        exhibitionName:\
+      \ \"현대미술 특별전\"\n        venue: \"혜화아트센터\"\n        date: \"2024-07-22\"\n  \
+      \      time: \"19:00\"\n        status: \"확정\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 환불이 진행될 방식(결제 수단으로 환불, 계좌 입금, 카카오페이 송금) 선택, 취소 결과 알림을 받을 수단(문자
+      메시지, 카카오톡, 이메일) 선택'
+- workflow_id: workflow_2
+  step_id: 7
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelExhibitionTicket\narguments:\n  refinedQuery: \"현대미술 특별전\
+      \ 예매 취소\"\n  reservationId: \"EXH20240722-001\"\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"현대미술 특별전 예매 취소\"\n    reservationId: \"EXH20240722-001\"\
+      \n    cancellationStatus: \"취소 완료\"\n    refundAmount: \"전액 환불\"\n    refundMethod:\
+      \ \"original_payment\"\n    message: \"현대미술 특별전 예약이 성공적으로 취소되었습니다. 환불 절차가 진행\
+      \ 중입니다.\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "다음 호텔 예약을 취소하려면 아래 정보가 필요합니다.\n\n[예약 내역]\n• 호텔명: 롯데호텔 서울\n• 체크인: 2024-07-20\n\
+      • 체크아웃: 2024-07-23\n\n[추가 확인 필요 사항]\n1. 환불 방식 선택\n - 결제 수단으로 환불\n - 계좌 입금\n\
+      \ - 카카오페이 송금\n\n2.취소 결과 알림 수단 선택\n - 문자 메시지\n - 카카오톡\n - 이메일\n\n위 두 가지를 알려주시면\
+      \ 취소 절차를 바로 진행하겠습니다."
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 결제수단으로 환불해주고, 카카오톡으로 알림 받을게
+- workflow_id: workflow_1
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelAccommodation\narguments:\n  refinedQuery: \"가족 모임으로 롯데호텔\
+      \ 서울 예약 취소\"\n  reservationId: \"ACCOM20240715\"\n  cancelReason: \"가족 모임\"\n\
+      \  refundMethod: \"original_payment\"\n  notifyVia: \"kakaotalk\"\ntool_call_result:\n\
+      \  data:\n    status: failed\n    errorCode: \"CANCEL_NOT_ALLOWED\"\n    message:\
+      \ \"해당 예약은 취소 불가 상품으로, 취소 처리가 불가능합니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '[호텔 예약 취소]
+
+      • 롯데호텔 서울 (체크인: 2024-07-20 ~ 체크아웃: 2024-07-23)
+
+      • 사유: 가족 모임
+
+      • 결과: 해당 예약은 취소 불가 상품이어서 취소 처리되지 않았습니다.
+
+
+      [전시 예매 취소]
+
+      • 현대미술 특별전 (혜화아트센터, 2024-07-22 19:00)
+
+      • 결과: 취소 완료, 전액 환불 예정 (결제 수단으로 환불)
+
+
+      → 호텔 예약은 조건상 취소가 불가능하니, 필요하다면 호텔 측에 직접 문의하시길 권장 드립니다.'

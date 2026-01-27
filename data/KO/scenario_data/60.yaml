@@ -1,0 +1,159 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- userId: user_1234
+
+      - current_date: 2025-07-17'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 어제 주문한 티셔츠는 취소하고, 대신 인스타에서 배우 한소희가 입었던 흰색 블라우스를 찾아서 주문해줘. 배송지는 내 기본 주소로
+      하고, 혹시 비슷한 스타일로 더 저렴한 것도 있으면 같이 보여줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"어제 주문한\
+      \ 티셔츠 주문 내역 조회\"\n    - status: pending \n      name: shopping_agent\n     \
+      \ refined_query: \"어제 주문한 티셔츠 주문 취소\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"인스타그램에서 배우 한소희가 착용한 흰색 블라우스 검색\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"인스타그램에서 배우 한소희가\
+      \ 착용한 흰색 블라우스 주문\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_2\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"인스타에서 배우 한소희가 착용한 흰색 블라우스와 비슷한 스타일의 더 저렴한 상품 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments: \n   refinedQuery: \"어제 주문한 티셔츠 주문\
+      \ 내역\"\n   userId: \"user_1234\"\n   orderDate: \"2025-07-16\"\ntool_call_result:\n\
+      \  data:\n    - orderId: \"ORD20250716-00123\"\n      orderDate: \"2025-07-16T15:15:00+09:00\"\
+      \n      userId: \"user_1234\"\n      status: \"상품 준비중\"\n      recipient:\n\
+      \        name: \"김민지\"\n        address: \"서울시 강남구 테헤란로 123, 드림아파트 101동 202호\"\
+      \n        phone: \"010-1234-5678\"\n      productItems:\n        - productId:\
+      \ \"PRD_N789\"\n          productName: \"나이키 스우시 반팔 티셔츠\"\n          color:\
+      \ \"블랙\"\n          size: \"L\"\n          quantity: 1\n          price: 35000\n\
+      \n    - orderId: \"ORD20250716-00128\"\n      orderDate: \"2025-07-16T18:40:00+09:00\"\
+      \n      userId: \"user_1234\"\n      status: \"결제 완료\"\n      recipient:\n \
+      \       name: \"김민지\"\n        address: \"서울시 강남구 테헤란로 123, 드림아파트 101동 202호\"\
+      \n        phone: \"010-1234-5678\"\n      productItems:\n        - productId:\
+      \ \"PRD_A456\"\n          productName: \"아디다스 로고 그래픽 티셔츠\"\n          color:\
+      \ \"화이트\"\n          size: \"L\"\n          quantity: 1\n          price: 39000"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"인스타그램에서 배우 한소희가\
+      \ 착용한 흰색 블라우스\"\n  productCategory: \"블라우스\"\n  color: \"흰색\"\n  source: \"\
+      한소희 인스타그램\"\n  sortBy: \"latest\"\ntool_call_result:\n  data:\n    - productId:\
+      \ \"BLS_D123_W\"\n      productName: \"디올 V&A 실크 오간자 블라우스\"\n      brand: \"\
+      Dior\"\n      price: 2800000\n      size: \"S, M, L\"\n      imageUrl: \"https://example.com/images/dior_blouse_hansohee.jpg\"\
+      \n      description: \"한소희 배우가 인스타그램에서 착용하여 화제가 된 실크 오간자 소재의 시그니처 블라우스입니다.\"\
+      \n      tags: [\"한소희블라우스\", \"연예인패션\", \"실크블라우스\"]\n      source: \"한소희 인스타그램\"\
+      \n    - productId: \"BLS_G456_W\"\n      productName: \"Ganni 프릴 칼라 포플린 블라우스\"\
+      \n      brand: \"Ganni\"\n      price: 250000\n      imageUrl: \"https://example.com/images/ganni_blouse_white.jpg\"\
+      \n      description: \"코튼 포플린 소재로 제작된 오버사이즈 프릴 칼라가 돋보이는 블라우스입니다.\"\n      tags:\
+      \ [\"프릴블라우스\", \"오버사이즈핏\"]\n      source: null"
+- workflow_id: null
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주문된 티셔츠 2건 중 취소할 상품 선택, 의류 상품 주문 시 사이즈 정보'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '##주문 상품 취소
+
+      고객님, 어제 주문하신 티셔츠 상품이 2건 확인됩니다. [나이키 스우시 반팔 티셔츠(주문번호: ORD20250716-00123)]와 [아디다스
+      로고 그래픽 티셔츠(주문번호: ORD20250716-00128)] 중 어떤 상품을 취소해드릴까요?
+
+
+      ##한소희 착용 상품 주문
+
+      한소희님이 착용한 상품으로 [디올 V&A 실크 오간자 블라우스 (2,800,000원)]가 검색되었습니다. 이 상품으로 주문을 진행해 드릴까요?
+      맞으시다면 원하시는 S, M L 중 사이즈를 선택해 주세요.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 나이키 스우시 반팔 티셔츠로 취소해주시고요. 디올 블라우스 주문할게요. M사이즈로요.
+- workflow_id: null
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelOrder\narguments:\n  refinedQuery: \"주문번호 ORD20250716-00123\
+      \ 나이키 티셔츠 주문 취소\"\n  orderId: \"ORD20250716-00123\"\n  cancelType: \"full\"\n\
+      \  refundMethod: \"original_method\"\ntool_call_result:\n  data:\n    orderId:\
+      \ \"ORD20250716-00123\"\n    status: \"취소 완료\"\n    message: \"주문이 정상적으로 취소되었습니다.\
+      \ 환불은 영업일 기준 1~3일 내에 처리됩니다.\"\n    refundInfo:\n      refundedAmount: 35000\n\
+      \      refundMethod: \"신용카드\"\n      expectedRefundDate: \"2025-07-21\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"디올 V&A 실크 오간자 블라우스\
+      \ M 사이즈 기본 배송지로 주문\"\n  userId: \"user_1234\"\n  productItems:\n    - productId:\
+      \ \"BLS_D123_W\"\n      productName: \"디올 V&A 실크 오간자 블라우스\"\n      size: \"\
+      M\"\n      color: \"흰색\"\n      quantity: 1\n      price: 2800000\n  shippingAddress:\n\
+      \    recipient: \"김민지\"\n    address: \"서울시 강남구 테헤란로 123, 드림아파트 101동 202호\"\n\
+      \    phone: \"010-1234-5678\"\ntool_call_result:\n  data:\n    orderId: \"ORD20250717-00301\"\
+      \n    status: \"결제 완료\"\n    message: \"주문이 정상적으로 완료되었습니다. 주문번호는 ORD20250717-00301입니다.\"\
+      \n    productItems:\n      - productName: \"디올 V&A 실크 오간자 블라우스\"\n        quantity:\
+      \ 1\n        price: 2800000\n    shippingInfo:\n      recipient: \"김민지\"\n \
+      \     address: \"서울시 강남구 테헤란로 123, 드림아파트 101동 202호\"\n      phone: \"010-1234-5678\"\
+      \n      estimatedDeliveryDate: \"2025-07-20\"\n    paymentInfo:\n      totalAmount:\
+      \ 2803000\n      shippingFee: 3000\n      paymentMethod: \"신용카드 (현대카드 1234---5678)\""
+- workflow_id: workflow_4
+  step_id: 11
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"디올 V&A 실크 오간자 블라우스와\
+      \ 비슷한 스타일의 저렴한 흰색 블라우스\"\n  productCategory: \"블라우스\"\n  color: \"흰색\"\n  sortBy:\
+      \ \"low_price\"\ntool_call_result:\n  data:\n    - productId: \"BLS_S111_W\"\
+      \n      productName: \"Sandro 실크 혼방 프릴 블라우스\"\n      brand: \"Sandro\"\n   \
+      \   price: 350000\n      imageUrl: \"https://example.com/images/sandro_blouse_white.jpg\"\
+      \n      description: \"부드러운 실크 혼방 소재로 제작되었으며, 넥라인과 소매의 프릴 디테일이 로맨틱한 무드를 연출합니다.\"\
+      \n      tags: [\"실크블라우스\", \"프릴블라우스\", \"로맨틱\"]\n    - productId: \"BLS_M222_W\"\
+      \n      productName: \"Maje 레이스 인서트 코튼 블라우스\"\n      brand: \"Maje\"\n     \
+      \ price: 290000\n      imageUrl: \"https://example.com/images/maje_blouse_white.jpg\"\
+      \n      description: \"정교한 레이스 인서트가 돋보이는 코튼 소재 블라우스로, 여성스럽고 세련된 룩을 완성합니다.\"\n\
+      \      tags: [\"레이스블라우스\", \"코튼블라우스\"]\n    - productId: \"BLS_C333_W\"\n  \
+      \    productName: \"COS 오가닉 코튼 퍼프 슬리브 블라우스\"\n      brand: \"COS\"\n      price:\
+      \ 135000\n      imageUrl: \"https://example.com/images/cos_blouse_white.jpg\"\
+      \n      description: \"볼륨감 있는 퍼프 소매가 특징인 오가닉 코튼 소재의 미니멀한 블라우스입니다.\"\n      tags:\
+      \ [\"퍼프소매\", \"미니멀\", \"오가닉코튼\"]"
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "고객님의 요청이 모두 처리되었습니다.\n\n*   주문 취소: 어제 주문하신 '나이키 스우시 반팔 티셔츠'의 주문(주문번호:\
+      \ ORD20250716-00123)은 정상적으로 취소되었습니다. 환불은 영업일 기준 1~3일 내에 결제하신 수단으로 처리될 예정입니다.\n\
+      \n*   상품 주문: 문의하신 한소희님의 블라우스는 '디올 V&A 실크 오간자 블라우스'로 확인되어, M 사이즈로 주문을 완료했습니다.\
+      \ 주문번호는 ORD20250717-00301이며, 고객님의 기본 배송지로 배송이 시작될 예정입니다.\n\n*   추가 상품 추천: 또한\
+      \ 요청하신 대로, 비슷한 스타일의 더 저렴한 블라우스들도 함께 찾아보았습니다.\n    *   산드로(Sandro): 실크 혼방 프릴\
+      \ 블라우스 (350,000원)\n    *   마쥬(Maje): 레이스 인서트 코튼 블라우스 (290,000원)\n    *   코스(COS):\
+      \ 오가닉 코튼 퍼프 슬리브 블라우스 (135,000원)\n\n더 필요하신 점이 있으시면 언제든지 다시 말씀해주세요."

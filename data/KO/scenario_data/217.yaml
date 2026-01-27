@@ -1,0 +1,86 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- birthday: "1995-05-15"
+
+      - gender: "male"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 에스파 노래 왜이렇게 좋아? 에스파랑 결혼할래. 나랑 가장 궁합 좋은 멤버 알려줘봐
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"에스파 멤버 생년월일\"\
+      \n    - status: pending\n      name: counsel_agent\n      refined_query: \"\
+      에스파 멤버 중 나와 궁합 좋은 멤버 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"에스파 멤버 생년월일\"\n  groupName:\
+      \ \"에스파\"\ntool_call_result:\n  members:\n    - name: \"카리나\"\n      realName:\
+      \ \"유지민\"\n      birthDate: \"2000-04-11\"\n      nationality: \"대한민국\"\n  \
+      \    position: [\"리더\", \"리드댄서\", \"서브보컬\", \"비주얼\"]\n      debutDate: \"2020-11-17\"\
+      \n      notes: \"에스파의 리더이자 뛰어난 춤선과 비주얼을 겸비한 멤버로, 그룹의 중심적 역할을 수행하고 있음.\"\n\n\
+      \    - name: \"윈터\"\n      realName: \"김민정\"\n      birthDate: \"2001-01-01\"\
+      \n      nationality: \"대한민국\"\n      position: [\"메인보컬\", \"리드댄서\"]\n      debutDate:\
+      \ \"2020-11-17\"\n      notes: \"맑고 고운 음색과 파워풀한 퍼포먼스를 모두 갖춘 멤버. 무대 위 안정적인 라이브\
+      \ 실력으로 호평.\"\n\n    - name: \"지젤\"\n      realName: \"우치나가 에리\"\n      birthDate:\
+      \ \"2000-10-30\"\n      nationality: \"일본\"\n      position: [\"메인래퍼\"]\n  \
+      \    debutDate: \"2020-11-17\"\n      notes: \"일본계 한국인으로 뛰어난 랩 실력과 4개 국어 사용이\
+      \ 가능하며 글로벌 팬덤과의 소통에 강점.\"\n\n    - name: \"닝닝\"\n      realName: \"닝이줘 (宁艺卓\
+      \ / Ning Yizhuo)\"\n      birthDate: \"2002-10-23\"\n      nationality: \"중국\"\
+      \n      position: [\"메인보컬\"]\n      debutDate: \"2020-11-17\"\n      notes:\
+      \ \"SM루키즈 출신의 실력파 메인보컬. 폭발적인 고음과 풍부한 감정 표현으로 팀의 보컬 라인을 이끎.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getCompatibilityInfo\n    arguments:\n      refinedQuery:\
+      \ \"카리나와 나의 궁합\"\n      personA:\n        birthDate: \"1995-05-15\"\n      \
+      \  gender: \"남자\"\n      personB:\n        birthDate: \"2000-04-11\"\n     \
+      \   gender: \"여자\"\n  - tool: getCompatibilityInfo\n    arguments:\n      refinedQuery:\
+      \ \"윈터와 나의 궁합\"\n      personA:\n        birthDate: \"1995-05-15\"\n       \
+      \ gender: \"남자\"\n      personB:\n        birthDate: \"2001-01-01\"\n      \
+      \  gender: \"여자\"\n  - tool: getCompatibilityInfo\n    arguments:\n      refinedQuery:\
+      \ \"지젤과 나의 궁합\"\n      personA:\n        birthDate: \"1995-05-15\"\n       \
+      \ gender: \"남자\"\n      personB:\n        birthDate: \"2000-10-30\"\n      \
+      \  gender: \"여자\"\n  - tool: getCompatibilityInfo\n    arguments:\n      refinedQuery:\
+      \ \"닝닝과 나의 궁합\"\n      personA:\n        birthDate: \"1995-05-15\"\n       \
+      \ gender: \"남자\"\n      personB:\n        birthDate: \"2002-10-23\"\n      \
+      \  gender: \"여자\"\n\ntool_call_result:\n  - compatibility:\n      score: 81\n\
+      \      description: \"두 사람 모두 활발하고 창의적인 성향을 가지고 있어 서로에게 긍정적인 영향을 미칠 수 있습니다.\
+      \ 특히, 카리나의 리더십과 당신의 지혜가 잘 어우러져 좋은 관계를 유지할 수 있을 것입니다.\"\n  - compatibility:\n\
+      \      score: 78\n      description: \"윈터와 당신은 서로 다른 성향을 가지고 있지만, 이를 보완하며 좋은\
+      \ 관계를 형성할 수 있습니다. 윈터의 활발함과 당신의 안정감이 조화를 이룰 수 있습니다.\"\n  - compatibility:\n \
+      \     score: 82\n      description: \"지젤과 당신은 서로의 장점을 잘 이해하며 긍정적인 관계를 유지할 가능성이\
+      \ 높습니다. 특히, 지젤의 창의성과 당신의 현실적인 사고가 잘 어우러질 수 있습니다.\"\n  - compatibility:\n   \
+      \   score: 75\n      description: \"닝닝과 당신은 서로 다른 관점을 가지고 있지만, 이를 통해 새로운 시각을\
+      \ 얻을 수 있습니다. 닝닝의 독창성과 당신의 경험이 조화를 이룰 수 있습니다.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '아, 연예인과 결혼이라, 큰 꿈을 꾸고 계시네요.
+
+
+      일단 지젤과 가장 궁합이 좋을 것으로 보여요. 지젤과 당신은 서로의 장점을 잘 이해하며 긍정적인 관계를 유지할 가능성이 높습니다. 특히,
+      지젤의 창의성과 당신의 현실적인 사고가 잘 어우러질 수 있습니다.
+
+
+      행운을 빌게요!'

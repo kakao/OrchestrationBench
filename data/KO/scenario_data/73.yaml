@@ -1,0 +1,231 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'dataTime: "2024-06-29T09:10"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 8월 1일 파리에 가는 항공권 예매하고 싶어. 그날 수원역에서 인천공항 가는 최적의 교통편이랑 파리 날씨도 알려줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"8월 1일에 파리\
+      \ 가는 항공권 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      8월 1일 수원역에서 인천공항 가는 최적의 교통편 추천\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: weather_agent\n\
+      \      refined_query: \"8월 1일 파리 날씨\"\n\nworkflow_4:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: travel_agent\n      refined_query: \"8월 1일에 파리 가는 항공권 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "name: findFlightInfo\narguments:\n  refinedQuery: \"8월 1일에 파리 가는 항공권\
+      \ 조회\"\n  departure: \"ICN\"\n  destination: \"파리\"\n  departureDate: \"2025-08-01\"\
+      \ntool_call_result:\n  flights:\n    - flight_number: KE901\n      tripId: T1001993-I\n\
+      \      airline: Korean Air\n      departure_airport: ICN\n      arrival_airport:\
+      \ CDG\n      departure_time: \"2025-08-01T15:00:00+09:00\"\n      arrival_time:\
+      \ \"2025-08-01T22:10:00+02:00\"\n      duration: \"12h 10m\"\n      price: 870000\n\
+      \      currency: KRW\n      seat_class: Economy\n      available_seats: 9\n\
+      \    - flight_number: KE901\n      tripId: T1001993-B\n      airline: Korean\
+      \ Air\n      departure_airport: ICN\n      arrival_airport: CDG\n      departure_time:\
+      \ \"2025-08-01T15:00:00+09:00\"\n      arrival_time: \"2025-08-01T22:10:00+02:00\"\
+      \n      duration: \"12h 10m\"\n      price: 1950000\n      currency: KRW\n \
+      \     seat_class: Business\n      available_seats: 4"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "name: getDirections\narguments:\n  refinedQuery: \"8월 1일 수원역에서 인천공항\
+      \ 가는 최적의 교통편 추천\"\n  origin: \"수원역\"\n  destination: \"인천공항\"\n  departureTime:\
+      \ \"2025-08-01T09:10\"\ntool_call_result:\n  routes:\n    - type: \"공항버스\"\n\
+      \      summary: \"수원역에서 공항버스 이용 (직통)\"\n      departure_time: \"2025-08-01T09:20\"\
+      \n      arrival_time: \"2025-08-01T10:40\"\n      duration: \"1시간 20분\"\n  \
+      \    fare: 12000\n      currency: \"KRW\"\n      steps:\n        - mode: \"\
+      버스\"\n          departure: \"수원역 공항버스 정류장\"\n          arrival: \"인천국제공항 제1터미널\"\
+      \n          bus_number: \"4000번\"\n          travel_time: \"1시간 20분\"\n    -\
+      \ type: \"지하철 + 공항철도\"\n      summary: \"지하철과 공항철도를 이용한 경로\"\n      departure_time:\
+      \ \"2025-08-01T09:15\"\n      arrival_time: \"2025-08-01T11:00\"\n      duration:\
+      \ \"1시간 45분\"\n      fare: 4850\n      currency: \"KRW\"\n      steps:\n   \
+      \     - mode: \"지하철\"\n          line: \"1호선\"\n          departure: \"수원역\"\
+      \n          arrival: \"서울역\"\n          travel_time: \"55분\"\n        - mode:\
+      \ \"공항철도\"\n          line: \"직통열차\"\n          departure: \"서울역\"\n       \
+      \   arrival: \"인천공항 제1터미널\"\n          travel_time: \"50분\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "name: getGlobalWeather\narguments:\n  refinedQuery: \"8월 1일 파리의 날씨 예보\"\
+      \n  location: \"파리\"\n  date: \"2025-08-01\"\ntool_call_result:\n  location:\
+      \ Paris\n  date: \"2025-08-01\"\n  weather:\n    temperature:\n      min: 18\n\
+      \      max: 27\n      unit: \"°C\"\n    condition: \"맑음\"\n    humidity: 55\n\
+      \    wind:\n      speed: 10\n      unit: \"km/h\"\n      direction: \"남서\"\n\
+      \    precipitationChance: 5\n    sunrise: \"2025-08-01T06:15:00+02:00\"\n  \
+      \  sunset: \"2025-08-01T21:00:00+02:00\"\n    advice: \"쾌적한 날씨로 야외 활동에 적합합니다.\
+      \ 자외선 차단제를 준비하세요.\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 탑승자 인원, 탑승자 영문 이름, 생일, 성별, 연락처, 여권번호, 국적, 좌석등급, 수화물 옵션, 마일리지
+      사용 여부'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "8월 1일 인천(ICN) 출발 ✈️ 파리(CDG) 도착 항공편은 다음과 같습니다:\n\n✈️ 항공편: Korean Air\
+      \ (KE901)\n출발 시간: 2025년 8월 1일 15:00 (KST, 인천)\n도착 시간: 2025년 8월 1일 22:10 (CEST,\
+      \ 파리)\n소요 시간: 12시간 10분\n항공사: 대한항공\n\n\U0001F4BA 좌석 옵션\n이코노미석\n- 요금: 870,000원\n\
+      - 이용 가능 좌석: 9석\n\n비즈니스석\n- 요금: 1,950,000원\n- 이용 가능 좌석: 4석\n\n항공권 예약을 진행하기 위해\
+      \ 아래 정보를 알려주세요.\n\n✅ 필수 정보\n탑승자 인원 수: \n\n탑승자1 \n영문 이름:\n생년월일:\n성별:\n연락처:\n\
+      여권번호:\n국적:\n\n탑승자2\n영문 이름:\n생년월일:\n성별:\n연락처:\n여권번호:\n국적:\n\n✍️ 여러 명일 경우, 위 정보를\
+      \ 각 탑승자별로 작성해 주세요.\n\n✳️ 선택 정보 (있을 경우)\n좌석 등급: 일반석 / 비즈니스석 / 일등석\n수하물 옵션: 무료\
+      \ 수화물 / 추가 수화물 /기내 반입 수화물\n마일리지 사용 여부: \n\n필요한 정보를 모두 입력해 주시면 항공권 예약을 빠르게 도와드릴\
+      \ 수 있어요."
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: "✅ 필수 정보\n탑승자 인원 수: 2\n\n탑승자1 \n이름: Soohyun Park \n생년월일: 1998-02-25\n\
+      성별: 남\n연락처: 010-1115-7894\n여권번호: M213A100\n국적: 대한민국\n\n탑승자2\n이름: Hyun Kang\n\
+      생년월일: 1999-12-01\n성별: 남\n연락처: 010-2312-5555\n여권번호: M399B123\n국적: 대한민국\n\n✳️\
+      \ 선택 정보 (있을 경우)\n좌석 등급: 일반석\n수하물 옵션: 무료 수화물\n마일리지 사용 여부: 사용 안함"
+- workflow_id: null
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "name: bookFlight\narguments:\n  refinedQuery: \"8월 1일에 파리 가는 항공권 예약\"\
+      \n  tripID: \"T1001993-I\"\n  passengerInfoList:\n    - name: \"Soohyun Park\
+      \ \"\n      birthDate: \"1998-02-25\"\n      gender: \"male\"\n      passportNumber:\
+      \ \"M213A100\"\n      nationality: \"KR\"\n      contactNumber: \"010-1115-7894\"\
+      \n    - name: \"Hyun Kang\"\n      birthDate: \"1999-12-01\"\n      gender:\
+      \ \"male\"\n      passportNumber: \"M399B123\"\n      nationality: \"KR\"\n\
+      \      contactNumber: \"010-2312-5555\"\n  seatClass: economy\n  baggageOption:\
+      \ basic\n  useMileage: false\ntool_call_result:\n  success: true\n  reservationId:\
+      \ \"RZV20250715-001\"\n  tripID: \"T1001993-I\"\n  flight_number: \"KE901\"\n\
+      \  seatClass: \"economy\"\n  departure_airport: \"ICN\"\n  arrival_airport:\
+      \ \"CDG\"\n  departure_time: \"2025-08-01T15:00:00+09:00\"\n  arrival_time:\
+      \ \"2025-08-01T22:10:00+02:00\"\n  passengers:\n    - name: \"Soohyun Park\"\
+      \n      seat_number: \"31A\"\n      ticket_number: \"180-1234567890\"\n    -\
+      \ name: \"Hyun Kang\"\n      seat_number: \"31B\"\n      ticket_number: \"180-1234567891\"\
+      \n  price_total: 1740000     # 870000 x 2\n  currency: \"KRW\"\n  baggageOption:\
+      \ \"basic\"\n  useMileage: false\n  message: \"예약이 성공적으로 완료되었습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '1. 항공권 (서울(ICN) → 파리(CDG/ORY))
+
+
+      8월 1일 인천(ICN) 출발 ✈️ 파리(CDG) 도착 항공편 예약이 성공적으로 완료되었습니다.
+
+
+      - 항공편 정보
+
+      항공사/편명: 대한항공 (KE901)
+
+      좌석 등급: 이코노미 (economy)
+
+      출발 시간: 2025년 8월 1일 15:00 (KST, 인천)
+
+      도착 시간: 2025년 8월 1일 22:10 (CEST, 파리)
+
+      소요 시간: 약 12시간 10분
+
+      총 결제 금액: 1,740,000원 (870,000원 × 2명)
+
+      수하물 옵션: 무료 수화물 포함
+
+      마일리지 사용: 사용 안함
+
+
+      - 승객 정보 및 좌석
+
+      이름        좌석 번호        티켓 번호
+
+      SooHyun Park        31A        180-1234567890
+
+      Hyun Kang        31B        180-1234567891
+
+
+      - 예약 ID
+
+      RZV20250715-001
+
+      ------------------------------------------------------------
+
+
+      2. 공항 교통 — 인천공항 가는 최적 루트
+
+
+      공항 가는 최적 교통편은 다음과 같습니다.
+
+
+      - 공항버스 (직통 추천)
+
+      출발: 오전 9:20 (수원역 공항버스 정류장)
+
+      도착: 오전 10:40 (인천공항 제1터미널)
+
+      소요 시간: 1시간 20분
+
+      요금: 12,000원
+
+      버스 번호: 4000번
+
+      ➡️ 환승 없이 가장 간편하고 빠른 방법
+
+
+      - 지하철 + 공항철도
+
+      출발: 오전 9:15
+
+      도착: 오전 11:00
+
+      소요 시간: 1시간 45분
+
+      요금: 4,850원
+
+      경로:
+
+      지하철 1호선 (수원역 → 서울역)
+
+      공항철도 직통열차 (서울역 → 인천공항)
+
+      ➡️ 저렴하지만 환승이 필요하고 시간이 더 걸림
+
+
+      ✅ 빠르고 편하게 가려면 공항버스,
+
+      💸 비용을 아끼려면 지하철 + 공항철도를 추천합니다.
+
+      ------------------------------------------------------------
+
+
+      3. 8월 1일 파리 날씨 예보
+
+
+      파리 8월 1일 날씨는 맑고, 최저 18도, 최고 27도 예상됩니다. 습도는 55%, 남서풍 10km/h 불며, 강수 확률은 5%로 매우
+      낮습니다. 쾌적한 날씨라 야외 활동하기 좋고, 자외선 차단제 준비를 권장드립니다.'

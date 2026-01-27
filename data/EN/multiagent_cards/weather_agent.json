@@ -1,0 +1,96 @@
+{
+  "agent_card": {
+    "name": "Weather",
+    "agent_id": "weather_agent",
+    "description": "Provides real-time and future weather information, allowing you to query various climate factors such as temperature, precipitation, and air quality for both local & global locations. Also offers weather advice tailored to travel, daily planning, health management, and more.",
+    "url": "http://localhost:10005/",
+    "capabilities": {
+      "streaming": true,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getDomesticWeather",
+        "name": "Local Weather",
+        "description": "Provides weather, air quality, and climate information for major cities and based on your current location. Can also handle queries about pressure, precipitation, perceived temperature, comparisons to the previous day, and more.",
+        "examples": [
+          "What's the temperature near the beach in San Diego today?",
+          "Is there a chance of rain in San Francisco this weekend?",
+          "How's the air quality at my current location right now?",
+          "Is Chicago cooler today than yesterday?",
+          "Is there a high chance of rain this evening?",
+          "Give me a quick summary of tomorrow's weather in Upper East Side."
+        ]
+      },
+      {
+        "id": "getGlobalWeather",
+        "name": "Global Weather",
+        "description": "Check current or specific date climate information, seasonal trends, and rain/snow forecasts for cities or countries worldwide. Supports English city names and various date expressions.",
+        "examples": [
+          "What's the weather like in Rome next Friday?",
+          "What's the current temperature in Moscow?",
+          "I'm traveling to New York on Aug 12, 2025 — will it be hot?",
+          "Is there a rain forecast for Sydney today?",
+          "In London during winter, does it usually rain more or snow more?",
+          "When does it start to cool down in Cairo?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getDomesticWeather",
+      "description": "A tool to retrieve weather information for a specific domestic location or your current location, including precipitation probability, air quality, pressure, temperature changes, and more, based on a natural language query. If calling repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined weather information request query that reflects the user's input and previous context (e.g., 'Chance of rain this afternoon', 'Air quality index', 'Is it warmer than yesterday?')"
+          },
+          "location": {
+            "type": "string",
+            "description": "Name of the domestic location to check the weather for (e.g., \"New York\", \"Los Angeles\", \"Chicago\", \"My location\"). If not provided, defaults to the user's current location; if location cannot be determined, defaults to 'New York'."
+          },
+          "date": {
+            "type": "string",
+            "description": "An explicit date in the format 'YYYY-MM-DD' (e.g., '2024-07-15'). Natural language inputs are converted into a specific date. The default is the current date. Date ranges are not supported; only a single date can be specified."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "date",
+          "location"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getGlobalWeather",
+      "description": "A tool that allows you to look up current and future weather and climate information for global cities or countries, based on various date conditions. If you want to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A natural language query refined to reflect the user's original question and conversation context (e.g., 'temperature in Tokyo next month', 'Rain forecast in Edinburgh in September')"
+          },
+          "location": {
+            "type": "string",
+            "description": "Specify the city or country in English for which you want to check the weather or climate information. Must be in English (e.g., 'London', 'Vietnam', 'Buenos Aires')."
+          },
+          "date": {
+            "type": "string",
+            "description": "The date or period for which you want to check the weather. Natural language expressions are allowed (e.g., 'tomorrow', 'mid-December', 'now')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "location",
+          "date"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

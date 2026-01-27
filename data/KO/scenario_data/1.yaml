@@ -1,0 +1,97 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜: 2025-07-14
+
+      - 현재 시간: 14:45
+
+      - 이름 : 김사람
+
+      - 연락처 : 010-1234-5678
+
+      - 현위치: 서울 서대문구 연세로 50'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 오후 3시에 계약서 퀵으로 보내야해!
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"오늘 오후\
+      \ 3시 계약서 퀵 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: pickupTime이 현재 시각 기준 30분 이내로 설정되어 예약 불가'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 예약 가능한 시간은 현재 시각 기준 최소 30분 이후부터입니다. 시간을 다시 확인해 주세요.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 음 그럼 4시로 예약해주라
+- workflow_id: null
+  step_id: 7
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 물품 픽업 장소, 물품 받는 장소, 수령인 이름, 수령인 연락처'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 물품 픽업 장소, 물품 받는 장소, 물품 받는 분 이름과 연락처 정보를 알려주시면 예약을 진행할 수 있습니다.
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 아 픽업은 지금 나 있는 데로 오면 되고, 나는 지하 1층에 있어~ 물품은 용산 아모레퍼시픽 5층 회의실로 가면 거기 박수저라고
+      있거든? 그분한테 주면 돼. 박수저, 010-4545-4545
+- workflow_id: null
+  step_id: 10
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: bookDeliveryService\narguments:\n  refinedQuery: \"오늘 오후 4시에 내\
+      \ 위치 지하 1층에서 용산 아모레퍼시픽 5층 회의실로 계약서를 박수저에게 퀵 배송 예약\"\n  deliveryType: \"quick\"\
+      \n  pickupLocation: \"서울 서대문구 연세로 50 지하 1층\"\n  dropoffLocation: \"용산 아모레퍼시픽\
+      \ 5층 회의실\"\n  pickupTime: \"2025-07-14T16:00\"\n  senderInfo:\n    name: \"\
+      김사람\"\n    phone: \"010-1234-5678\"\n  receiverInfo:\n    name: \"박수저\"\n  \
+      \  phone: \"010-4545-4545\"\n  itemDescription: \"계약서\"\n  reservation: true\n\
+      tool_call_result:\n  data:\n    reservationId: \"QK202507141600001\"\n    pickupLocation:\
+      \ \"서울 서대문구 연세로 50 지하 1층\"\n    dropoffLocation: \"용산 아모레퍼시픽 5층 회의실\"\n    pickupTime:\
+      \ \"2025-07-14T16:00\"\n    deliveryType: \"quick\"\n    senderInfo:\n     \
+      \ name: \"김사람\"\n      phone: \"010-1234-5678\"\n    receiverInfo:\n      name:\
+      \ \"박수저\"\n      phone: \"010-4545-4545\"\n    itemDescription: \"계약서\"\n  \
+      \  status: \"예약 완료\"\n  source: \"퀵배송 서비스 API\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "오늘 오후 4시에 서울 서대문구 연세로 50 지하 1층에서 용산 아모레퍼시픽 5층 회의실로 계약서를 박수저님께 퀵 배송 예약이\
+      \ 완료되었습니다. \n예약 번호는 QK202507141600001입니다."

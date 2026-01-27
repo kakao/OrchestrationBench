@@ -1,0 +1,491 @@
+{
+  "agent_card": {
+    "name": "Places",
+    "agent_id": "place_agent",
+    "description": "Provides a full range of location-related services you need in daily life, including recommendations for various places and restaurants, place search and reservations, and even real estate information.",
+    "url": "http://localhost:10020/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "recommendRestaurants",
+        "name": "Restaurant Recommendations",
+        "description": "Recommends restaurants tailored to the user based on various conditions such as location, cuisine type, budget, ambience, and dietary restrictions.",
+        "examples": [
+          "Recommend a quiet Japanese restaurant in Soho",
+          "Where can I find a budget-friendly dessert café near Santa Monica Beach?",
+          "Suggest a BBQ place good for group gatherings in Midtown",
+          "Can you pick a good brunch spot in Williamsburg?",
+          "Recommend a pasta restaurant in downtown that offers vegetarian options"
+        ]
+      },
+      {
+        "id": "searchPlaces",
+        "name": "Search Places",
+        "description": "Provides lifestyle and everyday place information tailored to specific conditions (target audience, time, special facilities, etc.). Easily search for various places such as medical clinics, hair salons, and kids’ play centers by category, location, companions, and special services.",
+        "examples": [
+          "Find a dermatology clinic in Chelsea that’s great at therapy treatments",
+          "Is there a registered EV charging station nearby on Uber?",
+          "Find an oriental medicine clinic I can take my elderly grandmother to this Saturday",
+          "Search for a hair salon in Brooklyn with a children’s playroom",
+          "Is there an outdoor kids’ café in Queens suitable for three people?"
+        ]
+      },
+      {
+        "id": "reservePlaces",
+        "name": "Reserve Places",
+        "description": "Helps you book your desired place such as restaurants, hospitals, and hair salons. You can make customized reservations with details like date, time, number of people, and special requests. You must specify the place via 'Restaurant Recommendations' or 'Search Places'.",
+        "examples": [
+          "Book a seaside-view restaurant in Malibu for 5 people tomorrow at 7pm",
+          "Can you reserve a dentist appointment in Uptown this Friday at noon?",
+          "Reserve a spot at the pet-friendly café in Brooklyn today at 3pm",
+          "Please book a vet appointment in Beverly Hills tomorrow at 2pm for my dog",
+          "Reserve a group dinner venue next Wednesday at 6pm"
+        ]
+      },
+      {
+        "id": "getPlaceReservationInfo",
+        "name": "Check Place Reservations",
+        "description": "Checks reservation details based on the contact information of the person who booked.",
+        "examples": [
+          "Tell me my hospital appointment scheduled for tomorrow",
+          "Check if there’s coffee shop reservation under the name John Smith",
+          "I want to see all my hospital reservations for this week"
+        ]
+      },
+      {
+        "id": "cancelPlaceReservation",
+        "name": "Cancel Place Reservation",
+        "description": "Cancels an existing reservation and optionally allows you to provide a reason. You must select the reservation to cancel via 'Check Place Reservations'.",
+        "examples": [
+          "Cancel my pho restaurant lunch reservation for tomorrow",
+          "Cancel my Friday evening reservation, my schedule changed",
+          "I want to cancel my reservation at Café Plant"
+        ]
+      },
+      {
+        "id": "modifyPlaceReservation",
+        "name": "Modify Place Reservation",
+        "description": "Allows you to change details such as date, time, number of people, and requests based on an existing reservation. You must select the reservation to modify via 'Check Place Reservations'.",
+        "examples": [
+          "Change my hair salon appointment from this Saturday to next Saturday",
+          "I booked an indoor playground for 4 people, can you reduce it to 2?",
+          "I booked a restaurant for 7pm yesterday, but I just want to change the time to 8pm"
+        ]
+      },
+      {
+        "id": "getRealEstateInfo",
+        "name": "Real Estate Information",
+        "description": "Provides real estate information for various types such as apartments, condos, townhouses, and single-family homes for sale, lease, or rent, filtered by area, location, price, complex name, etc.",
+        "examples": [
+          "How much is the lease for a newly built 700 sq ft condo in Downtown?",
+          "Recommend apartments near Central Station with good school districts",
+          "I’m curious about rental options for a loft in Brooklyn",
+          "Can you find a townhouse in Queens suitable for a single woman living alone?",
+          "Tell me the latest transaction prices for the High River complex in Uptown"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "recommendRestaurants",
+      "description": "A tool that recommends restaurants tailored to the user’s preferences, budget, location, dietary needs, ambience, and more. When calling for multiple targets, results can be returned as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined restaurant search query that integrates both the previous conversation context and the user’s natural language request (e.g., 'An Italian restaurant with great ambience in Chelsea', 'Recommend a Korean restaurant good for solo dining in Midtown')"
+          },
+          "location": {
+            "type": "string",
+            "description": "The area you want recommendations for (address, name, or coordinates). Defaults to 'New York' if not provided (e.g., 'Santa Monica Beach', 'Downtown Chicago')"
+          },
+          "cuisineType": {
+            "type": "string",
+            "description": "Type or theme of cuisine (e.g., 'Korean', 'Chinese', 'Italian', 'Dessert Café')"
+          },
+          "specificDishes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Specific dish names or menu items (e.g., 'Hot Pot', 'Lobster with Butter', 'Sushi', 'Hamburg Steak')"
+          },
+          "minPrice": {
+            "type": "number",
+            "description": "Minimum budget per person (USD) (e.g., 10)"
+          },
+          "maxPrice": {
+            "type": "number",
+            "description": "Maximum budget per person (USD) (e.g., 300)"
+          },
+          "dietaryPreferences": {
+            "type": "string",
+            "description": "Dietary preferences or restrictions such as Vegan, Vegetarian, Gluten-Free, Halal (e.g., 'Vegetarian-Friendly', 'Allergy-Friendly', 'Vegan Options Available')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "most_reviewed",
+              "highest_rated",
+              "nearest",
+              "newest",
+              "trending"
+            ],
+            "description": "Sorting criteria for recommendations (default is 'highest_rated')"
+          },
+          "ambience": {
+            "type": "string",
+            "description": "Desired ambience and table type (e.g., 'Date Spot', 'Quiet', 'Group Gathering', 'Family-Friendly', 'Good for Solo Dining', 'Great View')"
+          },
+          "reservationTime": {
+            "type": "string",
+            "description": "Desired visit or reservation time (e.g., 'Tomorrow at 6pm', 'Weekend at 8pm')"
+          },
+          "source": {
+            "type": "string",
+            "description": "Content, influencer, or media source referenced for the recommendation (e.g., 'Instagram', 'Popular on Social Media', 'TV Food Program', 'Blogger Review')"
+          },
+          "tag": {
+            "type": "string",
+            "description": "Add a tag based on specific keywords or user requests (e.g., 'Best Value', 'Long Wait', 'No Kids Zone', 'Local Favorite')"
+          },
+          "event": {
+            "type": "string",
+            "description": "Purpose of visit or special event (e.g., 'Anniversary', '60th Birthday', '1-Year Celebration')"
+          },
+          "partySize": {
+            "type": "string",
+            "description": "Number of diners or group size (e.g., '2 people', '4 people', 'Group', 'Large Family')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "searchPlaces",
+      "description": "Provides lifestyle and everyday place information tailored to specific conditions (target person, time, special amenities, etc.). If calling repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined place search sentence compiled from the user's natural language query, made clear and fit for purpose (e.g., 'Find an indoor playground in Boston suitable for toddlers on a weekday afternoon', 'Recommend a hair salon near Chicago for a family of 3')."
+          },
+          "placeCategory": {
+            "type": "string",
+            "description": "The specific type or category of place to search for. Automatically extracted from refinedQuery. Examples: 'ophthalmology clinic', 'pediatric clinic', 'hair salon', 'charging station', 'kids café', 'amusement park'."
+          },
+          "placeName": {
+            "type": "string",
+            "description": "Specific place name (e.g., McDonald's, Disneyland)."
+          },
+          "location": {
+            "type": "string",
+            "description": "The user's current location or area of interest (e.g., 'Manhattan, NY', 'near LAX Airport'). If GPS info is unavailable, the most recent search area is applied automatically."
+          },
+          "targetPerson": {
+            "type": "string",
+            "description": "Conditions, characteristics, or number of companions or target visitors (e.g., '6-year-old boy', 'family of 4', 'accompanying pregnant woman', 'including elderly'). If there are special conditions like bringing children, related amenities will be reflected in specialCondition."
+          },
+          "availableDate": {
+            "type": "string",
+            "description": "Dates or date ranges available for visiting (e.g., '07/01/2024 to 07/07/2024', 'this weekend')."
+          },
+          "availableTime": {
+            "type": "string",
+            "description": "Times or time ranges available for visiting (e.g., '2:00pm to 6:00pm', 'after 10:00am')."
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "distance",
+              "popularity",
+              "highest_rated",
+              "recently_searched"
+            ],
+            "description": "Sorting method for place results. Default is by distance; for popular spots, use 'popularity'."
+          },
+          "specialCondition": {
+            "type": "string",
+            "description": "Special conditions or service features. Includes amenities for target persons (children, elderly, etc.) such as high chairs, playrooms. Other examples: 'reservations available', 'parking available', 'wheelchair accessible', 'listed on Google Maps'."
+          },
+          "source": {
+            "type": "string",
+            "description": "Source of the content where the place was mentioned (e.g., 'Yelp review', 'TV show recommendation', 'mentioned on social media')."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "reservePlaces",
+      "description": "A tool that processes user reservation requests by collecting the necessary information for booking various places (restaurants, clinics, cafes, etc.). If making repeated calls for multiple targets, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A natural language query refined from the previous conversation context and the user's reservation request (e.g., 'Book an Italian restaurant near downtown for 2 people on Saturday evening')"
+          },
+          "placeId": {
+            "type": "string",
+            "description": "Unique identifier of the reservation place (used only if pre-selected)"
+          },
+          "placeName": {
+            "type": "string",
+            "description": "Name of the place to reserve (restaurant, clinic, store, etc., e.g., 'Cafe Plant')"
+          },
+          "placeCategory": {
+            "type": "string",
+            "description": "Type or detailed category of the place (e.g., 'restaurant', 'dentist', 'study room'). For clinics, additional information such as the medical department may be required"
+          },
+          "reservationDate": {
+            "type": "string",
+            "description": "Desired reservation date (format: 'YYYY-MM-DD'). Can be selected up to 60 days from today",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "reservationTime": {
+            "type": "string",
+            "description": "Desired reservation time (format: 'HH:mm'). Must be on the hour or half-hour. Reservations are only possible during operating hours",
+            "pattern": "^([01]\\d|2[0-3]):(00|30)$"
+          },
+          "partySize": {
+            "type": "integer",
+            "description": "Number of people for the reservation (e.g., 4)"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Unique ID of the person making the reservation"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Contact information of the person making the reservation (required, phone number format: (202) 555-0173)",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "Special requests or notes to pass along (e.g., 'Request a window seat', 'Need a crib')"
+          },
+          "option": {
+            "type": "string",
+            "description": "Additional reservation options (course, service selection, etc., e.g., 'Request dinner set', 'Include vegan menu', 'Select single-person course', 'Include laser treatment', 'Specify designer')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "placeName",
+          "reservationDate",
+          "reservationTime",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPlaceReservationInfo",
+      "description": "A tool that retrieves reservation details for a specific date or the entire period based on the reserver's contact information. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query of the request expressed in natural language (e.g., 'Show me the restaurants I have booked for today')."
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Reserver's contact number (format: (202) 555-0173)",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          },
+          "date": {
+            "type": "string",
+            "description": "The date you want to check (optional, format: YYYY-MM-DD)"
+          },
+          "placeName": {
+            "type": "string",
+            "description": "Filter by place name (optional)"
+          },
+          "placeCategory": {
+            "type": "string",
+            "description": "The specific type or category of place to search for. Examples: 'ophthalmology clinic', 'pediatric clinic', 'hair salon', 'charging station', 'kids play center', 'amusement park', etc."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelPlaceReservation",
+      "description": "A tool that allows you to cancel an existing reservation by looking it up, and optionally provide a reason and contact information for the cancellation request. Same-day cancellations are not allowed, and you must first select the reservation to cancel through 'place reservation lookup'. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined natural language sentence reflecting the cancellation request (e.g., 'Cancel my Wednesday evening reservation')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "Reservation ID"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "Reason for cancellation (optional, e.g., 'schedule conflict', 'not feeling well')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyPlaceReservation",
+      "description": "A tool for modifying existing reservation details such as date, time, party size, and special requests. You must first select the reservation to change via 'View Place Reservation', and changes cannot be made on the day of the reservation. At least one change (newDate, newTime, newPartySize, specialRequest) must be included. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query of the natural language reservation change request (e.g., 'Just change the time to 7:00 pm next Tuesday')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "Reservation identifier"
+          },
+          "placeName": {
+            "type": "string",
+            "description": "Name of the place reserved"
+          },
+          "newDate": {
+            "type": "string",
+            "description": "New date to change to (e.g., '08/15/2025')"
+          },
+          "newTime": {
+            "type": "string",
+            "description": "New time to change to (e.g., '07:00 pm')"
+          },
+          "newPartySize": {
+            "type": "integer",
+            "description": "New party size (optional)"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "Updated special requests or notes (optional)"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Contact information of the person who made the reservation (required)",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getRealEstateInfo",
+      "description": "A tool that searches and provides real estate market prices, listings, and neighborhood information based on the user's request for specific property type, transaction type, location, price, size, move-in date, building name, and other conditions. When calling for multiple targets, results can be structured in a list format.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query based on the user's natural language question along with previous conversation context (e.g., 'Show me monthly rental listings for a townhouse near Brooklyn Heights', 'What's the sale price for a condo near Union Square under $300K?')"
+          },
+          "propertyType": {
+            "type": "string",
+            "enum": [
+              "apartment",
+              "condo",
+              "townhouse",
+              "single-family home",
+              "retail space",
+              "land"
+            ],
+            "description": "Type of property (e.g., 'Apartment', 'Condo', 'Retail space')"
+          },
+          "transactionType": {
+            "type": "string",
+            "enum": [
+              "sale",
+              "long-term lease",
+              "monthly rent",
+              "pre-construction",
+              "public housing"
+            ],
+            "description": "Transaction type (e.g., 'Sale', 'Long-term lease', 'Monthly rent', 'Pre-sale', 'Public housing')"
+          },
+          "location": {
+            "type": "string",
+            "description": "Area or location of interest (e.g., 'SoHo', 'Times Square', 'Miami Beach')"
+          },
+          "area": {
+            "type": "string",
+            "description": "Size information (specified in sq ft, e.g., 'Approx. 800 sq ft')"
+          },
+          "minPrice": {
+            "type": "number",
+            "minimum": 10000,
+            "description": "Minimum price (must be at least in $10,000 increments, e.g., 200000)"
+          },
+          "maxPrice": {
+            "type": "number",
+            "maximum": 1000000,
+            "description": "Maximum price (e.g., 800000)"
+          },
+          "movingDate": {
+            "type": "string",
+            "description": "Available move-in date or desired moving period (e.g., 'Fall 2024', 'Available now', 'After April next year')"
+          },
+          "buildingName": {
+            "type": "string",
+            "description": "Specific complex or building name (e.g., 'The Dakota', 'One57')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "latest",
+              "lowest_price",
+              "highest_price",
+              "newest_building",
+              "most_viewed"
+            ],
+            "description": "Sorting criteria (e.g., 'lowest_price', 'latest', 'most_viewed')"
+          },
+          "source": {
+            "type": "string",
+            "description": "Data source or reference content (e.g., 'Zillow', 'Realtor.com', 'Redfin', 'Google Maps', 'YouTube')"
+          },
+          "options": {
+            "type": "object",
+            "description": "A combined field for detailed property conditions such as orientation, floor level, number of bedrooms/bathrooms, elevator availability, mortgage eligibility, year built, etc."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

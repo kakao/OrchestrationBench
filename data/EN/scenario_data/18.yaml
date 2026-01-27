@@ -1,0 +1,351 @@
+metadata:
+  total_steps: 22
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-09-24
+
+      Current time: 1:19 PM
+
+      userId: U0DK23111'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: When is the car maintenance appointment I registered in my calendar this
+      week? Show me! The date is coming up soon… Please book an appointment at 11:00
+      AM at the nearest Ford Service Center in Williamsburg, Brooklyn.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Check\
+      \ the scheduled car maintenance appointment in my personal calendar for this\
+      \ week\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Find the nearest Ford Service Center in Williamsburg,\
+      \ Brooklyn that I can book on the maintenance date\"\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"Book the nearest Ford Service\
+      \ Center in Williamsburg, Brooklyn at 11:00 AM on the maintenance date\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check the date of the\
+      \ scheduled car maintenance in my personal calendar for this week\"\n  startDate:\
+      \ \"2025-09-22\"\n  endDate: \"2025-09-28\"\n  keyword: \"Car Maintenance\"\n\
+      \  calendarType: \"personal\"\ntool_call_result:\n  data:\n    tool: \"getSchedule\"\
+      \n    result:\n      refinedQuery: \"Check the date of the scheduled car maintenance\
+      \ in my personal calendar for this week\"\n      calendarType: \"personal\"\n\
+      \      events:\n        - title: \"Car Maintenance\"\n          date: \"2025-09-25\"\
+      \n          notes: \"Includes engine oil change and brake pad inspection\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Search for the nearest\
+      \ Ford Service Center in Williamsburg, Brooklyn to book on the maintenance date\"\
+      \n  placeCategory: \"Auto Repair Shop\"\n  placeName: \"Ford Service Center\"\
+      \n  location: \"Williamsburg, Brooklyn\"\n  sortBy: \"distance\"\ntool_call_result:\n\
+      \  data:\n    places:\n      - name: \"Ford Service Center Williamsburg Branch\"\
+      \n        placeCategory: \"Auto Repair Shop\"\n        placeName: \"Ford Service\
+      \ Center\"\n        address: \"118 Bedford Ave, Brooklyn, NY 11211\"\n     \
+      \   phoneNumber: \"(718) 555-5234\"\n        distanceFromQueryLocation: \"Approx.\
+      \ 0.2 miles\"\n        operatingHours: \"Weekdays 08:30 ~ 18:30, Saturday 08:30\
+      \ ~ 14:00\"\n        isOpenNow: true\n        placeId: \"FS-WB-001\"\n     \
+      \ - name: \"Ford Service Center Brooklyn Heights Branch\"\n        placeCategory:\
+      \ \"Auto Repair Shop\"\n        placeName: \"Ford Service Center\"\n       \
+      \ address: \"7 Montague St, Brooklyn, NY 11201\"\n        phoneNumber: \"(718)\
+      \ 555-8877\"\n        distanceFromQueryLocation: \"Approx. 0.7 miles\"\n   \
+      \     operatingHours: \"Weekdays 08:30 ~ 18:00, Saturday 08:30 ~ 13:00\"\n \
+      \       isOpenNow: true\n        placeId: \"FS-BH-002\"\n      - name: \"Ford\
+      \ Service Center East Williamsburg Branch\"\n        placeCategory: \"Auto Repair\
+      \ Shop\"\n        placeName: \"Ford Service Center\"\n        address: \"379\
+      \ Grand St, Brooklyn, NY 11211\"\n        phoneNumber: \"(718) 555-0007\"\n\
+      \        distanceFromQueryLocation: \"Approx. 1.2 miles\"\n        operatingHours:\
+      \ \"Weekdays 08:00 ~ 18:00, Saturday 08:00 ~ 13:00\"\n        isOpenNow: false\n\
+      \        placeId: \"FS-EWB-003\""
+- workflow_id: null
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reserver''s contact information'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 'After checking, here are the scheduled car maintenance appointments
+      saved in your calendar:
+
+
+      * Date: September 25, 2025
+
+      * Details: Includes engine oil replacement and brake pad inspection
+
+
+      To proceed with booking at the Ford Service Center Williamsburg Branch, I’ll
+      need your contact information.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: After dropping off my car at the Ford Service Center Williamsburg Branch,
+      check the weather in Williamsburg on September 25. If it rains, I’d like to
+      visit a nearby gaming café—please give me a recommendation.
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: calendar_agent\n      refined_query: \"\
+      Check the scheduled car maintenance appointment in my personal calendar for\
+      \ this week\"\n\nworkflow_2:\n  status: paused\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: completed\n      name: place_agent\n\
+      \      refined_query: \"Find the nearest Ford Service Center in Williamsburg\
+      \ for a reservation on September 25\"\n    - status: paused\n      name: place_agent\n\
+      \      refined_query: \"Book the nearest Ford Service Center in Williamsburg\
+      \ for 11:00 AM on September 25\"\n\ninterrupted_workflow_2-1:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: weather_agent\n\
+      \      refined_query: \"Weather forecast for Williamsburg on September 25\"\n\
+      \ninterrupted_workflow_2-2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"interrupted_workflow_2-1\"\n  steps:\n    - status: pending\n      name:\
+      \ place_agent\n      refined_query: \"If it rains on September 25, search for\
+      \ a nearby gaming café in Williamsburg\""
+- workflow_id: workflow_2
+  step_id: 10
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"Weather forecast\
+      \ for Williamsburg on September 25\"\n  date: \"2025-09-25\"\n  location: \"\
+      Williamsburg, Brooklyn, NY\"\ntool_call_result:\n  data:\n    tool: \"getDomesticWeather\"\
+      \n    result:\n      refinedQuery: \"Weather forecast for Williamsburg on September\
+      \ 25\"\n      date: \"2025-09-25\"\n      location: \"Williamsburg, Brooklyn,\
+      \ NY\"\n      weatherSummary:\n        condition: \"Rain\"\n        temperature:\n\
+      \          morning: \"64°F\"\n          afternoon: \"68°F\"\n          evening:\
+      \ \"66°F\"\n        precipitationProbability: \"80%\"\n        humidity: \"\
+      85%\"\n        wind: \"East wind, 7 mph\"\n      message: \"On September 25,\
+      \ 2025, rain is expected throughout the day in Williamsburg, Brooklyn. As of\
+      \ 11 AM, the temperature is around 66°F with an 80% chance of rain. Be sure\
+      \ to bring an umbrella.\""
+- workflow_id: workflow_2
+  step_id: 11
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Gaming cafés near\
+      \ Williamsburg if it rains on September 25\"\n  placeCategory: \"Gaming Café\"\
+      \n  location: \"Williamsburg, Brooklyn, NY\"\n  sortBy: \"distance\"\ntool_call_result:\n\
+      \  data:\n    tool: \"searchPlaces\"\n    result:\n      refinedQuery: \"Gaming\
+      \ cafés near Williamsburg if it rains on September 25\"\n      placeCategory:\
+      \ \"Gaming Café\"\n      location: \"Williamsburg, Brooklyn, NY\"\n      sortBy:\
+      \ \"distance\"\n      places:\n        - name: \"Level Up Gaming Café\"\n  \
+      \        address: \"142 N 7th St, Brooklyn, NY 11211\"\n          distance:\
+      \ \"0.15 miles\"\n          description: \"Equipped with high-performance gaming\
+      \ PCs, spacious seating, and comfortable environment\"\n        - name: \"Monster\
+      \ Gaming Lounge\"\n          address: \"4F, 7 Kent Ave, Williamsburg, Brooklyn,\
+      \ NY\"\n          distance: \"0.18 miles\"\n          description: \"High-end\
+      \ custom PCs with top-tier peripherals, popular among local gamers\"\n     \
+      \   - name: \"Top Gaming Hub\"\n          address: \"277-17 N 6th St, Williamsburg,\
+      \ Brooklyn, NY\"\n          distance: \"0.25 miles\"\n          description:\
+      \ \"Affordable pricing plans with dedicated gaming stations\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ If you’re planning to visit Williamsburg for your upcoming car maintenance\
+      \ appointment at the Ford Service Center Williamsburg Branch, it’s a good idea\
+      \ to check both the day’s weather and nearby gaming café options in advance.\n\
+      \nRain is expected in Williamsburg that day, with the following forecast conditions:\n\
+      \n* Weather: Rain\n* Temperature: Morning around 64°F, afternoon high around\
+      \ 68°F, evening around 66°F\n* Chance of rain: 80%\n* Humidity: 85%\n* Wind:\
+      \ East, about 7 mph\n\nWhile it won’t be particularly cold, the rain may make\
+      \ it feel cooler, so be sure to bring an umbrella or a waterproof jacket. Also,\
+      \ take extra caution when driving as the roads may be slippery.\n\n---\n\n▶\
+      \ Here are some high-spec gaming cafés within a 5-minute walk of the Ford Service\
+      \ Center, perfect for spending time before or after your service appointment:\n\
+      \n1. Level Up Gaming Café\n   Address: 142 N 7th St, Brooklyn, NY 11211\n  \
+      \ Distance: About 0.15 miles\n   Equipped with high-performance gaming PCs,\
+      \ with spacious seating and comfortable environment.\n\n2. Monster Gaming Lounge\n\
+      \   Address: 4F, 7 Kent Ave, Williamsburg, Brooklyn, NY\n   Distance: About\
+      \ 0.18 miles\n   High-end custom PCs with top-tier peripherals, popular among\
+      \ local gamers.\n\n3. Top Gaming Hub\n   Address: 277-17 N 6th St, Williamsburg,\
+      \ Brooklyn, NY\n   Distance: About 0.25 miles\n   Affordable pricing plans with\
+      \ dedicated gaming stations, ideal for gamers.\n\nVisiting one of these cafés\
+      \ can be a great option if you want to relax in a comfortable indoor space before\
+      \ or after your service appointment.\n\n---\n\n▶ To proceed with booking at\
+      \ the Ford Service Center in Williamsburg, you’ll need their contact information."
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: (718) 555-4821
+- workflow_id: workflow_2
+  step_id: 14
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"Book Ford Service\
+      \ Center Williamsburg Branch on September 25th at 11:00 AM\"\n  placeName: \"\
+      Ford Service Center Williamsburg Branch\"\n  placeCategory: \"Auto repair shop\"\
+      \n  reservationDate: \"2025-09-25\"\n  reservationTime: \"11:00\"\n  userId:\
+      \ \"U0DK23111\"\n  contactInfo: \"(718) 555-4821\"\ntool_call_result:\n  data:\n\
+      \    tool: \"reservePlaces\"\n    result:\n      refinedQuery: \"Book Ford Service\
+      \ Center Williamsburg Branch on September 25th at 11:00 AM\"\n      placeName:\
+      \ \"Ford Service Center Williamsburg Branch\"\n      placeCategory: \"Auto repair\
+      \ shop\"\n      reservationDate: \"2025-09-25\"\n      reservationTime: \"11:00\"\
+      \n      userId: \"U0DK23111\"\n      contactInfo: \"(718) 555-4821\"\n     \
+      \ status: \"confirmed\"\n      confirmationNumber: \"RSV-20250925-1100-001\"\
+      \n      message: \"Your appointment at Ford Service Center Williamsburg Branch\
+      \ has been confirmed for Thursday, September 25, 2025 at 11:00 AM.\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your reservation at Ford Service Center Williamsburg Branch has been
+      successfully completed.
+
+
+      * Reservation Date & Time: Thursday, September 25, 2025 at 11:00 AM
+
+      * Reservation Location: Ford Service Center Williamsburg Branch (Auto Repair
+      Shop)
+
+      * Contact Number: (718) 555-4821
+
+      * Reservation Confirmation Number: RSV-20250925-1100-001
+
+
+      Please arrive at least 10 minutes before your scheduled time. Having your vehicle
+      registration or car details ready in advance will help speed up the check-in
+      process.
+
+      If you need to make changes or cancel your appointment, please contact the service
+      center directly.'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: Can you show me the fastest route from my home to the Ford Service Center
+      Williamsburg Branch?
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: calendar_agent\n      refined_query: \"\
+      Check the scheduled car maintenance appointment in my personal calendar for\
+      \ this week\"\n\nworkflow_2:\n  status: completed\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: completed\n      name: place_agent\n\
+      \      refined_query: \"Find the nearest Ford Service Center in Williamsburg\
+      \ for a reservation on September 25\"\n    - status: completed\n      name:\
+      \ place_agent\n      refined_query: \"Book the nearest Ford Service Center in\
+      \ Williamsburg for 11:00 AM on September 25\"\n\ninterrupted_workflow_2-1:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: weather_agent\n      refined_query: \"Weather forecast for Williamsburg\
+      \ on September 25\"\n\ninterrupted_workflow_2-2:\n  status: completed\n  type:\
+      \ dependent\n  depend_on: \"interrupted_workflow_2-1\"\n  steps:\n    - status:\
+      \ completed\n      name: place_agent\n      refined_query: \"If it rains on\
+      \ September 25, search for a nearby gaming café in Williamsburg\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: transport_agent\n      refined_query: \"Find the fastest route from\
+      \ my home to the Ford Service Center Williamsburg Branch\""
+- workflow_id: workflow_3
+  step_id: 18
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Home location'
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: Could you please provide your home address so that I can find the fastest
+      route from your place to the Ford Service Center Williamsburg Branch?
+- workflow_id: null
+  step_id: 20
+  agent: user
+  agent_type: user
+  data:
+    content: My home address is Willow Heights Apartments, 123 Main Street, Brooklyn,
+      NY 11211.
+- workflow_id: null
+  step_id: 21
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Fastest route from\
+      \ home (Willow Heights Apartments, 123 Main Street, Brooklyn, NY 11211) to Ford\
+      \ Service Center Williamsburg Branch\"\n  origin: \"Willow Heights Apartments,\
+      \ 123 Main Street, Brooklyn, NY 11211\"\n  destination: \"Ford Service Center\
+      \ Williamsburg Branch\"\n  departureTime: \"1:19 PM\"\n  transportModes: \"\
+      car\"\n  optimizeBy: \"fastest\"\ntool_call_result:\n  data:\n    tool: \"getDirections\"\
+      \n    result:\n      refinedQuery: \"Fastest route from home to Ford Service\
+      \ Center Williamsburg Branch\"\n      origin: \"Willow Heights Apartments, 123\
+      \ Main Street, Brooklyn, NY 11211\"\n      destination: \"Ford Service Center\
+      \ Williamsburg Branch\"\n      departureTime: \"1:19 PM\"\n      transportModes:\
+      \ [\"car\"]\n      optimizeBy: \"fastest\"\n      route:\n        totalDistance:\
+      \ \"5.2 miles\"\n        estimatedTime: \"15 minutes\"\n        tolls: \"$0.75\"\
+      \n        steps:\n          - step: \"Start from Willow Heights Apartments and\
+      \ head east on Main Street\"\n          - step: \"Merge onto Williamsburg Expressway\"\
+      \n          - step: \"Take exit to Bedford Avenue\"\n          - step: \"Turn\
+      \ left to Bedford Avenue\"\n          - step: \"Arrive at Ford Service Center\
+      \ Williamsburg Branch\"\n      message: \"By car, it will take about 15 minutes,\
+      \ with a toll fee of around $0.75. This is the fastest route available.\""
+- workflow_id: null
+  step_id: 22
+  agent: main
+  agent_type: main
+  data:
+    content: 'Fastest Route from Home to Ford Service Center Williamsburg Branch:
+
+
+      * Origin: Willow Heights Apartments, 123 Main Street, Brooklyn, NY 11211
+
+      * Destination: Ford Service Center Williamsburg Branch
+
+      * Distance: 5.2 miles
+
+      * Estimated Time: 15 minutes
+
+      * Tolls: \$0.75
+
+
+      Route Steps:
+
+
+      1. Start from Willow Heights Apartments and head east on Main Street
+
+      2. Merge onto Williamsburg Expressway
+
+      3. Take exit to Bedford Avenue
+
+      4. Turn left to Bedford Avenue
+
+      5. Arrive at Ford Service Center Williamsburg Branch
+
+
+      This is the fastest route available.'

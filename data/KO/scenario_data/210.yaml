@@ -1,0 +1,318 @@
+metadata:
+  total_steps: 16
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-09-15
+
+      현재시각: 오후 17:30
+
+      이름: 송주드
+
+      연락처: 010-7777-7777'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번 주 금요일 제주도행 왕복 항공권, 갑자기 일이 생겨서 다음 주 금요일 출발, 다다음주 월요일 복귀로 변경할 수 있을까?
+      호텔 예약도 같이 변경해야 해
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"이번 주 금요일\
+      \ 제주도행 왕복 항공권 예매 내역 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"다음 주 금요일 출발 다다음주 월요일 복귀하는 왕복 항공권 조회\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: [\"workflow_1\", \"workflow_2\"]\n  steps:\n\
+      \    - status: pending\n      name: travel_agent\n      refined_query: \"이번\
+      \ 주 금요일 제주도행 왕복 항공권 다음 주 금요일 출발, 다다음 주 월요일 복귀로 변경\"\n\nworkflow_4:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ travel_agent\n      refined_query: \"이번 주 금요일 제주도 호텔 예약 조회\"\n    - status:\
+      \ pending\n      name: travel_agent\n      refined_query: \"이번 주 금요일 제주도 호텔\
+      \ 예약 다음주 금요일부터 다다음주 월요일까지로 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getFlightReservation\narguments:\n  refinedQuery: \"이번 주 금요일 제주도행\
+      \ 왕복 항공권 예매 내역 조회\"\n  contactNumber: \"010-7777-7777\"\n  name: \"송주드\"\n \
+      \ statusFilter: \"confirmed\"\ntool_call_result:\n  data:\n    exchangeCount:\
+      \ 0\n    reservations:\n      - reservationId: \"RES20250919-KE1205\"\n    \
+      \    airline: \"Korean Air\"\n        flightNumber: \"KE1205\"\n        departureAirport:\
+      \ \"Gimpo International Airport (GMP)\"\n        arrivalAirport: \"Jeju International\
+      \ Airport (CJU)\"\n        departureDateTime: \"2025-09-19T09:30\"\n       \
+      \ arrivalDateTime: \"2025-09-19T10:40\"\n        passengerName: \"송주드\"\n  \
+      \      status: \"confirmed\"\n        contactNumber: \"010-7777-7777\"\n   \
+      \     seatClass: \"Business\"\n        baggageOption: \"basic\"\n        price:\
+      \ \"180,000 KRW\"\n      - reservationId: \"RES20250922-KE1205\"\n        airline:\
+      \ \"Korean Air\"\n        flightNumber: \"KE1206\"\n        departureAirport:\
+      \ \"Jeju International Airport (CJU)\"\n        arrivalAirport: \"Gimpo International\
+      \ Airport (GMP)\"\n        departureDateTime: \"2025-09-22T17:00\"\n       \
+      \ arrivalDateTime: \"2025-09-22T18:10\"\n        passengerName: \"송주드\"\n  \
+      \      status: \"confirmed\"\n        contactNumber: \"010-7777-7777\"\n   \
+      \     seatClass: \"Business\"\n        baggageOption: \"basic\"\n        price:\
+      \ \"180,000 KRW\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"다음 주 금요일 출발 다다음주\
+      \ 월요일 복귀하는 왕복 항공권 조회\"\n  departure: \"김포\"\n  destination: \"제주도\"\n  departureDate:\
+      \ \"2025-09-26\"\n  returnDate: \"2025-09-29\"\n  seatClass: \"business\"\n\
+      tool_call_result:\n  data:\n    flights:\n      - airline: \"Korean Air\"\n\
+      \        flightNumber: \"KE1205\"\n        departureAirport: \"Gimpo International\
+      \ Airport (GMP)\"\n        arrivalAirport: \"Jeju International Airport (CJU)\"\
+      \n        departureDateTime: \"2025-09-26T07:00\"\n        arrivalDateTime:\
+      \ \"2025-09-26T08:10\"\n        seatClass: \"Business\"\n        price: \"170,000\
+      \ KRW\"\n      - airline: \"Korean Air\"\n        flightNumber: \"KE1207\"\n\
+      \        departureAirport: \"Gimpo International Airport (GMP)\"\n        arrivalAirport:\
+      \ \"Jeju International Airport (CJU)\"\n        departureDateTime: \"2025-09-26T09:30\"\
+      \n        arrivalDateTime: \"2025-09-26T10:40\"\n        seatClass: \"Business\"\
+      \n        price: \"180,000 KRW\"\n      - airline: \"Korean Air\"\n        flightNumber:\
+      \ \"KE1211\"\n        departureAirport: \"Gimpo International Airport (GMP)\"\
+      \n        arrivalAirport: \"Jeju International Airport (CJU)\"\n        departureDateTime:\
+      \ \"2025-09-26T12:00\"\n        arrivalDateTime: \"2025-09-26T13:10\"\n    \
+      \    seatClass: \"Business\"\n        price: \"190,000 KRW\"\n      - airline:\
+      \ \"Korean Air\"\n        flightNumber: \"KE1206\"\n        departureAirport:\
+      \ \"Jeju International Airport (CJU)\"\n        arrivalAirport: \"Gimpo International\
+      \ Airport (GMP)\"\n        departureDateTime: \"2025-09-29T15:00\"\n       \
+      \ arrivalDateTime: \"2025-09-29T16:10\"\n        seatClass: \"Business\"\n \
+      \       price: \"170,000 KRW\"\n      - airline: \"Korean Air\"\n        flightNumber:\
+      \ \"KE1210\"\n        departureAirport: \"Jeju International Airport (CJU)\"\
+      \n        arrivalAirport: \"Gimpo International Airport (GMP)\"\n        departureDateTime:\
+      \ \"2025-09-29T17:00\"\n        arrivalDateTime: \"2025-09-29T18:10\"\n    \
+      \    seatClass: \"Business\"\n        price: \"180,000 KRW\"\n      - airline:\
+      \ \"Korean Air\"\n        flightNumber: \"KE1214\"\n        departureAirport:\
+      \ \"Jeju International Airport (CJU)\"\n        arrivalAirport: \"Gimpo International\
+      \ Airport (GMP)\"\n        departureDateTime: \"2025-09-29T19:30\"\n       \
+      \ arrivalDateTime: \"2025-09-29T20:40\"\n        seatClass: \"Business\"\n \
+      \       price: \"190,000 KRW\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 변경할 항공권'
+- workflow_id: workflow_4
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationReservation\narguments:\n  refinedQuery: \"이번\
+      \ 주 금요일 제주도 호텔 예약 조회\"\n  contactNumber: \"010-7777-7777\"\n  location: \"제주도\"\
+      \n  checkInDate: \"2025-09-19\"\n  name: \"송주드\"\n  statusFilter: \"confirmed\"\
+      \ntool_call_result:\n  data:\n    reservations:\n      - reservationId: \"RES20250919-001\"\
+      \n        name: \"송주드\"\n        contactInfo: \"010-7777-7777\"\n        hotelName:\
+      \ \"롯데 호텔 제주\"\n        location: \"제주도 서귀포시 중문관광로 72\"\n        checkInDate:\
+      \ \"2025-09-19\"\n        checkOutDate: \"2025-09-22\"\n        roomType: \"\
+      오션뷰 스위트\"\n        status: \"confirmed\"\n        guests: 2\n        price:\
+      \ 540000\n        paymentStatus: \"paid\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '다음 주 금요일(9월 26일) 제주도행과 다다음 주 월요일(9월 29일) 제주도 출발 강남(김포공항) 왕복 비즈니스 클래스
+      항공편을 시간대별로 정리해 드렸습니다.
+
+
+      ▶ 출발편 (김포 → 제주):
+
+
+      - 오전 7시 출발, 8시 10분 도착 (항공편 KE1205) - 가격: 170,000원
+
+
+      - 오전 9시 30분 출발, 10시 40분 도착 (항공편 KE1207) - 가격: 180,000원
+
+
+      - 오후 12시 출발, 13시 10분 도착 (항공편 KE1211) - 가격: 190,000원
+
+
+      ▶ 귀국편 (제주 → 김포):
+
+
+      - 오후 3시 출발, 4시 10분 도착 (항공편 KE1206) - 가격: 170,000원
+
+
+      - 오후 5시 출발, 6시 10분 도착 (항공편 KE1210) - 가격: 180,000원
+
+
+      - 오후 7시 30분 출발, 8시 40분 도착 (항공편 KE1214) - 가격: 190,000원
+
+
+      원하시는 시간대를 알려주시면 예약 진행과 자세한 안내 도와드리겠습니다.
+
+      편안하고 즐거운 여행이 되시길 바랍니다!'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 갈때 오전 7시, 올때 오후 5시
+- workflow_id: workflow_3
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: changeFlight\narguments:\n  refinedQuery: \"이번 주 금요일 제주도행 왕복 항공권\
+      \ 다음 주 금요일 출발 다다음 주 월요일 복귀로 변경\"\n  reservationId: \"RES20250919-KE1205\"\n\
+      \  departureDate: \"2025-09-26\"\n  returnDate: \"2025-09-29\"\n  seatClass:\
+      \ \"business\"\n  baggageOption: \"basic\"\ntool_call_result:\n  data:\n   \
+      \ refinedQuery: \"이번 주 금요일 제주도행 왕복 항공권 다음 주 금요일 출발 다다음 주 월요일 복귀로 변경\"\n    reservationId:\
+      \ \"RES20250919-KE1205\"\n    newDepartureDate: \"2025-09-26\"\n    newReturnDate:\
+      \ \"2025-09-29\"\n    seatClass: \"business\"\n    baggageOption: \"basic\"\n\
+      \    status: \"confirmed\"\n    newFlights:\n      departureFlight:\n      \
+      \  airline: \"Korean Air\"\n        flightNumber: \"KE1205\"\n        departureAirport:\
+      \ \"Gimpo International Airport (GMP)\"\n        arrivalAirport: \"Jeju International\
+      \ Airport (CJU)\"\n        departureDateTime: \"2025-09-26T07:00\"\n       \
+      \ arrivalDateTime: \"2025-09-26T08:10\"\n      returnFlight:\n        airline:\
+      \ \"Korean Air\"\n        flightNumber: \"KE1210\"\n        departureAirport:\
+      \ \"Jeju International Airport (CJU)\"\n        arrivalAirport: \"Gimpo International\
+      \ Airport (GMP)\"\n        departureDateTime: \"2025-09-29T17:00\"\n       \
+      \ arrivalDateTime: \"2025-09-29T18:10\"\n    message: |\n      고객님, 예약하신 왕복\
+      \ 항공권이 다음과 같이 변경되었습니다.\n      - 출발: 2025년 9월 26일, Korean Air KE1205편, 김포공항 07:00\
+      \ 출발 → 제주공항 08:10 도착\n      - 귀국: 2025년 9월 29일, Korean Air KE1206편, 제주공항 17:00\
+      \ 출발 → 김포공항 18:10 도착\n      - 좌석 등급: 비즈니스 클래스\n      - 수하물 옵션: 기본 수하물 포함\n\n\
+      \      예약 번호 RES20250919-KE1205에 변경 사항이 정상 반영되었으며, 즐거운 여행 되시길 바랍니다."
+- workflow_id: workflow_4
+  step_id: 11
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyAccommodation\narguments:\n  refinedQuery: \"이번 주 금요일 제주도\
+      \ 호텔 예약 다음주 금요일에서 다다음주 월요일로 변경\"\n  reservationId: \"RES20250919-001\"\n  modifiedCheckInDate:\
+      \ \"2025-09-26\"\n  modifiedCheckOutDate: \"2025-09-29\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"이번 주 금요일 제주도 호텔 예약 다음주 금요일에서 다다음주 월요일로 변경\"\n\
+      \    reservationId: \"RES20250919-001\"\n    modifiedCheckInDate: \"2025-09-26\"\
+      \n    modifiedCheckOutDate: \"2025-09-29\"\n    status: \"confirmed\"\n    hotelName:\
+      \ \"롯데 호텔 제주\"\n    location: \"제주도 서귀포시 중문관광로 72\"\n    roomType: \"오션뷰 스위트\"\
+      \n    guests: 2\n    originalCheckInDate: \"2025-09-19\"\n    originalCheckOutDate:\
+      \ \"2025-09-22\"\n    totalPrice: 540000\n    paymentStatus: \"paid\"\n    message:\
+      \ >\n      제주도 롯데 호텔 예약이 성공적으로 변경되었습니다.\n      기존 체크인 날짜는 2025-09-19, 체크아웃 날짜는\
+      \ 2025-09-22였습니다.\n      변경된 체크인 날짜는 2025-09-26, 체크아웃 날짜는 2025-09-29입니다.\n \
+      \     예약하신 객실은 오션뷰 스위트이며, 2명의 투숙객이 포함되어 있습니다.\n      총 결제 금액은 540,000원이며, 결제\
+      \ 상태는 완료되었습니다."
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '고객님, 예약하신 왕복 항공권이 성공적으로 변경되었습니다.
+
+
+      ▶ 출발일 및 항공편:
+
+      - 2025년 9월 26일 금요일
+
+      - Korean Air KE1205편
+
+      - 김포국제공항(GMP) 07:00 출발 → 제주국제공항(CJU) 08:10 도착
+
+
+      ▶ 귀국일 및 항공편:
+
+      - 2025년 9월 29일 월요일
+
+      - Korean Air KE1210편
+
+      - 제주국제공항(CJU) 17:00 출발 → 김포국제공항(GMP) 18:10 도착
+
+
+      - 좌석 등급: 비즈니스 클래스
+
+
+      - 수하물 옵션: 기본 수하물 포함
+
+
+      예약 번호 RES20250919-KE1205로 변경 내역이 정상 반영되었으며, 즐거운 여행 되시길 바랍니다. 추가로 궁금한 점 있으시면
+      언제든 문의 주세요!
+
+
+      ----------
+
+
+      고객님, 제주도 롯데 호텔 예약이 성공적으로 변경되었습니다.
+
+
+      ▶ 기존 예약 정보
+
+      - 체크인: 2025년 9월 19일
+
+      - 체크아웃: 2025년 9월 22일
+
+
+      ▶ 변경된 예약 정보
+
+      - 체크인: 2025년 9월 26일
+
+      - 체크아웃: 2025년 9월 29일
+
+
+      - 호텔명: 롯데 호텔 제주
+
+
+      - 위치: 제주도 서귀포시 중문관광로 72
+
+
+      - 객실 타입: 오션뷰 스위트
+
+
+      - 투숙 인원: 2명
+
+
+      - 총 결제 금액: 540,000원 (결제 완료)
+
+
+      변경된 일정에 맞춰 편안한 숙박 되시길 바라며, 추가 요청 사항이나 궁금한 점 있으시면 언제든 말씀해 주세요!'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: 깜박하고 렌터카 변경을 안했다 렌터카도 변경해줘
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: travel_agent\n      refined_query: \"이번\
+      \ 주 금요일 제주도행 왕복 항공권 예매 내역 조회\"\n\nworkflow_2:\n  status: completed\n  type:\
+      \ independent\n  steps:\n    - status: completed\n      name: travel_agent\n\
+      \      refined_query: \"다음 주 금요일 출발 다다음주 월요일 복귀하는 왕복 항공권 조회\"\n\nworkflow_3:\n\
+      \  status: completed\n  type: dependent\n  depend_on: [\"workflow_1\", \"workflow_2\"\
+      ]\n  steps:\n    - status: completed\n      name: travel_agent\n      refined_query:\
+      \ \"이번 주 금요일 제주도행 왕복 항공권 다음 주 금요일 출발, 다다음 주 월요일 복귀로 변경\"\n\nworkflow_4:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ travel_agent\n      refined_query: \"이번주 금요일 제주도 호텔 예약 조회\"\n    - status:\
+      \ completed\n      name: travel_agent\n      refined_query: \"이번주 금요일 제주도 호텔\
+      \ 예약 다음주 금요일부터 다다음주 월요일까지로 변경\"\n\nworkflow_5:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"이번 주 금요일 렌터카 예약을 다음주 금요일부터 다다음주 월요일까지로 변경\""
+- workflow_id: workflow_5
+  step_id: 15
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 렌터카 업체에 연락을 통해서만 취소 및 변경이 가능하므로 예약 취소 및 변경 불가'
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: 렌터카 예약의 취소 및 변경은 렌터카 업체에 직접 연락하셔야만 가능합니다. 불편을 드려 죄송하며, 원활한 처리를 위해 업체에
+      문의해 주시길 부탁드립니다.

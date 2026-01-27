@@ -1,0 +1,389 @@
+metadata:
+  total_steps: 19
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: September 3, 2024
+
+      - Current Location: City Hall, 1001 Central Avenue, Los Angeles, CA 90021, USA
+
+      - Time: 5:51 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Hey, should I switch jobs? Should I quit? I really need some advice...
+      Can you tell me what careers suit an ENFJ, and also share some famous ENFJs?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"Need advice\
+      \ on whether to switch jobs or resign\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: counsel_agent\n\
+      \      refined_query: \"Career recommendations suitable for ENFJ and famous\
+      \ ENFJ figures\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"Career change or\
+      \ resignation counseling\"\ntool_call_result:\n  status: success\n  data:\n\
+      \    counselingTopic: \"Considering a job change or resignation\"\n    advice:\n\
+      \      - \"Clearly identify the pros and cons of your current job.\"\n     \
+      \ - \"Outline the conditions and goals you should consider when changing jobs.\"\
+      \n      - \"Before resigning, make sure your finances and next steps are well-prepared.\"\
+      \n      - \"Seeking advice from trusted friends or professionals can be helpful\
+      \ to hear different perspectives.\"\n    recommendedNextSteps:\n      - \"Self-analysis\
+      \ and setting career goals\"\n      - \"Market research and job change preparation\"\
+      \n      - \"Planning the timing and process of resignation\"\n  source: \"Counseling\
+      \ Service\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getMbtiInfo\narguments:\n  refinedQuery: \"Career recommendations\
+      \ for ENFJ personality type and famous ENFJs\"\n  mbtiType: \"enfj\"\ntool_call_result:\n\
+      \  data:\n    mbtiType: \"ENFJ\"\n    personalityTraits:\n      - \"Outgoing\
+      \ and sociable\"\n      - \"Empathetic and understanding of others' emotions\"\
+      \n      - \"Strong leadership skills, values harmony within groups\"\n     \
+      \ - \"Creative and passionate\"\n    recommendedCareers:\n      - \"Educator\"\
+      \n      - \"Counselor\"\n      - \"Marketing Specialist\"\n      - \"Human Resources\
+      \ Manager\"\n      - \"Social Worker\"\n    famousPeople:\n      - name: \"\
+      Oprah Winfrey\"\n        profession: \"Broadcaster, Entrepreneur\"\n       \
+      \ description: \"A renowned American talk show host and influential media entrepreneur\"\
+      \n      - name: \"Barack Obama\"\n        profession: \"Politician\"\n     \
+      \   description: \"The 44th President of the United States, known for his exceptional\
+      \ leadership and communication skills\"\n      - name: \"Jennifer Lopez\"\n\
+      \        profession: \"Singer, Actress\"\n        description: \"A versatile\
+      \ entertainer who demonstrates active social engagement and leadership\"\n \
+      \   source: \"MBTI Information System\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "1. Career Change and Resignation Counseling\n- It’s important to understand\
+      \ clearly the pros and cons of your current job and organize your conditions\
+      \ and goals for a career move.\n- Before resigning, make sure your finances\
+      \ and next steps are well-prepared. Talking with trusted friends or professionals\
+      \ can also be very helpful.\n- As the next steps, try self-analysis, market\
+      \ research, and planning the timing of your resignation step by step.\n\n\n\
+      2. Career Recommendations for ENFJ Personality Type\n- ENFJs are outgoing, social,\
+      \ empathetic, and skilled at understanding others’ emotions.  \n- They value\
+      \ leadership and harmony within organizations, and they are known for being\
+      \ creative and passionate.  \n- Recommended careers:  \n  - Educator  \n  -\
+      \ Counselor  \n  - Marketing Specialist  \n  - Human Resources Manager  \n \
+      \ - Social Worker \n\n\n3. Famous ENFJs\n- Oprah Winfrey: Renowned American\
+      \ talk show host and influential media entrepreneur  \n- Barack Obama: 44th\
+      \ President of the United States, known for exceptional leadership and communication\
+      \ skills  \n- Jennifer Lopez: Singer, actress, and versatile entertainer who\
+      \ demonstrates strong leadership and active social engagement\n\nThese individuals\
+      \ embody the defining traits of ENFJs."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Hmm, I need to relieve some job-change stress. I think I’ll take a trip
+      to Los Angeles. Can you recommend some famous shopping streets there?
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: counsel_agent\n      refined_query: \"Need\
+      \ advice on whether to switch jobs or resign\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: counsel_agent\n\
+      \      refined_query: \"Career recommendations suitable for ENFJ and famous\
+      \ ENFJ figures\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: travel_agent\n      refined_query: \"Recommend\
+      \ popular shopping streets in Los Angeles\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getPopularPlaceInfo\narguments:\n  refinedQuery: \"Recommend popular\
+      \ shopping streets in Los Angeles\"\n  location: \"Los Angeles\"\n  placeType:\
+      \ \"shopping street\"\n  sortBy: \"highest_rated\"\ntool_call_result:\n  data:\n\
+      \    query: \"Recommend popular shopping streets in Los Angeles\"\n    location:\
+      \ \"Los Angeles\"\n    placeType: \"shopping\"\n    sortBy: \"highest_rated\"\
+      \n    places:\n      - name: \"Rodeo Drive\"\n        address: \"Beverly Hills,\
+      \ Los Angeles, CA\"\n        rating: 4.8\n        description: \"World-famous\
+      \ luxury shopping street, home to designer boutiques and high-end brands.\"\n\
+      \        operatingHours: \"Most stores 10:00 AM - 7:00 PM\"\n      - name: \"\
+      Melrose Avenue\"\n        address: \"Melrose Ave, Los Angeles, CA\"\n      \
+      \  rating: 4.6\n        description: \"Trendy shopping street with a mix of\
+      \ designer stores, vintage shops, and street art.\"\n        operatingHours:\
+      \ \"Varies by store, typically 11:00 AM - 8:00 PM\"\n      - name: \"The Grove\"\
+      \n        address: \"189 The Grove Dr, Los Angeles, CA 90036\"\n        rating:\
+      \ 4.5\n        description: \"Popular outdoor shopping and entertainment complex\
+      \ with a lively atmosphere.\"\n        operatingHours: \"10:00 AM - 9:00 PM\"\
+      \n  source: \"Place Recommendation System\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are some great shopping spots in Los Angeles where you can relieve
+      the stress of changing jobs!
+
+
+      1. Rodeo Drive
+
+      World-famous luxury shopping street, home to designer boutiques and high-end
+      brands.
+
+      - Location: Beverly Hills, Los Angeles, CA
+
+      - Hours: Most stores 10:00 AM – 7:00 PM
+
+
+      2. Melrose Avenue
+
+      A trendy shopping street with a mix of designer stores, vintage shops, and colorful
+      street art.
+
+      - Location: Melrose Ave, Los Angeles, CA
+
+      - Hours: Typically 11:00 AM – 8:00 PM (varies by store)
+
+
+      3. The Grove
+
+      A popular outdoor shopping and entertainment complex with a lively atmosphere.
+
+      - Location: 189 The Grove Dr, Los Angeles, CA 90036
+
+      - Hours: 10:00 AM – 9:00 PM
+
+
+      If you want, I can also share more hidden local spots in LA—places that locals
+      love just as much as the famous shopping streets!'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: So how about parking near Melrose Avenue in Los Angeles? Is there a public
+      parking lot nearby? I’m thinking of heading there right now, but I’ll need an
+      EV charging station. If there's one, I’ll drive over immediately—please give
+      me navigation directions to Melrose Avenue. Oh, and could you also recommend
+      some good pop songs to listen to while driving?
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: counsel_agent\n      refined_query: \"Need\
+      \ advice on whether to switch jobs or resign\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: counsel_agent\n\
+      \      refined_query: \"Career recommendations suitable for ENFJ and famous\
+      \ ENFJ figures\"\n\nworkflow_3:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: travel_agent\n      refined_query:\
+      \ \"Recommend popular shopping streets in Los Angeles\"\n\nworkflow_4:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ transport_agent\n      refined_query: \"Public parking lots with EV charging\
+      \ stations near Melrose Avenue in Los Angeles right now\"\n\nworkflow_5:\n \
+      \ status: pending\n  type: independent\n  steps:\n    - status: pending\n  \
+      \    name: entertainment_agent\n      refined_query: \"Recommend great pop songs\
+      \ to listen to while driving\"\n\nworkflow_6:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_4\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"If there is a public parking lot with an EV charging\
+      \ station near Melrose Avenue in Los Angeles, provide driving navigation directions\
+      \ to Melrose Avenue now\""
+- workflow_id: workflow_4
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"Public parking lots\
+      \ with EV charging stations near Melrose Avenue in Los Angeles right now\"\n\
+      \  location: \"Melrose Avenue, Los Angeles\"\n  searchRadius: 500\n  parkingType:\
+      \ \"public\"\n  date: \"09/03/2024\"\n  sortBy: \"nearest\"\n  vehicleType:\
+      \ \"EV\"\ntool_call_result:\n  data:\n    query: \"Public parking lots with\
+      \ EV charging stations near Melrose Avenue in Los Angeles right now\"\n    location:\
+      \ \"Melrose Avenue, Los Angeles\"\n    searchRadius: 500\n    parkingType: \"\
+      public\"\n    date: \"09/03/2024\"\n    sortBy: \"nearest\"\n    vehicleType:\
+      \ \"EV\"\n    parkingLots:\n      - name: \"LA City Public Parking - Melrose\
+      \ Ave Lot 1\"\n        address: \"Melrose Ave & N Gardner St, Los Angeles, CA\
+      \ 90046\"\n        distanceMeters: 250\n        availableChargers: 4\n     \
+      \   hourlyRate: 2\n        totalSpaces: 150\n        reservationAvailable: true\n\
+      \        operatingHours: \"06:00–23:00\"\n      - name: \"LA Public Parking\
+      \ - Fairfax/Melrose Lot\"\n        address: \"Fairfax Ave & Melrose Ave, Los\
+      \ Angeles, CA 90036\"\n        distanceMeters: 480\n        availableChargers:\
+      \ 2\n        hourlyRate: 1.8\n        totalSpaces: 120\n        reservationAvailable:\
+      \ false\n        operatingHours: \"07:00–22:00\"\n  source: \"Parking Information\
+      \ System\""
+- workflow_id: workflow_5
+  step_id: 14
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMusicInfo\narguments:\n  refinedQuery: \"Recommend great pop\
+      \ songs to listen to while driving\"\n  chartType: \"billboard\"\n  genre: \"\
+      pop\"\n  moodTag: \"drive\"\ntool_call_result:\n  data:\n    query: \"Recommend\
+      \ great pop songs to listen to while driving\"\n    chartType: \"billboard\"\
+      \n    genre: \"pop\"\n    moodTag: \"drive\"\n    songs:\n      - title: \"\
+      Blinding Lights\"\n        artist: \"The Weeknd\"\n        album: \"After Hours\"\
+      \n        releaseDate: \"2019-11-29\"\n        duration: \"3:20\"\n      - title:\
+      \ \"Levitating\"\n        artist: \"Dua Lipa\"\n        album: \"Future Nostalgia\"\
+      \n        releaseDate: \"2020-03-27\"\n        duration: \"3:23\"\n      - title:\
+      \ \"Watermelon Sugar\"\n        artist: \"Harry Styles\"\n        album: \"\
+      Fine Line\"\n        releaseDate: \"2019-11-16\"\n        duration: \"2:54\"\
+      \n      - title: \"Can't Stop the Feeling!\"\n        artist: \"Justin Timberlake\"\
+      \n        album: \"Trolls (Original Motion Picture Soundtrack)\"\n        releaseDate:\
+      \ \"2016-05-06\"\n        duration: \"3:56\"\n  source: \"Billboard Music Chart\""
+- workflow_id: workflow_6
+  step_id: 15
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure location information'
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: 'To give you directions to Melrose Avenue in Los Angeles, I’ll need your
+      starting point.
+
+      Please tell me something like "Los Angeles City Hall (200 N Spring St)," "Union
+      Station," or "Current location"!'
+- workflow_id: null
+  step_id: 17
+  agent: user
+  agent_type: user
+  data:
+    content: My Location
+- workflow_id: null
+  step_id: 18
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Driving directions\
+      \ from my current location to Melrose Avenue in Los Angeles\"\n  origin: \"\
+      City Hall, 1001 Central Avenue, Los Angeles, CA 90021, USA\"\n  destination:\
+      \ \"Melrose Avenue, Los Angeles\"\n  departureTime: \"17:51\"\n  transportModes:\
+      \ \"car\"\n  optimizeBy: \"fastest\"\n  navigationMode: true\ntool_call_result:\n\
+      \  data:\n    origin: \"City Hall, 1001 Central Avenue, Los Angeles, CA 90021,\
+      \ USA\"\n    destination: \"Melrose Avenue, Los Angeles\"\n    departureTime:\
+      \ \"17:51\"\n    transportModes: \"car\"\n    optimizeBy: \"fastest\"\n    navigationMode:\
+      \ true\n    route:\n      distanceKm: 12.6\n      estimatedTimeMinutes: 25\n\
+      \      steps:\n        - instruction: \"Start on Central Ave heading north toward\
+      \ E 12th St.\"\n          distanceMeters: 500\n          estimatedTimeMinutes:\
+      \ 2\n        - instruction: \"Turn left onto E 12th St and use the ramp to merge\
+      \ onto I-10 W toward Santa Monica.\"\n          distanceMeters: 2500\n     \
+      \     estimatedTimeMinutes: 5\n        - instruction: \"Take the exit for La\
+      \ Brea Ave and continue north on S La Brea Ave.\"\n          distanceMeters:\
+      \ 7500\n          estimatedTimeMinutes: 10\n        - instruction: \"Turn right\
+      \ onto Melrose Ave and continue toward Fairfax Ave; your destination is along\
+      \ Melrose Ave.\"\n          distanceMeters: 2100\n          estimatedTimeMinutes:\
+      \ 6\n    advisory: \"I-10 W and La Brea Ave are often congested at this hour;\
+      \ allow extra time.\"\n  source: \"Traffic Navigation System\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ Public Parking Lot Information
+
+      Here are public parking options near the Melrose Avenue area that offer EV charging:
+
+
+      1. LA City Public Parking – Melrose Ave Lot 1
+
+      • Address: Melrose Ave & N Gardner St, Los Angeles, CA 90046
+
+      • Distance: About 250 m
+
+      • EV Chargers: 4
+
+      • Hourly Rate: $2.00
+
+      • Total Spaces: 150
+
+      • Hours: 6:00 AM – 11:00 PM
+
+      • Reservation: Available
+
+
+      2. LA Public Parking – Fairfax/Melrose Lot
+
+      • Address: Fairfax Ave & Melrose Ave, Los Angeles, CA 90036
+
+      • Distance: About 480 m
+
+      • EV Chargers: 2
+
+      • Hourly Rate: $1.80
+
+      • Total Spaces: 120
+
+      • Hours: 7:00 AM – 10:00 PM
+
+      • Reservation: Not available
+
+
+      ◾ Pop Songs to Listen to While Driving
+
+      Great chart-topping tracks for a stress-relieving drive:
+
+      • Blinding Lights – The Weeknd
+
+      • Levitating – Dua Lipa
+
+      • Watermelon Sugar – Harry Styles
+
+      • Can’t Stop the Feeling! – Justin Timberlake
+
+
+      ◾ Driving Directions: City Hall (1001 Central Ave) → Melrose Avenue, Los Angeles
+
+
+      Departure Time: 5:51 PM
+
+      Transport Mode: Car (fastest route)
+
+
+      Route Overview
+
+
+      Distance: 12.6 km
+
+      Estimated Travel Time: 25 minutes
+
+      Advisory: I-10 W and La Brea Ave are often congested at this hour; allow extra
+      time.
+
+
+      Step-by-Step Directions
+
+
+      1. Start on Central Ave heading north toward E 12th St. (500 m, ~2 min)
+
+      2. Turn left onto E 12th St and use the ramp to merge onto I-10 W toward Santa
+      Monica. (2.5 km, ~5 min)
+
+      3. Take the exit for La Brea Ave and continue north on S La Brea Ave. (7.5 km,
+      ~10 min)
+
+      4. Turn right onto Melrose Ave and continue toward Fairfax Ave; your destination
+      is along Melrose Ave. (2.1 km, ~6 min)
+
+
+      Estimated Arrival: Approximately 6:16 PM'

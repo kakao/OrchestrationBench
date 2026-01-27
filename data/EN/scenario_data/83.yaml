@@ -1,0 +1,145 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Time: 2025/12/20 3:32 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you tell me where the public parking lots near the Brooklyn sports
+      stadium are, and also show me the directions to the closest one?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Public\
+      \ parking lot near the Main Sports Stadium in Brooklyn\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: transport_agent\n      refined_query: \"Directions to\
+      \ a public parking lot near the Main Sports Stadium in Brooklyn\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"Public parking lots\
+      \ near the Main Sports Stadium in Brooklyn\"\n  location: \"Main Sports Stadium,\
+      \ Brooklyn, NY\"\n  searchRadius: 500\n  parkingType: \"public\"\n  date: \"\
+      2025-12-20\"\n  sortBy: \"nearest\"\ntool_call_result:\n  data:\n    parkingLots:\n\
+      \      - name: \"Atlantic Center Parking Garage\"\n        address: \"625 Atlantic\
+      \ Ave, Brooklyn, NY 11217, United States\"\n        distance: \"500 ft\"\n \
+      \       parkingType: \"public\"\n        priceType: \"hourly\"\n        hourlyRate:\
+      \ \"$4.00\"\n        availableSpots: 38\n        totalSpots: 200\n        operatingHours:\
+      \ \"Open 24 hours\"\n\n      - name: \"Pacific Street Public Parking\"\n   \
+      \     address: \"700 Pacific St, Brooklyn, NY 11217, United States\"\n     \
+      \   distance: \"720 ft\"\n        parkingType: \"public\"\n        priceType:\
+      \ \"hourly\"\n        hourlyRate: \"$3.50\"\n        availableSpots: 25\n  \
+      \      totalSpots: 120\n        operatingHours: \"06:00 ~ 23:00\"\n\n      -\
+      \ name: \"Fort Greene Place Parking Lot\"\n        address: \"50 Fort Greene\
+      \ Pl, Brooklyn, NY 11217, United States\"\n        distance: \"0.25 miles\"\n\
+      \        parkingType: \"public\"\n        priceType: \"hourly\"\n        hourlyRate:\
+      \ \"$3.00\"\n        availableSpots: 47\n        totalSpots: 180\n        operatingHours:\
+      \ \"Open 24 hours\""
+- workflow_id: null
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: User''s current location'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'I’ll guide you to the Atlantic Center Parking Garage.
+
+      Please tell me your starting point.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: I'm at Brooklyn Museum now.
+- workflow_id: workflow_2
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Get directions from\
+      \ Brooklyn Museum to Atlantic Center Parking Garage\"\n  origin: \"Brooklyn\
+      \ Museum\"\n  destination: \"Atlantic Center Parking Garage\"\n  transportModes:\
+      \ \"car\"\n  optimizeBy: \"fastest\"\n  departureTime: \"2025-12-20T15:32\"\n\
+      tool_call_result:\n  data:\n    origin: \"Brooklyn Museum\"\n    destination:\
+      \ \"Atlantic Center Parking Garage\"\n    distance: \"1.2 miles\"\n    duration:\
+      \ \"About 6 minutes\"\n    transportMode: \"car\"\n    routeSummary:\n     \
+      \ - step: \"Depart Brooklyn Museum, heading southwest on Eastern Pkwy toward\
+      \ Washington Ave.\"\n      - step: \"Turn left onto Washington Ave and continue\
+      \ for 0.5 miles.\"\n      - step: \"Turn right onto Atlantic Ave and continue\
+      \ for 0.7 miles.\"\n      - step: \"You will arrive at your destination. Atlantic\
+      \ Center Parking Garage is on the left.\"\n    toll: \"None\"\n    trafficCondition:\
+      \ \"Moderate\"\n    estimatedArrivalTime: \"2025-12-20T15:38\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here is the closest public parking lot near the Main Sports Stadium
+      in Brooklyn, along with driving directions:
+
+
+      ### Closest Public Parking Lot
+
+
+      Atlantic Center Parking Garage
+
+
+      * Address: 625 Atlantic Ave, Brooklyn, NY 11217, United States
+
+      * Distance from stadium: 500 ft
+
+      * Parking Type: Public
+
+      * Price: \$4.00/hour
+
+      * Available Spots: 38 / Total Spots: 200
+
+      * Open Hours: Open 24 hours
+
+
+      ### Driving Directions to Atlantic Center Parking Garage
+
+
+      Route: Brooklyn Museum → Atlantic Center Parking Garage
+
+      Mode: Car (fastest)
+
+      Distance / Time: 1.2 miles • About 6 minutes
+
+      Tolls: None • Traffic: Moderate
+
+      Estimated Arrival Time: 2025-12-20 15:38 (local)
+
+
+      Turn-by-turn Directions:
+
+
+      1. Depart Brooklyn Museum, heading southwest on Eastern Pkwy toward Washington
+      Ave.
+
+      2. Turn left onto Washington Ave and continue for 0.5 miles.
+
+      3. Turn right onto Atlantic Ave and continue for 0.7 miles.
+
+      4. You will arrive at your destination. Atlantic Center Parking Garage is on
+      the left.'

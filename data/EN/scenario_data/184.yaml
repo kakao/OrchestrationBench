@@ -1,0 +1,99 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Today''s date: 2025-10-11'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: How much money should I exchange in total to spend a week in Austria?
+      Considering the exchange rate, how much would I need in US dollars?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"Average\
+      \ budget for a 1-week trip to Austria\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: finance_agent\n\
+      \      refined_query: \"Check the current exchange rate of euros in US dollars\
+      \ when buying euros\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Average budget for a\
+      \ 1-week trip to Austria\"\ntool_call_result:\n  data:\n    summary: |\n   \
+      \   The cost of a 1-week trip to Austria varies greatly depending on your travel\
+      \ style. Excluding airfare, for one person including accommodation, meals, transportation,\
+      \ and some sightseeing, you can expect the following:\n      - Budget travel:\
+      \ about €70–100 per day (hostels, inexpensive meals)\n      - Mid-range travel:\
+      \ about €150–200 per day (mid-range hotels, restaurant meals)\n      - Luxury\
+      \ travel: €300+ per day (luxury hotels, fine dining, shopping)\n      So, for\
+      \ a typical mid-range trip, budgeting around €1,050–1,400 for 7 days is recommended.\n\
+      \    sources:\n      - \"BudgetYourTrip - Austria Travel Cost\"\n      - \"\
+      Lonely Planet - Money and Costs in Austria\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getExchangeRate\narguments:\n  refinedQuery: \"Check the current\
+      \ exchange rate of euros in US dollars when buying euros\"\n  baseCurrency:\
+      \ \"USD\"\n  targetCurrency: \"EUR\"\n  date: \"2025-10-11\"\n  exchangeType:\
+      \ \"cash_buy\"\ntool_call_result:\n  data:\n    baseCurrency: \"USD\"\n    targetCurrency:\
+      \ \"EUR\"\n    exchangeType: \"cash_buy\"\n    rate: 1.51550\n    date: \"2025-10-11\"\
+      \n    message: \"When buying euros in cash, 1 EUR costs 1.51550 USD.\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s an overview of the estimated budget you’ll need for a one-week
+      trip to Austria, along with the current exchange rate in US dollars.
+
+
+      ■ Estimated Expenses for One Week in Austria (per person, excluding airfare)
+
+      The cost of a 7-day trip to Austria varies by travel style. For one person including
+      accommodation, meals, transportation, and sightseeing (excluding airfare), you
+      can expect:
+
+      • Budget travel: about €70–100 per day (hostels, inexpensive meals)
+
+      • Mid-range travel: about €150–200 per day (mid-range hotels, restaurant meals)
+
+      • Luxury travel: €300+ per day (luxury hotels, fine dining, shopping)
+
+
+      For a typical mid-range trip, budgeting €1,050–1,400 for the week is recommended.
+
+
+      ■ Current Exchange Rate (as of October 11, 2025)
+
+      When buying euros in cash, 1 EUR ≈ 1.51550 USD.
+
+
+      ■ Recommended Budget in US Dollars
+
+      Based on the exchange rate above, a typical mid-range one-week trip would cost
+      around:
+
+      • €1,050 → approx. $1,590
+
+      • €1,400 → approx. $2,120
+
+
+      So, planning for a budget of about $1,600–2,100 should be reasonable.
+
+      (Of course, actual expenses may vary depending on your travel style and shopping
+      plans.)'

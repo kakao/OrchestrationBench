@@ -1,0 +1,265 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-08-04
+
+      Current time: 1:19 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I heard a typhoon is coming to New York today. Tell me the expected path
+      of the typhoon and the chance of rain. Then, if the chance of rain at 6:00 PM
+      is 50% or higher, send my girlfriend a text saying "Bring an umbrella." If it’s
+      below 50%, text her "Pick up a popsicle on your way."
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"Today's\
+      \ expected typhoon path in New York and the chance of rain at 6:00 PM\"\n\n\
+      workflow_2:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: pending\n      name: message_agent\n      refined_query:\
+      \ \"If the chance of rain at 6:00 PM is 50% or higher, send 'Bring an umbrella'\
+      \ and if it's below 50%, send 'Pick up a popsicle on your way' to my girlfriend\
+      \ via SMS\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"Today's expected\
+      \ typhoon path for New York and the chance of rain at 6:00 PM\"\n  location:\
+      \ \"New York\"\n  date: \"2025-08-04\"\ntool_call_result:\n  status: success\n\
+      \  data:\n    location: \"New York, NY, USA\"\n    date: \"2025-08-04\"\n  \
+      \  timezone: \"America/New_York\"\n    storm:\n      basin_term: \"Atlantic\
+      \ (use hurricane/TS, not typhoon)\"\n      name: \"Tropical Storm Iris\"\n \
+      \     category: \"Tropical Storm\"\n      advisory_time_local: \"2025-08-04T13:00\"\
+      \n      movement: \"NE at ~18 mph\"\n      center_position: \"approx. 39.9N,\
+      \ 71.2W\"\n      expected_path:\n        - \"Afternoon: tracking NE offshore,\
+      \ roughly parallel to the Mid-Atlantic & Long Island coasts\"\n        - \"\
+      Evening (18:00-21:00): passes 200-300 km east of Long Island\"\n        - \"\
+      Overnight: continues into the open Atlantic\"\n      impact_summary: \"Blustery\
+      \ coastal winds, elevated surf/rip currents; inland NYC mostly showers/gusts\
+      \ at times\"\n      rainProbability:\n        time: \"18:00\"\n        probability:\
+      \ 80\n        expectedRainfall: \"0.4–1.2 inches\"\n        note: \"Brief periods\
+      \ of heavy rain are possible.\"\n      status: \"success\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient''s contact information'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: To send a message to your girlfriend, I’ll need her contact information
+      (phone number). Could you please share her number?
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: (220)234-2345
+- workflow_id: null
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"If the chance of rain\
+      \ is 50% or higher at 6:00 PM, send 'Bring an umbrella' to my girlfriend via\
+      \ SMS\"\n  channel: \"sms\"\n  phoneNumber: \"(220)234-2345\"\n  message: \"\
+      Bring an umbrella\"\n  repeatRule: \"none\"\n  priority: \"normal\"\ntool_call_result:\n\
+      \  - data:\n      messageSendResult:\n        channel: \"SMS\"\n        phoneNumber:\
+      \ \"(220)234-2345\"\n        message: \"Bring an umbrella\"\n        status:\
+      \ \"success\"\n        deliveryReport: \"Successfully delivered to recipient\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ New York (Aug 4, 2025) Tropical Storm “Iris” Advisory
+
+
+      1. Baseline
+
+
+      - Location/Date: New York, NY, USA — 2025-08-04 (America/New_York)
+
+      - Terminology: In the Atlantic, use hurricane/tropical storm (not “typhoon”).
+
+
+      2. Storm Overview
+
+
+      -Name/Category: Tropical Storm Iris
+
+      -Advisory time (local): 2025-08-04 13:00
+
+      -Motion: NE ~18 mph
+
+      -Center: ~39.9N, 71.2W
+
+
+      3. Expected Track
+
+
+      - Afternoon: Moving NE offshore, roughly parallel to the Mid-Atlantic & Long
+      Island coasts
+
+      - Evening (18:00–21:00): Passes ~200–300 km east of Long Island
+
+      - Overnight: Continues into the open Atlantic
+
+
+      4. Impact Summary
+
+
+      - Coast: Gusty winds, high surf/rip currents
+
+      - NYC inland: Showers and gusts at times
+
+
+      ▶ Rain Probability at 6 PM
+
+
+      - Chance of rain: 80%
+
+      - Expected rainfall: 0.4–1.2 inches
+
+      - Heavy downpours may occur in a short period of time.
+
+      - For safety, check your windows and drainage, and avoid outdoor activities.
+
+
+      -----------
+
+
+      ▶ Text message sent successfully
+
+
+      - Recipient: (220)234-2345
+
+      - Message content: "Bring an umbrella"
+
+      - Status: Delivered successfully
+
+
+      The notification was received properly. If you’d like to set up repeat sending
+      or schedule messages, let me know!'
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: Since it’s raining, I’m craving Japanese Ramen—could you find a Ramen
+      near Atlantic Av–Barclays Ctr?
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: weather_agent\n      refined_query: \"Today's\
+      \ projected typhoon path in New York and the chance of rain at 6:00 PM\"\n\n\
+      workflow_2:\n  status: completed\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: completed\n      name: message_agent\n      refined_query:\
+      \ \"If the chance of rain at 6:00 PM is 50% or higher, send 'Bring an umbrella'\
+      \ to my girlfriend via text, otherwise send 'Pick up some ice cream on your\
+      \ way'.\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"A Japanese\
+      \ Ramen shop near Atlantic Av–Barclays Ctr\""
+- workflow_id: null
+  step_id: 12
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Japanese Ramen\
+      \ shop near Atlantic Av–Barclays Ctr\"\n  location: \"Atlantic Av–Barclays Ctr\"\
+      \n  cuisineType: \"Japanese\"\n  specificDishes: \"Ramen\"\n  sortBy: \"highest_rated\"\
+      \ntool_call_result:\n  status: success\n  data:\n    search_summary:\n     \
+      \ refinedQuery: \"Japanese Ramen shop near Atlantic Av–Barclays Ctr\"\n    \
+      \  location: \"Atlantic Av–Barclays Ctr (Brooklyn, NY)\"\n      cuisineType:\
+      \ \"Japanese\"\n      specificDishes: \"Ramen\"\n      sortBy: \"highest_rated\"\
+      \n      total_found: 3\n    restaurants:\n      - rank: 1\n        placeId:\
+      \ \"chuko-ramen-vanderbilt-ave\"\n        name: \"Chuko Ramen (Prospect Heights)\"\
+      \n        address: \"565 Vanderbilt Ave, Brooklyn, NY 11238\"\n        coordinates:\n\
+      \          lat: 40.679700\n          lon: -73.968900\n        distance_meters_from_target:\
+      \ 900\n        rating:\n          score: 4.6\n          reviews_count: 1200\n\
+      \          price_tier: \"$$\"\n        hours_today: \"12:00–22:00\"\n      \
+      \  open_now: true\n        popular_dishes: [\"Tonkotsu Shoyu\", \"Spicy Miso\"\
+      , \"Veggie Ramen\"]\n        phone: \"(718)555-1299\"\n        url: \"https://maps.example/chuko-ramen-vanderbilt-ave\"\
+      \n        notes: \"Rich broths; limited seating; often a short wait\"\n    \
+      \  - rank: 2\n        placeId: \"ramen-danbo-park-slope\"\n        name: \"\
+      Ramen Danbo (Park Slope)\"\n        address: \"52 7th Ave, Brooklyn, NY 11217\"\
+      \n        coordinates:\n          lat: 40.676700\n          lon: -73.973200\n\
+      \        distance_meters_from_target: 800\n        rating:\n          score:\
+      \ 4.5\n          reviews_count: 2100\n          price_tier: \"$$\"\n       \
+      \ hours_today: \"11:30–22:30\"\n        open_now: true\n        popular_dishes:\
+      \ [\"Tonkotsu (Classic)\", \"Tonkotsu Shio\", \"Karadare Spicy\"]\n        phone:\
+      \ \"(718)555-2084\"\n        url: \"https://maps.example/ramen-danbo-park-slope\"\
+      \n        notes: \"Customize firmness/oil/spiciness; line moves fast\"\n   \
+      \   - rank: 3\n        placeId: \"ramen-thukpa-atlantic-ave\"\n        name:\
+      \ \"Ramen Thukpa\"\n        address: \"535 Atlantic Ave, Brooklyn, NY 11217\"\
+      \n        coordinates:\n          lat: 40.685200\n          lon: -73.980900\n\
+      \        distance_meters_from_target: 350\n        rating:\n          score:\
+      \ 4.4\n          reviews_count: 800\n          price_tier: \"$$\"\n        hours_today:\
+      \ \"12:00–22:00\"\n        open_now: true\n        popular_dishes: [\"Shoyu\
+      \ Ramen\", \"Miso Ramen\", \"Thukpa (Tibetan Noodle Soup)\"]\n        phone:\
+      \ \"(718)555-7310\"\n        url: \"https://maps.example/ramen-thukpa-atlantic-ave\"\
+      \n        notes: \"Closest walk from Barclays; mix of ramen & Tibetan soups\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: 'Japanese Ramen Near Atlantic Av–Barclays Ctr
+
+
+      1. Chuko Ramen (Prospect Heights) — ~900 m from Barclays
+
+
+      Rating: 4.6 (≈1.2k reviews) · Price: $$ · Hours: 12:00–22:00
+
+      Highlights: Tonkotsu Shoyu, Spicy Miso, Veggie Ramen
+
+      Notes: Rich broths; limited seating; short waits common.
+
+      Address: 565 Vanderbilt Ave, Brooklyn, NY 11238
+
+
+      2. Ramen Danbo (Park Slope) — ~800 m from Barclays
+
+
+      Rating: 4.5 (≈2.1k reviews) · Price: $$ · Hours: 11:30–22:30
+
+      Highlights: Classic Tonkotsu, Tonkotsu Shio, Karadare Spicy
+
+      Notes: Customize noodle firmness/oil/spiciness; line moves fast.
+
+      Address: 52 7th Ave, Brooklyn, NY 11217
+
+
+      3. Ramen Thukpa — ~350 m from Barclays
+
+
+      Rating: 4.4 (≈800 reviews) · Price: $$ · Hours: 12:00–22:00
+
+      Highlights: Shoyu, Miso, plus Tibetan thukpa
+
+      Notes: Closest walk from the arena; mix of ramen & Tibetan soups.
+
+      Address: 535 Atlantic Ave, Brooklyn, NY 11217'

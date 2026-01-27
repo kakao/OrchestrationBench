@@ -1,0 +1,173 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2024-11-11
+
+      - 현재 위치: 서울 은평구 연서로31길 15-1
+
+      - 시간: 15:01'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 백천만 씨가 나한테 연어 택배 보냈다던데 왜 이렇게 안오는 건지.. 한번 확인해줄래? 어디쯤인지. 백천만 씨 번호가 010-9900-8880인데
+      연락이 안되네. 그리고 난 지금 어디쯤인건지.. 여기 어디니? 길을 잃은 거 같은데 내위치에서 갈현지역아동센터 어떻게 가?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"백천만 씨가\
+      \ 보낸 연어 택배 배송 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"내 위치에서 갈현지역아동센터 가는 법\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"백천만 씨가 보낸 연어 택배 배송\
+      \ 조회\"\n  senderName: \"백천만\"\n  senderPhone: \"01099008880\"\ntool_call_result:\n\
+      \  data:\n    senderName: \"백천만\"\n    senderPhone: \"01099008880\"\n    queryDate:\
+      \ \"2024-11-11\"\n    deliveryStatus: \"배송 내역이 없습니다. 입력하신 정보로 등록된 배송이 없습니다.\"\
+      \n    message: \"정보를 다시 확인하거나 고객센터에 문의해 주세요.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"내 위치에서 갈현지역아동센터 가는\
+      \ 법\"\n  origin: \"서울 은평구 연서로31길 15-1\"\n  destination: \"갈현지역아동센터\"\n  transportModes:\
+      \ \"car\"\n  departureTime: \"15:01\"\n  optimizeBy: \"fastest\"\ntool_call_result:\n\
+      \  data:\n    origin: \"서울 은평구 연서로31길 15-1\"\n    destination: \"갈현지역아동센터\"\n\
+      \    transportModes: \"car\"\n    departureTime: \"15:01\"\n    optimizeBy:\
+      \ \"fastest\"\n    routeSummary: \"서울 은평구 연서로31길 15-1에서 갈현지역아동센터까지 자동차로 가장 빠른\
+      \ 경로 안내입니다.\"\n    estimatedTime: \"15분\"\n    distance: \"6.2km\"\n    steps:\n\
+      \      - order: 1\n        instruction: \"연서로31길 15-1에서 출발하여 연서로를 따라 직진하세요.\"\
+      \n        distance: \"1.2km\"\n        duration: \"3분\"\n      - order: 2\n\
+      \        instruction: \"은평로를 따라 우회전 후 계속 직진하세요.\"\n        distance: \"3.0km\"\
+      \n        duration: \"7분\"\n      - order: 3\n        instruction: \"갈현지역아동센터\
+      \ 표지판을 따라 좌회전 후 목적지에 도착합니다.\"\n        distance: \"2.0km\"\n        duration:\
+      \ \"5분\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "다음은 요청하신 내용에 대한 확인 결과입니다:\n\n■  연어 택배 배송 조회 결과\n\n• 보낸 사람: 백천만 (010-9900-8880)\n\
+      • 조회일: 2024년 11월 11일\n• 배송 상태: 조회된 배송 내역이 없습니다.\n• 안내: 입력하신 정보로 등록된 택배가 없어 배송\
+      \ 조회가 불가합니다.\n→ 확인 필요: 발송인에게 다시 확인하거나 해당 택배사 고객센터에 문의해 주세요.\n\n■  현재 위치 및 경로\
+      \ 안내\n\n• 현재 위치: 서울 은평구 연서로31길 15-1\n• 목적지: 갈현지역아동센터\n• 이동 수단: 자동차\n• 소요 시간:\
+      \ 약 15분\n• 거리: 약 6.2km\n• 경로 요약\n  1. 연서로31길 15-1에서 출발하여 연서로를 따라 직진 (1.2km /\
+      \ 3분)\n  2. 은평로로 우회전 후 계속 직진 (3.0km / 7분)\n  3. 갈현지역아동센터 표지판을 따라 좌회전 → 목적지 도착\
+      \ (2.0km / 5분)\n\n필요하시면 대중교통 경로도 안내해 드릴 수 있습니다."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 와 이사람봐라 나한테 사기를 쳐? 잠수탈 때부터 알아봤어. 내 위치에서 가장 가까운 경찰서 가는 길이랑 서초에서 가장 유명한
+      사기 전문 로펌 찾아줘. 그리고 백천만한테 문자 넣어. '법원에서 보자'라고.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: delivery_agent\n      refined_query: \"\
+      백천만 씨가 보낸 연어 택배 배송 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: transport_agent\n      refined_query:\
+      \ \"내 위치에서 갈현지역아동센터 가는 법\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"내 위치에서 가장 가까운 경찰서 검색\"\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"내 위치에서 가장 가까운 경찰서 가는 길 찾기\"\n\nworkflow_4:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ place_agent\n      refined_query: \"서초에서 가장 유명한 사기 전문 로펌 검색\"\n\nworkflow_5:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: message_agent\n      refined_query: \"백천만에게 '법원에서 보자'라고 문자 전송\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"내 위치에서 가장 가까운 경찰서\
+      \ 검색\"\n  placeCategory: \"경찰서\"\n  location: \"서울 은평구 연서로31길 15-1\"\n  sortBy:\
+      \ \"distance\"\ntool_call_result:\n  data:\n    refinedQuery: \"내 위치에서 가장 가까운\
+      \ 경찰서 검색\"\n    placeCategory: \"경찰서\"\n    location: \"서울 은평구 연서로31길 15-1\"\
+      \n    sortBy: \"distance\"\n    places:\n      - name: \"은평경찰서\"\n        address:\
+      \ \"서울 은평구 은평로 123\"\n        distance: \"0.5km\"\n        phone: \"02-123-4567\"\
+      \n        openingHours: \"24시간 운영\"\n      - name: \"응암경찰서\"\n        address:\
+      \ \"서울 은평구 응암로 45\"\n        distance: \"1.2km\"\n        phone: \"02-234-5678\"\
+      \n        openingHours: \"24시간 운영\"\n      - name: \"불광경찰서\"\n        address:\
+      \ \"서울 은평구 불광로 78\"\n        distance: \"2.0km\"\n        phone: \"02-345-6789\"\
+      \n        openingHours: \"24시간 운영\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"서초에서 가장 유명한 사기 전문\
+      \ 로펌 검색\"\n  placeCategory: \"로펌\"\n  location: \"서초\"\n  sortBy: \"popularity\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"서초에서 가장 유명한 사기 전문 로펌 검색\"\n\
+      \    placeCategory: \"로펌\"\n    location: \"서초\"\n    sortBy: \"popularity\"\
+      \n    places:\n      - name: \"서초 법률사무소\"\n        address: \"서울 서초구 서초대로 123\"\
+      \n        distance: \"0.8km\"\n        phone: \"02-555-1234\"\n        openingHours:\
+      \ \"평일 09:00~18:00\"\n        specialties: [\"사기\", \"형사 사건\"]\n      - name:\
+      \ \"정의 로펌\"\n        address: \"서울 서초구 강남대로 456\"\n        distance: \"1.2km\"\
+      \n        phone: \"02-555-5678\"\n        openingHours: \"평일 09:30~19:00\"\n\
+      \        specialties: [\"사기\", \"민사 소송\"]\n      - name: \"법률센터 서초\"\n     \
+      \   address: \"서울 서초구 반포대로 789\"\n        distance: \"1.5km\"\n        phone:\
+      \ \"02-555-9012\"\n        openingHours: \"평일 10:00~18:00\"\n        specialties:\
+      \ [\"사기\", \"기업 법무\"]"
+- workflow_id: workflow_5
+  step_id: 11
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"백천만에게 '법원에서 보자'라고 문자\
+      \ 전송\"\n  phoneNumber: \"010-9900-8880\"\n  channel: \"sms\"\n  message: \"\
+      법원에서 보자\"\n  repeatRule: \"none\"\n  priority: \"normal\"\ntool_call_result:\n\
+      \  data:\n    phoneNumber: \"010-9900-8880\"\n    channel: \"sms\"\n    message:\
+      \ \"법원에서 보자\"\n    status: \"전송 완료\"\n    priority: \"normal\"\n    repeatRule:\
+      \ \"none\""
+- workflow_id: workflow_3
+  step_id: 12
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"내 위치에서 은평경찰서 가는 길\
+      \ 찾기\"\n  origin: \"서울 은평구 연서로31길 15-1\"\n  destination: \"서울 은평구 은평로 123, 은평경찰서\"\
+      \n  transportModes: \"car\"\n  departureTime: \"15:01\"\n  optimizeBy: \"fastest\"\
+      \ntool_call_result:\n  data:\n    origin: \"서울 은평구 연서로31길 15-1\"\n    destination:\
+      \ \"은평경찰서\"\n    transportModes: \"car\"\n    departureTime: \"15:01\"\n   \
+      \ optimizeBy: \"fastest\"\n    routeSummary: \"서울 은평구 연서로31길 15-1에서 은평경찰서까지\
+      \ 자동차로 가장 빠른 경로 안내입니다.\"\n    estimatedTime: \"12분\"\n    distance: \"5.4km\"\
+      \n    steps:\n      - order: 1\n        instruction: \"연서로31길 15-1에서 출발하여 연서로를\
+      \ 따라 직진하세요.\"\n        distance: \"1.0km\"\n        duration: \"2분\"\n     \
+      \ - order: 2\n        instruction: \"은평로를 따라 우회전 후 계속 직진하세요.\"\n        distance:\
+      \ \"3.2km\"\n        duration: \"7분\"\n      - order: 3\n        instruction:\
+      \ \"은평경찰서 표지판을 따라 좌회전 후 목적지에 도착합니다.\"\n        distance: \"1.2km\"\n       \
+      \ duration: \"3분\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "■  백천만 씨에게 문자 전송 결과\n\n• 수신 번호: 010-9900-8880\n• 전송 메시지: \"법원에서 보자\"\
+      \n• 전송 상태: 전송 완료\n\n■  현재 위치에서 가장 가까운 경찰서 및 이동 경로\n\n• 경찰서명: 은평경찰서\n• 주소: 서울\
+      \ 은평구 은평로 123\n• 전화번호: 02-123-4567\n• 운영 시간: 24시간 운영\n• 거리/시간: 약 5.4km / 12분\
+      \ 소요 (자동차 기준)\n• 경로 안내 (자동차 기준)\n  1. 연서로31길 15-1에서 출발 → 연서로 따라 직진 (1.0km /\
+      \ 2분)\n  2. 은평로로 우회전 후 계속 직진 (3.2km / 7분)\n  3. 은평경찰서 표지판 따라 좌회전 → 목적지 도착 (1.2km\
+      \ / 3분)\n\n■  서초 지역 사기 전문 로펌 추천\n\n1. 서초 법률사무소\n\n• 주소: 서울 서초구 서초대로 123\n• 전화:\
+      \ 02-555-1234\n• 운영: 평일 09:00~18:00\n• 전문 분야: 사기, 형사 사건\n\n2. 정의 로펌\n\n• 주소:\
+      \ 서울 서초구 강남대로 456\n• 전화: 02-555-5678\n• 운영: 평일 09:30~19:00\n• 전문 분야: 사기, 민사\
+      \ 소송\n\n3. 법률센터 서초\n\n• 주소: 서울 서초구 반포대로 789\n• 전화: 02-555-9012\n• 운영: 평일 10:00~18:00\n\
+      • 전문 분야: 사기, 기업 법무\n\n필요하신 경우 경찰 신고나 로펌 상담 절차도 도와드릴 수 있습니다."

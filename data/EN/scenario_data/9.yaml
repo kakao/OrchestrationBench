@@ -1,0 +1,100 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current date: 2025-07-16'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I want to study AI! I’m planning to do it on my own at home by watching
+      online lectures. Can you find me some free online lecture videos and useful
+      information about AI?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Free online lecture videos about AI\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: search_agent\n \
+      \     refined_query: \"Information about AI\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"Free AI online courses\"\
+      \ntool_call_result:\n    data:\n      results:\n        - title: \"Artificial\
+      \ Intelligence for Beginners - Life Coding\"\n          summary: \"A free lecture\
+      \ series from Life Coding that covers the basics of AI, from core concepts to\
+      \ simple hands-on practice.\"\n          url: \"https://www.youtube.com/watch?v=2ePf9rue1Ao\"\
+      \n        - title: \"AI for Everyone - Andrew Ng (with English subtitles)\"\n\
+      \          summary: \"An introductory course led by world-renowned AI expert\
+      \ Andrew Ng, designed to be understood easily even by non-specialists.\"\n \
+      \         url: \"https://www.youtube.com/watch?v=aircAruvnKk\"\n        - title:\
+      \ \"Learning AI Basics with Python\"\n          summary: \"A free YouTube course\
+      \ that teaches fundamental machine learning algorithms using Python.\"\n   \
+      \       url: \"https://www.youtube.com/watch?v=VwC8dBqGgIw\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Information about AI\"\
+      \ntool_call_result:\n    data:\n      results:\n        - title: \"What is Artificial\
+      \ Intelligence (AI)?\"\n          summary: \"AI refers to computer systems designed\
+      \ to mimic human intelligence, incorporating technologies such as machine learning\
+      \ and deep learning.\"\n          source: \"https://en.wikipedia.org/wiki/Artificial_intelligence\"\
+      \n        - title: \"AI Technology Trends in 2025\"\n          summary: \"The\
+      \ use of AI is rapidly expanding across industries, including generative AI,\
+      \ autonomous driving, and medical diagnostics.\"\n          source: \"https://www.techtrend2025.com/ai\"\
+      \n        - title: \"AI Ethics and Regulation\"\n          summary: \"To prevent\
+      \ misuse of AI technologies, global discussions on legal and ethical frameworks\
+      \ are actively underway.\"\n          source: \"https://www.bbc.com/news/technology-ai-ethics\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "If you’re looking for free online courses on AI, here are some useful\
+      \ video lectures I recommend:\n\nIntro to Artificial Intelligence for Beginners\
+      \ – Life Coding\nA step-by-step course that explains the basics of AI along\
+      \ with simple hands-on exercises. Perfect for beginners.\nurl: https://www.youtube.com/watch?v=2ePf9rue1Ao\n\
+      \nAI for Everyone – Andrew Ng (with subtitles)\nAn introductory course by Stanford\
+      \ professor Andrew Ng that explains what AI is and how it’s being applied in\
+      \ society. It’s designed to be approachable even for non-technical learners.\n\
+      url: https://www.youtube.com/watch?v=aircAruvnKk \n\nLearning AI Basics with\
+      \ Python\nA practical course where you implement core machine learning algorithms\
+      \ using Python, helping you learn by doing.\nurl: https://www.youtube.com/watch?v=VwC8dBqGgIw\n\
+      \nAll of these videos are free and available on YouTube. Depending on your needs,\
+      \ you can choose a course that focuses more on foundational concepts or one\
+      \ that emphasizes hands-on practice.\n\n\nWhat is AI?\nArtificial Intelligence\
+      \ refers to computer systems designed to mimic human intelligence, incorporating\
+      \ technologies such as machine learning and deep learning. These systems are\
+      \ built to perform tasks that usually require human thinking, learning, and\
+      \ decision making.\n(Source: Wikipedia – Artificial Intelligence)\n\nKey AI\
+      \ Information:\n\nWhat is AI?\nAI goes beyond simple automation. It refers to\
+      \ systems that can learn and make decisions based on data. Examples include\
+      \ voice recognition, image analysis, chatbots, and recommendation algorithms.\
+      \ AI is already applied in fields such as education, finance, manufacturing,\
+      \ and healthcare.\n(Source: Wikipedia – Artificial Intelligence)\n\nAI Trends\
+      \ for 2025\nThe use of AI is rapidly expanding across industries. Notable areas\
+      \ include generative AI (like GPT), autonomous driving, AI-assisted medical\
+      \ diagnostics, and industrial automation such as smart factories. Generative\
+      \ AI in particular is growing quickly in content creation, workflow automation,\
+      \ and customer service.\n(Source: Tech Trend 2025)\n\nAI Ethics and Regulation\n\
+      As AI develops, ethical issues such as transparency, accountability, and bias\
+      \ prevention are becoming increasingly important. Global discussions on legal\
+      \ and ethical frameworks are underway. The European Union is leading with AI\
+      \ legislation, while companies worldwide are creating their own ethical guidelines.\n\
+      (Source: BBC – AI Ethics Article)\n\nAI is no longer a distant future technology—it’s\
+      \ already a driving force reshaping our lives and society today. If you’re interested\
+      \ in a particular area, I can help you find more detailed resources!"

@@ -1,0 +1,82 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: I would like to have the card delivered to my company. Please text the
+      driver the address (35 Main Street, Apt. 202, Chicago, IL) along with the ZIP
+      code.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"Find\
+      \ the ZIP code for the company address: 35 Main Street, Apt. 202, Chicago, IL\"\
+      \n    - status: pending\n      name: message_agent\n      refined_query: \"\
+      Send the company address (35 Main Street, Apt. 202, Chicago, IL) along with\
+      \ the ZIP code to the delivery driver via text message\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPostalCode\narguments:\n  refinedQuery: \"Search ZIP code using\
+      \ company address info: 35 Main Street, Apt. 202, Chicago, IL\"\n  addressQuery:\
+      \ \"35 Main Street, Apt. 202, Chicago, IL\"\ntool_call_result:\n  data:\n  \
+      \  refinedQuery: \"Search ZIP code using company address info: 35 Main Street,\
+      \ Apt. 202, Chicago, IL\"\n    addressQuery: \"35 Main Street, Apt. 202, Chicago,\
+      \ IL\"\n    postalCode: \"60601\"\n    status: \"Postal code lookup complete\""
+- workflow_id: null
+  step_id: 4
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Recipient''s phone number'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: To send a text message, the recipient's phone number is required.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: (312) 555-0198
+- workflow_id: null
+  step_id: 7
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"Send the company address\
+      \ (35 Main Street, Apt. 202, Chicago, IL) along with the ZIP code (60601) to\
+      \ the delivery driver via text message\"\n  phoneNumber: \"(312) 555-0198\"\n\
+      \  channel: \"sms\"\n  message: \"Card delivery address: 35 Main Street, Apt.\
+      \ 202, Chicago, IL, ZIP code: 60601\"\n  repeatRule: \"none\"\n  priority: \"\
+      normal\"\ntool_call_result:\n  data:\n    refinedQuery: \"Send the company address\
+      \ (35 Main Street, Apt. 202, Chicago, IL) along with the ZIP code (60601) to\
+      \ the delivery driver via text message\"\n    phoneNumber: \"(312) 555-0198\"\
+      \n    channel: \"sms\"\n    message: \"Card delivery address: 35 Main Street,\
+      \ Apt. 202, Chicago, IL, ZIP code: 60601\"\n    repeatRule: \"none\"\n    priority:\
+      \ \"normal\"\n    status: \"Message sent successfully\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'After verifying the ZIP code, I have successfully sent a text message
+      with the card delivery details to (312) 555-0198.
+
+
+      The message content is as follows:
+
+      "Card delivery address: 35 Main Street, Apt. 202, Chicago, IL, ZIP code: 60601"'

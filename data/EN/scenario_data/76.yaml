@@ -1,0 +1,281 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2023-11-24
+
+      - Time: 3:30 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Book a delivery with FedEx right now. I want to send some children's
+      books to my brother. Also, can you recommend and let me pre-book a kid-friendly
+      show in Springfield that would be good for 7-year-olds?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"Schedule\
+      \ a courier delivery with FedEx to send children's books to brother.\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: entertainment_agent\n      refined_query: \"Recommend a show in\
+      \ Springfield that's suitable for 7-year-old kids to watch\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Book tickets for a show in Springfield that's suitable for 7-year-old kids\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Pickup location, delivery location, sender’s name and phone number,
+      and recipient’s name and phone number'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"Recommend performances\
+      \ in Springfield that are great for 7-year-old kids to watch\"\n  location:\
+      \ \"Springfield\"\n  ageRating: \"All Ages\"\n  sortBy: \"soonest\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Recommend performances in Springfield that are\
+      \ great for 7-year-old kids to watch\"\n    location: \"Springfield\"\n    ageRating:\
+      \ \"All ages\"\n    sortBy: \"soonest\"\n    status: \"Recommendation complete\"\
+      \n    performances:\n      - performanceID: \"PERF20230830_001\"\n        title:\
+      \ \"The Amazing Science Magic Show\"\n        venue: \"Prairie Playhouse\"\n\
+      \        date: \"2023-11-30\"\n        time: \"2:00 PM\"\n        ageRating:\
+      \ \"All ages (best for 6–10)\"\n        description: \"A lively mix of kid-safe\
+      \ experiments and comedy that turns basic physics and chemistry into wow-moments\
+      \ that kids can try at home.\"\n      - performanceID: \"PERF20230906_002\"\n\
+      \        title: \"Puppet Parade: The Lost Firefly\"\n        venue: \"Springfield\
+      \ Children's Theater\"\n        date: \"2023-12-06\"\n        time: \"11:00\
+      \ AM\"\n        ageRating: \"All ages (4+)\"\n        description: \"Colorful\
+      \ hand-and-rod puppets lead a gentle adventure about friendship and finding\
+      \ your light, with sing-along moments.\"\n      - performanceID: \"PERF20230913_003\"\
+      \n        title: \"Mini Musicals: Dino Day!\"\n        venue: \"River City Arts\
+      \ Center\"\n        date: \"2023-11-28\"\n        time: \"3:00 PM\"\n      \
+      \  ageRating: \"All ages (5+)\"\n        description: \"Short, catchy musical\
+      \ numbers about curious dinosaurs; perfect first theater trip with lots of audience\
+      \ participation.\"\n  source: \"Performance Information System\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Performance information to be booked, total number of people
+      for the reservation, list of attendee types (adult, child, senior, disabled),
+      desired seat class (R, VIP, S, A), and booker''s name and contact information'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ Kid-Friendly Performances in Springfield (for 7-year-olds) — 3 Picks
+
+
+      1) The Amazing Science Magic Show
+
+
+      Date & Time: November 30, 2023 (Thu) • 2:00 PM
+
+      Venue: Prairie Playhouse
+
+      Age Rating: All ages (best for 6–10)
+
+      Summary: A lively mix of kid-safe experiments and comedy that turns basic physics
+      and chemistry into wow-moments that kids can try at home.
+
+
+      2) Puppet Parade: The Lost Firefly
+
+
+      Date & Time: December 6, 2023 (Wed) • 11:00 AM
+
+      Venue: Springfield Children’s Theater
+
+      Age Rating: All ages (4+)
+
+      Summary: Colorful hand-and-rod puppets lead a gentle adventure about friendship
+      and finding your light, with sing-along moments.
+
+
+      3) Mini Musicals: Dino Day!
+
+
+      Date & Time: November 28, 2023 (Tue) • 3:00 PM
+
+      Venue: River City Arts Center
+
+      Age Rating: All ages (5+)
+
+      Summary: Short, catchy musical numbers about curious dinosaurs; a perfect first
+      theater trip with lots of audience participation.
+
+
+
+      ▶ To proceed with scheduling a package pickup and booking a show, I’ll need
+      the following information:
+
+
+      1. Package Delivery Reservation
+
+
+      • Pickup location
+
+      • Delivery (drop-off) location
+
+      • Sender’s name
+
+      • Sender’s phone number
+
+      • Recipient’s name
+
+      • Recipient’s phone number
+
+
+      2. Show Ticket Reservation
+
+
+      • Details of the show you’d like to book
+
+      • Number of tickets (total attendees)
+
+      • Ticket type for each attendee (adult, child, senior, disabled)
+
+      • Preferred seating category (R section / VIP / S section / A section)
+
+      • Booker’s name
+
+      • Booker’s contact information'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: '1. Courier Service Reservation
+
+
+      Pickup location: 120 Maplewood Rd, Apt 102, Annandale, VA 22003
+
+      Delivery location: 501 Birchview Ave, Apt 501, Springfield, IL 62704
+
+      Sender''s name: Andrew Collins
+
+      Sender''s phone number: (202)555-4312
+
+      Recipient''s name: David Johnson
+
+      Recipient''s phone number: (202)555-5235
+
+
+      2. Show Ticket Reservation
+
+
+      Show information: The Amazing Science Magic Show
+
+      Number of tickets (total): 3
+
+      Ticket types (adult, child, senior, disabled): 1 adult, 2 children
+
+      Preferred seat class (R / VIP / S / A): A section
+
+      Purchaser''s name: Andrew Collins
+
+      Purchaser''s contact: (202)555-4312'
+- workflow_id: workflow_1
+  step_id: 9
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: bookDeliveryService\narguments:\n  refinedQuery: \"Book a parcel\
+      \ delivery now via FedEx to send children's books to David Johnson\"\n  deliveryType:\
+      \ \"parcel\"\n  pickupLocation: \"120 Maplewood Rd, Apt 102, Annandale, VA 22003\"\
+      \n  dropoffLocation: \"501 Birchview Ave, Apt 501, Springfield, IL 62704\"\n\
+      \  pickupTime: \"now\"\n  senderInfo:\n    name: Andrew Collins\n    phone:\
+      \ (202)555-4312\n  receiverInfo:\n    name: David Johnson\n    phone: (202)555-5235\n\
+      \  itemDescription: \"Children's books\"\n  reservation: false\n  source: \"\
+      FedEX Express\"\ntool_call_result:\n  data:\n    refinedQuery: \"Book a parcel\
+      \ delivery now via FedEx Express to send children's books to David Johnson\"\
+      \n    deliveryType: \"parcel\"\n    pickupLocation: \"120 Maplewood Rd, Apt\
+      \ 102, Annandale, VA 22003\"\n    dropoffLocation: \"501 Birchview Ave, Apt\
+      \ 501, Springfield, IL 62704\"\n    pickupTime: \"now\"\n    senderInfo:\n \
+      \     name: \"Andrew Collins\"\n      phone: \"(202)555-4312\"\n    receiverInfo:\n\
+      \      name: \"David Johnson\"\n      phone: \"(202)555-5235\"\n    itemDescription:\
+      \ \"Children's books\"\n    reservation: false\n    status: \"Reservation confirmed\"\
+      \n    trackingNumber: \"FDX20230825US001\"\n    estimatedPickupTime: \"2023-11-24T15:30\"\
+      \n    message: \"Your children's books delivery has been successfully booked\
+      \ with FedEx Express. The tracking number is FDX20230825US001, and the scheduled\
+      \ pickup time is November 24, 2023 at 3:30 PM (EDT).\"\n  source: \"FedEx Express\
+      \ Reservation System\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookPerformance\narguments:\n  refinedQuery: \"Book tickets for\
+      \ 'The Amazing Science Magic Show' – 1 adult, 2 children, Section A\"\n  performanceTitle:\
+      \ \"The Amazing Science Magic Show\"\n  venueName: \"Prairie Playhouse\"\n \
+      \ showDate: \"2023-11-30\"\n  showTime: \"14:00\"\n  audienceCount: 3\n  audienceTypes:\
+      \ [\"adult\", \"child\", \"child\"]\n  seatGrade: \"A\"\n  userInfo:\n    name:\
+      \ Andrew Collins\n    contactNumber: (202)555-4312\ntool_call_result:\n  data:\n\
+      \    refinedQuery: \"Book tickets for 'The Amazing Science Magic Show' – 1 adult,\
+      \ 2 children, Section A\"\n    performanceTitle: \"The Amazing Science Magic\
+      \ Show\"\n    venueName: \"Prairie Playhouse\"\n    showDate: \"2023-11-30\"\
+      \n    showTime: \"2:00 PM\"\n    audienceCount: 3\n    audienceTypes: [\"adult\"\
+      , \"child\", \"child\"]\n    seatGrade: \"A\"\n    userInfo:\n      name: \"\
+      Andrew Collins\"\n      contactNumber: \"(202)555-4312\"\n    status: \"Reservation\
+      \ Confirmed\"\n    reservationID: \"PERF20231130_ASMS_A3\"\n    message: \"\
+      Your reservation for 'The Amazing Science Magic Show' at the Prairie Playhouse\
+      \ on November 30, 2023 at 2:00 PM has been completed successfully. Section A\
+      \ seats for 3 people (1 adult, 2 children) are confirmed.\"\n  source: \"Performance\
+      \ Booking System\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your requested courier booking and show ticket reservation have both
+      been completed.
+
+
+      Courier Booking
+
+
+      • Item: Children’s books
+
+      • Sender: Andrew Collins (202)555-4312
+
+      • Recipient: David Johnson (202)555-5235
+
+      • Tracking Number: FDX20230825US001
+
+      • Scheduled Pickup Time: November 24, 2023, 3:30 PM (local time)
+
+
+      Show Reservation
+
+
+      • Show Title: The Amazing Science Magic Show
+
+      • Venue: Prairie Playhouse
+
+      • Date & Time: November 30, 2023, 2:00 PM
+
+      • Seats: Section A, 3 seats (1 adult, 2 children)
+
+      • Booker: Andrew Collins (202)555-4312
+
+      • Reservation Number: PERF20231130_ASMS_A3'

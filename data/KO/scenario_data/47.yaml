@@ -1,0 +1,76 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2022-06-09'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번 주말 부산 날씨 어때? 만약 비가 온다면, 무신사에서 나온 가장 인기 있는 여성용 레인부츠 245 사이즈를 찾아줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"이번 주말 부산\
+      \ 날씨 조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"비가 올 경우 무신사에서 나온 가장 인기 있는 여성용 레인부츠 245 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"2022년 6월 11일 부산 날씨 어때?\"\n      location: \"부산\"\n      date: \"2022-06-11\"\
+      \n\n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery: \"2022년\
+      \ 6월 12일 부산 날씨 어때?\"\n      location: \"부산\"\n      date: \"2022-06-12\"\n\n\
+      tool_call_result:\n  - forecast:\n      date: \"2022-06-11\"\n      dayOfWeek:\
+      \ \"토요일\"\n      weather: \"맑음\"\n      highTemp: \"30°C\"\n      lowTemp: \"\
+      24°C\"\n      precipitation: \"10%\"\n      wind: \"남서풍, 3m/s\"\n      humidity:\
+      \ \"60%\"\n      uvIndex: \"높음\"\n      fineDust: \"보통\"\n\n  - forecast:\n\
+      \      date: \"2022-06-12\"\n      dayOfWeek: \"일요일\"\n      weather: \"구름 많음,\
+      \ 오후 한때 소나기\"\n      highTemp: \"28°C\"\n      lowTemp: \"23°C\"\n      precipitation:\
+      \ \"60%\"\n      wind: \"남풍, 4m/s\"\n      humidity: \"75%\"\n      uvIndex:\
+      \ \"보통\"\n      fineDust: \"좋음\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"무신사에서 나온 가장 인기 있는\
+      \ 여성용 레인부츠 245 사이즈\"\n  productCategory: \"레인부츠\"\n  brand: \"무신사\"\n  sortBy:\
+      \ \"most_viewed\"\n  size: \"245\"\ntool_call_result:\n  products:\n    - productName:\
+      \ \"우먼즈 첼시 레인 부츠\"\n      brand: \"무신사 스탠다드\"\n      price: 59900"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '네, 이번 주말 부산 날씨와 함께 요청하신 상품 정보를 안내해 드릴게요.
+
+
+      ■ 이번 주말 부산 날씨
+
+      6월 11일 (토): 맑고 덥습니다. (최고 30°C / 최저 24°C, 강수확률 10%)
+
+      6월 12일 (일): 흐리고 오후에 소나기 가능성이 있습니다. (🌦 최고 28°C / 최저 23°C, 강수확률 60%)
+
+
+      일요일엔 비 예보가 있어, 무신사에서 인기 있는 여성용 레인부츠(245 사이즈)를 찾아보았어요.
+
+
+      ‘무신사 스탠다드 우먼즈 첼시 레인 부츠’를 추천드립니다.
+
+      가격: 59,900원
+
+
+      궁금한 점이 있으시면 언제든지 편하게 문의해주세요!'

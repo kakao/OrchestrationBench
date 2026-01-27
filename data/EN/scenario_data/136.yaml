@@ -1,0 +1,146 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: Monday, August 4
+
+      - Current time: 9:00 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: We’ve been having a lot of team dinners lately. Can you book a designated
+      driver for me in 15 minutes? The design team also has a dinner scheduled for
+      August 1st at 7 PM—please add it to my calendar.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Book\
+      \ a designated driver in 15 minutes\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: calendar_agent\n\
+      \      refined_query: \"Add a team dinner with the design team on August 1st\
+      \ at 7 PM\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: The user’s requested reservation time does not meet the minimum
+      requirement (must be at least 30 minutes to 2 hours from now), so a designated
+      driver reservation cannot be made.'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: Cannot save because the event start time is in the past'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'You can only book a designated driver between 30 minutes and 2 hours
+      from the current time.
+
+
+      The scheduled start time must also always be later than the current time. Please
+      double-check the date you want to register.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Oh, really? Then just go ahead and call it right now. I wrote the date
+      wrong. It’s not the 1st, it’s the 11th.
+- workflow_id: workflow_1
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Pickup location and vehicle details'
+- workflow_id: workflow_2
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Register a team\
+      \ dinner for the Design Team on August 11 at 7 PM\"\n  title: \"Design Team\
+      \ Dinner\"\n  startDateTime: \"2025-08-11T19:00\"\n  endDateTime: \"2025-08-11T20:00\"\
+      \ntool_call_result:\n  data:\n    status: \"Registration complete\"\n    schedule:\n\
+      \      - title: \"Design Team Dinner\"\n        startDateTime: \"2025-08-11T19:00\"\
+      \n        endDateTime: \"2025-08-11T20:00\"\n        description: \"The Design\
+      \ Team dinner is scheduled for August 11 at 7 PM.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: To request a designated driver, I need the pickup location where the
+      driver should meet you. And please provide details about the vehicle to be driven.
+      For example, you could say something like "White Accord, license plate AA12345."
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: I’ll be leaving from The Daily Times Headquarters. The car is a black
+      Toyota Camry, license plate DA23456.
+- workflow_id: workflow_1
+  step_id: 12
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callDesignatedDriver\narguments:\n  refinedQuery: \"Request a\
+      \ designated driver pickup right now from The Daily Times Headquarters\"\n \
+      \ pickupLocation: \"The Daily Times Headquarters\"\n  vehicleInfo: \"Black Toyota\
+      \ Camry license plate DA23456\"\n  pickupTime: \"now\"\ntool_call_result:\n\
+      \  data:\n    status: \"Request completed\"\n    driverDetails:\n      name:\
+      \ \"David Wilson\"\n      contact: \"(202) 555-0173\"\n      estimatedArrivalTime:\
+      \ \"10 minutes\"\n    pickupLocation: \"The Daily Times Headquarters\"\n   \
+      \ vehicleInfo: \"Black Toyota Camry license plate DA23456\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your designated driver request and calendar event have been successfully
+      registered.
+
+
+      ◾ Designated Driver Details
+
+      - Driver: David Wilson
+
+      - Vehicle: Black Toyota Camry
+
+      - License Plate: DA23456
+
+      - Driver Contact: (202) 555-0173
+
+      - Pickup Location: The Daily Times Headquarters
+
+      - Estimated Arrival: About 10 minutes (9:10 PM)
+
+
+      ◾ Calendar Event Details
+
+      - Event: Design Team Dinner
+
+      - Date & Time: August 11, 2025, 7:00 PM – 8:00 PM
+
+      - Description: The design team dinner is scheduled for 7:00 PM on August 11.'

@@ -1,0 +1,89 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2020/08/21
+
+      userId: 0820USER
+
+      contact: 010-1010-1010
+
+      name: 김김밥'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '우리집 고양이 사료 다 떨어져가는데
+
+      엊그제 주문한 사료 배송조회좀 해주고 합정역 근처에 고양이 사료 파는곳좀 알려줘'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"엊그제 주문한\
+      \ 고양이 사료 배송 조회를 위한 주문 조회\"\n    - status: pending\n      name: delivery_agent\n\
+      \      refined_query: \"엊그제 주문한 고양이 사료 배송 조회\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"합정역 근처 고양이 사료 판매하는 곳 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"엊그제 주문한 고양이 사료 주문\
+      \ 조회\"\n  userId: \"0820USER\"\n  recipientName: \"김김밥\"\n  phoneNumber: \"\
+      010-1010-1010\"\n  orderDate: \"2020-08-19\"\ntool_call_result:\n  orderStatus:\n\
+      \    orderNumber: \"ORD-20200819-0042\"\n    productName: \"로얄캐닌 고양이 사료 인도어\
+      \ 4kg\"\n    orderDate: \"2020-08-19\"\n    status: \"배송 출발\"\n    estimatedDelivery:\
+      \ \"2020-08-23\"\n    courier: \"CJ대한통운\"\n    trackingNumber: \"123456789012\"\
+      \n    shippingAddress: \"서울시 마포구 독막로 42, 101호\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"합정역 근처 고양이 사료를 판매하는\
+      \ 곳 추천\"\n  sortBy: \"distance\"\n  placeCategory: \"펫푸드 전문점\"\n  location:\
+      \ \"합정역\"\ntool_call_result:\n  data:\n    places:\n      - name: \"코코펫 합정점\"\
+      \n        address: \"서울 마포구 양화로 72\"\n        phone: \"02-1234-5678\"\n    \
+      \    website: \"http://www.cocopet.co.kr\"\n        distance: \"210m\"\n   \
+      \     openingHours: \"10:00~22:00\"\n        features:\n          - \"다양한 고양이\
+      \ 사료 보유\"\n          - \"직원 상담 가능\"\n          - \"회원 할인 혜택\"\n\n      - name:\
+      \ \"펫마트 합정역점\"\n        address: \"서울 마포구 월드컵로1길 14\"\n        phone: \"02-8765-4321\"\
+      \n        website: \"https://www.petmart.co.kr\"\n        distance: \"350m\"\
+      \n        openingHours: \"09:30~21:30\"\n        features:\n          - \"프리미엄\
+      \ 사료 취급\"\n          - \"정기 배송 신청 가능\"\n          - \"고양이 간식도 다양\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"엊그제 주문한 고양이 사료 배송조회\"\
+      \n  trackingNumber: \"123456789012\"\n  carrier: \"CJ대한통운\"\ntool_call_result:\n\
+      \  deliveryInfo:\n    trackingNumber: \"123456789012\"\n    carrier: \"CJ대한통운\"\
+      \n    status: \"배송 출발\"\n    lastUpdate: \"2020-08-21T09:30\"\n    sender: \"\
+      로얄캐닌 코리아\"\n    recipientName: \"김김밥\"\n    origin: \"서울 마포구 물류센터\"\n    destination:\
+      \ \"서울시 마포구 독막로 42, 101호\"\n    estimatedDeliveryDate: \"2020-08-23\"\n    history:\n\
+      \      - dateTime: \"2020-08-20T18:10\"\n        location: \"서울 마포구 물류센터\"\n\
+      \        status: \"집화처리\"\n      - dateTime: \"2020-08-21T02:45\"\n        location:\
+      \ \"서울 HUB터미널\"\n        status: \"간선상차\"\n      - dateTime: \"2020-08-21T07:15\"\
+      \n        location: \"마포구 집배점\"\n        status: \"배송출발\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 주문 조회 결과\n\n엊그제 주문하신 로얄캐닌 고양이 사료(인도어 4kg)는 현재 배송 출발 상태입니다.\n마포구 집배점에서\
+      \ 오늘 오전 7시 15분에 출발했으며, 2020년 8월 23일에 도착 예정입니다.\n\n▶ 합정역 근처 고양이 사료 매장 추천\n\n\
+      1. 코코펫 합정점\n   주소: 서울 마포구 양화로 72\n   전화: 02-1234-5678\n   운영시간: 10:00 \\~ 22:00\n\
+      \n* 다양한 고양이 사료 보유\n* 직원 상담 가능\n* 회원 할인 혜택\n\n2. 펫마트 합정역점\n   주소: 서울 마포구 월드컵로1길\
+      \ 14\n   전화: 02-8765-4321\n   운영시간: 09:30 \\~ 21:30\n\n* 프리미엄 사료 취급\n* 정기 배송\
+      \ 신청 가능\n* 고양이 간식도 다양"

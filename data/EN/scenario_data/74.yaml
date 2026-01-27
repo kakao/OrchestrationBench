@@ -1,0 +1,118 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Contact: (429)852-5236
+
+      - Date: 2025-01-13
+
+      - Name: Sarah Young'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I want to cancel my hair salon appointment. I checked the reviews and
+      they weren’t good. I also want to cancel the movie tickets I booked. I’m not
+      in the mood to watch a movie.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Check hair\
+      \ salon reservation details\"\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"Cancel hair salon reservation due to poor reviews\"\n\
+      \nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: entertainment_agent\n      refined_query: \"Check movie\
+      \ booking details\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"Cancel movie booking\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"Check hair\
+      \ salon reservation details\"\n  contactInfo: \"(429)852-5236\"\n  placeCategory:\
+      \ \"Hair Salon\"\ntool_call_result:\n  data:\n    refinedQuery: \"Check hair\
+      \ salon reservation details\"\n    contactInfo: \"(429)852-5236\"\n    placeCategory:\
+      \ \"Hair Salon\"\n    status: \"Lookup complete\"\n    reservations:\n     \
+      \ - reservationID: \"RSV20250113_001\"\n        placeName: \"Beauty Hair Salon\"\
+      \n        date: \"2025-01-14\"\n        time: \"3:00 PM\"\n        service:\
+      \ \"Cut and Styling\"\n        status: \"Confirmed\"\n  source: \"Place Reservation\
+      \ System\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieBooking\narguments:\n  refinedQuery: \"Check movie booking\
+      \ details\"\n  contactNumber: \"(429)852-5236\"\n  name: \"Sarah Young\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Check movie booking details\"\n    name: \"Sarah\
+      \ Young\"\n    contactNumber: \"(429)852-5236\"\n    status: \"Lookup complete\"\
+      \n    bookings:\n      - bookingID: \"MOV20250112_002\"\n        movieTitle:\
+      \ \"La La Land\"\n        theaterName: \"AMC Theater Downtown\"\n        showDate:\
+      \ \"2025-01-14\"\n        showTime: \"11:00\"\n        seat: \"B7\"\n      \
+      \  status: \"Confirmed\"\n  source: \"Movie Booking System\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelPlaceReservation\narguments:\n  refinedQuery: \"Cancel reservation\
+      \ RSV20250113_001 due to poor reviews\"\n  reservationId: \"RSV20250113_001\"\
+      \n  cancelReason: \"Poor reviews\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Cancel reservation RSV20250113_001 due to poor reviews\"\n    reservationId:\
+      \ \"RSV20250113_001\"\n    status: \"Cancellation complete\"\n    message: \"\
+      Your appointment at Beauty Hair Salon on January 14, 2025 at 3:00 PM has been\
+      \ canceled successfully.\"\n  source: \"Place Reservation System\""
+- workflow_id: workflow_2
+  step_id: 7
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelMovieBooking\narguments:\n  refinedQuery: \"Cancel booking\
+      \ MOV20250112_002\"\n  bookingId: \"MOV20250112_002\"\ntool_call_result:\n \
+      \ data:\n    refinedQuery: \"Cancel booking MOV20250112_002\"\n    bookingId:\
+      \ \"MOV20250112_002\"\n    status: \"Cancellation complete\"\n    message: \"\
+      Your reservation for the movie 'La La Land' at AMC Theater Downtown on January\
+      \ 14, 2025 at 11:00 AM has been canceled successfully. The refund will be processed\
+      \ using your original payment method.\"\n  source: \"Movie Booking System\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'All of your requested cancellations have been completed.
+
+
+      1. Hair Salon Appointment Cancellation
+
+
+      • Location: Beauty Hair Salon
+
+      • Appointment Date & Time: January 14, 2025, 3:00 PM
+
+      • Service: Cut & Styling
+
+      • Status: Canceled
+
+
+      2. Movie Ticket Cancellation
+
+
+      • Movie: La La Land
+
+      • Theater: AMC Theater Downtown
+
+      • Showtime: January 14, 2025, 11:00 AM
+
+      • Seat: B7
+
+      • Status: Canceled (Refund will be processed using the original payment method)'

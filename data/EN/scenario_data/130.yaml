@@ -1,0 +1,98 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Summarize what the contract dispute involving Taylor Swift is about.
+      And tell me more in detail about her manager Scooter Braun.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"Summary\
+      \ of Taylor Swift contract dispute case\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: person_agent\n\
+      \      refined_query: \"Scooter Braun\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"Summary of Taylor\
+      \ Swift exclusive contract dispute\"\ntool_call_result:\n  data:\n    summary:\
+      \ \"The exclusive contract dispute between Taylor Swift and Big Machine Records\
+      \ began in November 2024 when Taylor Swift notified Big Machine Records of contract\
+      \ termination, leading to ongoing legal battles. In May 2025, the court ruled\
+      \ to prohibit Taylor Swift from engaging in independent activities under the\
+      \ contract, rejecting her claims for termination. The future of Taylor Swift's\
+      \ activities will depend on the outcome of further litigation.\"\n    keyEvents:\n\
+      \      - date: \"2024-11-29\"\n        event: \"Taylor Swift notifies Big Machine\
+      \ Records of contract termination\"\n      - date: \"2024-12-05\"\n        event:\
+      \ \"Big Machine Records files lawsuit to uphold validity of exclusive contract\"\
+      \n      - date: \"2025-03-21\"\n        event: \"Court grants Big Machine Records'\
+      \ injunction request\"\n      - date: \"2025-05-30\"\n        event: \"Court\
+      \ rules to prohibit Taylor Swift from engaging in independent activities under\
+      \ the contract\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"Scooter Braun\"\n  personName:\
+      \ \"Scooter Braun\"\ntool_call_result:\n  data:\n    name: \"Scooter Braun\"\
+      \n    birthDate: \"1981-06-18\"\n    occupation: \"Talent Manager, Entrepreneur,\
+      \ Producer\"\n    affiliation: \"Founder & CEO of SB Projects\"\n    knownFor:\
+      \ \"Managing top artists like Justin Bieber, Ariana Grande, and Demi Lovato\
+      \ and founding SB Projects, a diversified entertainment and media company.\"\
+      \n    notableWorks:\n      - \"Management of Justin Bieber\"\n      - \"Management\
+      \ of Ariana Grande\"\n      - \"Management of Demi Lovato\"\n      - \"Co-founder\
+      \ of Ithaca Holdings\"\n    education: \"Emory University, Business Administration\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ Here’s a summary of the exclusive contract dispute involving Taylor
+      Swift and Big Machine Records.
+
+
+      The dispute began in November 2024 when Taylor Swift informed Big Machine Records
+      that she wished to terminate her contract. This led to ongoing legal battles.
+      In May 2025, the court ruled to prohibit Taylor Swift from pursuing independent
+      activities under the contract, rejecting her claims for termination. The future
+      of her music activities will depend on the outcome of further litigation.
+
+
+      Key events in the case:
+
+
+      * November 29, 2024: Taylor Swift notifies Big Machine Records of contract termination.
+
+      * December 5, 2024: Big Machine Records files a lawsuit to uphold the validity
+      of the exclusive contract.
+
+      * March 21, 2025: Court grants Big Machine Records’ injunction request.
+
+      * May 30, 2025: Court rules to prohibit Taylor Swift from engaging in independent
+      activities under the contract.
+
+
+
+      ◾ Scooter Braun''s Profile and Career
+
+
+      Scooter Braun is a prominent talent manager, entrepreneur, and producer, best
+      known for managing top artists such as Justin Bieber, Ariana Grande, and Demi
+      Lovato. He is the founder and CEO of SB Projects, a diversified entertainment
+      and media company, and co-founder of Ithaca Holdings. He studied Business Administration
+      at Emory University.
+
+
+      Notable achievements include managing Justin Bieber, Ariana Grande, and Demi
+      Lovato, and leading SB Projects in various entertainment ventures.'

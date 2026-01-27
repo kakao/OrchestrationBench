@@ -1,0 +1,59 @@
+metadata:
+  total_steps: 4
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Please recommend a wedding anniversary gift under $300 for my parents,
+      except a massage chair.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"A wedding\
+      \ anniversary gift under $300 for my parents, except massage chairs\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"Anniversary gift\
+      \ under $300 for my parents, except massage chairs\"\n  recipientType: \"parents\"\
+      \n  occasion: \"anniversary\"\n  maxPrice: 300\n  exclude_items: \"massage chair\"\
+      \ntool_call_result:\n  data:\n    - giftID: \"gift_10231\"\n      name: \"Premium\
+      \ Couples Spa Package\"\n      price: 233\n      description: \"A luxurious\
+      \ spa experience for your parents to relax and rejuvenate together.\"\n    \
+      \  category: \"Experience\"\n    - giftID: \"gift_10456\"\n      name: \"Premium\
+      \ Wine & Cheese Set\"\n      price: 125\n      description: \"An elegant pairing\
+      \ of fine wine and artisanal cheeses to set the mood.\"\n      category: \"\
+      Food & Beverage\"\n    - giftID: \"gift_10789\"\n      name: \"Family Portrait\
+      \ Session\"\n      price: 208\n      description: \"Capture your family’s special\
+      \ moments with a professional photo shoot.\"\n      category: \"Memories/Photography\"\
+      \n    - giftID: \"gift_10801\"\n      name: \"Set of 2 Premium Sleep Health\
+      \ Pillows\"\n      price: 165\n      description: \"Functional pillows designed\
+      \ to support restful sleep and well-being.\"\n      category: \"Home & Living\"\
+      \n    - giftID: \"gift_10922\"\n      name: \"Couples Health Checkup Package\"\
+      \n      price: 250\n      description: \"A comprehensive health screening gift\
+      \ for both parents.\"\n      category: \"Health & Wellness\""
+- workflow_id: null
+  step_id: 4
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s a list of recommended anniversary gifts under \\$300 for your\
+      \ parents, based on your preferences:\n\n1. Premium Couples Spa Package (Experience,\
+      \ \\$233)\n   – A luxurious spa experience for your parents to relax and rejuvenate\
+      \ together.\n\n2. Premium Wine & Cheese Set (Food & Beverage, \\$125)\n   –\
+      \ An elegant pairing of fine wine and artisanal cheeses to set the mood.\n\n\
+      3. Family Portrait Session (Memories/Photography, \\$208)\n   – Capture your\
+      \ family’s special moments with a professional photo shoot.\n\n4. Set of 2 Premium\
+      \ Sleep Health Pillows (Home & Living, \\$165)\n   – Functional pillows designed\
+      \ to support restful sleep and well-being.\n\n5. Couples Health Checkup Package\
+      \ (Health & Wellness, \\$250)\n   – A comprehensive health screening gift for\
+      \ both parents.\n\nWhich one would you like to choose? I can help you proceed\
+      \ with the selected gift right away."

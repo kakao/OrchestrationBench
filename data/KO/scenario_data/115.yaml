@@ -1,0 +1,195 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2027-12-20
+
+      userId: TENT2027'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: "친구들이랑 얘기를 해봤는데 숙소 보다 이번 여행은 \n차박으로 캠핑을 하는게 나을것 같다는 결론이 나왔어\n다음주 가기로\
+      \ 예약했던 숙소 예약 취소좀 해주고 차박 캠핑에 필요한 용품들좀 알려줘"
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"다음주 가기로\
+      \ 예약한 숙소 조회\"\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"다음주 가기로 예약한 숙소 예약 취소\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"차박 캠핑에 필요한 용품\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 전화번호'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"차박 캠핑에 필요한 용품\"\ntool_call_result:\n\
+      \  searchResults:\n    - item: \"차박용 텐트\"\n      description: \"차박을 위한 특수 텐트,\
+      \ 차량과 연결해 사용\"\n    - item: \"차박 침낭\"\n      description: \"차박에서 편안한 잠자리를 위한\
+      \ 침낭\"\n    - item: \"차박 매트\"\n      description: \"차박용 차량 매트, 편안한 휴식을 위한 필수\
+      \ 용품\"\n    - item: \"차박용 조명\"\n      description: \"차박 캠핑에 필요한 LED 조명 세트\"\n\
+      \    - item: \"휴대용 화로\"\n      description: \"차박 캠핑 시 따뜻한 식사와 난방을 위한 화로\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 예약 취소를 위해 예약자의 핸드폰 번호가 필요합니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 010-2323-4545
+- workflow_id: null
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationReservation\narguments:\n  refinedQuery: \"다음주\
+      \ 가기로 예약한 숙소 예약 조회\"\n  contactNumber: \"010-2323-4545\"\ntool_call_result:\n\
+      \  reservationInfo:\n    reservationId: \"20271226\"\n    reservationName: \"\
+      김차박\"\n    contactNumber: \"010-2323-4545\"\n    propertyName: \"강릉 씨사이드 호텔\"\
+      \n    address: \"강원특별자치도 강릉시 해안로 123\"\n    roomType: \"디럭스 오션뷰 더블\"\n    guests:\n\
+      \      adults: 4\n      children: 0\n    checkIn: \"2027-12-26T15:00\"\n   \
+      \ checkOut: \"2027-12-28T11:00\"\n    nights: 2\n    status: \"예약확정\"\n    bookingChannel:\
+      \ \"공식 홈페이지\"\n    paymentMethod: \"신용카드(선결제)\"\n    totalPrice: \"₩298,000\"\
+      \n    bookedDate: \"2027-12-19\"\n    specialRequests:\n      - \"고층 객실 요청\"\
+      \n      - \"늦은 체크인 안내\"\n    policies:\n      cancellationPolicy: \"체크인 3일 전\
+      \ 18시까지 무료 취소, 이후 1박 요금 위약금\"\n      modificationPolicy: \"체크인 1일 전까지 1회 무료\
+      \ 변경 가능(성수기 제외)\"\n    confirmationCode: \"GN-SEA-250818-0457\""
+- workflow_id: null
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 취소 정보 수신 방법, 취소 사유, 환불 방법'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: 환불 받으실 수단과, 취소 사유, 취소 알림 수단을 말씀해주세요.
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: '-결제수단으로 환불
+
+      -문자알림
+
+      -개인사정
+
+      이렇게 취소해줘'
+- workflow_id: null
+  step_id: 12
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelAccommodation\narguments:\n  refinedQuery: \"다음주 가기로 예약한\
+      \ 숙소 예약 취소\"\n  reservationId: \"20271226\"\n  cancelReason: \"기타 개인 사정\"\n\
+      \  refundMethod: \"original_payment\"\n  notifyVia: \"sms\"\ntool_call_result:\n\
+      \  cancellationStatus: \"success\"\n  reservationId: \"20271226\"\n  placeName:\
+      \ \"Seaside Hotel\"\n  reservationDate: \"2027-12-26\"\n  cancelReason: \"기타\
+      \ 개인 사정\"\n  refundMethod: \"original_payment\"\n  notificationMethod: \"sms\"\
+      \n  notificationStatus: \"sent\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 숙소 예약 취소 안내\n\n*예약 ID: 20271226\n*숙소 이름: 숙소 이름\n*예약일: 2027년 12월 26일\n\
+      *취소 사유: 기타 개인 사정\n*환불 방법: 원래 결제 방법으로 환불\n*알림 방법: SMS로 취소 알림 발송 완료\n\n예약이 성공적으로\
+      \ 취소되었습니다. 추가적인 문의 사항이 있으시면 언제든지 연락 주세요.\n\n▶ 차박 캠핑에 필요한 용품 안내\n\n1. 차박용 텐트\n\
+      \   * 설명: 차박을 위한 특수 텐트, 차량과 연결해 사용\n\n2. 차박 침낭\n   * 설명**: 차박에서 편안한 잠자리를 위한\
+      \ 침낭\n\n3. 차박 매트\n   * 설명: 차박용 차량 매트, 편안한 휴식을 위한 필수 용품\n\n4. 차박용 조명\n   * 설명:\
+      \ 차박 캠핑에 필요한 LED 조명 세트\n\n5. 휴대용 화로\n   * 설명: 차박 캠핑 시 따뜻한 식사와 난방을 위한 화로"
+- workflow_id: null
+  step_id: 14
+  agent: user
+  agent_type: user
+  data:
+    content: 아 아까 주문한 차박텐트 차 사이즈랑 안맞아서 L사이즈로 교환좀 해야겠다.
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: travel_agent\n      refined_query: \"다음주\
+      \ 가기로 예약한 숙소 조회\"\n    - status: completed\n      name: travel_agent\n     \
+      \ refined_query: \"다음주 가기로 예약한 숙소 예약 취소\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: search_agent\n\
+      \      refined_query: \"차박 캠핑에 필요한 용품\" \n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"차박텐트 주문 내역 조회\"\n    - status: pending\n      name:\
+      \ shopping_agent \n      refined_query: \"주문했던 차박텐트 사이즈가 맞지 않아 L 사이즈로 교환\""
+- workflow_id: workflow_3
+  step_id: 16
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"차박텐트 주문 내역 조회\"\n\
+      \  userId: \"TENT2027\"\ntool_call_result:\n  orderId: \"O123111\"\n  orderStatus:\
+      \ \"상품 준비중\"\n  userId: \"TENT2027\"\n  productId: \"MENT2027-001\"\n  itemName:\
+      \ \"차박용 텐트\"\n  size: \"S\"\n  orderDate: \"2027-12-20\"\n  exchangeRequested:\
+      \ true\n  requestStatus: \"pending\"\n  estimatedProcessingTime: \"2027-12-20\"\
+      \n  notificationStatus: \"awaiting confirmation\""
+- workflow_id: null
+  step_id: 17
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: exchangeProducts\narguments:\n  refinedQuery: \"주문했던 텐트 사이즈가 맞지\
+      \ 않아 L사이즈로 교환\"\n  orderId: \"O123111\"\n  itemList:\n    - productId: \"MENT2027-001\"\
+      \n      quantity: 1\n      reason: \"사이즈 교환\"\n  exchangeOption:\n    size:\
+      \ \"L\"\n  reasonCode: \"SIZE_ISSUE\"\ntool_call_result:\n  exchangeStatus:\
+      \ \"success\"\n  userId: \"TENT2027\"\n  productId: \"MENT2027-001\"\n  itemName:\
+      \ \"차박용 텐트\"\n  originalSize: \"S\"\n  newSize: \"L\"\n  quantityExchanged:\
+      \ 1\n  exchangeReason: \"사이즈 교환\"\n  estimatedProcessingTime: \"2027-12-22\"\
+      \n  notificationStatus: \"sent\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 주문하신 텐트 사이즈 교환 안내
+
+
+      *ID: TENT2027
+
+      *상품명: 차박용 텐트
+
+      *사이즈: S
+
+      *교환 수량: 1
+
+      *교환 사유: 사이즈 교환
+
+      *예상 처리 시간: 2027년 12월 22일
+
+      *알림 상태: 교환 알림이 발송되었습니다.
+
+
+      교환이 성공적으로 처리되었습니다. 교환된 상품은 2027년 12월 22일에 발송될 예정입니다.'

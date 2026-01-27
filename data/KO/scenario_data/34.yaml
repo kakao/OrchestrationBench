@@ -1,0 +1,192 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2026-07-17
+
+      - 현재 위치: 서울 송파구 위례광장로 230
+
+      - userId: user_123456'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 파란색 베개를 사고 싶어 여름 느낌이 풍기는! 최대 8만원까지 가능! 그리고 내일 오늘보다 덥대?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"8만원 이하의\
+      \ 여름 느낌이 풍기는 파란색 베개\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: weather_agent\n      refined_query:\
+      \ \"오늘보다 내일 기온이 더 높은지 확인\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"8만원 이하의 여름 느낌이 풍기는 파란색 베개 구매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"8만원 이하의 여름 느낌이 풍기는\
+      \ 파란색 베개\"\n  productCategory: \"베개\"\n  maxPrice: 80000\n  sortBy: \"latest\"\
+      \n  color: \"파란색\"\ntool_call_result:\n  data:\n    products:\n      - productId:\
+      \ \"PILLOW12345\"\n        productName: \"쿨링 블루 메모리폼 베개\"\n        brand: \"\
+      컴포트홈\"\n        price: 75000\n        color: \"파란색\"\n        size: \"Standard\"\
+      \n        rating: 4.7\n        stockStatus: \"재고 있음\"\n      - productId: \"\
+      PILLOW67890\"\n        productName: \"썸머 쿨 젤 베개\"\n        brand: \"시원한잠\"\n\
+      \        price: 68000\n        color: \"파란색\"\n        size: \"Queen\"\n   \
+      \     rating: 4.5\n        stockStatus: \"재고 있음\"\n      - productId: \"PILLOW11223\"\
+      \n        productName: \"에어 메쉬 블루 베개\"\n        brand: \"슬립웰\"\n        price:\
+      \ 79000\n        color: \"파란색\"\n        size: \"Standard\"\n        rating:\
+      \ 4.6\n        stockStatus: \"재고 있음\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery:\
+      \ \"오늘 기온\"\n      location: \"서울 송파구 위례광장로 230\"\n      date: \"2026-07-17\"\
+      \n\n  - tool: getDomesticWeather\n    arguments:\n      refinedQuery: \"내일 기온\"\
+      \n      location: \"서울 송파구 위례광장로 230\"\n      date: \"2026-07-18\"\n\ntool_call_result:\n\
+      \  - tool: getDomesticWeather\n    data:\n      location: \"서울 송파구 위례광장로 230\"\
+      \n      date: \"2026-07-17\"\n      weather:\n        temperature:\n       \
+      \   current: \"29°C\"\n          high: \"32°C\"\n          low: \"24°C\"\n \
+      \       condition: \"맑음\"\n        humidity: \"60%\"\n        wind:\n      \
+      \    speed: \"5 km/h\"\n          direction: \"남서풍\"\n        precipitationProbability:\
+      \ \"10%\"\n\n  - tool: getDomesticWeather\n    data:\n      location: \"서울 송파구\
+      \ 위례광장로 230\"\n      date: \"2026-07-18\"\n      weather:\n        temperature:\n\
+      \          current: \"36°C\"\n          high: \"39°C\"\n          low: \"29°C\"\
+      \n        condition: \"맑음, 매우 더움\"\n        humidity: \"45%\"\n        wind:\n\
+      \          speed: \"7 km/h\"\n          direction: \"남동풍\"\n        precipitationProbability:\
+      \ \"5%\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주문할 상품명, 받는 사람의 이름, 전체 배송지 주소, 수령인의 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '■  파란색 여름 베개 추천 (8만 원 이하)
+
+
+      아래 상품들이 여름 느낌을 살리면서 파란색으로 시원한 분위기를 자아냅니다.
+
+
+      1. 쿨링 블루 메모리폼 베개
+
+
+      • 브랜드: 컴포트홈
+
+      • 가격: 75,000원
+
+      • 사이즈: Standard
+
+      • 평점: 4.7점
+
+      • 상태: 재고 있음
+
+
+      2. 썸머 쿨 젤 베개
+
+
+      • 브랜드: 시원한잠
+
+      • 가격: 68,000원
+
+      • 사이즈: Queen
+
+      • 평점: 4.5점
+
+      • 상태: 재고 있음
+
+
+      3. 에어 메쉬 블루 베개
+
+
+      • 브랜드: 슬립웰
+
+      • 가격: 79,000원
+
+      • 사이즈: Standard
+
+      • 평점: 4.6점
+
+      • 상태: 재고 있음
+
+
+      ※ 구매 원하시는 상품을 골라주시고, 아래 정보를 함께 알려주세요.
+
+
+      - 주문할 상품명
+
+      - 받는 사람 이름
+
+      - 전체 배송지 주소
+
+      - 수령인 연락처
+
+
+      ■  날씨 정보
+
+
+      서울 송파구 위례광장로 230 기준 기온 비교
+
+
+      • 오늘(7/17): 최고 32°C / 최저 24°C, 맑음, 습도 60%, 강수확률 10%
+
+      • 내일(7/18): 최고 39°C / 최저 29°C, 맑음·매우 더움, 습도 45%, 강수확률 5%
+
+
+      → 내일은 오늘보다 최고 기온이 7°C 높아 훨씬 덥겠습니다.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: '첫번째꺼 좋다 쿨링 블루 메모리폼 베개! 음.. 내가 집에 없을거 같으니까 엄마 집으로 보내야겠다.
+
+      이름: 여엄순
+
+      주소: 서울 송파구 송파대로32길 33
+
+      연락처: 010-9898-7878'
+- workflow_id: null
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"쿨링 블루 메모리폼 베개를 여엄순\
+      \ 집으로 주문\"\n  userId: \"user_123456\"\n  productItems:\n    productId: \"PILLOW12345\"\
+      \n    productName: \"쿨링 블루 메모리폼 베개\"\n    size: \"Standard\"\n    color: \"\
+      파란색\"\n    quantity: 1\n    price: 75000\n  shippingAddress:\n    recipient:\
+      \ \"여엄순\"\n    address: \"서울 송파구 송파대로32길 33\"\n    phone: \"010-9898-7878\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"쿨링 블루 메모리폼 베개를 여엄순 집으로 주문\"\n\
+      \    userId: \"user_123456\"\n    orderId: \"ORD20250803-001\"\n    productItems:\n\
+      \      productId: \"PILLOW12345\"\n      productName: \"쿨링 블루 메모리폼 베개\"\n  \
+      \    size: \"Standard\"\n      color: \"파란색\"\n      quantity: 1\n      price:\
+      \ 75000\n    shippingAddress:\n      recipient: \"여엄순\"\n      address: \"서울\
+      \ 송파구 송파대로32길 33\"\n      phone: \"010-9898-7878\"\n    orderStatus: \"주문 접수\
+      \ 완료\"\n    estimatedDeliveryDate: \"2026-07-20\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "주문이 정상 접수되었습니다!\n\n• 상품명: 쿨링 블루 메모리폼 베개  \n• 수량: 1개  \n• 사이즈: Standard\
+      \  \n• 색상: 파란색  \n\n• 배송지:\n  - 여엄순 님  \n  - 서울 송파구 송파대로32길 33  \n  - 연락처: 010-9898-7878\
+      \  \n\n• 주문번호: ORD20250803-001  \n• 예상 배송일: 2026년 7월 20일  \n\n감사합니다! 궁금한 점 있으면\
+      \ 언제든 문의해 주세요."

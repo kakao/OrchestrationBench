@@ -1,0 +1,118 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- current time: 2025-10-16T13:44:00+09:00
+
+      - current location: Seongnam-si, Gyeonggi-do, South Korea
+
+      - phone: +82-10-1347-2991
+
+      - nationality: KR
+
+      - name: 박치완'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 매주 월요일 오전 11시에 '주간 업무 회의'라는 이름으로 1시간짜리 일정을 등록하고, 회의 참석자들에게 일정 안내 메일을
+      보내줘. 회의 장소는 A9-JW2 회의실이야
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"매주 월요일\
+      \ 오전 11시에 '주간 업무 회의' 일정 생성 (A9-JW2 회의실)\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: message_agent\n      refined_query: \"회의 참석자에게 안내 메일 발송\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"매주 월요일 오전 11시 '주간\
+      \ 업무 회의' 일정 생성 (A9-JW2 회의실)\"\n  title: \"주간 업무 회의\"\n  startDateTime: \"2025-10-20T11:00:00+09:00\"\
+      \n  endDateTime: \"2025-10-20T12:00:00+09:00\"\n  location: \"A9-JW2 회의실\"\n\
+      \  repeatRule: \"weekly\"\n\ntool_call_result:\n  status: success\n  data:\n\
+      \    scheduleId: \"S20251016_R1\"\n    location: \"A9-JW2\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 회의 참석자 메일 주소 필요'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 주간 업무 회의에 참여할 참석자의 메일 주소를 알려주세요.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: '김민준 / minjun.kim
+
+      이서연 / seoyeon.lee
+
+      박지훈 / jihun.park
+
+      최수진 / sujin.choi
+
+      정하윤 / hayoon.jeong
+
+
+      메일 주소는 영어 아이디 뒤에 @goodcompany.com 붙인거야'
+- workflow_id: null
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: sendMessage\n    arguments:\n      refinedQuery:\
+      \ \"minjun.kim@goodcompany.com으로 '주간 업무 회의' 안내 메일 발송\"\n      email: \"minjun.kim@goodcompany.com\"\
+      \n      channel: \"email\"\n      message: |\n        안녕하세요, 민준님.\n\n      \
+      \  월요일 오전 11시에 '주간 업무 회의'가 있습니다. 회의는 A9-JW2 회의실에서 진행합니다.\n        참석 부탁드립니다.\n\
+      \        \n        감사합니다.\n        박치완 드림\n      repeatRule: \"none\"\n    \
+      \  priority: \"normal\"\n\n  - tool: sendMessage\n    arguments:\n      refinedQuery:\
+      \ \"seoyeon.lee@goodcompany.com으로 '주간 업무 회의' 안내 메일 발송\"\n      email: \"seoyeon.lee@goodcompany.com\"\
+      \n      channel: \"email\"\n      message: |\n        안녕하세요, 서연님.\n\n      \
+      \  월요일 오전 11시에 '주간 업무 회의'가 있습니다. 회의는 A9-JW2 회의실에서 진행합니다.\n        참석 부탁드립니다.\n\
+      \        \n        감사합니다.\n        박치완 드림\n      repeatRule: \"none\"\n    \
+      \  priority: \"normal\"\n\n  - tool: sendMessage\n    arguments:\n      refinedQuery:\
+      \ \"jihun.park@goodcompany.com으로 '주간 업무 회의' 안내 메일 발송\"\n      email: \"jihun.park@goodcompany.com\"\
+      \n      channel: \"email\"\n      message: |\n        안녕하세요, 지훈님.\n\n      \
+      \  월요일 오전 11시에 '주간 업무 회의'가 있습니다. 회의는 A9-JW2 회의실에서 진행합니다.\n        참석 부탁드립니다.\n\
+      \        \n        감사합니다.\n        박치완 드림\n      repeatRule: \"none\"\n    \
+      \  priority: \"normal\"\n\n  - tool: sendMessage\n    arguments:\n      refinedQuery:\
+      \ \"sujin.choi@goodcompany.com으로 '주간 업무 회의' 안내 메일 발송\"\n      email: \"sujin.choi@goodcompany.com\"\
+      \n      channel: \"email\"\n      message: |\n        안녕하세요, 수진님.\n\n      \
+      \  월요일 오전 11시에 '주간 업무 회의'가 있습니다. 회의는 A9-JW2 회의실에서 진행합니다.\n        참석 부탁드립니다.\n\
+      \        \n        감사합니다.\n        박치완 드림\n      repeatRule: \"none\"\n    \
+      \  priority: \"normal\"\n\n  - tool: sendMessage\n    arguments:\n      refinedQuery:\
+      \ \"hayoon.jeong@goodcompany.com으로 '주간 업무 회의' 안내 메일 발송\"\n      email: \"hayoon.jeong@goodcompany.com\"\
+      \n      channel: \"email\"\n      message: |\n        안녕하세요, 하윤님.\n\n      \
+      \  월요일 오전 11시에 '주간 업무 회의'가 있습니다. 회의는 A9-JW2 회의실에서 진행합니다.\n        참석 부탁드립니다.\n\
+      \        \n        감사합니다.\n        박치완 드림\n      repeatRule: \"none\"\n    \
+      \  priority: \"normal\"\n\ntool_call_result:\n  - tool: sendMessage\n    status:\
+      \ success\n    data:\n      messageId: \"MSG-001\"\n\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-002\"\n\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-003\"\n\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-004\"\n\n  - tool: sendMessage\n\
+      \    status: success\n    data:\n      messageId: \"MSG-005\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 요청하신 회의 일정 생성과 메일 발송을 모두 완료했습니다. 더 필요하신 내용이 있다면 알려주세요!

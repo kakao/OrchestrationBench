@@ -1,0 +1,113 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 11월 4일
+
+      - 이름: 한여름
+
+      - 연락처: 010-1234-5678
+
+      - userId: U0DK23047'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 기숙사로 겨울 옷들 우체국 택배로 미리 보냈는데 배송 상태 좀 확인해줄래? 그저께 생수 2L 6병도 기숙사로 주문해놨는데 아직
+      도착 안한 것 같아. 잘 주문된 건지 확인해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"기숙사로 보낸\
+      \ 겨울 옷 우체국 택배 배송 상태 확인\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"그저께 기숙사로 주문한 생수 2L 6병 잘 주문되었는지 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"기숙사로 보낸 겨울 옷 우체국\
+      \ 택배 배송 상태 확인\"\n  carrier: \"우체국\"\n  senderPhone: \"01012345678\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"기숙사로 보낸 겨울 옷 우체국 택배 배송 상태 확인\"\n    trackingStatus:\n\
+      \      trackingNumber: \"1234567890123\"\n      currentStatus: \"배송 중\"\n  \
+      \    estimatedDelivery: \"2025-11-05\"\n      lastLocation: \"서울 중랑물류센터\"\n\
+      \      history:\n        - date: \"2025-11-02\"\n          location: \"부산 물류센터\"\
+      \n          status: \"발송\"\n        - date: \"2025-11-03\"\n          location:\
+      \ \"대전 물류센터\"\n          status: \"중간 집화\"\n        - date: \"2025-11-04\"\n\
+      \          location: \"서울 중랑물류센터\"\n          status: \"최종 집화\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"11월 2일에 기숙사로 주문한\
+      \ 생수 2L 6병 잘 주문되었는지 조회\"\n  userId: \"U0DK23047\"\n  recipientName: \"한여름\"\n\
+      \  phoneNumber: \"01012345678\"\n  orderDate: \"2025-11-02\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"11월 2일에 기숙사로 주문한 생수 2L 6병 잘 주문되었는지 조회\"\n    orderStatus:\n\
+      \      orderId: \"ORD87654321\"\n      orderDate: \"2025-11-02\"\n      recipientName:\
+      \ \"한여름\"\n      phoneNumber: \"01012345678\"\n      items:\n        - name:\
+      \ \"생수 2L\"\n          quantity: 6\n      status: \"주문 완료\"\n      estimatedDelivery:\
+      \ \"2025-11-05\"\n      deliveryAddress: \"서울특별시 관악구 대학동 123 기숙사 101호\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '◾우체국 택배 배송 조회
+
+
+      기숙사로 보내신 겨울 옷 우체국 택배의 배송 상태를 확인한 결과입니다:
+
+
+      - 운송장 번호: 1234567890123
+
+      - 현재 상태: 배송 중
+
+      - 예상 배송일: 2025년 11월 5일
+
+      - 마지막 위치: 서울 중랑물류센터
+
+
+      배송 경로:
+
+      - 2025년 11월 2일: 부산 물류센터에서 발송
+
+      - 2025년 11월 3일: 대전 물류센터에서 중간 집화
+
+      - 2025년 11월 4일: 서울 중랑물류센터에서 최종 집화
+
+
+      택배가 순조롭게 이동 중이며, 예정된 날짜에 도착할 예정입니다.
+
+
+
+      ◾상품 주문 조회 결과
+
+
+      주문하신 생수 2L 6병의 주문 상태를 확인한 결과입니다:
+
+
+      - 주문일: 2025년 11월 2일
+
+      - 수령인: 한여름
+
+      - 전화번호: 010-1234-5678
+
+      - 주문 상태: 주문 완료
+
+      - 배송 예정일: 2025년 11월 5일
+
+      - 배송 주소: 서울특별시 관악구 대학동 123 기숙사 101호
+
+
+      주문이 정상적으로 처리되었으며, 예정된 날짜에 배송될 예정입니다.'

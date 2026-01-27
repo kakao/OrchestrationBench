@@ -1,0 +1,301 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2025-07-16
+
+      Time: 10:30
+
+      Location: New York, NY, USA
+
+      userId: USR951031
+
+      Name: Emily Carter
+
+      Phone Number: (202)555-0173'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I need to make chicken noodle soup. Can you tell me what ingredients
+      I need, organize them for me, help me order them, and give me the full recipe?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"Search for\
+      \ chicken noodle soup recipe and list of required ingredients\"\n\nworkflow_2:\n\
+      \  status: pending\n  depend_on: \"workflow_1\"\n  type: dependent\n  steps:\n\
+      \    - status: pending\n      name: shopping_agent\n      refined_query: \"\
+      Search for products related to chicken noodle soup ingredients\"\n\nworkflow_3:\n\
+      \  status: pending\n  depend_on: \"workflow_2\"\n  type: dependent\n  steps:\n\
+      \    - status: pending\n      name: shopping_agent\n      refined_query: \"\
+      Order the chicken noodle soup ingredients\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Search for chicken noodle\
+      \ soup recipe and list of required ingredients\"\ntool_call_result:\n  data:\n\
+      \    title: \"Classic Chicken Noodle Soup Recipe\"\n    ingredients:\n     \
+      \ - item: \"Chicken breast or thighs (boneless, skinless)\"\n        amount:\
+      \ \"1 lb (450g)\"\n      - item: \"Carrots (sliced)\"\n        amount: \"2 medium\"\
+      \n      - item: \"Celery (sliced)\"\n        amount: \"2 stalks\"\n      - item:\
+      \ \"Onion (chopped)\"\n        amount: \"1 medium\"\n      - item: \"Garlic\
+      \ (minced)\"\n        amount: \"2 cloves\"\n      - item: \"Chicken broth\"\n\
+      \        amount: \"8 cups (2 liters)\"\n      - item: \"Egg noodles\"\n    \
+      \    amount: \"4 oz (120g)\"\n      - item: \"Olive oil\"\n        amount: \"\
+      2 tbsp\"\n      - item: \"Salt and black pepper\"\n        amount: \"to taste\"\
+      \n      - item: \"Fresh parsley (optional)\"\n        amount: \"2 tbsp, chopped\"\
+      \n    recipe:\n      - step: 1\n        instruction: \"Heat olive oil in a large\
+      \ pot over medium heat. Add onion, carrots, celery, and garlic, and sauté for\
+      \ 5 minutes until softened.\"\n      - step: 2\n        instruction: \"Add chicken\
+      \ breast or thighs to the pot, then pour in chicken broth. Bring to a boil,\
+      \ reduce heat, and simmer for 20–25 minutes until chicken is fully cooked.\"\
+      \n      - step: 3\n        instruction: \"Remove the chicken, shred into bite-sized\
+      \ pieces, and return to the pot.\"\n      - step: 4\n        instruction: \"\
+      Add egg noodles and cook for another 7–8 minutes until tender.\"\n      - step:\
+      \ 5\n        instruction: \"Season with salt and black pepper to taste. Garnish\
+      \ with fresh parsley if desired, and serve hot.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: searchProducts\n    arguments:\n      refinedQuery:\
+      \ \"Boneless skinless chicken breast\"\n      sortBy: \"latest\"\n  - tool:\
+      \ searchProducts\n    arguments:\n      refinedQuery: \"Fresh carrots\"\n  \
+      \    sortBy: \"latest\"\n  - tool: searchProducts\n    arguments:\n      refinedQuery:\
+      \ \"Fresh celery\"\n      sortBy: \"latest\"\n  - tool: searchProducts\n   \
+      \ arguments:\n      refinedQuery: \"Yellow onion\"\n      sortBy: \"latest\"\
+      \n  - tool: searchProducts\n    arguments:\n      refinedQuery: \"Garlic (fresh\
+      \ or minced)\"\n      sortBy: \"latest\"\n  - tool: searchProducts\n    arguments:\n\
+      \      refinedQuery: \"Chicken broth\"\n      sortBy: \"latest\"\n  - tool:\
+      \ searchProducts\n    arguments:\n      refinedQuery: \"Egg noodles\"\n    \
+      \  sortBy: \"latest\"\n  - tool: searchProducts\n    arguments:\n      refinedQuery:\
+      \ \"Olive oil\"\n      sortBy: \"latest\"\n  - tool: searchProducts\n    arguments:\n\
+      \      refinedQuery: \"Fresh parsley\"\n      sortBy: \"latest\"\n\ntool_call_result:\n\
+      \  - data:\n      productId: \"PRD101\"\n      name: \"Fresh Boneless Skinless\
+      \ Chicken Breast 1 lb\"\n      price: 7.99\n      imageUrl: \"https://example.com/images/chicken.jpg\"\
+      \n      link: \"https://example.com/products/PRD101\"\n  - data:\n      productId:\
+      \ \"PRD102\"\n      name: \"Organic Carrots 2 lb Bag\"\n      price: 3.49\n\
+      \      imageUrl: \"https://example.com/images/carrots.jpg\"\n      link: \"\
+      https://example.com/products/PRD102\"\n  - data:\n      productId: \"PRD103\"\
+      \n      name: \"Celery Stalks Bunch\"\n      price: 2.99\n      imageUrl: \"\
+      https://example.com/images/celery.jpg\"\n      link: \"https://example.com/products/PRD103\"\
+      \n  - data:\n      productId: \"PRD104\"\n      name: \"Yellow Onion 3 lb Bag\"\
+      \n      price: 4.29\n      imageUrl: \"https://example.com/images/onion.jpg\"\
+      \n      link: \"https://example.com/products/PRD104\"\n  - data:\n      productId:\
+      \ \"PRD105\"\n      name: \"Fresh Garlic Bulb 5pc Pack\"\n      price: 3.99\n\
+      \      imageUrl: \"https://example.com/images/garlic.jpg\"\n      link: \"https://example.com/products/PRD105\"\
+      \n  - data:\n      productId: \"PRD106\"\n      name: \"Low-Sodium Chicken Broth\
+      \ 32oz\"\n      price: 2.79\n      imageUrl: \"https://example.com/images/chicken_broth.jpg\"\
+      \n      link: \"https://example.com/products/PRD106\"\n  - data:\n      productId:\
+      \ \"PRD107\"\n      name: \"Wide Egg Noodles 12oz\"\n      price: 2.59\n   \
+      \   imageUrl: \"https://example.com/images/egg_noodles.jpg\"\n      link: \"\
+      https://example.com/products/PRD107\"\n  - data:\n      productId: \"PRD108\"\
+      \n      name: \"Extra Virgin Olive Oil 16oz\"\n      price: 6.49\n      imageUrl:\
+      \ \"https://example.com/images/olive_oil.jpg\"\n      link: \"https://example.com/products/PRD108\"\
+      \n  - data:\n      productId: \"PRD109\"\n      name: \"Fresh Italian Parsley\
+      \ Bunch\"\n      price: 1.99\n      imageUrl: \"https://example.com/images/parsley.jpg\"\
+      \n      link: \"https://example.com/products/PRD109\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: User response, address'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: ' Chicken Noodle Soup Recipe
+
+
+      \[Ingredients Needed]
+
+
+      * Boneless, skinless chicken breast or thighs – 1 lb (450g)
+
+      * Carrots (sliced) – 2 medium
+
+      * Celery (sliced) – 2 stalks
+
+      * Onion (chopped) – 1 medium
+
+      * Garlic (minced) – 2 cloves
+
+      * Chicken broth – 8 cups (2 liters)
+
+      * Egg noodles – 4 oz (120g)
+
+      * Olive oil – 2 tbsp
+
+      * Salt and black pepper – to taste
+
+      * Fresh parsley (optional, chopped) – 2 tbsp
+
+
+      [Cooking Instructions]
+
+
+      1. Heat a large pot over medium heat, add olive oil, and sauté onion, carrots,
+      celery, and garlic for about 5 minutes until softened.
+
+      2. Add chicken and cook until lightly browned on the outside.
+
+      3. Pour in chicken broth and bring to a boil. Reduce heat and simmer for 20
+      minutes, or until the chicken is fully cooked.
+
+      4. Remove the chicken, shred with two forks, then return to the pot.
+
+      5. Add egg noodles and cook until tender (about 6–8 minutes).
+
+      6. Season with salt and black pepper. Stir in fresh parsley before serving.
+
+
+      Along with this classic chicken noodle soup recipe, I’ve also found the ingredients
+      you can order right away.
+
+
+      Suggested Shopping List
+
+
+      * Chicken breast (boneless, skinless, 1 lb) – \$7.99
+
+      * Organic carrots (2 lb bag) – \$3.49
+
+      * Celery bunch – \$2.99
+
+      * Yellow onion (3 lb bag) – \$4.29
+
+      * Fresh garlic (5pc pack) – \$3.99
+
+      * Low-sodium chicken broth (32oz) – \$2.79
+
+      * Wide egg noodles (12oz) – \$2.59
+
+      * Extra virgin olive oil (16oz) – \$6.49
+
+      * Fresh parsley bunch – \$1.99
+
+
+      The total estimated cost is \$39.40. Would you like me to proceed with the order
+      as is? Please provide the shipping address as well.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: Yeah, place the order for me. The address is 123 Main Street, Apt 456,
+      Downtown, New York, NY.
+- workflow_id: null
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: orderProducts\n    arguments:\n      refinedQuery:\
+      \ \"Order chicken breast\"\n      userId: \"USR951031\"\n      productItems:\n\
+      \        productId: \"PRD101\"\n        productName: \"Fresh Boneless Skinless\
+      \ Chicken Breast 1 lb\"\n        quantity: 1\n        price: 7.99\n      shippingAddress:\n\
+      \        recipient: \"Emily Carter\"\n        address: \"123 Main Street, Apt\
+      \ 456, Downtown, New York, NY\"\n        phone: \"(202)555-0173\"\n\n  - tool:\
+      \ orderProducts\n    arguments:\n      refinedQuery: \"Order carrots\"\n   \
+      \   userId: \"USR951031\"\n      productItems:\n        productId: \"PRD102\"\
+      \n        productName: \"Organic Carrots 2 lb Bag\"\n        quantity: 1\n \
+      \       price: 3.49\n      shippingAddress:\n        recipient: \"Emily Carter\"\
+      \n        address: \"123 Main Street, Apt 456, Downtown, New York, NY\"\n  \
+      \      phone: \"(202)555-0173\"\n\n  - tool: orderProducts\n    arguments:\n\
+      \      refinedQuery: \"Order celery\"\n      userId: \"USR951031\"\n      productItems:\n\
+      \        productId: \"PRD103\"\n        productName: \"Fresh Celery Bunch\"\n\
+      \        quantity: 1\n        price: 2.99\n      shippingAddress:\n        recipient:\
+      \ \"Emily Carter\"\n        address: \"123 Main Street, Apt 456, Downtown, New\
+      \ York, NY\"\n        phone: \"(202)555-0173\"\n\n  - tool: orderProducts\n\
+      \    arguments:\n      refinedQuery: \"Order onion\"\n      userId: \"USR951031\"\
+      \n      productItems:\n        productId: \"PRD104\"\n        productName: \"\
+      Yellow Onion 3 lb Bag\"\n        quantity: 1\n        price: 4.29\n      shippingAddress:\n\
+      \        recipient: \"Emily Carter\"\n        address: \"123 Main Street, Apt\
+      \ 456, Downtown, New York, NY\"\n        phone: \"(202)555-0173\"\n\n  - tool:\
+      \ orderProducts\n    arguments:\n      refinedQuery: \"Order garlic\"\n    \
+      \  userId: \"USR951031\"\n      productItems:\n        productId: \"PRD105\"\
+      \n        productName: \"Fresh Garlic 5pc Pack\"\n        quantity: 1\n    \
+      \    price: 3.99\n      shippingAddress:\n        recipient: \"Emily Carter\"\
+      \n        address: \"123 Main Street, Apt 456, Downtown, New York, NY\"\n  \
+      \      phone: \"(202)555-0173\"\n\n  - tool: orderProducts\n    arguments:\n\
+      \      refinedQuery: \"Order chicken broth\"\n      userId: \"USR951031\"\n\
+      \      productItems:\n        productId: \"PRD106\"\n        productName: \"\
+      Low-Sodium Chicken Broth 32oz\"\n        quantity: 2\n        price: 2.79\n\
+      \      shippingAddress:\n        recipient: \"Emily Carter\"\n        address:\
+      \ \"123 Main Street, Apt 456, Downtown, New York, NY\"\n        phone: \"(202)555-0173\"\
+      \n\n  - tool: orderProducts\n    arguments:\n      refinedQuery: \"Order egg\
+      \ noodles\"\n      userId: \"USR951031\"\n      productItems:\n        productId:\
+      \ \"PRD107\"\n        productName: \"Wide Egg Noodles 12oz\"\n        quantity:\
+      \ 1\n        price: 2.59\n      shippingAddress:\n        recipient: \"Emily\
+      \ Carter\"\n        address: \"123 Main Street, Apt 456, Downtown, New York,\
+      \ NY\"\n        phone: \"(202)555-0173\"\n\n  - tool: orderProducts\n    arguments:\n\
+      \      refinedQuery: \"Order olive oil\"\n      userId: \"USR951031\"\n    \
+      \  productItems:\n        productId: \"PRD108\"\n        productName: \"Extra\
+      \ Virgin Olive Oil 16oz\"\n        quantity: 1\n        price: 6.49\n      shippingAddress:\n\
+      \        recipient: \"Emily Carter\"\n        address: \"123 Main Street, Apt\
+      \ 456, Downtown, New York, NY\"\n        phone: \"(202)555-0173\"\n\n  - tool:\
+      \ orderProducts\n    arguments:\n      refinedQuery: \"Order fresh parsley\"\
+      \n      userId: \"USR951031\"\n      productItems:\n        productId: \"PRD109\"\
+      \n        productName: \"Fresh Parsley Bunch\"\n        quantity: 1\n      \
+      \  price: 1.99\n      shippingAddress:\n        recipient: \"Emily Carter\"\n\
+      \        address: \"123 Main Street, Apt 456, Downtown, New York, NY\"\n   \
+      \     phone: \"(202)555-0173\"\n\ntool_call_result:\n  - data:\n      orderId:\
+      \ \"ORDER20250716_101\"\n      status: \"processing\"\n      itemsCount: 1\n\
+      \      totalPrice: 7.99\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_102\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 3.49\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_103\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 2.99\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_104\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 4.29\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_105\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 3.99\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_106\"\n      status: \"processing\"\n      itemsCount:\
+      \ 2\n      totalPrice: 5.58\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_107\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 2.59\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_108\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 6.49\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_109\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 1.99\n      estimatedDelivery: \"2025-07-18\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: " Your Chicken Noodle Soup Ingredients Have Been Ordered!\n\n1. Order\
+      \ ID: ORDER20250716_101\n   - Product: Fresh Boneless Skinless Chicken Breast\
+      \ 1 lb\n   - Total Price: $7.99\n   - Estimated Delivery: July 18, 2025\n\n\
+      2. Order ID: ORDER20250716_102\n   - Product: Organic Carrots 2 lb Bag\n   -\
+      \ Total Price: $3.49\n   - Estimated Delivery: July 18, 2025\n\n3. Order ID:\
+      \ ORDER20250716_103\n   - Product: Fresh Celery Bunch\n   - Total Price: $2.99\n\
+      \   - Estimated Delivery: July 18, 2025\n\n4. Order ID: ORDER20250716_104\n\
+      \   - Product: Yellow Onion 3 lb Bag\n   - Total Price: $4.29\n   - Estimated\
+      \ Delivery: July 18, 2025\n\n5. Order ID: ORDER20250716_105\n   - Product: Fresh\
+      \ Garlic 5pc Pack\n   - Total Price: $3.99\n   - Estimated Delivery: July 18,\
+      \ 2025\n\n6. Order ID: ORDER20250716_106\n   - Product: Low-Sodium Chicken Broth\
+      \ 32oz (x2)\n   - Total Price: $5.58\n   - Estimated Delivery: July 18, 2025\n\
+      \n7. Order ID: ORDER20250716_107\n   - Product: Wide Egg Noodles 12oz\n   -\
+      \ Total Price: $2.59\n   - Estimated Delivery: July 18, 2025\n\n8. Order ID:\
+      \ ORDER20250716_108\n   - Product: Extra Virgin Olive Oil 16oz\n   - Total Price:\
+      \ $6.49\n   - Estimated Delivery: July 18, 2025\n\n9. Order ID: ORDER20250716_109\n\
+      \   - Product: Fresh Parsley Bunch\n   - Total Price: $1.99\n   - Estimated\
+      \ Delivery: July 18, 2025\n\nAll orders are currently being processed, and expected\
+      \ delivery is July 18, 2025. If you have any further questions, please feel\
+      \ free to ask!"

@@ -1,0 +1,221 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: July 20, 2025
+
+      - User name: Emily Wilson
+
+      - User contact: (303) 303-3030'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: They say it’s going to rain heavily again tomorrow. I had a reservation
+      at an outdoor rooftop café in Brooklyn at 6 PM tomorrow, but please cancel it.
+      Instead, find and book a nearby hotel where four people can stay for one night.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Check reservation\
+      \ details for tomorrow at 6 PM at an outdoor rooftop café in Brooklyn\"\n  \
+      \  - status: pending\n      name: place_agent\n      refined_query: \"Cancel\
+      \ reservation for tomorrow at 6 PM at an outdoor rooftop café in Brooklyn\"\n\
+      \nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: travel_agent\n      refined_query: \"Find hotels near\
+      \ Brooklyn that can accommodate 4 people for an overnight stay starting tomorrow\"\
+      \n\nworkflow_3:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\
+      \n  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"Book a hotel near Brooklyn for 4 people for an overnight stay starting tomorrow\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"Check reservation\
+      \ details for July 21, 2025, 6:00 PM, outdoor rooftop café in Brooklyn\"\n \
+      \ contactInfo: \"(303) 303-3030\"\n  date: \"2025-07-21\"\n  placeCategory:\
+      \ \"rooftop café\"\ntool_call_result:\n  data:\n    refinedQuery: \"Check reservation\
+      \ details for July 21, 2025, 6:00 PM, outdoor rooftop café in Brooklyn\"\n \
+      \   contactInfo: \"(303) 303-3030\"\n    date: \"2025-07-21\"\n    placeCategory:\
+      \ \"rooftop café\"\n    reservationDetails:\n      reservationID: \"reservation-20250721-456\"\
+      \n      time: \"6:00 PM\"\n      location: \"Brooklyn Outdoor Rooftop Café\"\
+      \n      tableFor: 4\n    status: \"Lookup complete\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"Search for\
+      \ hotels near Brooklyn available for 4 people, 1 night 2 days, on July 21, 2025\"\
+      \n  location: \"Brooklyn\"\n  checkInDate: \"2025-07-21\"\n  checkOutDate: \"\
+      2025-07-22\"\n  sortBy: \"highest_rating\"\n  accommodationType: \"hotel\"\n\
+      \  guestCount: 4\n  roomCount: 1\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Search for hotels near Brooklyn available for 4 people, 1 night 2 days,\
+      \ on July 21, 2025\"\n    location: \"Brooklyn\"\n    checkInDate: \"2025-07-21\"\
+      \n    checkOutDate: \"2025-07-22\"\n    sortBy: \"highest_rating\"\n    accommodationType:\
+      \ \"hotel\"\n    guestCount: 4\n    roomCount: 1\n    hotelDetails:\n      -\
+      \ hotelName: \"Brooklyn Sky Hotel\"\n        rating: 4.8\n        pricePerNight:\
+      \ \"$115\"\n        amenities: [\"Free breakfast\", \"Swimming pool\", \"Wi-Fi\"\
+      ]\n        address: \"210 Wythe Ave, Brooklyn, NY 11249, USA\"\n        roomTypeId:\
+      \ \"FAMILY_SUITE_VIEW\"\n        maxOccupancy: 4\n      - hotelName: \"Brooklyn\
+      \ Blue Hill Hotel\"\n        rating: 4.7\n        pricePerNight: \"$100\"\n\
+      \        amenities: [\"Free parking\", \"Fitness center\", \"Wi-Fi\"]\n    \
+      \    address: \"300 Atlantic Ave, Brooklyn, NY 11201, USA\"\n        roomTypeId:\
+      \ \"DELUXE_DOUBLE\"\n        maxOccupancy: 3\n      - hotelName: \"Brooklyn\
+      \ Green Light Hotel\"\n        rating: 4.6\n        pricePerNight: \"$108\"\n\
+      \        amenities: [\"Rooftop bar\", \"Spa\", \"Wi-Fi\"]\n        address:\
+      \ \"456 Myrtle Ave, Brooklyn, NY 11205, USA\"\n        roomTypeId: \"STANDARD_FAMILY\"\
+      \n        maxOccupancy: 4\n    status: \"Search complete\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelPlaceReservation\narguments:\n  refinedQuery: \"Cancel reservation\
+      \ for July 21, 2025, 6:00 PM at the outdoor rooftop café in Brooklyn\"\n  reservationId:\
+      \ \"reservation-20250721-456\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Cancel reservation for July 21, 2025, 6:00 PM at the outdoor rooftop café\
+      \ in Brooklyn\"\n    reservationId: \"reservation-20250721-456\"\n    status:\
+      \ \"Cancellation completed\""
+- workflow_id: workflow_3
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Hotel selected by user and booker''s email'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '<Accommodation Search Results>
+
+
+      Here are some recommended hotels near Brooklyn for 4 guests, staying 1 night
+      from July 21, 2025:
+
+
+      1. Brooklyn Sky Hotel — 4.8/5 — $115/night
+
+
+      Address: 210 Wythe Ave, Brooklyn, NY 11249, USA
+
+      Room type: FAMILY_SUITE_VIEW — Max 4
+
+      Amenities: Free breakfast, Swimming pool, Wi-Fi
+
+      Why it works: Highest rating; fits 4 in a single room; breakfast included.
+
+
+      2. Brooklyn Green Light Hotel — 4.6/5 — $108/night
+
+
+      Address: 456 Myrtle Ave, Brooklyn, NY 11205, USA
+
+      Room type: STANDARD_FAMILY — Max 4
+
+      Amenities: Rooftop bar, Spa, Wi-Fi
+
+      Why it works: Also fits 4; slightly cheaper with nice on-site facilities.
+
+
+      3. Brooklyn Blue Hill Hotel — 4.7/5 — $100/night
+
+
+      Address: 300 Atlantic Ave, Brooklyn, NY 11201, USA
+
+      Room type: DELUXE_DOUBLE — Max 3
+
+      Amenities: Free parking, Fitness center, Wi-Fi
+
+      Note: Capacity is 3—you’d need an extra bed or a second room.
+
+
+      Which hotel would you like to book? For smooth reservation, please provide the
+      email address of the person making the booking as well.'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: Since Brooklyn Sky Hotel has the highest rating, I’ll go ahead and book
+      it! The email is abcde@example.com.
+- workflow_id: null
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: bookAccommodation\narguments:\n  refinedQuery: \"Book Brooklyn\
+      \ Sky Hotel for 4 people, 1 night 2 days, from July 21 to July 22, 2025\"\n\
+      \  accommodationName: \"Brooklyn Sky Hotel\"\n  roomTypeId: \"FAMILY_SUITE_VIEW\"\
+      \n  checkInDate: \"2025-07-21\"\n  checkOutDate: \"2025-07-22\"\n  guestCount:\
+      \ 4\n  roomCount: 1\n  location: \"Brooklyn\"\n  userInfo:\n    name: \"Emily\
+      \ Wilson\"\n    contactNumber: \"(303) 303-3030\"\n    email: \"abcde@example.com\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Book Brooklyn Sky Hotel for\
+      \ 4 people, 1 night 2 days, from July 21 to July 22, 2025\"\n    accommodationName:\
+      \ \"Brooklyn Sky Hotel\"\n    roomTypeId: \"FAMILY_SUITE_VIEW\"\n    checkInDate:\
+      \ \"2025-07-21\"\n    checkOutDate: \"2025-07-22\"\n    guestCount: 4\n    roomCount:\
+      \ 1\n    location: \"Brooklyn\"\n    userInfo:\n      name: \"Emily Wilson\"\
+      \n      contactNumber: \"(303) 303-3030\"\n      email: \"abcde@example.com\"\
+      \n    reservationID: \"reservation-20250721-123\"\n    status: \"Reservation\
+      \ Confirmed\"\n    confirmationMessage: \"Emily Wilson, your reservation for\
+      \ 1 FAMILY_SUITE_VIEW room at Brooklyn Sky Hotel from July 21 to July 22, 2025\
+      \ for 4 guests has been confirmed. Your reservation ID is reservation-20250721-123.\
+      \ Thank you.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '<Rooftop Café Reservation Cancellation Notice>
+
+
+      - Reservation Venue: Outdoor Rooftop Café in Brooklyn
+
+      - Reservation Date & Time: July 21, 2025, 6:00 PM
+
+      - Reservation ID: reservation-20250721-456
+
+      - Cancellation Status: Completed
+
+
+      Your reservation has been successfully canceled. If you need to reschedule or
+      make another booking, please let me know anytime. If you require further assistance,
+      feel free to reach out!
+
+
+
+      <Hotel Reservation Details>
+
+
+      Hello, Emily Wilson!
+
+      Your booking at Brooklyn Sky Hotel has been confirmed. Please find the reservation
+      details below:
+
+
+      - Hotel Name: Brooklyn Sky Hotel
+
+      - Room Type: FAMILY_SUITE_VIEW
+
+      - Check-in Date: July 21, 2025
+
+      - Check-out Date: July 22, 2025
+
+      - Number of Guests: 4
+
+      - Number of Rooms: 1
+
+      - Reservation ID: reservation-20250721-123'

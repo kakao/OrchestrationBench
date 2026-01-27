@@ -1,0 +1,109 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: 2025-06-01
+
+      - Current time: 09:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I'm working on my Yale University application. Can you add the application
+      deadline of July 1st to my calendar? Also, let me know if there are any important
+      things I should double-check before submitting.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Add the\
+      \ Yale University application deadline of July 1 to the calendar\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: search_agent\n      refined_query: \"Checklist of things to review\
+      \ before submitting the Yale University application\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Add the Yale University\
+      \ application deadline of July 1 to the calendar\"\n  title: \"Yale University\
+      \ Application Deadline\"\n  startDateTime: \"2025-07-01T09:00\"\n  endDateTime:\
+      \ \"2025-07-01T10:00\"\ntool_call_result:\n  scheduleID: \"SCHD-12345\"\n  title:\
+      \ \"Yale University Application Deadline\"\n  startDateTime: \"2025-07-01T09:00\"\
+      \n  endDateTime: \"2025-07-01T10:00\"\n  description: \"This is the application\
+      \ deadline for Yale University. Be sure to submit all required documents.\"\n\
+      \  location: \"Online\"\n  status: \"completed\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Checklist of things\
+      \ to review before submitting the Yale University application\"\ntool_call_result:\n\
+      \  query: \"Checklist of things to review before submitting the Yale University\
+      \ application\"\n  checklist:\n    - \"Make sure that the application form is\
+      \ filled out correctly\"\n    - \"Confirm that all required documents are attached\"\
+      \n    - \"If recommendation letters are required, make sure that they are included\"\
+      \n    - \"Verify that the application fee has been paid\"\n    - \"Review essays\
+      \ and personal statements to ensure that they meet the requirements\"\n    -\
+      \ \"Check whether transcripts and test scores have been submitted\"\n    - \"\
+      Double-check whether the application deadline has been met\"\n  status: \"completed\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ Calendar Event Registration
+
+      The application deadline for Yale University has been successfully added to
+      your calendar. Here are the event details:
+
+
+      - Schedule ID: SCHD-12345
+
+      - Title: Yale University Application Deadline
+
+      - Start Time: July 1, 2025, 9:00 AM
+
+      - End Time: July 1, 2025, 10:00 AM
+
+      - Description: This is the final deadline for Yale University applications.
+      Be sure to submit all required documents.
+
+      - Location: Online
+
+
+      Please use this reminder to ensure that you are fully prepared.
+
+
+
+
+      ◾ Checklist Before Submitting Your Yale University Application
+
+
+      1. Confirm that the application form is filled out correctly.
+
+      2. Verify that all required documents are attached.
+
+      3. If recommendation letters are required, make sure that they are included.
+
+      4. Confirm that the application fee has been paid.
+
+      5. Review essays and personal statements to ensure that they meet the requirements.
+
+      6. Check whether transcripts and test scores have been submitted.
+
+      7. Double-check whether you are meeting the deadline.
+
+
+      Carefully reviewing these points will help you submit the strongest possible
+      application. Wishing you the best of luck!'

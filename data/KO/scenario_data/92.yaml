@@ -1,0 +1,263 @@
+metadata:
+  total_steps: 19
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2030/03/24'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '딱히 하고싶은게 없어서 생각중에 헬스트레이너를 해보고 싶다는 생각이 들었어,
+
+      준비해야할 자격증? 정보좀 주고 한남동에 자격증 학원이 있으면 소개시켜줘. 상담예약도 하고싶어.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"헬스 트레이너를\
+      \ 하기 위해 준비해야 하는 자격증\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"한남동 근처 헬스 트레이너를 하기 위해 준비해야 하는 자격증 학원 추천\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"한남동 근처 헬스 트레이너를 하기 위해 준비해야\
+      \ 하는 자격증 학원 상담 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"헬스 트레이너를 하기 위해 준비해야\
+      \ 하는 자격증\"\ntool_call_result:\n  data:\n    query: \"헬스트레이너를 하기 위해 준비해야 하는 자격증\
+      \ 검색\"\n    certifications:\n      - name: \"생활스포츠지도사 2급\"\n        issuer:\
+      \ \"문화체육관광부\"\n        requirements:\n          - \"만 18세 이상\"\n          -\
+      \ \"필기 및 실기 시험 합격\"\n        description: \"헬스장, 체력단련실 등에서 근무할 수 있는 국가공인 자격증으로,\
+      \ 트레이닝 지도 능력을 인증받는 데 필수입니다.\"\n\n      - name: \"NSCA-CPT (Certified Personal\
+      \ Trainer)\"\n        issuer: \"NSCA (미국 스포츠의학회)\"\n        requirements:\n\
+      \          - \"만 18세 이상\"\n          - \"CPR/AED 자격 보유\"\n          - \"영문 시험\
+      \ 응시\"\n        description: \"국제적으로 인정받는 자격으로, 퍼스널 트레이너 분야에서 전문성을 증명할 수 있습니다.\"\
+      \n\n      - name: \"운동처방사\"\n        issuer: \"대한운동사협회\"\n        requirements:\n\
+      \          - \"관련 학과 졸업 또는 이수\"\n          - \"필기 및 실기 시험\"\n        description:\
+      \ \"건강관리 목적의 운동 프로그램을 설계하고 처방하는 전문가 자격입니다.\"\n\n      - name: \"스포츠마사지 자격증\"\
+      \n        issuer: \"한국직업능력연구원 등록 민간자격\"\n        requirements:\n          -\
+      \ \"교육 이수 후 시험\"\n        description: \"근육 이완과 회복을 위한 트레이닝 보조기술로 활용되며, 헬스트레이너의\
+      \ 보완역할로 자주 사용됩니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"한남동 근처 헬스 트레이너를 하기\
+      \ 위해 준비해야 하는 자격증 학원\"\n  sortBy: \"distance\"\n  placeCategory: \"학원\"\n  location:\
+      \ \"한남동\"\ntool_call_result:\n  data:\n    location: \"한남동\"\n    category:\
+      \ \"학원\"\n    results:\n      - name: \"핏에듀 트레이너 아카데미\"\n        address: \"\
+      서울 용산구 한남대로 123\"\n        programs:\n          - \"생활스포츠지도사 2급 자격과정\"\n   \
+      \       - \"NSCA-CPT 국제자격 준비반\"\n        contact: \"02-123-4567\"\n        website:\
+      \ \"https://fitedu.co.kr\"\n        features:\n          - \"실기 중심 수업\"\n  \
+      \        - \"국가자격증 대비반 운영\"\n\n      - name: \"서울바디짐 트레이너 과정 센터\"\n        address:\
+      \ \"서울 용산구 이태원로 212\"\n        programs:\n          - \"운동처방사 자격증 준비\"\n   \
+      \       - \"스포츠마사지 실습 과정\"\n        contact: \"02-987-6543\"\n        website:\
+      \ \"https://seoulbodygym.com\"\n        features:\n          - \"현직 트레이너 강의\"\
+      \n          - \"개별 실습 장비 구비\"\n\n      - name: \"한남 피트니스 아카데미\"\n        address:\
+      \ \"서울 용산구 독서당로 99\"\n        programs:\n          - \"생활스포츠지도사 실기 집중반\"\n \
+      \         - \"NSCA-CPT 시험 대비 영어특강\"\n        contact: \"02-334-7788\"\n    \
+      \    website: \"https://hnfitness.co.kr\"\n        features:\n          - \"\
+      소수 정예 운영\"\n          - \"CPR/AED 실습 포함\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 학원 사용자 선택, 날짜, 시간, 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 헬스트레이너가 되기 위해 준비할 수 있는 주요 자격증들을 아래와 같이 정리해드렸습니다.\n각 자격증은 요구 조건과 활용\
+      \ 분야가 다르니 목표에 맞게 선택하시면 좋습니다.\n\n1. 생활스포츠지도사 2급\n\n* 발급처: 문화체육관광부\n* 요건: 만 18세\
+      \ 이상, 필기 및 실기 시험 합격\n* 설명: 헬스장이나 체력단련실 등에서 근무하기 위한 기본적인 국가공인 자격증으로, 트레이닝 지도\
+      \ 능력을 공식적으로 인증받을 수 있습니다.\n\n2. NSCA-CPT (Certified Personal Trainer)\n\n* 발급처:\
+      \ NSCA (미국 스포츠의학회)\n* 요건: 만 18세 이상, CPR/AED 자격 보유, 영문 시험 응시\n* 설명: 국제적으로 인증된\
+      \ 퍼스널 트레이너 자격증으로, 국내외에서 활동하고자 하는 분들에게 적합한 전문 자격입니다.\n\n3. 운동처방사\n\n* 발급처: 대한운동사협회\n\
+      * 요건: 관련 학과 졸업 또는 이수, 필기 및 실기 시험\n* 설명: 건강을 목적으로 하는 운동을 설계하고 처방하는 전문가 자격으로,\
+      \ 의료 분야와 연계한 트레이닝에 적합합니다.\n\n4. 스포츠마사지 자격증\n\n* 발급처: 한국직업능력연구원 등록 민간자격\n* 요건:\
+      \ 관련 교육 이수 후 시험\n* 설명: 근육 회복 및 이완을 위한 보완기술로, 트레이너 업무에 실무적 강점을 더해주는 자격증입니다.\n\
+      \n\n▶ 한남동에서 헬스트레이너 자격증을 준비할 수 있는 학원을 세 곳 추천드릴게요.\n각 학원별 프로그램과 특징도 함께 안내드렸습니다.\n\
+      \n1. 핏에듀 트레이너 아카데미\n   서울 용산구 한남대로 123\n   – 개설 과정: 생활스포츠지도사 2급, NSCA-CPT 국제\
+      \ 자격\n   – 특징: 실기 중심 수업, 국가자격증 대비반 운영\n   – 웹사이트: [fitedu.co.kr](https://fitedu.co.kr)\n\
+      \   – 문의: 02-123-4567\n\n2. 서울바디짐 트레이너 과정 센터\n   서울 용산구 이태원로 212\n   – 개설 과정:\
+      \ 운동처방사, 스포츠마사지 실습\n   – 특징: 현직 트레이너 강의, 개별 실습 장비 구비\n   – 웹사이트: [seoulbodygym.com](https://seoulbodygym.com)\n\
+      \   – 문의: 02-987-6543\n\n3. 한남 피트니스 아카데미\n   서울 용산구 독서당로 99\n   – 개설 과정: 생활스포츠지도사\
+      \ 실기 집중반, NSCA-CPT 영어 특강\n   – 특징: 소수 정예 운영, CPR/AED 실습 포함\n   – 웹사이트: [hnfitness.co.kr](https://hnfitness.co.kr)\n\
+      \   – 문의: 02-334-7788\n\n상담받으실 학원을 고르셨다면, 학원명과 상담을 원하는 날짜, 시간 연락처를 알려주세요."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: '아근데 헬스트레이너 말고 고등학교 체육선생님이 되려면 뭘 준비해야되?
+
+      사립도 있고,, 아무것도 모르는 상황인데 좀 알려줘'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: search_agent\n      refined_query: \"헬스트레이너를\
+      \ 하기 위해 준비해야 하는 자격증 검색\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: place_agent\n      refined_query:\
+      \ \"한남동 근처 헬스트레이너를 하기위해 준비해야하는 자격증 학원 추천\"\n\nworkflow_3:\n  status: cancelled\n\
+      \  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: cancelled\n\
+      \      name: place_agent\n      refined_query: \"한남동 근처 헬스트레이너를 하기위해 준비해야하는\
+      \ 자격증 학원 상담 예약\"\n\nworkflow_4:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: search_agent\n      refined_query: \"고등학교\
+      \ 체육 선생님이 되기 위하여 준비해야 하는 것에 대한 정보 사립 고등학교 포함\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"고등학교 체육선생님이 되기 위해 준비해야\
+      \ 하는것에 대한 정보 사립고등학교 포함\"\ntool_call_result:\n  data:\n    title: \"고등학교 체육교사가\
+      \ 되기 위한 자격 요건 및 준비 과정\"\n    overview: \"고등학교 체육교사가 되기 위해서는 일반적으로 교원자격증을 취득해야\
+      \ 하며, 사립과 공립 모두 기본적인 요건은 동일하되, 채용 절차에 약간의 차이가 있습니다.\"\n    requiredSteps:\n\
+      \      - \"1. 관련 학과(체육교육과 등) 졸업 또는 졸업 예정\"\n      - \"2. 중등학교 정교사 2급 자격증 취득\
+      \ (교직이수 필수)\"\n      - \"3. 교원임용시험(공립 교사 희망 시) 또는 사립학교 자체 채용 지원\"\n    optionalCertifications:\n\
+      \      - \"생활스포츠지도사 자격증\"\n      - \"건강운동관리사\"\n      - \"응급처치 교육 이수증\"\n  \
+      \  forPrivateSchool:\n      - \"사립학교는 개별 학교 또는 학교법인에서 자체적으로 채용을 진행하므로 별도 공고\
+      \ 확인이 필요\"\n      - \"포트폴리오, 시범 수업 및 면접 준비 중요\"\n    recommendActions:\n   \
+      \   - \"대학교 재학 중 교직이수 이수 필수\"\n      - \"임용시험 대비를 위한 전공 및 교육학 과목 심화 학습\"\n \
+      \     - \"실기능력 향상을 위한 꾸준한 체육활동 병행\"\n    infoSources:\n      - \"교육부 교원자격제도\
+      \ 안내\"\n      - \"한국교육과정평가원(임용시험 주관)\"\n      - \"각 사립학교 채용 홈페이지\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 고등학교 체육교사가 되기 위해 필요한 준비 과정 정보를 정리했어요.
+
+
+      공립과 사립 모두 중등 정교사 자격증이 기본적으로 필요하며, 사립의 경우 학교별 채용 절차가 따로 있는 점도 참고해 주세요.
+
+
+      • 관련 학과 졸업 또는 졸업 예정이어야 하고, 교직이수를 통해 **중등 정교사 2급 자격증**을 취득해야 합니다.
+
+      • 공립을 희망할 경우 **교원임용시험** 응시가 필요하고, 사립은 **학교나 재단별 채용 공고**를 통해 개별 지원해야 합니다.
+
+      • 추가로 도움이 될 수 있는 자격증으로는 `생활스포츠지도사`, `건강운동관리사`, `응급처치 이수증` 등이 있습니다.
+
+      • 사립학교는 시범수업, 면접, 포트폴리오 등의 준비가 중요한 경우가 많습니다.
+
+
+      헬스트레이너 관련 상담받으실 학원을 고르셨다면, 학원명과 상담을 원하는 날짜, 시간 연락처를 알려주세요.'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 어쨋든 대학교에 가야하는구나..그럼 아까 헬스트레이너 자격증 말고 체육교육과 ? 입학상담 받을 수 있는 학원 한남동 안에서
+      추천좀 해주고 상담예약할래.
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: search_agent\n      refined_query: \"헬스트레이너를\
+      \ 하기 위해 준비해야 하는 자격증\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: place_agent\n      refined_query:\
+      \ \"한남동 근처 헬스트레이너를 하기위해 준비해야하는 자격증 학원 추천\"\n\nworkflow_3:\n  status: cancelled\n\
+      \  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: cancelled\n\
+      \      name: place_agent\n      refined_query: \"한남동 근처 헬스트레이너를 하기위해 준비해야하는\
+      \ 자격증 학원 상담 예약\"\n\nworkflow_4:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: search_agent\n      refined_query:\
+      \ \"고등학교 체육선생님이 되기 위하여 준비해야 하는것에 대한 정보 사립고등학교 포함\"\n\nworkflow_5:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ place_agent\n      refined_query: \"대학교 체육교육과 입학을 위한 한남동 내 입시 학원 추천\"\n\n\
+      workflow_6:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_5\"\
+      \n  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"한남동 내 체육교육과 입학을 위한 학원 상담예약\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"대학교 체육교육과 입학을 위한 한남동\
+      \ 내 입시 학원 추천\"\n  sortBy: \"distance\"\n  placeCategory: \"학원\"\n  location:\
+      \ \"한남동\"\ntool_call_result:\n  data:\n    location: \"한남동\"\n    category:\
+      \ \"학원\"\n    results:\n      - name: \"한남입시체대전문학원\"\n        address: \"서울\
+      \ 용산구 독서당로 75\"\n        programs:\n          - \"체육교육과 실기 종합반\"\n         \
+      \ - \"체대입시 체력 강화 집중반\"\n        contact: \"02-111-2233\"\n        website: \"\
+      https://hannan-physicalacademy.com\"\n        features:\n          - \"전문 트레이너\
+      \ 실기 지도\"\n          - \"모의실기 테스트 정기 운영\"\n          - \"대학별 맞춤 커리큘럼 제공\"\n\n\
+      \      - name: \"팀에이치 체대입시 한남센터\"\n        address: \"서울 용산구 한남대로 146\"\n  \
+      \      programs:\n          - \"체대입시 실기 기본반\"\n          - \"이론 + 실기 통합 대비반\"\
+      \n        contact: \"02-456-7890\"\n        website: \"https://teamh-academy.com\"\
+      \n        features:\n          - \"전문 입시 컨설턴트 배치\"\n          - \"소수정예 그룹 트레이닝\"\
+      \n          - \"대입 면접 준비 포함\"\n\n      - name: \"서울체대입시 아카데미\"\n        address:\
+      \ \"서울 용산구 이태원로 131\"\n        programs:\n          - \"실기 고득점 전략반\"\n     \
+      \     - \"체대입시 기초체력 반\"\n        contact: \"02-998-1122\"\n        website:\
+      \ \"https://seoulpeacademy.co.kr\"\n        features:\n          - \"체대 출신 강사진\"\
+      \n          - \"영상 분석 피드백 제공\"\n          - \"대입 체력 테스트 정기 모의평가\""
+- workflow_id: workflow_5
+  step_id: 15
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 학원 사용자 선택, 날짜, 시간, 연락처'
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ 한남동 인근에서 대학교 체육교육과 입시를 준비할 수 있는 입시 학원을 추천드릴게요.**\n실기 및 면접 대비에 특화된\
+      \ 커리큘럼을 운영하는 학원 중심으로 안내드립니다.\n\n1. 한남입시체대전문학원\n   서울 용산구 독서당로 75\n   – 프로그램:\
+      \ 체육교육과 실기 종합반, 체대입시 체력 강화 집중반\n   – 특징: 전문 트레이너 실기 지도, 모의실기 테스트 정기 운영, 대학별\
+      \ 맞춤 커리큘럼\n   – 웹사이트: [hannan-physicalacademy.com](https://hannan-physicalacademy.com)\n\
+      \   – 문의: 02-111-2233\n\n2. 팀에이치 체대입시 한남센터\n   서울 용산구 한남대로 146\n   – 프로그램: 실기\
+      \ 기본반, 이론+실기 통합 대비반\n   – 특징: 입시 컨설턴트 배치, 소수정예 트레이닝, 면접 대비 포함\n   – 웹사이트: [teamh-academy.com](https://teamh-academy.com)\n\
+      \   – 문의: 02-456-7890\n\n3. 서울체대입시 아카데미\n   서울 용산구 이태원로 131\n   – 프로그램: 실기 고득점\
+      \ 전략반, 기초체력 반\n   – 특징: 체대 출신 강사진, 영상 분석 피드백, 체력 모의평가 운영\n   – 웹사이트: [seoulpeacademy.co.kr](https://seoulpeacademy.co.kr)\n\
+      \   – 문의: 02-998-1122\n\n\n상담받으실 학원을 고르셨다면, 학원명과 상담을 원하는 날짜, 시간 연락처를 알려주세요."
+- workflow_id: null
+  step_id: 17
+  agent: user
+  agent_type: user
+  data:
+    content: '한남입시체대전문학원으로 해주고
+
+      3월 28일 금요일 오후4시로 예약해줘
+
+      김건호 010-0000-0000 !'
+- workflow_id: null
+  step_id: 18
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"한남동에 위치한 체육교육과 입학을위한\
+      \ 학원 한남입시체대전문학원 상담 예약\"\n  placeName: \"한남입시체대전문학원\"\n  placeCategory: \"학원\"\
+      \n  reservationDate: \"2030-03-28\"\n  reservationTime: \"16:00\"\n  contactInfo:\
+      \ \"010-0000-0000\"\ntool_call_result:\n  data:\n    status: \"success\"\n \
+      \   reservationId: \"reserve_20300328_1600\"\n    placeName: \"한남입시체대전문학원\"\n\
+      \    placeCategory: \"학원\"\n    reservationDateTime: \"2030-03-28T16:00:00+09:00\"\
+      \n    contactInfo: \"010-0000-0000\"\n    message: \"2030년 3월 28일 오후 4시에 '한남입시체대전문학원'\
+      \ 상담 예약이 완료되었습니다.\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: 2030년 3월 28일 오후 4시에 한남입시체대전문학원 상담 예약이 완료되었습니다.

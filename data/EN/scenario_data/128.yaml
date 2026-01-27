@@ -1,0 +1,70 @@
+metadata:
+  total_steps: 4
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Can you tell me which song from the K-pop Demon Hunters soundtrack made
+      it to the Billboard charts?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      K-pop Demon Hunters Billboard entry OST\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMusicInfo\narguments:\n  refinedQuery: \"K-pop Demon Hunters\
+      \ Billboard entry OST\"\n  chartType: \"billboard\"\n  albumTitle: \"K-pop Demon\
+      \ Hunters Soundtrack\"\ntool_call_result:\n  data:\n    albumTitle: \"K-Pop\
+      \ Demon Hunters (Original Soundtrack)\"\n    artist: \"Various Artists\"\n \
+      \   releaseDate: \"2025-07-01\"\n    tracks:\n      - trackNumber: 1\n     \
+      \   title: \"Demon Within\"\n        artist: \"LE SSERAFIM\"\n        duration:\
+      \ \"3:42\"\n        billboardRank: 18\n      - trackNumber: 2\n        title:\
+      \ \"Blade & Light\"\n        artist: \"Stray Kids\"\n        duration: \"3:29\"\
+      \n        billboardRank: 22\n      - trackNumber: 3\n        title: \"Seal the\
+      \ Night\"\n        artist: \"NewJeans\"\n        duration: \"3:11\"\n      \
+      \  billboardRank: 30\n      - trackNumber: 4\n        title: \"No Mercy\"\n\
+      \        artist: \"ATEEZ\"\n        duration: \"3:47\"\n        billboardRank:\
+      \ 35\n      - trackNumber: 5\n        title: \"Revenant’s Waltz\"\n        artist:\
+      \ \"Taemin\"\n        duration: \"4:05\"\n        billboardRank: 40"
+- workflow_id: null
+  step_id: 4
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are the tracks from the *K-pop Demon Hunters* OST that made it
+      to the Billboard charts. Please select the one you’re interested in.
+
+
+      Demon Within – LE SSERAFIM (3:42)
+
+      Billboard Rank: #18
+
+
+      Blade & Light – Stray Kids (3:29)
+
+      Billboard Rank: #22
+
+
+      Seal the Night – NewJeans (3:11)
+
+      Billboard Rank: #30
+
+
+      No Mercy – ATEEZ (3:47)
+
+      Billboard Rank: #35
+
+
+      Revenant’s Waltz – Taemin (4:05)
+
+      Billboard Rank: #40'

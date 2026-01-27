@@ -1,0 +1,138 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2026-08-24T08:24
+
+      name: 백섬머
+
+      userId: 2026-38-39'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 서교동 최고기온 35도 넘으면 오늘 보기로한 영화랑 저녁식사 예약한거 다 취소해줘 와이프랑 얘기해봤는데 안나가는게 나을거같아
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"오늘 서교동역\
+      \ 날씨 조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"오늘 서교동 최고기온이 35도 이상일 경우 오늘 보기로 한 예매 내역 조회\"\n    - status:\
+      \ pending\n      name: entertainment_agent\n      refined_query: \"오늘 서교동 최고기온이\
+      \ 35도 이상일 경우 오늘 보기로 한 영화 예매 취소\" \n\nworkflow_3:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"금일 서교동 최고기온이 35도 이상일 경우 저녁식사\
+      \ 예약한 식당 예약 내역 조회\"\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"금일 서교동 최고기온이 35도 이상일 경우 저녁식사 예약한 식당 예약 취소\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"오늘 서교동 날씨 조회\"\
+      \n  location: \"서교동\"\n  date: \"2026-08-24\"\ntool_call_result:\n  weatherInfo:\n\
+      \    location: \"서교동\"\n    date: \"2026-08-24\"\n    temperature:\n      current:\
+      \ \"35도\"\n      high: \"38도\"\n      low: \"27도\"\n    condition: \"맑음\"\n\
+      \    humidity: \"45%\"\n    windSpeed: \"3m/s\"\n    precipitation: \"0mm\"\n\
+      \    uvIndex: \"매우 높음\"\n    sunrise: \"05:42\"\n    sunset: \"19:18\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 연락처'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 연락처'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 예매 취소와 예약 취소를 위해 사용자의 핸드폰 번호가 필요합니다.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1234-43212
+- workflow_id: workflow_2
+  step_id: 9
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieBooking\narguments:\n  refinedQuery: \"오늘 보기로 예매한 영화 조회\"\
+      \ \n  userId: \"2026-38-39\"\n  name: \"백섬머\"\n  contactNumber: \"010-1234-4321\"\
+      \n  showDate: \"2026-08-24\"\ntool_call_result:\n  bookingInfo:\n    bookingId:\
+      \ \"MOV-20260824-00077\"\n    movieTitle: \"탑건: 매버릭\"\n    theater: \"롯데시네마\
+      \ 월드타워\"\n    screen: \"IMAX관\"\n    seatNumbers:\n      - \"E10\"\n      -\
+      \ \"E11\"\n    showDateTime: \"2026-08-24T12:30\"\n    bookingDate: \"2026-08-20\"\
+      \n    ticketCount: 2\n    price: \"₩28,000\"\n    paymentMethod: \"신용카드\"\n\
+      \    status: \"예매확정\"\n    bookedBy: \"백섬머\"\n    contactNumber: \"010-1234-4321\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"금일 저녁식사\
+      \ 예약 내역 조회\" \n  contactInfo: \"010-1234-4321\"\n  date: \"2026-08-24\"\ntool_call_result:\n\
+      \  reservationInfo:\n    reservationId: \"RES-FOOD-20260824-00456\"\n    placeName:\
+      \ \"라뜰리에 블루\"\n    placeCategory: \"레스토랑\"\n    reservationName: \"백섬머\"\n \
+      \   contactInfo: \"010-1234-4321\"\n    reservationDate: \"2026-08-24\"\n  \
+      \  startDateTime: \"2026-08-24T19:00\"\n    endDateTime: \"2026-08-24T21:00\"\
+      \n    partySize: 2\n    table: \"윈도우석-07\"\n    status: \"예약확정\""
+- workflow_id: workflow_2
+  step_id: 11
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelMovieBooking\narguments:\n  refinedQuery: \"오늘 보기로 예매한 영화\
+      \ 예매 취소\"       \n  bookingId: \"MOV-20260824-00077\"\n  refundMethod: \"original_payment\"\
+      \ntool_call_result:\n  cancellationResult:\n    bookingId: \"MOV-20260824-00077\"\
+      \n    movieTitle: \"탑건: 매버릭\"\n    theater: \"롯데시네마 월드타워\"\n    screen: \"IMAX관\"\
+      \n    seatNumbers:\n      - \"E10\"\n      - \"E11\"\n    showDateTime: \"2026-08-24T12:30\"\
+      \n    ticketCount: 2\n    price: \"₩28,000\"\n    refundMethod: \"original_payment\"\
+      \n    status: \"취소완료\"\n    refundAmount: \"₩28,000\"\n    processedDate: \"\
+      2026-08-24T11:05\"\n    message: \"영화 '탑건: 매버릭' 예매가 취소되었습니다. 결제하신 금액은 영업일 기준\
+      \ 3~5일 내 원결제 수단으로 환불됩니다.\""
+- workflow_id: workflow_3
+  step_id: 12
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: date 가 당일로 설정되어 취소 불가'
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: '영화 예매 취소 안내
+
+
+      * 예매하신 영화 "탑건: 매버릭"(2026-08-24 12:30, 롯데시네마 월드타워 IMAX관) 예매가 성공적으로 취소되었습니다. 환불
+      금액은 영업일 기준 3~5일 내 결제 수단으로 입금됩니다.
+
+
+      식당 예약 취소 안내
+
+
+      * "라뜰리에 블루"(2026-08-24 19:00~21:00, 2인, 윈도우석-07) 예약 당일은 취소가 불가능 합니다.'

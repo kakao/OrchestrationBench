@@ -1,0 +1,122 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- datetime: "2025-08-16 16:00"
+
+      - userId: 12345
+
+      - location: Koreatown, Los Angeles'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: What should I make for dinner with the groceries I bought yesterday?
+      Can you recommend something that matches today’s weather?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Check\
+      \ yesterday's order list\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: weather_agent\n      refined_query:\
+      \ \"Tonight's weather\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: [\"workflow_1\", \"workflow_2\"]\n  steps:\n    - status: pending\n\
+      \      name: search_agent\n      refined_query: \"Search for dinner recipes\
+      \ using yesterday's groceries and matching tonight's weather\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Order history from\
+      \ yesterday\"\n  userId: \"12345\"\n  orderDate: \"2025-08-15\"\ntool_call_result:\n\
+      \  orderStatus:\n    - orderId: \"001\"\n      items:\n        - name: \"Swanson\
+      \ Chicken Broth\"\n          quantity: 2\n        - name: \"Barilla Spaghetti\
+      \ Pasta\"\n          quantity: 1\n        - name: \"Stouffer’s Lasagna Family\
+      \ Size\"\n          quantity: 1\n        - name: \"Maruchan Instant Ramen (Chicken,\
+      \ 6-pack)\"\n          quantity: 1\n        - name: \"Campbell’s Chunky Chicken\
+      \ Noodle Soup\"\n          quantity: 1\n        - name: \"Kraft Mac & Cheese\
+      \ Original\"\n          quantity: 1\n      status: \"Delivered\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"Evening weather\
+      \ on 2025-08-16\"\n  location: \"Koreatown, Los Angeles\"\n  date: \"2025-08-16\"\
+      \ntool_call_result:\n  weather: \"Occasional showers\"\n  temperature: \"89.6°F\"\
+      \n  humidity: \"60%\"\n  wind_speed: \"22 mph\""
+- workflow_id: workflow_2
+  step_id: 6
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Recipes using ingredients\
+      \ like chicken broth, spaghetti pasta, frozen lasagna, instant ramen, chicken\
+      \ noodle soup, and mac & cheese for a hot rainy evening\"\ntool_call_result:\n\
+      \  data:\n    - name: \"Classic Spaghetti with Garlic Bread\"\n      ingredients:\n\
+      \        - Barilla Spaghetti Pasta\n        - Swanson Chicken Broth\n      \
+      \  - Olive oil\n        - Garlic\n        - Parmesan cheese\n      instructions:\
+      \ >\n        1. Boil spaghetti in salted water until al dente.\n        2. In\
+      \ a skillet, sauté garlic in olive oil, then add a splash of chicken broth for\
+      \ flavor.\n        3. Toss the pasta in the sauce and top with Parmesan cheese.\n\
+      \        4. Serve with garlic bread on the side.\n\n    - name: \"Quick Ramen\
+      \ Soup with Egg\"\n      ingredients:\n        - Maruchan Instant Ramen (Chicken)\n\
+      \        - Egg\n        - Green onion\n        - Soy sauce (optional)\n    \
+      \  instructions: >\n        1. Boil the ramen noodles according to the package\
+      \ directions.\n        2. Crack in an egg during the last 2 minutes of cooking.\n\
+      \        3. Top with chopped green onion and a dash of soy sauce if desired.\n\
+      \        4. Serve hot — perfect comfort food on a rainy evening.\n\n    - name:\
+      \ \"Chicken Noodle Soup & Grilled Cheese Combo\"\n      ingredients:\n     \
+      \   - Campbell’s Chunky Chicken Noodle Soup\n        - Bread\n        - Butter\n\
+      \        - Sliced cheese\n      instructions: >\n        1. Heat the chicken\
+      \ noodle soup in a pot.\n        2. Butter bread slices, place cheese between\
+      \ them, and grill until golden brown.\n        3. Serve the soup alongside the\
+      \ grilled cheese for a cozy dinner.\n\n    - name: \"Easy Baked Lasagna with\
+      \ Mac & Cheese\"\n      ingredients:\n        - Stouffer’s Lasagna Family Size\n\
+      \        - Kraft Mac & Cheese Original\n        - Shredded mozzarella\n    \
+      \  instructions: >\n        1. Bake the frozen lasagna according to the package\
+      \ directions.\n        2. While baking, cook Kraft Mac & Cheese as directed.\n\
+      \        3. Serve a scoop of lasagna with a side of mac & cheese, topping with\
+      \ extra mozzarella if desired."
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "Order History (August 15)\n\nYour delivery has been completed. You received\
+      \ the following items:\n\n- Swanson Chicken Broth × 2\n- Barilla Spaghetti Pasta\
+      \ × 1\n- Stouffer’s Lasagna Family Size × 1\n- Maruchan Instant Ramen (Chicken,\
+      \ 6-pack) × 1\n- Campbell’s Chunky Chicken Noodle Soup × 1\n- Kraft Mac & Cheese\
+      \ Original × 1\n\nTonight’s Weather (August 16, 2025)\n\n- Condition: Hot with\
+      \ occasional showers\n- Temperature: 89.6°F\n- Humidity: 60%\n- Wind Speed:\
+      \ 22 mph\nA warm, comforting meal can balance the humid evening while still\
+      \ keeping things satisfying.\n\nToday’s Recommended Recipes\n\n1. Classic Spaghetti\
+      \ with Garlic Bread\n\nIngredients: Barilla Spaghetti Pasta, Swanson Chicken\
+      \ Broth, olive oil, garlic, Parmesan cheese\nInstructions: Boil the spaghetti\
+      \ until al dente. In a skillet, sauté garlic in olive oil and add a splash of\
+      \ chicken broth for flavor. Toss the pasta in the sauce and finish with Parmesan.\
+      \ Serve with garlic bread on the side.\n\n2. Quick Ramen Soup with Egg\n\nIngredients:\
+      \ Maruchan Instant Ramen (Chicken), egg, green onion, soy sauce (optional)\n\
+      Instructions: Cook ramen according to the package. Add an egg in the last 2\
+      \ minutes of cooking. Top with chopped green onion and a dash of soy sauce if\
+      \ desired. A warm, cozy bowl perfect for rainy weather.\n\n3. Chicken Noodle\
+      \ Soup & Grilled Cheese Combo\n\nIngredients: Campbell’s Chunky Chicken Noodle\
+      \ Soup, bread, butter, sliced cheese\nInstructions: Heat the chicken noodle\
+      \ soup. Butter bread slices, add cheese, and grill until golden brown. Serve\
+      \ the soup with the grilled cheese sandwich for a comforting pairing.\n\n4.\
+      \ Easy Baked Lasagna with Mac & Cheese \n\nIngredients: Stouffer’s Frozen Lasagna,\
+      \ Kraft Mac & Cheese, shredded mozzarella\nInstructions: Bake the lasagna as\
+      \ directed. While baking, cook Kraft Mac & Cheese as directed. Serve a portion\
+      \ of lasagna alongside mac & cheese, topping with extra mozzarella if desired.\n\
+      \nIf you want, I can also give you quick cooking shortcuts or pair these meals\
+      \ with drinks to match the weather. ️"

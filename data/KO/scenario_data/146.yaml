@@ -1,0 +1,117 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 4월 1일
+
+      - userId: U0DK230134'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 요즘 충동 구매를 너무 많이 한 것 같아. 아까 선글라스 주문한 거 취소해줘. 아 그리고 오늘 야근할 것 같으니까 저녁에 내일또와
+      네일샵 예약한 것도 취소해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"아까 주문한\
+      \ 선글라스 주문 내역 조회\"\n    - status: pending\n      name: shopping_agent\n     \
+      \ refined_query: \"아까 주문한 선글라스 주문 취소\"\n\nworkflow_2:\n  status: pending\n \
+      \ type: independent\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"오늘 저녁 내일또와 네일샵 예약 내역 조회\"\n    - status: pending\n \
+      \     name: place_agent\n      refined_query: \"오늘 저녁 내일또와 네일샵 예약 취소\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"아까 주문한 선글라스 주문 내역\
+      \ 조회\"\n  userId: \"U0DK230134\"\n  orderDate: \"2025-04-01\"\ntool_call_result:\n\
+      \  orderDetails:\n    orderId: \"ORD-987654\"\n    userId: \"U0DK230134\"\n\
+      \    orderDate: \"2025-04-01\"\n    product: \"선글라스\"\n    status: \"주문 완료\"\
+      \n    cancelAvailable: true\n    estimatedDelivery: \"2025-04-07\"\n    shippingAddress:\
+      \ \"서울특별시 강남구 테헤란로 123\"\n    price: 120000\n    currency: \"KRW\"\n    refundMethod:\
+      \ \"original_method\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약자 연락처'
+- workflow_id: workflow_1
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelOrder\narguments:\n  refinedQuery: \"아까 주문한 선글라스 주문 취소\"\
+      \n  orderId: \"ORD-987654\"\n  cancelType: \"full\"\n  refundMethod: \"original_method\"\
+      \ntool_call_result:\n  cancellationDetails:\n    orderId: \"ORD-987654\"\n \
+      \   status: \"취소 완료\"\n    cancelType: \"full\"\n    refundMethod: \"original_method\"\
+      \n    refundAmount: 120000\n    currency: \"KRW\"\n    message: \"주문하신 선글라스가\
+      \ 성공적으로 취소되었습니다. 환불은 원래 결제 수단으로 처리될 예정입니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 예약 조회를 위해서는 예약자 연락처가 필요합니다.
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 010-5678-5678 이거야.
+- workflow_id: workflow_2
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"2025년 4월\
+      \ 1일 저녁 내일또와 네일샵 예약 내역 조회\"\n  date: \"2025-04-01\"\n  contactInfo: \"010-5678-5678\"\
+      \n  placeName: \"내일또와 네일샵\"\n  placeCategory: \"네일샵\"\ntool_call_result:\n \
+      \ reservationInfo:\n    reservationId: \"RESV-20230401-001\"\n    placeName:\
+      \ \"내일또와 네일샵\"\n    placeCategory: \"네일샵\"\n    date: \"2025-04-01\"\n    time:\
+      \ \"18:00\"\n    contactInfo: \"010-5678-5678\"\n    customerName: \"신민아\"\n\
+      \    serviceType: \"젤 네일\"\n    price: 50000\n    currency: \"KRW\"\n    status:\
+      \ \"예약 확정\"\n    message: \"예약하신 내역이 조회되었습니다. 예약 일자는 2025년 4월 1일 오후 6시입니다.\""
+- workflow_id: null
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 예약일 당일에는 취소 불가'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '내일또와 네일샵 예약 취소가 어렵습니다. 예약일 당일에는 취소가 불가하니 양해 부탁드립니다.
+
+
+
+      ◾주문 상품 취소 완료
+
+      - 선글라스 주문 취소가 성공적으로 완료되었습니다.
+
+
+      - 주문 번호: ORD-987654
+
+      - 취소 금액: 120,000원
+
+      - 환불 방법: 원래 결제 수단으로 환불 예정
+
+
+      환불 처리에 대한 추가적인 문의 사항이 있으시면 고객 서비스 센터로 연락해 주시기 바랍니다.'

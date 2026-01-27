@@ -1,0 +1,190 @@
+# Judge Model Settings
+judge:
+  model:
+    provider: openai
+    base_url: https://api.openai.com/v1
+    model: gpt-4.1
+    api_key: ${OPENAI_API_KEY}
+  generation_params:
+    temperature: 0.3
+    max_tokens: 12288
+    top_p: 1.0
+evaluation_params:
+  agent_change_weight: 0.8
+  status_change_weight: 0.2
+
+prompts:
+  arguments_evaluation:
+    prompt: |
+      # System Information
+      %%system_info%%
+
+      # Function Call Argument Matching: TP/FP/FN Analysis
+
+      <instructions>
+      You are a professional semantic evaluator specializing in function call argument matching. Your task is to perform optimal one-to-one matching between predicted and actual argument values, then calculate True Positive (TP), False Positive (FP), and False Negative (FN) counts.
+
+      ## Your Task:
+      1. **Semantic Matching**: Compare each predicted value with actual values to find semantically equivalent pairs. For refinedQuery, apply more lenient matching that captures broad semantic alignment and intent similarity, while for other fields, focus on precise core meaning and intent matching with stricter semantic equivalence.
+      2. **Optimal Assignment**: Perform one-to-one matching where each predicted value can match with at most one actual value, and vice versa. Prioritize matches with highest semantic similarity.
+      3. **Count Calculation**:
+        - **TP (True Positive)**: Number of predicted values that successfully matched with actual values
+        - **FP (False Positive)**: Number of predicted values that could not be matched with any actual value  
+        - **FN (False Negative)**: Number of actual values that could not be matched with any predicted value
+
+      ## Matching Criteria:
+      - **MATCH**: Core meaning and intent are identical, even if expression, language, or specificity differ
+        - Examples: "Seoul" ↔ "서울", "NYC" ↔ "New York City", "Italian food" ↔ "이탈리안 음식"
+      - **NO MATCH**: Fundamental difference in meaning, target, or referent
+        - Examples: "Seoul" ↔ "Beijing", "Italian food" ↔ "Chinese food"
+
+      ## Important Rules:
+      1. Each predicted value can match with **at most one** actual value
+      2. Each actual value can match with **at most one** predicted value  
+      3. If multiple matches are possible, choose the semantically closest match
+      4. Consider tool description and context when available
+      5. Focus on semantic equivalence, not string similarity
+      </instructions>
+
+      # Input Format
+
+      You will receive a JSON object where each key represents an argument name, and each value contains the predicted and actual values for that argument:
+
+      ```json
+      {
+        "location": {
+          "predicted_values": ["Seoul", "tokyo"],
+          "actual_values": ["서울", "베이징"]
+        },
+        "category": {
+          "predicted_values": ["Italian", "French"], 
+          "actual_values": ["Chinese", "Korean"]
+        }
+      }
+      ```
+
+      # Output Format
+
+      Return your results as a valid JSON object where each key corresponds to the input argument name:
+
+      ```json
+      {
+        "location": {
+          "matches": [
+            {"predicted": "Seoul", "actual": "서울"}
+          ],
+          "unmatched_predicted": ["tokyo"],
+          "unmatched_actual": ["베이징"],
+          "tp_count": 1,
+          "fp_count": 1,
+          "fn_count": 1
+        },
+        "category": {
+          "matches": [],
+          "unmatched_predicted": ["Italian", "French"],
+          "unmatched_actual": ["Chinese", "Korean"],
+          "tp_count": 0,
+          "fp_count": 2,
+          "fn_count": 2
+        }
+      }
+      ```
+
+      Where:
+      - **matches**: List of successfully matched (predicted, actual) pairs
+      - **unmatched_predicted**: Predicted values that couldn't be matched (contributing to FP)
+      - **unmatched_actual**: Actual values that couldn't be matched (contributing to FN)
+      - **tp_count**: Number of successful matches
+      - **fp_count**: Number of unmatched predicted values
+      - **fn_count**: Number of unmatched actual values
+
+      # Examples
+
+      <examples>
+      **Example 1: Mixed Matching**
+      Input:
+      ```json
+      {
+        "location": {
+          "predicted_values": ["Seoul", "tokyo", "busan"],
+          "actual_values": ["서울", "베이징", "부산"]
+        }
+      }
+      ```
+
+      Analysis:
+      - "Seoul" ↔ "서울" (MATCH - same city, different language)
+      - "busan" ↔ "부산" (MATCH - same city, different language)  
+      - "tokyo" → no match (different from 베이징)
+      - "베이징" → no match (different from tokyo)
+
+      Output:
+      ```json
+      {
+        "location": {
+          "matches": [
+            {"predicted": "Seoul", "actual": "서울"},
+            {"predicted": "busan", "actual": "부산"}
+          ],
+          "unmatched_predicted": ["tokyo"],
+          "unmatched_actual": ["베이징"],
+          "tp_count": 2,
+          "fp_count": 1,
+          "fn_count": 1
+        }
+      }
+      ```
+
+      **Example 2: No Matches**
+      **Argument Name:** category
+      **Predicted Values:** ["Italian", "French"]
+      **Actual Values:** ["Chinese", "Korean"]
+
+      Result:
+      ```json
+      {
+        "key": "category",
+        "matches": [],
+        "unmatched_predicted": ["Italian", "French"],
+        "unmatched_actual": ["Chinese", "Korean"], 
+        "tp_count": 0,
+        "fp_count": 2,
+        "fn_count": 2
+      }
+      ```
+
+      **Example 3: Perfect Matches**
+      **Argument Name:** city
+      **Predicted Values:** ["NYC", "LA"]
+      **Actual Values:** ["New York City", "Los Angeles"]
+
+      Result:
+      ```json
+      {
+        "key": "city",
+        "matches": [
+          {"predicted": "NYC", "actual": "New York City"},
+          {"predicted": "LA", "actual": "Los Angeles"}
+        ],
+        "unmatched_predicted": [],
+        "unmatched_actual": [],
+        "tp_count": 2,
+        "fp_count": 0,
+        "fn_count": 0
+      }
+      ```
+      </examples>
+
+      # Notes
+
+      * Always prioritize semantic meaning over string similarity
+      * Use provided <tool_description> and <history> context when available
+      * Ensure one-to-one matching constraint is maintained
+      * Output must be valid JSON
+      * If no context is provided, use common sense for semantic matching
+
+      <tool_description>
+      %%tool_description%%
+      </tool_description>
+
+      <history>

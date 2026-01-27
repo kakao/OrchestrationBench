@@ -1,0 +1,67 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: I keep getting calls from (202) 123-4567. Could this be spam? Is there
+      a video that shows how to block spam calls and texts at the same time?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"Check\
+      \ if (202) 123-4567 is a spam number\"\n\nworkflow_2:\n  status: pending\n \
+      \ type: independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"Video guide on how to block spam calls and texts at\
+      \ the same time\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPhoneNumberInfo\narguments:\n  refinedQuery: \"Check if (202)\
+      \ 123-4567 is a spam number\"\n  phoneNumber: \"2021234567\"\ntool_call_result:\n\
+      \  data:\n    phoneNumber: \"(202) 123-4567\"\n    isSpam: true\n    reportCount:\
+      \ 150\n    categories: [\"Telemarketing\", \"Fraud\"]\n    additionalInfo: \"\
+      This number has been reported as spam by multiple users. Please exercise caution.\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"Video guide on how\
+      \ to block spam calls and promotional texts at the same time\"\ntool_call_result:\n\
+      \  data:\n    videos:\n      - title: \"Complete Guide to Blocking Spam Texts\
+      \ and Ads\"\n        url: \"https://www.example.com/video123\"\n        duration:\
+      \ \"15:32\"\n        uploader: \"Tech Guru\"\n        viewCount: 150000\n  \
+      \      uploadDate: \"2025-05-10\"\n        description: \"This video explains\
+      \ step-by-step how to block spam calls and promotional text messages effectively.\"\
+      \n      - title: \"How to Set Up Spam Blocking on Your Smartphone\"\n      \
+      \  url: \"https://www.example.com/video456\"\n        duration: \"10:45\"\n\
+      \        uploader: \"Phone Master\"\n        viewCount: 250000\n        uploadDate:\
+      \ \"2025-03-22\"\n        description: \"This video covers in detail how to\
+      \ configure your smartphone to block spam calls, messages, and ads.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "You’ve been receiving calls from (202) 123-4567. \n\n◾Here’s what I\
+      \ found:\n\n* This number has been reported as spam by multiple users.\n* Report\
+      \ count: 150\n* Categories: Telemarketing, Fraud\n* Additional info: Please\
+      \ exercise caution when answering calls from this number.\n\n\n◾If you want\
+      \ to block spam calls and promotional texts, here are some helpful video guides:\n\
+      \n1. Complete Guide to Blocking Spam Texts and Ads\n   [Watch here](https://www.example.com/video123)\
+      \ – 15:32 by Tech Guru, uploaded on May 10, 2025\n   This video explains step-by-step\
+      \ how to block spam calls and promotional text messages effectively.\n\n2. How\
+      \ to Set Up Spam Blocking on Your Smartphone\n   [Watch here](https://www.example.com/video456)\
+      \ – 10:45 by Phone Master, uploaded on March 22, 2025\n   This video covers\
+      \ in detail how to configure your smartphone to block spam calls, messages,\
+      \ and ads.\n\nFollowing these guides should help you prevent unwanted calls\
+      \ and texts effectively."

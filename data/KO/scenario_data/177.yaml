@@ -1,0 +1,259 @@
+metadata:
+  total_steps: 16
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '현재 날짜 : 2027/06/01'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 자차 빼고 부산까지 가는 방법들 비교해줘, 시간이랑 가격 고려해서 가장 괜찮은 방법으로 예약해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"부산 가는 항공편\
+      \ 정보 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      부산 가는 열차 및 고속버스 정보 조회\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"부산까지 항공편 예매\"\n\nworkflow_4:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"부산까지 열차 또는 고속버스 예매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출발지, 출발 날짜'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출발지, 출발 날짜'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 네, 부산까지 가는 방법을 비교하고 예약해 드릴 수 있습니다. 정확한 비교를 위해 어디에서 출발하시는지와 원하시는 날짜를 알려주시겠어요?
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: '아, 출발은 서울이고 이번 주 금요일 오전 중에 가고 싶어.
+
+      열차는 서울역, 버스는 서울고속버스터미널에서 탈거야'
+- workflow_id: workflow_1
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"서울 출발 부산 도착 이번 주\
+      \ 금요일 오전 항공편 정보 조회\"\n  departure: \"서울\"\n  destination: \"부산\"\n  departureDate:\
+      \ \"2027-06-04\"\ntool_call_result:\n  data:\n    - tripId: \"KEGMPPUS20270604_01\"\
+      \n      airline: \"대한항공\"\n      departureAirport: \"GMP\"\n      arrivalAirport:\
+      \ \"PUS\"\n      departureTime: \"2027-06-04T09:30:00+09:00\"\n      arrivalTime:\
+      \ \"2027-06-04T10:35:00+09:00\"\n      price: 85000\n      currency: \"KRW\"\
+      \n      seatClass: \"economy\"\n      isDirectFlight: true\n    - tripId: \"\
+      7CGMPPUS20270604_02\"\n      airline: \"제주항공\"\n      departureAirport: \"GMP\"\
+      \n      arrivalAirport: \"PUS\"\n      departureTime: \"2027-06-04T10:10:00+09:00\"\
+      \n      arrivalTime: \"2027-06-04T11:15:00+09:00\"\n      price: 52000\n   \
+      \   currency: \"KRW\"\n      seatClass: \"economy\"\n      isDirectFlight: true"
+- workflow_id: workflow_2
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getTransitSchedule\n    arguments:\n      refinedQuery:\
+      \ \"서울역 출발 부산 도착 이번 주 금요일 오전 열차 정보 조회\"\n      transportType: \"train\"\n  \
+      \    departureStation: \"서울역\"\n      arrivalStation: \"부산역\"\n      departureDate:\
+      \ \"2027-06-04\"\n  - tool: getTransitSchedule\n    arguments:\n      refinedQuery:\
+      \ \"서울고속버스터미널 출발 부산 도착 이번 주 금요일 오전 고속버스 정보 조회\"\n      transportType: \"bus\"\
+      \n      departureStation: \"서울고속버스터미널\"\n      arrivalStation: \"부산\"\n    \
+      \  departureDate: \"2027-06-04\"\n\ntool_call_result:\n  - data:\n      - transportType:\
+      \ \"KTX\"\n        departureStation: \"서울역\"\n        arrivalStation: \"부산역\"\
+      \n        departureTime: \"2027-06-04T09:00:00+09:00\"\n        arrivalTime:\
+      \ \"2027-06-04T11:45:00+09:00\"\n        duration: \"2시간 45분\"\n        price:\
+      \ 59800\n        currency: \"KRW\"\n        seatClass: \"일반실\"\n      - transportType:\
+      \ \"SRT\"\n        departureStation: \"수서역\"\n        arrivalStation: \"부산역\"\
+      \n        departureTime: \"2027-06-04T09:15:00+09:00\"\n        arrivalTime:\
+      \ \"2027-06-04T11:40:00+09:00\"\n        duration: \"2시간 25분\"\n        price:\
+      \ 52600\n        currency: \"KRW\"\n        seatClass: \"일반실\"\n  - data:\n\
+      \      - transportType: \"bus\"\n        busId: \"BS201\"\n        departureStation:\
+      \ \"서울고속버스터미널\"\n        arrivalStation: \"부산\"\n        departureTime: \"2027-06-04T08:30:00+09:00\"\
+      \n        arrivalTime: \"2027-06-04T12:45:00+09:00\"\n        duration: \"4시간\
+      \ 15분\"\n        price: 25000\n        currency: \"KRW\"\n        seatAvailability:\
+      \ \"available\"\n      - transportType: \"bus\"\n        busId: \"BS202\"\n\
+      \        departureStation: \"서울고속버스터미널\"\n        arrivalStation: \"부산\"\n \
+      \       departureTime: \"2027-06-04T09:00:00+09:00\"\n        arrivalTime: \"\
+      2027-06-04T13:30:00+09:00\"\n        duration: \"4시간 30분\"\n        price: 25000\n\
+      \        currency: \"KRW\"\n        seatAvailability: \"available\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 교통편 결정, 이름, 생년월일, 성별, 연락처, 좌석등급, 수화물옵션, 마일리지 사용여부'
+- workflow_id: workflow_4
+  step_id: 11
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 교통편 결정, 연락처, 탑승객 수'
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '네, 서울에서 이번 주 금요일(2027-06-04) 오전에 부산으로 가는 교통편을 시간과 가격 중심으로 비교해 드릴게요.
+
+
+      - 항공편 (김포 → 김해)
+
+      소요 시간: 약 1시간 5분 (공항 이동 및 수속 시간 별도 필요)
+
+      예상 비용: 52,000원(제주항공) ~ 85,000원(대한항공)
+
+      특징: 이동 자체는 가장 빠르지만, 공항 이동 및 보안검색·수속까지 고려하면 전체 소요 시간이 늘어납니다.
+
+
+      - 기차 (KTX / SRT)
+
+      소요 시간: 약 2시간 25분 ~ 2시간 45분
+
+      예상 비용: 52,600원(SRT) ~ 59,800원(KTX)
+
+      특징: 도심 접근성이 좋고, 정시성이 높아 가장 안정적인 교통수단으로 꼽힙니다.
+
+
+      - 고속버스 (서울고속버스터미널 → 부산)
+
+      소요 시간: 약 4시간 15분 ~ 4시간 30분
+
+      예상 비용: 약 25,000원
+
+      특징: 가장 저렴하지만, 교통 상황에 따라 변동 폭이 크고 소요 시간이 길 수 있습니다.
+
+
+      - 종합 추천
+
+
+      시간을 최우선: 항공편 (특히 제주항공, 저가 + 빠른 편)
+
+      균형 잡힌 선택: SRT (2시간 25분, 52,600원)
+
+      비용을 최우선: 고속버스 (25,000원, 단 장시간 소요)
+
+
+      ----------
+
+
+      어떤 교통편으로 예약을 진행해드릴까요?
+
+      예약을 원하시면 아래 정보를 알려주셔야 합니다.
+
+
+      #항공권 예약
+
+      성함:
+
+      생년월일:
+
+      성별:
+
+      전화번호:
+
+      좌석등급(이코노미/비즈니스):
+
+      수화물 옵션:
+
+      마일리지 사용 여부:
+
+
+      #열차 또는 고속버스 예매
+
+      연락처:
+
+      탑승객 수:'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: SRT로 예약해줘! 010-1234-5678이고 1명이야.
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: travel_agent\n      refined_query: \"부산\
+      \ 가는 항공편 정보 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: transport_agent\n      refined_query:\
+      \ \"부산 가는 열차 및 고속버스 정보 조회\"\n\nworkflow_3:\n  status: cancelled\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: cancelled\n      name:\
+      \ travel_agent\n      refined_query: \"서울에서 부산까지 항공편 예매\"\n\nworkflow_4:\n \
+      \ status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      서울에서 부산까지 열차 SRT 예매\""
+- workflow_id: null
+  step_id: 15
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookTransitTicket\narguments:\n  refinedQuery: \"2027년 6월 4일 오전\
+      \ 9시 15분 수서 출발 부산 도착 SRT 열차 연락처 010-1234-5678로1명 예약\"\n  transportType: \"train\"\
+      \n  departureStation: \"수서역\"\n  arrivalStation: \"부산역\"\n  departureDate: \"\
+      2027-06-04\"\n  departureTime: \"09:15\"\n  seatType: \"standard\"\n  roundTrip:\
+      \ false\n  passengerCount: 1\n  contactInfo: \"010-1234-5678\"\ntool_call_result:\n\
+      \  data:\n    reservationId: \"RSV20270604_SRT0915\"\n    status: \"confirmed\"\
+      \n    transportType: \"train\"\n    trainType: \"SRT\"\n    departureStation:\
+      \ \"수서역\"\n    arrivalStation: \"부산역\"\n    departureTime: \"2027-06-04T09:15:00+09:00\"\
+      \n    arrivalTime: \"2027-06-04T11:40:00+09:00\"\n    seatType: \"standard\"\
+      \n    contactInfo: \"010-1234-5678\"\n    price: 52600\n    currency: \"KRW\"\
+      \n    message: \"SRT 일반실 승차권 예약이 완료되었습니다.\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: '요청하신 SRT 열차 예약이 완료되었습니다. 아래는 예약 상세 정보입니다:
+
+
+      열차 종류: SRT (일반실)
+
+      출발지: 수서역
+
+      도착지: 부산역
+
+      출발 시간: 2027년 6월 4일 오전 9시 15분
+
+      도착 시간: 오전 11시 40분
+
+      예매 금액: 52,600원
+
+      예약 번호: RSV20270604_SRT0915
+
+      예약자 연락처: 010-1234-5678
+
+
+      필요하시면 이 일정을 캘린더에 등록하거나, 도착지 교통/날씨 정보도 함께 안내해드릴 수 있어요.'

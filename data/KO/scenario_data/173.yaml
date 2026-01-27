@@ -1,0 +1,202 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2025-07-16
+
+      Time: 10:30
+
+      Location: 서울특별시 서초구
+
+      userId: USR951031
+
+      이름: 김예리
+
+      전화번호: 010-1234-5678'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 소고기 미역국을 끓여야되는데 어떻게 끓이지? 필요한 재료들 알려주고 요리 레시피도 알려줘. 필요한 재료들은 상품 검색해보고
+      없는 거 구매해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"소고기 미역국\
+      \ 레시피와 필요한 재료 목록 검색\"\n\nworkflow_2:\n  status: pending\n  depend_on: [\"workflow_1\"\
+      ]\n  type: dependent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"미역국 재료에 대한 상품 검색\"\n\nworkflow_3:\n  status: pending\n\
+      \  depend_on: [\"workflow_2\"]\n  type: dependent\n  steps:\n    - status: pending\n\
+      \      name: shopping_agent\n      refined_query: \"미역국 재료들을 주문\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"소고기 미역국 레시피와 필요한 재료\
+      \ 목록 검색\"\ntool_call_result:\n  data:\n    title: \"소고기 미역국 황금 레시피\"\n    ingredients:\n\
+      \      - item: \"자른 미역\"\n        amount: \"20g\"\n      - item: \"소고기 (국거리용\
+      \ 양지)\"\n        amount: \"150g\"\n      - item: \"국간장\"\n        amount: \"\
+      2스푼\"\n      - item: \"다진 마늘\"\n        amount: \"1스푼\"\n      - item: \"참기름\"\
+      \n        amount: \"2스푼\"\n    recipe:\n      - step: 1\n        instruction:\
+      \ \"미역은 찬물에 10분 정도 불린 후, 물기를 꼭 짜고 먹기 좋은 크기로 잘라줍니다.\"\n      - step: 2\n    \
+      \    instruction: \"달군 냄비에 참기름을 두르고 소고기를 넣어 핏기가 사라질 때까지 볶아줍니다.\"\n      - step:\
+      \ 3\n        instruction: \"소고기가 익으면 불린 미역을 넣고 2~3분간 함께 볶아줍니다.\"\n      - step:\
+      \ 4\n        instruction: \"냄비에 물 1.2L를 붓고, 국간장과 다진 마늘을 넣어 센 불에서 끓여줍니다.\"\n\
+      \      - step: 5\n        instruction: \"국이 끓어오르면 중불로 줄여 15분 이상 푹 끓여줍니다. 마지막으로\
+      \ 소금으로 간을 맞추면 완성입니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: searchProducts\n    arguments:\n      refinedQuery:\
+      \ \"미역국용 자른 미역\"\n      sortBy: \"latest\"\n  - tool: searchProducts\n    arguments:\n\
+      \      refinedQuery: \"국거리용 양지 소고기\"\n      sortBy: \"latest\"\n  - tool: searchProducts\n\
+      \    arguments:\n      refinedQuery: \"국간장\"\n      sortBy: \"latest\"\n  -\
+      \ tool: searchProducts\n    arguments:\n      refinedQuery: \"다진마늘\"\n     \
+      \ sortBy: \"latest\"\n  - tool: searchProducts\n    arguments:\n      refinedQuery:\
+      \ \"참기름\"\n      sortBy: \"latest\"\n\ntool_call_result:\n  - data:\n      productId:\
+      \ \"PRD001\"\n      name: \"청정원 자른 미역 100g (미역국용)\"\n      price: 3500\n   \
+      \   imageUrl: \"https://example.com/images/seaweed.jpg\"\n      link: \"https://example.com/products/PRD001\"\
+      \n  - data:\n      productId: \"PRD002\"\n      name: \"한우 1+ 양지 국거리용 300g\"\
+      \n      price: 12800\n      imageUrl: \"https://example.com/images/beef.jpg\"\
+      \n      link: \"https://example.com/products/PRD002\"\n  - data:\n      productId:\
+      \ \"PRD003\"\n      name: \"해표 진한 국간장 500ml\"\n      price: 2900\n      imageUrl:\
+      \ \"https://example.com/images/soy_sauce.jpg\"\n      link: \"https://example.com/products/PRD003\"\
+      \n  - data:\n      productId: \"PRD004\"\n      name: \"국산 다진마늘 200g\"\n   \
+      \   price: 4200\n      imageUrl: \"https://example.com/images/garlic.jpg\"\n\
+      \      link: \"https://example.com/products/PRD004\"\n  - data:\n      productId:\
+      \ \"PRD005\"\n      name: \"CJ 백설 참기름 300ml\"\n      price: 5800\n      imageUrl:\
+      \ \"https://example.com/images/sesame_oil.jpg\"\n      link: \"https://example.com/products/PRD005\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 사용자 응답, 주소'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '🥣 소고기 미역국 레시피
+
+
+      [필요한 재료]
+
+      *   자른 미역 20g
+
+      *   소고기 (국거리용 양지) 150g
+
+      *   물 1.2L
+
+      *   국간장 2스푼
+
+      *   다진 마늘 1스푼
+
+      *   참기름 2스푼
+
+      *   소금 약간
+
+
+      [끓이는 방법]
+
+      1.  미역은 찬물에 10분 정도 불린 후, 물기를 꼭 짜서 먹기 좋게 잘라주세요.
+
+      2.  달군 냄비에 참기름을 두르고 소고기를 넣어 핏기가 사라질 때까지 볶아주세요.
+
+      3.  소고기가 익으면 불린 미역을 넣고 2~3분간 더 볶아줍니다.
+
+      4.  냄비에 물을 붓고, 국간장과 다진 마늘을 넣어 센 불에서 끓여주세요.
+
+      5.  국이 끓어오르면 중불로 줄여 15분 이상 푹 끓여주세요. 마지막에 소금으로 간을 맞추면 맛있는 미역국이 완성됩니다.
+
+
+      맛있는 소고기 미역국 레시피와 함께, 바로 주문하실 수 있는 재료들을 찾아봤습니다.
+
+
+      주문 예상 상품 목록
+
+      *   자른 미역: 청정원 자른 미역 100g – 3,500원
+
+      *   국거리용 소고기: 한우 1+ 양지 300g – 12,800원
+
+      *   국간장: 해표 진한 국간장 500ml – 2,900원
+
+      *   다진마늘: 국산 다진마늘 200g – 4,200원
+
+      *   참기름: CJ 백설 참기름 300ml – 5,800원
+
+
+      총 예상 금액은 29,200원입니다. 이대로 주문을 진행해 드릴까요? 배송받으실 주소도 함께 알려주세요.'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 응 주문해줘 주소는 서울시 강남구 테헤란로 123, 456호야
+- workflow_id: null
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: orderProducts\n    arguments:\n      refinedQuery:\
+      \ \"자른 미역 주문\"\n      userId: \"USR951031\"\n      productItems:\n        productId:\
+      \ \"PRD001\"\n        productName: \"청정원 자른 미역 100g (미역국용)\"\n        quantity:\
+      \ 1\n        price: 3500\n      shippingAddress:\n        recipient: \"김예리\"\
+      \n        address: \"서울시 강남구 테헤란로 123, 456호\"\n        phone: \"010-1234-5678\"\
+      \n\n  - tool: orderProducts\n    arguments:\n      refinedQuery: \"국거리용 양지 소고기\
+      \ 주문\"\n      userId: \"USR951031\"\n      productItems:\n        productId:\
+      \ \"PRD002\"\n        productName: \"한우 1+ 양지 국거리용 300g\"\n        quantity:\
+      \ 1\n        price: 12800\n      shippingAddress:\n        recipient: \"김예리\"\
+      \n        address: \"서울시 강남구 테헤란로 123, 456호\"\n        phone: \"010-1234-5678\"\
+      \n\n  - tool: orderProducts\n    arguments:\n      refinedQuery: \"국간장 주문\"\n\
+      \      userId: \"USR951031\"\n      productItems:\n        productId: \"PRD003\"\
+      \n        productName: \"해표 진한 국간장 500ml\"\n        quantity: 1\n        price:\
+      \ 2900\n      shippingAddress:\n        recipient: \"김예리\"\n        address:\
+      \ \"서울시 강남구 테헤란로 123, 456호\"\n        phone: \"010-1234-5678\"\n\n  - tool:\
+      \ orderProducts\n    arguments:\n      refinedQuery: \"다진마늘 주문\"\n      userId:\
+      \ \"USR951031\"\n      productItems:\n        productId: \"PRD004\"\n      \
+      \  productName: \"국산 다진마늘 200g\"\n        quantity: 1\n        price: 4200\n\
+      \      shippingAddress:\n        recipient: \"김예리\"\n        address: \"서울시\
+      \ 강남구 테헤란로 123, 456호\"\n        phone: \"010-1234-5678\"\n\n  - tool: orderProducts\n\
+      \    arguments:\n      refinedQuery: \"참기름 주문\"\n      userId: \"USR951031\"\
+      \n      productItems:\n        productId: \"PRD005\"\n        productName: \"\
+      CJ 백설 참기름 300ml\"\n        quantity: 1\n        price: 5800\n      shippingAddress:\n\
+      \        recipient: \"김예리\"\n        address: \"서울시 강남구 테헤란로 123, 456호\"\n \
+      \       phone: \"010-1234-5678\"\n\ntool_call_result:\n  - data:\n      orderId:\
+      \ \"ORDER20250716_001\"\n      status: \"processing\"\n      itemsCount: 1\n\
+      \      totalPrice: 3500\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_002\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 12800\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_003\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 2900\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_004\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 4200\n      estimatedDelivery: \"2025-07-18\"\n  - data:\n\
+      \      orderId: \"ORDER20250716_005\"\n      status: \"processing\"\n      itemsCount:\
+      \ 1\n      totalPrice: 5800\n      estimatedDelivery: \"2025-07-18\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "요청하신 주문이 완료되었습니다.\n\n1. 주문 ID: ORDER20250716_001\n   - 상품명: 청정원 자른 미역\
+      \ 100g (미역국용)\n   - 총금액: 3,500원\n   - 배송예정일: 2025년 7월 18일\n\n2. 주문 ID: ORDER20250716_002\n\
+      \   - 상품명: 한우 1+ 양지 국거리용 300g\n   - 총금액: 12,800원\n   - 배송예정일: 2025년 7월 18일\n\
+      \n3. 주문 ID: ORDER20250716_003\n   - 상품명: 해표 진한 국간장 500ml\n   - 총금액: 2,900원\n\
+      \   - 배송예정일: 2025년 7월 18일\n\n4. 주문 ID: ORDER20250716_004\n   - 상품명: 국산 다진마늘\
+      \ 200g\n   - 총금액: 4,200원\n   - 배송예정일: 2025년 7월 18일\n\n5. 주문 ID: ORDER20250716_005\n\
+      \   - 상품명: CJ 백설 참기름 300ml\n   - 총금액: 5,800원\n   - 배송예정일: 2025년 7월 18일\n\n모든\
+      \ 주문은 현재 처리 중이며, 각 상품은 2025년 7월 18일까지 배송될 예정입니다. 추가 문의 사항이 있으시면 언제든지 말씀해 주세요!"

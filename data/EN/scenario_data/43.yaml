@@ -1,0 +1,177 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current date: 2025-07-17
+
+      - Office: 59 Embassy Road, Downtown
+
+      - Home: 200 Main Street, Apt 5B Brooklyn, NY 11201'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you check the traffic conditions on FDR Drive tonight and see if
+      there’s any construction going on? If it’s really congested, let me know a faster
+      detour so that I don’t have to take FDR Drive. Also, can you see if there’s
+      a café near my house with a drive‑thru that serves sandwiches and pancakes?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Check\
+      \ for any roadwork and traffic conditions on FDR Drive tonight\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: place_agent\n      refined_query: \"Find a drive-thru café near\
+      \ my house that sells sandwiches and pancakes\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"If FDR Drive is heavily\
+      \ congested tonight, provide a faster detour route that avoids FDR Drive\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTrafficInfo\narguments:\n  refinedQuery: \"Check for roadwork\
+      \ and traffic conditions on FDR Drive this evening\"\n  location: \"FDR Drive\"\
+      \n  timeRange: \"2025-07-17T18:00~20:59\"\n  trafficType: \"Car\"\n  incidentType:\
+      \ \"Construction\"\n  sortBy: \"delay_level\"\ntool_call_result:\n  status:\
+      \ success\n  data:\n    location: \"FDR Drive\"\n    timeRange: \"2025-07-17T18:00~20:59\"\
+      \n    trafficType: \"car\"\n    incidentType: \"construction\"\n    conditions:\n\
+      \      - segment: \"Brooklyn Bridge ~ 34th Street\"\n        averageSpeedKmh:\
+      \ 12\n        congestionLevel: \"Severe congestion\"\n        incidents:\n \
+      \         - \"Two lanes closed for ongoing construction\"\n          - \"Heavy\
+      \ evening traffic volume causing long delays\"\n      - segment: \"34th Street\
+      \ ~ 63rd Street\"\n        averageSpeedKmh: 18\n        congestionLevel: \"\
+      Heavy congestion\"\n        incidents:\n          - \"Bottleneck approaching\
+      \ construction zone\"\n      - segment: \"63rd Street ~ RFK Bridge interchange\"\
+      \n        averageSpeedKmh: 35\n        congestionLevel: \"Moderate traffic\"\
+      \n        incidents: []\n    advisory: \"Expect significant delays on FDR Drive\
+      \ due to major construction. Consider alternate routes such as the West Side\
+      \ Highway.\"\n  source: \"Traffic System\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Find drive-thru\
+      \ cafes near my home that serve sandwiches and pancakes\"\n  location: \"200\
+      \ Main Street, Apt 5B Brooklyn, NY 11201\"\n  cuisineType: \"Cafe\"\n  sortBy:\
+      \ \"nearest\"\n  tag: \"Drive-thru\"\n  specificDishes: [\"Sandwich\", \"Pancake\"\
+      ]\ntool_call_result:\n  status: success\n  data:\n    restaurants:\n      -\
+      \ name: \"Brooklyn Sandwich Café\"\n        address: \"210 Front St, Brooklyn,\
+      \ NY 11201\"\n        rating: 4.6\n        reviewCount: 245\n        features:\n\
+      \          - \"Sandwich\"\n          - \"Pancake\"\n          - \"Drive-thru\"\
+      \n          - \"Parking\"\n        operatingHours: \"07:00~21:00\"\n       \
+      \ distanceKm: 0.4\n      - name: \"Drive-thru Brunch House\"\n        address:\
+      \ \"198 Adams St, Brooklyn, NY 11201\"\n        rating: 4.5\n        reviewCount:\
+      \ 210\n        features:\n          - \"Sandwich\"\n          - \"Pancake\"\n\
+      \          - \"Drive-thru\"\n          - \"Free Wi-Fi\"\n        operatingHours:\
+      \ \"06:30~22:00\"\n        distanceKm: 0.6\n      - name: \"Cafe Sandwich &\
+      \ Go\"\n        address: \"205 Jay St, Brooklyn, NY 11201\"\n        rating:\
+      \ 4.4\n        reviewCount: 180\n        features:\n          - \"Sandwich\"\
+      \n          - \"Pancake\"\n          - \"Drive-thru\"\n          - \"Eco-friendly\
+      \ cups\"\n        operatingHours: \"07:00~20:00\"\n        distanceKm: 0.7\n\
+      \  source: \"Place Recommendation System\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure and destination'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 'To find you an alternate route along the FDR Drive highway during the
+      evening rush, I’ll need your starting point and destination.
+
+      You can just say something like "home," "Central Station," or "current location."'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: I’m heading home from work~
+- workflow_id: null
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Provide a fast alternate\
+      \ route from the office to home this evening that avoids FDR Drive.\"\n  origin:\
+      \ \"59 Embassy Road, Downtown\"\n  destination: \"200 Main Street, Apt 5B Brooklyn,\
+      \ NY 11201\"\n  transportModes: \"car\"\n  optimizeBy: \"fastest\"\n  departureTime:\
+      \ \"18:00\"\ntool_call_result:\n  status: success\n  data:\n    origin: \"59\
+      \ Embassy Road, Downtown\"\n    destination: \"200 Main Street, Apt 5B, Brooklyn,\
+      \ NY 11201\"\n    transportModes: \"car\"\n    optimizeBy: \"fastest\"\n   \
+      \ departureTime: \"18:00\"\n    routeOptions:\n      - routeId: 1\n        description:\
+      \ \"Fastest detour via Brooklyn Bridge using local streets (avoids FDR Drive\
+      \ entirely)\"\n        estimatedTimeMin: 18\n        distanceKm: 3.8\n     \
+      \   steps:\n          - \"Depart from 59 Embassy Road and take local streets\
+      \ east toward the Brooklyn Bridge entrance\"\n          - \"Merge onto Brooklyn\
+      \ Bridge toward Brooklyn (do not enter FDR ramps)\"\n          - \"Continue\
+      \ onto Adams St\"\n          - \"Turn left onto Front St\"\n          - \"Turn\
+      \ left onto Main St\"\n          - \"Arrive at 200 Main Street, Apt 5B, Brooklyn,\
+      \ NY 11201\"\n        trafficConditions: \"Evening congestion near bridge approaches;\
+      \ flow improves after entering Brooklyn\"\n      - routeId: 2\n        description:\
+      \ \"Alternate detour via Canal St and Manhattan Bridge (also avoids FDR Drive)\"\
+      \n        estimatedTimeMin: 21\n        distanceKm: 5.0\n        steps:\n  \
+      \        - \"Head north to Canal St via local streets\"\n          - \"Follow\
+      \ signs for Manhattan Bridge toward Brooklyn\"\n          - \"Cross Manhattan\
+      \ Bridge and continue onto Flatbush Ave Ext\"\n          - \"Turn left onto\
+      \ Tillary St, then right onto Adams St\"\n          - \"Turn left onto Front\
+      \ St, then left onto Main St\"\n          - \"Arrive at 200 Main Street, Apt\
+      \ 5B, Brooklyn, NY 11201\"\n        trafficConditions: \"Moderate congestion\
+      \ along Canal St; steady flow across Manhattan Bridge\"\n    recommendation:\
+      \ \"Use Route 1 via Brooklyn Bridge for the quickest FDR-free trip. If Brooklyn\
+      \ Bridge is backed up, switch to Route 2 via Manhattan Bridge.\"\n  source:\
+      \ \"Traffic System\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "[Severe Traffic on FDR Drive Expressway]\n\n• Section: Brooklyn Bridge\
+      \ ~ 34th Street\nTwo lanes closed for ongoing construction\nHeavy evening traffic\
+      \ volume causing long delays\n\n• Section: 34th Street ~ 63rd Street\nBottleneck\
+      \ approaching construction zone\nSevere congestion expected\n\n• Section: 63rd\
+      \ Street ~ RFK Bridge Interchange\nModerate traffic, no major incidents reported\n\
+      \n➡ Expect significant delays on FDR Drive due to major construction. Consider\
+      \ using alternate routes such as the West Side Highway.\n\n\n[Recommended Detour]\n\
+      \nHere’s a suggested detour for your evening commute that avoids FDR Drive:\n\
+      \n• Route 1: Brooklyn Bridge via local streets\n\n- Estimated travel time: 18\
+      \ minutes\n- Distance: 3.8 km\n- Steps:\n  1. Depart from 59 Embassy Road, Downtown\n\
+      \  2. Take local streets east toward the Brooklyn Bridge entrance\n  3. Merge\
+      \ onto Brooklyn Bridge toward Brooklyn (avoid FDR ramps)\n  4. Continue onto\
+      \ Adams St\n  5. Turn left onto Front St\n  6. Turn left onto Main St\n  7.\
+      \ Arrive at 200 Main Street, Apt 5B, Brooklyn, NY 11201\n\n *Traffic: Evening\
+      \ congestion near bridge approaches, smoother once in Brooklyn\n\n• Route 2:\
+      \ Canal St → Manhattan Bridge\n\n-Estimated travel time: 21 minutes\n-Distance:\
+      \ 5.0 km\n-Steps:\n 1. Head north to Canal St via local streets\n 2. Follow\
+      \ signs for Manhattan Bridge toward Brooklyn\n 3. Cross the bridge → Flatbush\
+      \ Ave Ext\n 4. Turn left onto Tillary St, then right onto Adams St\n 5. Turn\
+      \ left onto Front St, then left onto Main St\n 6. Arrive at 200 Main Street,\
+      \ Apt 5B, Brooklyn, NY 11201\n\n *Traffic: Moderate congestion along Canal St,\
+      \ steady flow across Manhattan Bridge\n\n➡ Recommendation: Take Route 1 via\
+      \ Brooklyn Bridge for the fastest FDR-free commute. If it’s heavily backed up,\
+      \ switch to Route 2 via Manhattan Bridge.\n\n[Nearby Drive-Thru Café Recommendations]\n\
+      \n*Brooklyn Sandwich Café\n\nRating: 4.6, 245 reviews, about 0.4 km away\nFeatures:\
+      \ Sandwiches, pancakes, drive-thru, parking available\nHours: 7:00 AM – 9:00\
+      \ PM\n\n*Drive-Thru Brunch House\n\nRating: 4.5, 210 reviews, about 0.6 km away\n\
+      Features: Sandwiches, pancakes, drive-thru, free Wi-Fi\nHours: 6:30 AM – 10:00\
+      \ PM\n\n*Café Sandwich & Go\n\nRating: 4.4, 180 reviews, about 0.7 km away\n\
+      Features: Sandwiches, pancakes, drive-thru, eco-friendly cups\nHours: 7:00 AM\
+      \ – 8:00 PM\n\nIf you want, I can also help with reservations or provide more\
+      \ details! ✅"

@@ -1,0 +1,341 @@
+metadata:
+  total_steps: 15
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Current date: 2025/08/11'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Please plan a 3-day, 2-night trip to Nassau, Bahamas for the wedding
+      anniversary of my parents so that they can enjoy some quality time together.
+      Look into good flight options and accommodations, and be sure to include a romantic
+      restaurant for their anniversary dinner. Finally, add the confirmed itinerary
+      to my calendar.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Check\
+      \ parents' wedding anniversary date\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: travel_agent\n      refined_query: \"Search for round-trip flights\
+      \ for a 3-day, 2-night trip to Nassau, Bahamas for the two of them, scheduled\
+      \ around parents’ wedding anniversary\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: travel_agent\n      refined_query: \"Recommend accommodations in\
+      \ Nassau, Bahamas for 3 days and 2 nights suitable for both parents\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"Recommend\
+      \ a nice restaurant in Nassau, Bahamas with a good atmosphere for parents' wedding\
+      \ anniversary dinner\"\n\nworkflow_5:\n  status: pending\n  type: dependent\n\
+      \  depend_on: [\"workflow_2\", \"workflow_3\", \"workflow_4\"]\n  steps:\n \
+      \   - status: pending\n      name: travel_agent\n      refined_query: \"Plan\
+      \ a 3-day, 2-night Nassau, Bahamas travel itinerary for parents based on flights,\
+      \ hotel, and restaurant information\"\n\nworkflow_6:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: [\"workflow_5\"]\n  steps:\n    - status: pending\n\
+      \      name: calendar_agent\n      refined_query: \"Register the finalized 3-day,\
+      \ 2-night Nassau, Bahamas wedding anniversary trip for parents\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check parents' wedding\
+      \ anniversary schedule\"\n  keyword: \"wedding anniversary\"\ntool_call_result:\n\
+      \  status: success\n  data: []\n  message: \"No wedding anniversary schedule\
+      \ found matching the given criteria.\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: I can’t proceed with the travel plan because your parents’ wedding anniversary
+      isn’t listed in the registered schedule. If you know the date, please enter
+      it manually.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: It's October 18th.
+- workflow_id: workflow_2
+  step_id: 7
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"Round-trip tickets\
+      \ for 2 adults to Nassau, Bahamas, departing October 18 for a 3-day, 2-night\
+      \ trip\"\n  departure: \"JFK\"\n  destination: \"Nassau\"\n  departureDate:\
+      \ \"2025-10-18\"\n  returnDate: \"2025-10-20\"\n  adultPassengerCount: 2\ntool_call_result:\n\
+      \  data:\n    flights:\n      - tripID: \"TRIP-JB821-JB822\"\n        airline:\
+      \ \"JetBlue Airways\"\n        departureFlight:\n          flightNumber: \"\
+      JBU821\"\n          departureTime: \"2025-10-18T11:30\"\n          arrivalTime:\
+      \ \"2025-10-18T14:45\"\n        returnFlight:\n          flightNumber: \"JBU822\"\
+      \n          departureTime: \"2025-10-20T15:30\"\n          arrivalTime: \"2025-10-20T18:45\"\
+      \n        seatClass: \"economy\"\n        isDirect: true\n        totalPrice:\
+      \ \"$228\"\n        baggage: \"1 carry-on + 1 checked-in bag included\"\n\n\
+      \      - tripID: \"TRIP-DL1907-DL1908\"\n        airline: \"Delta Air Lines\"\
+      \n        departureFlight:\n          flightNumber: \"DL1907\"\n          departureTime:\
+      \ \"2025-10-18T08:10\"\n          arrivalTime: \"2025-10-18T11:28\"\n      \
+      \  returnFlight:\n          flightNumber: \"DL1908\"\n          departureTime:\
+      \ \"2025-10-20T12:40\"\n          arrivalTime: \"2025-10-20T16:00\"\n      \
+      \  seatClass: \"economy\"\n        isDirect: true\n        totalPrice: \"$406\"\
+      \n        baggage: \"1 carry-on + 1 checked-in bag included\"\n\n      - tripID:\
+      \ \"TRIP-AA1234-AA1235\"\n        airline: \"American Airlines\"\n        departureFlight:\n\
+      \          flightNumber: \"AA1234\"\n          departureTime: \"2025-10-18T10:00\"\
+      \n          arrivalTime: \"2025-10-18T13:30\"\n        returnFlight:\n     \
+      \     flightNumber: \"AA1235\"\n          departureTime: \"2025-10-20T14:15\"\
+      \n          arrivalTime: \"2025-10-20T17:45\"\n        seatClass: \"economy\"\
+      \n        isDirect: true\n        totalPrice: \"$500\"\n        baggage: \"\
+      1 carry-on + 1 checked-in bag included\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccommodationInfo\narguments:\n  refinedQuery: \"Search for\
+      \ a hotel in Nassau, Bahamas for my parents from October 18 for 3 days, 2 nights\"\
+      \n  location: \"Nassau\"\n  checkInDate: \"2025-10-18\"\n  checkOutDate: \"\
+      2025-10-20\"\n  guestCount: 2\n  sortBy: \"highest_rating\"\ntool_call_result:\n\
+      \  data:\n    accommodations:\n      - id: \"HOTEL-NAS001\"\n        name: \"\
+      Atlantis Paradise Island\"\n        location: \"Paradise Island, Nassau\"\n\
+      \        rating: 4.8\n        pricePerNight: \"$210\"\n        totalPrice: \"\
+      $420\"\n        roomType: \"Ocean View King Room\"\n        amenities:\n   \
+      \       - Breakfast included\n          - Casino & Spa\n          - Private\
+      \ beach access\n          - Pool & Water Park\n        note: \"Luxury resort\
+      \ with stunning ocean views, ideal for a special anniversary\"\n\n      - id:\
+      \ \"HOTEL-NAS002\"\n        name: \"Graycliff Hotel\"\n        location: \"\
+      Downtown Nassau\"\n        rating: 4.7\n        pricePerNight: \"$315\"\n  \
+      \      totalPrice: \"$630\"\n        roomType: \"Deluxe King Room\"\n      \
+      \  amenities:\n          - Fine dining restaurant\n          - Wine cellar &\
+      \ tasting\n          - Quiet, historic ambience\n        note: \"Historic hotel\
+      \ at the heart of Nassau, perfect for a romantic stay\"\n\n      - id: \"HOTEL-NAS003\"\
+      \n        name: \"British Colonial Hilton Nassau\"\n        location: \"Bay\
+      \ Street, Nassau\"\n        rating: 4.6\n        pricePerNight: \"$145\"\n \
+      \       totalPrice: \"$290\"\n        roomType: \"Harbour View Room\"\n    \
+      \    amenities:\n          - Waterfront location\n          - Pool & Spa\n \
+      \         - Airport shuttle\n        note: \"Classic resort with central location,\
+      \ great for sightseeing and relaxation\""
+- workflow_id: workflow_4
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"A romantic\
+      \ restaurant in Nassau, Bahamas for parents' wedding anniversary on October\
+      \ 18, 2025\"\n  location: \"Nassau, Bahamas\"\n  sortBy: \"highest_rated\"\n\
+      \  ambience: \"romantic\"\n  event: \"wedding anniversary\"\n  partySize: \"\
+      2\"\ntool_call_result:\n  data:\n    recommendations:\n      - name: \"Graycliff\
+      \ Restaurant\"\n        category: \"French / International Fine Dining\"\n \
+      \       rating: 4.9\n        distance: \"10 minutes by car from downtown Nassau\"\
+      \n        address: \"Graycliff Hotel, 16 West & Prince St, Nassau, Bahamas\"\
+      \n        priceRange: \"$$$$\"\n        ambience: \"Elegant and romantic with\
+      \ historic mansion setting\"\n        special: \"Wine cellar experience and\
+      \ tasting menus available, reservation recommended\"\n\n      - name: \"Cafe\
+      \ Matisse\"\n        category: \"Italian / Mediterranean\"\n        rating:\
+      \ 4.8\n        distance: \"5 minutes by car from downtown Nassau\"\n       \
+      \ address: \"Abaco Street, Nassau, Bahamas\"\n        priceRange: \"$$$\"\n\
+      \        ambience: \"Cozy and intimate with garden seating\"\n        special:\
+      \ \"Special anniversary dessert plate upon request\"\n\n      - name: \"Dune\
+      \ at The Ocean Club\"\n        category: \"Modern European / Seafood\"\n   \
+      \     rating: 4.7\n        distance: \"20 minutes by car from Nassau city center\"\
+      \n        address: \"The Ocean Club, Paradise Island, Nassau, Bahamas\"\n  \
+      \      priceRange: \"$$$$\"\n        ambience: \"Upscale resort dining with\
+      \ ocean views\"\n        special: \"Priority window seating and private dining\
+      \ options available\""
+- workflow_id: workflow_5
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Flight, accommodation, and restaurant finally selected by the
+      user'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: 'I’ve researched flights, hotels, and a few romantic restaurants for
+      your parents’ 3-day, 2-night anniversary trip to Nassau, Bahamas.
+
+
+      ■ Flights to Nassau, Bahamas (Departure: October 18, 2 adults, round-trip)
+
+
+      Recommended options:
+
+      1. JetBlue Airways – $228, departs 11:30 / arrives 14:45, direct, 1 carry-on
+      + 1 checked-in bag included
+
+      2. Delta Air Lines – $406, departs 08:10 / arrives 11:28, direct, 1 carry-on
+      + 1 checked-in bag included
+
+      3. American Airlines – $500, departs 10:00 / arrives 13:30, direct, 1 carry-on
+      + 1 checked-in bag included
+
+
+      The cheapest option is JetBlue, but please consider baggage policies when making
+      your choice.
+
+
+      ■ Recommended Hotels in Nassau, Bahamas (for 2 adults, ranked by rating)
+
+      1. Atlantis Paradise Island – $420 (2 nights), Ocean View King Room, breakfast
+      included, private beach access, pool & water park, ideal for a special anniversary
+
+      2. Graycliff Hotel – $630 (2 nights), Deluxe King Room, historic and quiet setting,
+      on-site fine dining and wine cellar experiences, perfect for a romantic stay
+
+      3. British Colonial Hilton Nassau – $290 (2 nights), Harbour View Room, waterfront
+      location, pool & spa, airport shuttle included, convenient for sightseeing and
+      relaxation
+
+
+      For the best value, consider Hilton. For a resort-style experience, choose Atlantis
+      or Graycliff.
+
+
+      ■ Recommended Restaurants in Nassau, Bahamas (for parents’ anniversary dinner)
+
+      1. Graycliff Restaurant (★4.9)
+
+      French/International fine dining in a historic mansion. Wine cellar experience
+      and tasting menus available. Elegant and romantic atmosphere; reservations recommended.
+
+      2. Cafe Matisse (★4.8)
+
+      Italian/Mediterranean cuisine, cozy and intimate with garden seating. Special
+      anniversary dessert plate available upon request.
+
+      3. Dune at The Ocean Club (★4.7)
+
+      Modern European/Seafood, upscale resort dining with ocean views. Priority window
+      seating and private dining options available.
+
+
+      Once your parents select their preferred flight, hotel, and restaurant, I can
+      plan a detailed 3-day, 2-night itinerary based on those choices.'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: I think American Airlines has the best schedule. Please plan an itinerary
+      with Graycliff Hotel as the accommodation and include all the recommended restaurants
+      in Nassau, Bahamas.
+- workflow_id: null
+  step_id: 13
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: planTravel\narguments:\n  refinedQuery: \"2-night, 3-day trip\
+      \ to Nassau, Bahamas starting October 18. American Airlines flight departing\
+      \ from JFK at 10:00 AM on October 18, returning from Nassau at 5:45 PM on October\
+      \ 20. Accommodation at Graycliff Hotel. Include all recommended restaurants\
+      \ in Nassau, Bahamas in the itinerary\"\n  destination: \"Nassau\"\n  startDate:\
+      \ \"2025-10-18\"\n  endDate: \"2025-10-20\"\n  duration: \"3 days, 2 nights\"\
+      \n  companionType: \"couple\"\n  theme: \"wedding anniversary\"\ntool_call_result:\n\
+      \  itinerary:\n    - date: \"2025-10-18\"\n      activities:\n        - 10:00\
+      \ Depart from JFK Airport (American Airlines AA1234)\n        - 13:30 Arrive\
+      \ at Nassau, Bahamas\n        - 14:30 Check in at Graycliff Hotel\n        -\
+      \ 15:00~17:00 Relax at the hotel (pool, spa, walk in hotel gardens)\n      \
+      \  - 18:30 Dinner: Graycliff Restaurant (French / International Fine Dining,\
+      \ elegant historic mansion setting)\n\n    - date: \"2025-10-19\"\n      activities:\n\
+      \        - 08:00 Hotel breakfast\n        - 10:00~13:00 Leisure time at the\
+      \ hotel (pool, spa, private beach)\n        - 14:00 Nassau sightseeing (options:\
+      \ Atlantis Paradise Island attractions or downtown Nassau walking tour)\n  \
+      \      - 18:00 Dinner: Cafe Matisse (Italian / Mediterranean, cozy garden seating,\
+      \ special anniversary dessert available)\n\n    - date: \"2025-10-20\"\n   \
+      \   activities:\n        - 08:30 Hotel breakfast and check-out\n        - 10:00\
+      \ Shopping or strolling in downtown Nassau\n        - 12:30 Lunch: Dune at The\
+      \ Ocean Club (Modern European / Seafood, upscale resort dining with ocean views)\n\
+      \        - 14:15 Transfer to airport and check-in\n        - 14:15 Depart from\
+      \ Nassau (American Airlines AA1235)\n        - 17:45 Arrive at JFK Airport"
+- workflow_id: workflow_6
+  step_id: 14
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Save a 3-day, 2-night\
+      \ wedding anniversary trip to Nassau, Bahamas for my parents starting October\
+      \ 18, 2025\"\n  title: \"Parents' Nassau Wedding Anniversary Trip\"\n  startDateTime:\
+      \ \"2025-10-18T10:00\"\n  endDateTime: \"2025-10-20T17:45\"\n  location: \"\
+      Nassau\"\ntool_call_result:\n  data:\n    scheduleId: \"SCHD20251018_002\"\n\
+      \    status: \"created\"\n    title: \"Parents' Nassau Wedding Anniversary Trip\"\
+      \n    startDateTime: \"2025-10-18T00:00\"\n    endDateTime: \"2025-10-20T17:45\"\
+      \n    location: \"Nassau\"\n    message: \"The schedule has been successfully\
+      \ added to your calendar.\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: 'I’ve prepared a 3-day, 2-night trip itinerary to Nassau, Bahamas for
+      your parents as follows:
+
+
+      ■ Nassau 3-Day, 2-Night Trip (Oct 18 – 20, 2025)
+
+
+      • Day 1 – Saturday, Oct 18
+
+      10:00 Depart from JFK Airport (American Airlines AA1234)
+
+      13:30 Arrive at Nassau, Bahamas
+
+      14:30 Check in at Graycliff Hotel
+
+      15:00 – 17:00 Relax at the hotel (pool, spa, walk in hotel gardens)
+
+      18:30 Dinner: Graycliff Restaurant (French / International Fine Dining, elegant
+      historic mansion setting)
+
+
+      • Day 2 – Sunday, Oct 19
+
+      08:00 Breakfast at the hotel
+
+      10:00 – 13:00 Leisure time at the hotel (pool, spa, private beach)
+
+      14:00 Nassau sightseeing (options: Atlantis Paradise Island attractions or downtown
+      Nassau walking tour)
+
+      18:00 Dinner: Cafe Matisse (Italian / Mediterranean, cozy garden seating, special
+      anniversary dessert available)
+
+
+      • Day 3 – Monday, Oct 20
+
+      08:30 Breakfast at the hotel and check-out
+
+      10:00 Shopping or strolling in downtown Nassau
+
+      12:30 Lunch: Dune at The Ocean Club (Modern European / Seafood, upscale resort
+      dining with ocean views)
+
+      14:15 Transfer to the airport and check-in
+
+      14:15 Depart from Nassau (American Airlines AA1235)
+
+      17:45 Arrive at JFK Airport
+
+
+      This itinerary has also been added to your calendar under the title “Parents’
+      Nassau Wedding Anniversary Trip.”
+
+      I sincerely hope your parents enjoy a beautiful, memorable time together.
+
+
+      If you need any further assistance or adjustments to the plan, feel free to
+      let me know.'

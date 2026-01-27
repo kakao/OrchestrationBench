@@ -1,0 +1,164 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-01-02'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 금 시세랑 오늘 유로 환율 알려주고, 초5 아들이 금융 지식 쌓기 좋은 만화랑 유튜브 영상 추천해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"금 시세 조회\"\
+      \n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: finance_agent\n      refined_query: \"오늘 유로 환율 조회\"\n\
+      \nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: entertainment_agent\n      refined_query: \"초5 아들이 금융\
+      \ 지식 쌓기 좋은 만화 추천\"\n\nworkflow_4:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"초5 아들이 금융 지식 쌓기 좋은 유튜브 영상 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 조회 단위(g, don, oz)'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getExchangeRate\narguments:\n  refinedQuery: \"2025년 1월 2일 유로\
+      \ 환율 조회\"\n  baseCurrency: \"KRW\"\n  targetCurrency: \"EUR\"\n  date: \"2025-01-02\"\
+      \n  exchangeType: \"spot\"\ntool_call_result:\n  data:\n    baseCurrency: \"\
+      KRW\"\n    targetCurrency: \"EUR\"\n    date: \"2025-01-02\"\n    exchangeType:\
+      \ \"spot\"\n    exchangeRate: 1423.50\n    note: \"2025년 1월 2일 기준 원화 대비 유로화\
+      \ 기준환율은 1,423.50원입니다.\"\n  status: success\n  source: \"한국은행 환율 시스템\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getWebtoonInfo\narguments:\n  refinedQuery: \"초5 아들이 금융 지식 쌓기\
+      \ 좋은 만화 추천\"\ntool_call_result:\n  data:\n    recommendations:\n      - title:\
+      \ \"머니톡톡\"\n        authorName: \"김재민\"\n        genre: \"school_life\"\n  \
+      \      description: \"초등학생도 쉽게 이해할 수 있는 금융 지식 만화로, 돈의 기본 개념부터 저축, 투자까지 재미있게\
+      \ 배울 수 있습니다.\"\n      - title: \"경제탐험대\"\n        authorName: \"박소영\"\n    \
+      \    genre: \"slice_of_life\"\n        description: \"초등학생 주인공들이 일상 속에서 겪는 경제\
+      \ 이야기를 통해 자연스럽게 금융 상식을 익히는 교육 만화입니다.\"\n      - title: \"부자되는 법\"\n        authorName:\
+      \ \"이현우\"\n        genre: \"comedy\"\n        description: \"유머와 함께하는 금융 상식\
+      \ 만화로, 어린이들이 흥미를 느끼며 경제 개념을 쉽게 배울 수 있도록 구성되어 있습니다.\"\n  status: success\n  source:\
+      \ \"웹툰 정보 시스템\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"초5 아들이 금융 지식 쌓기 좋은\
+      \ 유튜브 영상 추천\"\ntool_call_result:\n  data:\n    videos:\n      - title: \"초등학생을\
+      \ 위한 재미있는 금융 교육\"\n        channel: \"키즈머니TV\"\n        uploadDate: \"2024-11-15\"\
+      \n        views: 125000\n        duration: \"12:34\"\n        url: \"https://youtube.com/watch?v=abc123xyz\"\
+      \n      - title: \"돈의 기초: 초5도 쉽게 배우는 금융 상식\"\n        channel: \"어린이 경제 교실\"\
+      \n        uploadDate: \"2024-12-05\"\n        views: 98000\n        duration:\
+      \ \"15:20\"\n        url: \"https://youtube.com/watch?v=def456uvw\"\n      -\
+      \ title: \"재미있는 금융 이야기 - 초등학생 필수 영상\"\n        channel: \"재테크 키즈\"\n       \
+      \ uploadDate: \"2024-10-20\"\n        views: 87000\n        duration: \"10:45\"\
+      \n        url: \"https://youtube.com/watch?v=ghi789rst\"\n  status: success\n\
+      \  source: \"유튜브 검색 시스템\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: '금 시세를 알려드리기 위해 조회 단위를 선택해 주세요.
+
+
+      • g: 1그램
+
+      • don: 1돈 (3.75g)
+
+      • oz: 1온스 (31.1035g)
+
+
+      이 중 원하시는 단위를 말씀해 주세요!'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 1그램
+- workflow_id: workflow_1
+  step_id: 10
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getGoldPrice\narguments:\n  refinedQuery: \"금 1그램 시세 조회\"\n  unit:\
+      \ \"g\"\ntool_call_result:\n  data:\n    refinedQuery: \"금 1그램 시세 조회\"\n   \
+      \ unit: \"g\"\n    date: \"2025-01-02\"\n    price: 82600   # 단위: KRW\n    currency:\
+      \ \"KRW\"\n  source: \"Korea Gold Exchange\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '◾금 시세
+
+      • 단위: 1그램
+
+      • 날짜: 2025년 1월 2일
+
+      • 가격: 82,600원
+
+
+      ◾오늘의 유로 환율
+
+      • 기준일: 2025년 1월 2일
+
+      • KRW → EUR 기준환율: 1,423.50원
+
+      (출처: 한국은행 환율 시스템)
+
+
+
+      ◾초5 아들이 금융 지식을 쌓기 좋은 만화 추천
+
+      1. 머니톡톡 (김재민)
+
+       – 돈의 기본 개념부터 저축, 투자까지 쉽고 재미있게 설명
+
+
+      2. 경제탐험대 (박소영)
+
+       – 일상 속 경제 이야기를 통해 자연스럽게 학습
+
+
+      3. 부자되는 법 (이현우)
+
+       – 유머와 함께하는 경제 상식 만화
+
+
+
+      ◾ 추천 유튜브 영상
+
+      1. 초등학생을 위한 재미있는 금융 교육 – 키즈머니TV (12:34)
+
+      2. 돈의 기초: 초5도 쉽게 배우는 금융 상식 – 어린이 경제 교실 (15:20)
+
+      3. 재미있는 금융 이야기 - 초등학생 필수 영상 – 재테크 키즈 (10:45)
+
+
+
+      필요한 내용이 더 있으시면 언제든지 알려주세요!'

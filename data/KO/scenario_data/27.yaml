@@ -1,0 +1,139 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-08-01
+
+      - 이름: 구남츤
+
+      - 시간: 10:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 여친이랑 헤어졌어. 전여츤 명의로 된 커플통장으로 매달 25일 자동이체 되는거 취소해줘. 그리고 여친이 알려준 코인도 이제
+      팔아버리게 코인 중에 솔라나 현재가 얼마인지 알려주고, 지금 사기 좋은 코인이 뭔지 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"매달 25일로 등록된 자동이체 내역 조회\"\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"매달 25일 전여츤 명의의 커플통장으로 연결된 자동이체 취소\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: finance_agent\n      refined_query: \"솔라나 현재가 조회\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: finance_agent\n      refined_query: \"지금 사기 좋은 코인\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출금 계좌번호'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getCryptoPrice\narguments:\n  refinedQuery: \"솔라나 현재가 조회\"\n \
+      \ symbol: \"SOL\"\n  currency: \"KRW\"\n  date: \"2025-08-01\"\n  priceType:\
+      \ \"현재가\"\ntool_call_result:\n  data:\n    symbol: \"SOL\"\n    currency: \"\
+      KRW\"\n    date: \"2025-08-01\"\n    priceType: \"현재가\"\n    price: 45000\n\
+      \    unit: \"KRW\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: searchFinanceInfo\narguments:\n  refinedQuery: \"지금 사기 좋은 코인\"\
+      \ntool_call_result:\n  data:\n    query: \"지금 사기 좋은 코인\"\n    recommendedCoins:\n\
+      \      - name: \"비트코인\"\n        symbol: \"BTC\"\n        reason: \"시장 점유율이\
+      \ 높고 안정적인 성장세를 보임\"\n      - name: \"이더리움\"\n        symbol: \"ETH\"\n     \
+      \   reason: \"스마트 계약 플랫폼으로 다양한 활용처가 증가 중\"\n    analysisDate: \"2025-08-01\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '자동이체를 취소하려면
+
+      먼저 매달 25일에 등록된 자동이체 내역을 조회해야 합니다.
+
+      조회하려는 출금 계좌번호를 알려주실 수 있을까요?'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 농협 351-0123-456789
+- workflow_id: workflow_1
+  step_id: 9
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"농협 351-0123-456789\
+      \ 매달 25일로 등록된 자동이체 내역 조회\"\n  accountHolderName: \"구남츤\"\n  fromAccountNumber:\
+      \ \"351-0123-456789\"\n  transferDay: \"25\"\ntool_call_result:\n  data:\n \
+      \   fromAccountNumber: \"351-0123-456789\"\n    accountHolderName: \"구남츤\"\n\
+      \    autoTransfers:\n      - autoTransferId: \"AT20240825001\"\n        toAccountNumber:\
+      \ \"1002-345-678901\"\n        toAccountHolderName: \"전여츤\"\n        bankName:\
+      \ \"농협\"\n        transferAmount: 200000\n        transferDate: \"매월 25일\""
+- workflow_id: null
+  step_id: 10
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelAutoTransfer\narguments:\n  refinedQuery: \"매월 25일 전여츤 1002-345-678901으로\
+      \ 연결된 자동이체 해지\"\n  autoTransferId: \"AT20240825001\"\n  recipientName: \"전여츤\"\
+      \ntool_call_result:\n  data:\n    autoTransferId: \"AT20240825001\"\n    recipientName:\
+      \ \"전여츤\"\n    cancelStatus: \"해지 완료\"\n    message: \"매월 25일 전여츤(계좌번호 1002-345-678901)으로\
+      \ 연결된 자동이체가 정상적으로 해지되었습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '다음은 요청하신 내용에 대한 처리 결과입니다.
+
+
+      ■ 자동이체 해지 완료
+
+      • 출금 계좌: 농협 351-0123-456789 (예금주: 구남츤)
+
+      • 수취인: 전여츤 (농협 1002-345-678901)
+
+      • 이체일: 매월 25일
+
+      • 상태: 정상적으로 자동이체가 해지되었습니다.
+
+
+      ■ 솔라나(SOL) 현재가
+
+      • 기준일: 2025년 8월 1일
+
+      • 현재 가격: 45,000원
+
+
+      ■ 투자 추천 코인 (2025년 8월 1일 기준)
+
+      1. 비트코인 (BTC)
+
+       - 시장 점유율이 높고 안정적인 성장세를 보임
+
+
+      2. 이더리움 (ETH)
+
+       - 스마트 계약 플랫폼으로 활용처가 꾸준히 증가 중
+
+
+      필요한 추가 작업이 있으면 언제든 말씀해 주세요.'

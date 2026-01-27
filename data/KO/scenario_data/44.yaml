@@ -1,0 +1,87 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-07-04'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 다음 주 손흥민 경기 언젠지 알려줘. 그리고 경기 시간에 맞춰서 치맥하기 좋은 술집을 우리 집 근처로 추천해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"손흥민 다음 주\
+      \ 경기 정보 탐색\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"경기 시간에 맞춰 집 근처 치맥하기 좋은  술집 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"손흥민 다음 주 경기 정보\
+      \ 탐색\"\n  playerName: \"손흥민\"\n  targetDate: \"다음 주\"\ntool_call_result:\n \
+      \ data:\n    playerName: \"손흥민\"\n    team: \"토트넘 홋스퍼\"\n    league: \"EPL\"\
+      \n    matchDate: \"2025-07-11\"\n    opponent: \"첼시\"\n    kickoffTime: \"20:00\"\
+      \n    venue: \"토트넘 홋스퍼 스타디움\"\n    status: \"scheduled\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 현재 사용자 위치'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 집 근처 치맥하기 좋은 술집을 찾기 위해 집의 위치가 필요합니다. 혹시 자택의 위치가 어디이신지 알 수 있을까요?
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 정자동 근처야
+- workflow_id: null
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"다음주 금요일 오후\
+      \ 8시 정자동 근처 치맥하기 좋은 술집\"\n  cuisineType: \"술집\"\n  specificDishes: \"치맥\"\n\
+      \  location: \"정자동\"\n  reservationTime: \"2025-07-11T20:00\"\n  sortBy: \"\
+      nearest\"\ntool_call_result:\n  matchedPlaces:\n    - name: \"치맥명가 정자동점\"\n\
+      \      address: \"경기 성남시 분당구 정자일로 156\"\n      description: \"야외 테라스가 있는 분위기\
+      \ 좋은 치맥 전문점. 다양한 수제맥주와 바삭한 후라이드 치킨이 인기 메뉴입니다.\"\n      contact: \"031-123-4567\"\
+      \n      openingHours: \"17:00 ~ 02:00\"\n    - name: \"호프101\"\n      address:\
+      \ \"경기 성남시 분당구 정자청사로 45\"\n      description: \"깔끔한 인테리어에 합리적인 가격. 단체 모임에 적합하며\
+      \ 다양한 안주 제공.\"\n      contact: \"031-987-6543\"\n      openingHours: \"16:00\
+      \ ~ 01:00\"\n    - name: \"펍트리 정자동\"\n      address: \"경기 성남시 분당구 정자일로 99\"\n\
+      \      description: \"분위기 있는 브리티시 스타일 펍. 치킨 플래터와 크래프트 맥주 세트 추천.\"\n      contact:\
+      \ \"031-555-7890\"\n      openingHours: \"18:00 ~ 03:00\"\n  searchLocation:\
+      \ \"정자동\"\n  availableDate: \"2025-07-11\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "다음 주 손흥민 경기는 첼시를 상대로 7월 11일에 열립니다.\n\n7월 11일에 오후 8시에 방문할 수 있는 치맥하기 좋은\
+      \ 술집을 추천해드릴게요. \n\n- 추천 치맥 맛집 리스트\n\n1.치맥명가 정자동점\n- 주소: 경기 성남시 분당구 정자일로 156\n\
+      - 영업시간: 17:00 ~ 02:00\n- 031-123-4567\n- 야외 테라스가 매력적인 분위기 좋은 치맥 전문점. 바삭한 후라이드와\
+      \ 다양한 수제맥주가 인기예요!\n\n2. 호프101\n- 주소: 경기 성남시 분당구 정자청사로 45\n- 영업시간: 16:00 ~ 01:00\n\
+      - 031-987-6543\n- 깔끔한 내부와 가성비 좋은 안주가 매력적이에요. 친구나 직장 동료들과의 가벼운 모임에 추천!\n\n3.\
+      \ 펍트리 정자동\n- 주소: 경기 성남시 분당구 정자일로 99\n- 영업시간: 18:00 ~ 03:00\n- 031-555-7890\n\
+      - 영국풍 분위기의 감성 펍. 치킨 플래터와 수제맥주 세트로 제대로 된 치맥 한 판 즐겨보세요.\n\n\n열띤 응원으로 손흥민과 토트넘\
+      \ 홋스퍼가 첼시를 상대로 좋은 성적을 거두었으면 좋겠네요. 좋은 시간 보내세요~"

@@ -1,0 +1,215 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025/07/18 (Fri)'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I'm planning to go see the "House of Taste 2" exhibition at  SPECTRA
+      Museum tomorrow with my girlfriend. Can you give me the operating hours? Also,
+      please find me a good steakhouse near SPECTRA Museum in Arts District, Los Angeles
+      where we can eat after the exhibition.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      SPECTRA Museum House of Taste 2 operating hours\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ place_agent\n      refined_query: \"Recommended steakhouses near SPECTRA Museum\
+      \ in Arts District, Los Angeles\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionInfo\narguments:\n  refinedQuery: \"SPECTRA Museum\
+      \ House of Taste 2 operating hours\"\n  exhibitionTitle: \"House of Taste 2\"\
+      \n  venueName: \"SPECTRA Museum\"\ntool_call_result:\n    exhibitionTitle: \"\
+      House of Taste 2\"\n    venueName: \"SPECTRA Museum\"\n    date: \"March 15,\
+      \ 2025 ~ September 15, 2025\"\n    operatingHours:\n      - weekdays: \"10:00\
+      \ AM ~ 6:00 PM\"\n      - weekends: \"10:00 AM ~ 8:00 PM\"\n    closed: \"Every\
+      \ Monday\"\n    location: \"Arts District, Los Angeles, CA 90013\"\n    ageRating:\
+      \ \"All ages admitted\"\n    docentAvailable: false"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Best beef\
+      \ steakhouses near SPECTRA Museum in Arts District, Los Angeles\"\n  specificDishes:\
+      \ \"beef\"\n  sortBy: \"nearest\"\n  location: \"Arts District, Los Angeles\"\
+      \n  partySize: \"2 people\"\ntool_call_result:\n  recommendations:\n    - name:\
+      \ \"Forge & Marrow Steakhouse\"\n      address: \"1160 Atlas Ave, Los Angeles,\
+      \ CA 90013\"\n      distance: \"0.1 mi\"\n      cuisineType: \"Steakhouse\"\n\
+      \      features:\n        - \"USDA Prime cuts\"\n        - \"Bone-in ribeye\"\
+      \n        - \"Sommelier wine list\"\n\n    - name: \"Atlas Prime Steak\"\n \
+      \     address: \"1184 Atlas Ave, Los Angeles, CA 90013\"\n      distance: \"\
+      0.2 mi\"\n      cuisineType: \"Modern Steakhouse\"\n      features:\n      \
+      \  - \"Dry-aged ribeye\"\n        - \"Reservations accepted\"\n        - \"\
+      Outdoor seating\"\n\n    - name: \"Copperbone Chophouse\"\n      address: \"\
+      710 Forge Pl, Los Angeles, CA 90013\"\n      distance: \"0.4 mi\"\n      cuisineType:\
+      \ \"Classic Steakhouse\"\n      features:\n        - \"Wood-fired grill\"\n\
+      \        - \"Porterhouse for two\"\n        - \"Bar seating\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ House of Taste 2
+
+
+      Venue: SPECTRA Museum
+
+      Address: Arts District, Los Angeles, CA 90013
+
+      Dates: March 15 – September 15, 2025
+
+      Operating Hours:
+
+
+      Weekdays: 10:00 AM – 6:00 PM
+
+      Weekends: 10:00 AM – 8:00 PM
+
+      Closed: Every Monday
+
+      Age Rating: All ages admitted
+
+      Docent Tours: Not available
+
+
+      We look forward to your visit to “House of Taste 2” at SPECTRA Museum.
+
+
+      ▶ Recommended Steakhouses Near SPECTRA Museum
+
+
+      Here are 3 great spots nearby for a beef meal after the exhibition:
+
+
+      1. Forge & Marrow Steakhouse
+
+      Address: 1160 Atlas Ave, Los Angeles, CA 90013
+
+      Distance: 0.1 mi
+
+      Cuisine: Steakhouse
+
+      Features: USDA Prime cuts · Bone-in ribeye · Sommelier wine list
+
+
+      2. Atlas Prime Steak
+
+      Address: 1184 Atlas Ave, Los Angeles, CA 90013
+
+      Distance: 0.2 mi
+
+      Cuisine: Modern Steakhouse
+
+      Features: Dry-aged ribeye · Reservations accepted · Outdoor seating
+
+
+      3. Copperbone Chophouse
+
+      Address: 710 Forge Pl, Los Angeles, CA 90013
+
+      Distance: 0.4 mi
+
+      Cuisine: Classic Steakhouse
+
+      Features: Wood-fired grill · Porterhouse for two · Bar seating
+
+
+
+      Here’s the exhibition info for Daelim Museum’s "House of Taste 2" along with
+      nearby steakhouse recommendations.'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Please make a reservation at "Forge & Marrow Steakhouse" for 2 people,
+      including Alex Johnson, at 8 PM.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"SPECTRA Museum House of Taste 2 operating hours\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ place_agent\n      refined_query: \"Recommended steakhouses near SPECTRA Museum\
+      \ in Arts District, Los Angeles\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: place_agent\n  \
+      \    refined_query: \"Reserve a table for 2 at \"Forge & Marrow Steakhouse\"\
+      \ in Arts District, Los Angeles for 8 PM\""
+- workflow_id: null
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Phone number, date'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: To make a reservation for Steak Night, I’ll need Alex’s phone number
+      and the date of the booking.
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: '(220)220-2200
+
+      Tomorrow, July 19'
+- workflow_id: null
+  step_id: 12
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"Reservation at Forge\
+      \ & Marrow Steakhouse for 2 people including Alex Johnson on July 19, 8 PM\"\
+      \n  placeName: \"Forge & Marrow Steakhouse\"\n  placeCategory: \"restaurant\"\
+      \n  reservationDate: \"2025-07-19\"\n  reservationTime: \"20:00\"\n  partySize:\
+      \ 2\n  contactInfo: \"(220)220-2200\"\ntool_call_result:\n  reservationStatus:\
+      \ \"confirmed\"\n  placeName: \"Forge & Marrow Steakhouse\"\n  reservationDate:\
+      \ \"2025-07-19\"\n  reservationTime: \"20:00\"\n  partySize: 2\n  contactInfo:\
+      \ \"(220)220-2200\"\n  reservationNumber: \"GGN20250718-02\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: 'Forge & Marrow Steakhouse
+
+
+      Status: Confirmed
+
+      Date: Friday, July 19, 2025
+
+      Time: 8:00 PM
+
+      Party Size: 2
+
+      Reservation Number: GGN20250718-02
+
+      Contact on File: (220)220-2200
+
+
+      When you arrive, please provide the reservation name or reservation number.'

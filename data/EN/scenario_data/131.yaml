@@ -1,0 +1,94 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: July 15, 2025'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: What was that important meeting next Wednesday again? Set a reminder
+      for me in advance.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Check\
+      \ meeting schedule for next Wednesday\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: calendar_agent\n      refined_query: \"Set a meeting reminder for\
+      \ next Wednesday\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"Check meeting schedule\
+      \ for next Wednesday\"\n  startDate: \"2025-07-23\"\n  endDate: \"2025-07-23\"\
+      \n  keyword: \"meeting\"\ntool_call_result:\n  data:\n    schedules:\n     \
+      \ - title: \"Project Progress Report Meeting\"\n        date: \"2025-07-23\"\
+      \n        time: \"11:00 AM\"\n        location: \"Headquarters, 2nd Floor, Main\
+      \ Conference Room\"\n        attendees:\n          - \"James Miller\"\n    \
+      \      - \"Sarah Johnson\"\n          - \"David Brown\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Reminder time'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: For what time would you like me to set the reminder?
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Set it for 7 PM the night before
+- workflow_id: null
+  step_id: 8
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"Set a reminder at\
+      \ 7 PM the evening before next Wednesday’s Project Progress Report Meeting\"\
+      \n  reminderContent: \"Attend the Project Progress Report Meeting next Wednesday\"\
+      \n  reminderTime: \"2025-07-22T19:00\"\n  deliveryMethod: \"chat\"\n  priority:\
+      \ \"normal\"\n  repeatRule: \"none\"\ntool_call_result:\n  data:\n    reminders:\n\
+      \      - content: \"Attend the Project Progress Report Meeting next Wednesday\"\
+      \n        reminderTime: \"2025-07-22T19:00\"\n        deliveryMethod: \"chat\"\
+      \n        priority: \"normal\"\n        repeatRule: \"none\"\n        status:\
+      \ \"Set successfully\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'I’ve set a reminder for the important meeting scheduled for next Wednesday.
+      Here are the meeting details:
+
+
+      1. Meeting Title: Project Progress Report Meeting
+
+      2. Date & Time: Wednesday, July 23, 2025 at 11:00 AM
+
+      3. Location: Headquarters, 2nd Floor, Main Conference Room
+
+      4. Attendees: James Miller, Sarah Johnson, and David Brown
+
+
+      A reminder will be sent via chat on Tuesday at 7:00 PM. If you need additional
+      reminders or changes, please let me know anytime!'

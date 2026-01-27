@@ -1,0 +1,203 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2025-07-30'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I want to book 2 VIP tickets for the earliest available Ariana Grande
+      concert. Also, please reserve a nearby restaurant for dinner about 2 hours before
+      the show starts. Once everything is set, add it to my calendar as well.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Check Ariana Grande concert schedule and information\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: entertainment_agent\n      refined_query: \"Book 2 VIP\
+      \ tickets for the earliest Ariana Grande concert\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"Find a restaurant\
+      \ near the concert venue where 2 people can have dinner 2 hours before the show\"\
+      \n\nworkflow_4:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_3\"\
+      \n  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"Make a dinner reservation for 2 people near the concert venue, 2 hours before\
+      \ the show\"\n\nworkflow_5:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ [\"workflow_2\", \"workflow_4\"]\n  steps:\n    - status: pending\n      name:\
+      \ calendar_agent\n      refined_query: \"Add the confirmed dinner and concert\
+      \ schedule to the calendar\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"Check the earliest\
+      \ concert schedule for singer Ariana Grande\"\n  artistName: \"Ariana Grande\"\
+      \n  genre: \"Concert\"\n  sortBy: \"soonest\"\ntool_call_result:\n  data:\n\
+      \    - performanceTitle: \"Ariana Grande Live Concert\"\n      venueName: \"\
+      Capital One Arena, Washington, D.C.\"\n      showDate: \"2025-08-09\"\n    \
+      \  showTime: \"8:00 PM\"\n      showDuration: 2 hours\n      ageRating: \"All\
+      \ ages\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Name, Contact information and audience type (adult / child /
+      senior / disabled)'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"Find restaurants\
+      \ near Capital One Arena in Washington, D.C., for dinner for 2 people on August\
+      \ 9th at 6:00 PM\"\n  location: \"Capital One Arena, Washington, D.C.\"\n  reservationTime:\
+      \ \"August 9th, 6:00 PM\"\n  partySize: \"2 people\"\n  sortBy: \"highest_rated\"\
+      \ntool_call_result:\n  data:\n    - restaurantID: \"REST_DC_001\"\n      restaurantName:\
+      \ \"Rosa Mexicano\"\n      location: \"575 7th St NW, Washington, DC 20004\"\
+      \n      cuisine: \"Mexican\"\n      rating: 4.8\n      availableTime: \"18:00\"\
+      \n      description: \"Vibrant Mexican dining with a lively atmosphere, perfect\
+      \ for a pre-concert dinner for 2 people.\"\n\n    - restaurantID: \"REST_DC_002\"\
+      \n      restaurantName: \"The Capital Grille\"\n      location: \"601 Pennsylvania\
+      \ Ave NW, Washington, DC 20004\"\n      cuisine: \"Steakhouse\"\n      rating:\
+      \ 4.7\n      availableTime: \"18:00\"\n      description: \"Upscale steakhouse\
+      \ offering prime steaks and seafood. Ideal for a relaxing pre-show meal in a\
+      \ refined setting.\"\n\n    - restaurantID: \"REST_DC_003\"\n      restaurantName:\
+      \ \"Zaytinya\"\n      location: \"701 9th St NW, Washington, DC 20001\"\n  \
+      \    cuisine: \"Mediterranean\"\n      rating: 4.6\n      availableTime: \"\
+      18:00\"\n      description: \"Modern Mediterranean dishes served in a stylish\
+      \ setting, walkable from Capital One Arena. Great for 2-person pre-concert dining.\"\
+      \n\n    - restaurantID: \"REST_DC_004\"\n      restaurantName: \"Founding Farmers\
+      \ DC\"\n      location: \"1924 Pennsylvania Ave NW, Washington, DC 20006\"\n\
+      \      cuisine: \"American\"\n      rating: 4.6\n      availableTime: \"18:00\"\
+      \n      description: \"Farm-to-table American cuisine with locally sourced ingredients.\
+      \ Comfortable ambience for a casual pre-show dinner for 2.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s the earliest upcoming concert for Ariana Grande:\n\nAriana Grande\
+      \ Live Concert\n- Venue: Capital One Arena, Washington, D.C.\n- Date: Saturday,\
+      \ August 9, 2025\n- Time: 8:00 PM (2 hours)\n- Admission: All ages\n\n-----\n\
+      \nSince the concert starts at 8:00 PM, here are some highly rated restaurants\
+      \ near Capital One Arena for dinner around 6:00 PM (two hours before the show):\n\
+      \n1. Rosa Mexicano (Mexican, ★4.8)\n : Vibrant Mexican dining with a lively\
+      \ atmosphere, perfect for a pre-concert dinner for 2 people / Reservation available:\
+      \ 6:00 PM\n2. The Capital Grille (Steakhouse, ★4.7)\n: Upscale steakhouse offering\
+      \ prime steaks and seafood, ideal for a relaxing pre-show meal / Reservation\
+      \ available: 6:00 PM\n3. Zaytinya (Mediterranean, ★4.6)\n: Modern Mediterranean\
+      \ dishes in a stylish setting, walkable from the arena / Reservation available:\
+      \ 6:00 PM\n4. Founding Farmers DC (American, ★4.6)\n: Farm-to-table American\
+      \ cuisine with locally sourced ingredients, comfortable ambience for a casual\
+      \ pre-show dinner / Reservation available: 6:00 PM\n\n-----\n\nPlease choose\
+      \ the restaurant you’d like, and share your name and contact information so\
+      \ that I can make the reservation.\n\nFor concert ticket booking, please select\
+      \ one of the following audience types:\nAdult / Child / Senior / Disabled"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 'Hmm, I think Mexican would be nice. Please make a reservation for 2
+      adults at this number: (202)123-1111. And I''m Emily Johnson.'
+- workflow_id: workflow_2
+  step_id: 9
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookPerformance\narguments:\n  refinedQuery: \"Book 2 VIP tickets\
+      \ for Ariana Grande concert at Capital One Arena, Washington, D.C. on August\
+      \ 9, 2025, 8:00 PM\"\n  performanceTitle: \"Ariana Grande Live Concert\"\n \
+      \ venueName: \"Capital One Arena, Washington, D.C.\"\n  showDate: \"2025-08-09\"\
+      \n  showTime: \"20:00\"\n  audienceCount: 2\n  seatGrade: \"VIP\"\n  audienceTypes:\
+      \ [\"adult\", \"adult\"]\n  userInfo:\n    name: \"Emily Johnson\"\n    contactNumber:\
+      \ \"(202)123-1111\"\ntool_call_result:\n  data:\n    bookingId: \"PERF20250809_0123\"\
+      \n    status: \"confirmed\"\n    performanceTitle: \"Ariana Grande Live Concert\"\
+      \n    seatNumbers: [\"G-7\", \"G-8\"]\n    totalPrice: 330\n    currency: \"\
+      USD\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"Reservation for August\
+      \ 9th at 6 PM, Rosa Mexicano, 2 people\"\n  placeName: \"Rosa Mexicano\"\n \
+      \ placeCategory: \"restaurant\"\n  reservationDate: \"2025-08-09\"\n  reservationTime:\
+      \ \"18:00\"\n  partySize: 2\n  contactInfo: \"(202)123-1111\"\ntool_call_result:\n\
+      \  data:\n    reservationId: \"RES20250809_SWS01\"\n    status: \"confirmed\"\
+      \n    placeName: \"Rosa Mexicano\"\n    message: \"Your reservation is confirmed.\
+      \ Please arrive at least 10 minutes before your reservation time.\""
+- workflow_id: workflow_5
+  step_id: 11
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: createSchedule\n    arguments:\n      refinedQuery:\
+      \ \"Register schedule for August 9 at 8 PM Ariana Grande concert\"\n      title:\
+      \ \"Attend Ariana Grande Concert\"\n      startDateTime: \"2025-08-09T20:00\"\
+      \n      endDateTime: \"2025-08-09T22:00\"\n      location: \"Capital One Arena,\
+      \ Washington, D.C.\"\n  - tool: createSchedule\n    arguments:\n      refinedQuery:\
+      \ \"Register schedule for August 9 at 6 PM dinner at Rosa Mexicano\"\n     \
+      \ title: \"Dinner (Rosa Mexicano)\"\n      startDateTime: \"2025-08-09T18:00\"\
+      \n      endDateTime: \"2025-08-09T19:30\"\n      location: \"Rosa Mexicano,\
+      \ 575 7th St NW, Washington, DC 20004\"\n\ntool_call_result:\n  - data:\n  \
+      \    scheduleId: \"SCHD20250809_CONCERT\"\n      status: \"created\"\n     \
+      \ title: \"Attend Ariana Grande Concert\"\n  - data:\n      scheduleId: \"SCHD20250809_DINNER\"\
+      \n      status: \"created\"\n      title: \"Dinner (Rosa Mexicano)\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your requests have all been completed: Ariana Grande concert tickets
+      booked, dinner reservation made, and both added to your calendar.
+
+
+      ■ Ariana Grande Concert Ticket Details
+
+
+      • Event: Ariana Grande Live Concert
+
+      • Date & Time: Saturday, August 9, 2025, 8:00 PM
+
+      • Venue: Capital One Arena, Washington, D.C.
+
+      • Seats: 2 VIP tickets (G-7, G-8)
+
+      • Booking Number: PERF20250809_0123
+
+      • Total Price: $330 USD
+
+
+      ■ Dinner Reservation Details
+
+
+      • Restaurant: Rosa Mexicano (Mexican)
+
+      • Date & Time: Saturday, August 9, 2025, 6:00 PM
+
+      • Location: 575 7th St NW, Washington, DC 20004
+
+      • Party Size: 2 people
+
+      • Contact: (202)123-1111
+
+      • Reservation Status: Confirmed
+
+
+      Both events have been added to your personal calendar. Have a great time!'

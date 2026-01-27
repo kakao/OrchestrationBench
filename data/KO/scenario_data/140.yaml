@@ -1,0 +1,69 @@
+metadata:
+  total_steps: 8
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 카드배송 회사로 받으려고 하는데, 기사님한테 서울특별시 중구 을지로 35 주소랑 같이 우편번호를 문자로 보내줘.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"서울특별시\
+      \ 중구 을지로 35 회사 주소 정보로 우편번호 검색\"\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"서울특별시 중구 을지로 35 회사 주소 정보로 검색한 우편번호를 주소와 함께 기사님에게 문자로\
+      \ 전송\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPostalCode\narguments:\n  refinedQuery: \"서울특별시 중구 을지로 35 회사\
+      \ 주소 정보로 우편번호 검색\"\n  addressQuery: \"서울특별시 중구 을지로 35\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"서울특별시 중구 을지로 35 회사 주소 정보로 우편번호 검색\"\n    addressQuery:\
+      \ \"서울특별시 중구 을지로 35\"\n    postalCode: \"04523\"\n    status: \"우편번호 조회 완료\""
+- workflow_id: null
+  step_id: 4
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 받는 사람 전화번호'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 문자 전송을 위해서는 받으시는 분의 전화번호가 필요합니다.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 010-2345-6789
+- workflow_id: null
+  step_id: 7
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"서울특별시 중구 을지로 35 회사\
+      \ 주소 정보와 우편번호 04523을 기사님에게 문자로 전송\"\n  phoneNumber: \"010-2345-6789\"\n  channel:\
+      \ \"sms\"\n  message: \"카드 수령할 주소: 서울특별시 중구 을지로 35, 우편번호: 04523\"\n  repeatRule:\
+      \ \"none\"\n  priority: \"normal\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"서울특별시 중구 을지로 35 회사 주소 정보와 우편번호 04523을 기사님에게 문자로 전송\"\n    phoneNumber: \"\
+      010-2345-6789\"\n    channel: \"sms\"\n    message: \"카드 수령할 주소: 서울특별시 중구 을지로\
+      \ 35, 우편번호: 04523\"\n    repeatRule: \"none\"\n    priority: \"normal\"\n  \
+      \  status: \"메시지 전송 완료\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "우편번호 조회 후, 요청하신 정보를 포함하여 010-2345-6789 번호로 문자를 성공적으로 전송하였습니다. \n\n메시지\
+      \ 내용은 다음과 같습니다: \n\"카드 수령할 주소: 서울특별시 중구 을지로 35, 우편번호: 04523\""

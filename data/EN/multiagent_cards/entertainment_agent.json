@@ -1,0 +1,1210 @@
+{
+  "agent_card": {
+    "name": "Entertainment",
+    "agent_id": "entertainment_agent",
+    "description": "A personalized entertainment assistant that provides information on TV, movies, music, performances, exhibitions, and webtoons (digital comics), and helps you book, check, change, and cancel in one place.",
+    "url": "http://localhost:10006/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getTvProgramInfo",
+        "name": "TV Program Info",
+        "description": "Provides detailed information on broadcast schedules, cast, plot summaries, recommended shows, and genre-based lists.",
+        "examples": [
+          "Tell me about popular crime investigation dramas these days",
+          "Show me the cast list for episode 4 of Suits",
+          "When was the last episode of The Office aired?",
+          "Summarize the plot of Breaking Bad",
+          "Recommend American dramas with a similar vibe"
+        ]
+      },
+      {
+        "id": "getMovieInfo",
+        "name": "Movie Info",
+        "description": "Provides information on movie releases, directors, cast, ratings, screening status, theme-based recommendations, and theater details.",
+        "examples": [
+          "What thriller movies are coming out this month?",
+          "Tell me the highest-rated movies starring Scarlett Johansson",
+          "When is Inside Out 2 being released?",
+          "What’s the latest movie by Quentin Tarantino?",
+          "Show me G-rated movies playing at the AMC Empire 25"
+        ]
+      },
+      {
+        "id": "bookMovieTicket",
+        "name": "Book Movie Ticket",
+        "description": "Books movie tickets based on your chosen movie, date, theater, and seat (automatic recommendation available). Select the movie via 'Movie Info'.",
+        "examples": [
+          "Book the most popular movie this Friday evening at AMC Empire 25",
+          "Can you recommend a movie for Sunday at 3pm and book it too?",
+          "Book the latest family-friendly movie for 3 people at Regal Union Square"
+        ]
+      },
+      {
+        "id": "getMovieBooking",
+        "name": "Check Movie Booking",
+        "description": "Check your booked movie tickets and view details for all or specific bookings.",
+        "examples": [
+          "Show me my recent movie ticket bookings",
+          "Is there a movie booked under the name John Smith, phone (202) 555-1234?",
+          "What movie tickets can I use today?"
+        ]
+      },
+      {
+        "id": "cancelMovieBooking",
+        "name": "Cancel Movie Booking",
+        "description": "Cancel booked movie tickets and set the refund method. Select the booking to cancel via 'Check Movie Booking'.",
+        "examples": [
+          "Cancel the movie ticket I booked yesterday, my schedule changed",
+          "I want a refund for the ticket booked at AMC Metreon",
+          "I bought the wrong ticket by mistake, so I need to cancel it"
+        ]
+      },
+      {
+        "id": "modifyMovieBooking",
+        "name": "Modify Movie Booking",
+        "description": "Change the theater, time, seat, or audience type for a booked movie. Select the booking to modify via 'Check Movie Booking'.",
+        "examples": [
+          "Change my reserved movie seat to a different one",
+          "Can you change my movie date to this Sunday?",
+          "I want to switch the theater to Regal LA Live"
+        ]
+      },
+      {
+        "id": "getExhibitionInfo",
+        "name": "Exhibition Info",
+        "description": "Provides information on current exhibitions including name, venue, schedule, docent programs, and recommendations.",
+        "examples": [
+          "What art exhibitions are happening in September in New York?",
+          "Recommend an exhibition with a docent program for this week with my child",
+          "Tell me the exhibition schedule at the Metropolitan Museum of Art"
+        ]
+      },
+      {
+        "id": "bookExhibitionTicket",
+        "name": "Book Exhibition Ticket",
+        "description": "Books tickets for a chosen exhibition based on date, number of attendees, and whether to include a docent. Select the exhibition via 'Exhibition Info'.",
+        "examples": [
+          "Book 2 tickets for the exhibition at the Museum of Modern Art this Saturday",
+          "I want to reserve 2 adult tickets for the Modern Art Exhibition at 3pm",
+          "Book 4 tickets for the Lincoln Center exhibition including a docent"
+        ]
+      },
+      {
+        "id": "getExhibitionBooking",
+        "name": "Check Exhibition Booking",
+        "description": "Check your booked exhibition schedule and details, and search by specific exhibition or date.",
+        "examples": [
+          "Tell me my exhibition schedule for this weekend",
+          "Check the exhibition booked under the name Michael Johnson",
+          "Can you see if I have a booking for the MoMA exhibition?"
+        ]
+      },
+      {
+        "id": "cancelExhibitionBooking",
+        "name": "Cancel Exhibition Booking",
+        "description": "Cancels booked exhibition tickets. Select the booking to cancel via 'Check Exhibition Booking'.",
+        "examples": [
+          "Cancel the exhibition I booked for tomorrow",
+          "I want to cancel my Lincoln Center exhibition booking",
+          "Something came up, so I need to cancel my exhibition ticket"
+        ]
+      },
+      {
+        "id": "modifyExhibitionBooking",
+        "name": "Modify Exhibition Booking",
+        "description": "Change the date, time, number of attendees, or ticket options for a booked exhibition. Select the booking to modify via 'Check Exhibition Booking'.",
+        "examples": [
+          "Change my booking date to 08/20/2025",
+          "Change the number of attendees from 2 to 3",
+          "Include a docent and change the time to 3pm"
+        ]
+      },
+      {
+        "id": "getPerformanceInfo",
+        "name": "Performance Info",
+        "description": "Provides information on musicals, plays, concerts, including schedule, venue, cast, prices, and recommendations.",
+        "examples": [
+          "Can you recommend a performance for next month to watch with my family?",
+          "Tell me about upcoming famous classical performances",
+          "Is there a musical starring Lin-Manuel Miranda?",
+          "What concerts are popular these days?"
+        ]
+      },
+      {
+        "id": "bookPerformance",
+        "name": "Book Performance Ticket",
+        "description": "Books performance tickets based on title, venue, date, seat grade, and number of attendees. Select the performance via 'Performance Info'.",
+        "examples": [
+          "Book 2 VIP seats for next Saturday",
+          "Can I book an opera performance in Orchestra seats?",
+          "I want to reserve 3 tickets for a children's show at Carnegie Hall"
+        ]
+      },
+      {
+        "id": "getPerformanceBooking",
+        "name": "Check Performance Booking",
+        "description": "Check your booked performance details and view reservation history.",
+        "examples": [
+          "Check my performance bookings from last month",
+          "Can you show me performance bookings under the name John Smith and phone number?"
+        ]
+      },
+      {
+        "id": "cancelPerformanceBooking",
+        "name": "Cancel Performance Booking",
+        "description": "Cancels performance tickets according to refund and fee policies. Select the booking to cancel via 'Check Performance Booking'.",
+        "examples": [
+          "Cancel all my booked musical tickets",
+          "My schedule changed, please refund next week's classical concert"
+        ]
+      },
+      {
+        "id": "modifyPerformanceBooking",
+        "name": "Modify Performance Booking",
+        "description": "Change the date, seat, or venue for a booked performance. Select the booking to modify via 'Check Performance Booking'.",
+        "examples": [
+          "Change my confirmed concert seat to another one",
+          "Can I postpone the performance date to 07/20/2025?"
+        ]
+      },
+      {
+        "id": "searchVideo",
+        "name": "Search Video",
+        "description": "Searches for various videos such as popular clips, vlogs, and music videos on platforms like YouTube.",
+        "examples": [
+          "Find popular London travel vlogs",
+          "Can you show me Taylor Swift's new music video right away?",
+          "Recommend videos from a cooking channel"
+        ]
+      },
+      {
+        "id": "getMusicInfo",
+        "name": "Music Info",
+        "description": "Provides and recommends music information such as chart rankings, new releases, artists, genres, moods, and release dates.",
+        "examples": [
+          "Show me the most popular ballads released now",
+          "Play last week's Billboard Hot 100 Top 10 songs",
+          "Recommend upbeat pop songs for driving",
+          "Tell me songs with 'spring' in the lyrics"
+        ]
+      },
+      {
+        "id": "getWebtoonInfo",
+        "name": "Webtoon (Digital Comic) Info",
+        "description": "Provides and recommends details on webtoons (digital comics), authors, new releases, genres, and completion status.",
+        "examples": [
+          "What are the most popular time-loop webtoons this week?",
+          "What's the latest comic by the author of Slam Dunk?",
+          "Recommend recently started horror-themed webtoons",
+          "Tell me notable new romance webtoons this year"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getTvProgramInfo",
+      "description": "A tool to retrieve various TV-related data such as detailed information on TV programs and series, episode details, genre recommendations, cast, and broadcast times. When calling for multiple items, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined TV program-related query reflecting the previous conversation flow and the user's natural language request (e.g., 'Tell me tonight's popular drama schedule', 'Recommend crime investigation genre')"
+          },
+          "programTitle": {
+            "type": "string",
+            "description": "The name of the program or series you want information on (e.g., \"Stranger Things\", \"Breaking Bad\", \"Friends\", \"The Office\", \"CSI: Vegas\"). Either this field or genre is required."
+          },
+          "episodeNumber": {
+            "type": "string",
+            "description": "The episode number you want to check (e.g., '2', '12', 'Season 2 finale')"
+          },
+          "genre": {
+            "type": "string",
+            "description": "Enter when you want to search or get recommendations by genre (e.g., 'Reality show', 'Romance', 'Mystery', 'Teen drama'). Either this field or programTitle is required."
+          },
+          "broadcastDate": {
+            "type": "string",
+            "description": "Enter when searching by broadcast date (e.g., '2025-12-24')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getMovieInfo",
+      "description": "A tool to search for or retrieve detailed information about movies based on various conditions such as cast, director, genre, age rating, release date, release status, and theater information. Can be used in list form for repeated calls for multiple targets.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query combining previous context and the user's natural language query (e.g., 'Action movies currently showing in New York', 'Show me the latest PG-13 animated films')"
+          },
+          "movieTitle": {
+            "type": "string",
+            "description": "The title of the movie you want to find (fuzzy matching allowed, e.g., 'Inception', 'The Roundup 3')"
+          },
+          "actorName": {
+            "type": "string",
+            "description": "Search by actor's name (e.g., \"Leonardo DiCaprio\", \"Brad Pitt\"). Results will be sorted by rating."
+          },
+          "directorName": {
+            "type": "string",
+            "description": "The director's name (e.g., \"Christopher Nolan\", \"Greta Gerwig\", \"Meryl Streep\")"
+          },
+          "genre": {
+            "type": "string",
+            "description": "Movie genre filter (e.g., 'Comedy', 'Crime', 'Drama')"
+          },
+          "ageRating": {
+            "type": "string",
+            "description": "Filter by age rating (e.g., 'All Ages', '12 and up', '15 and up', 'Adults Only')"
+          },
+          "releaseDate": {
+            "type": "string",
+            "description": "Filter by a specific release date or check release date (e.g., '2026-02-11')",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "isReleased": {
+            "type": "boolean",
+            "description": "Check if currently showing or released (e.g., true)"
+          },
+          "theaterLocation": {
+            "type": "string",
+            "description": "Specific location of the theater showing the movie (e.g., \"AMC Empire 25 (NYC)\", \"Regal LA Live\", \"Cinemark San Jose\")"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "rating",
+              "releaseDate",
+              "titleLength",
+              "popularity"
+            ],
+            "description": "Sorting options for search results. If not specified, searches by actor name default to rating order, others default to newest first."
+          },
+          "screeningDate": {
+            "type": "string",
+            "description": "Use to filter by a specific screening date (e.g., '2025-08-03')",
+            "pattern": "^\\d{2}/\\d{2}/\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookMovieTicket",
+      "description": "A tool that allows you to book movie tickets by entering your preferred movie, theater, date and time, seats, and audience information. You select the movie to book through 'movie information', and can quickly and accurately reserve tickets with details such as movie, theater, date/time, seats, and audience info. If booking for multiple parties, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined request sentence reflecting the user's natural language request and conversation context (e.g., 'Book a popular movie for Friday evening at AMC Times Square', 'Reserve family movie seats this weekend at Regal Santa Monica')."
+          },
+          "movieTitle": {
+            "type": "string",
+            "description": "The title of the movie to book (e.g., 'The Roundup 4', 'Inside Out 2')."
+          },
+          "theaterName": {
+            "type": "string",
+            "description": "The name of the theater where you want to book (e.g., 'AMC Lincoln Square', 'Regal Santa Monica')."
+          },
+          "showDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Viewing date, must be within 2 weeks from today (e.g., '07/12/2025')."
+          },
+          "showTime": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$",
+            "description": "Movie start time (24-hour format, e.g., '19:30')."
+          },
+          "seatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Array of selected seat numbers (e.g., ['D9','D10']). If not specified, seats will be randomly assigned by the system."
+          },
+          "audienceCount": {
+            "type": "number",
+            "description": "Total number of viewers. Must match the number of seatNumbers."
+          },
+          "audienceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "adult",
+                "child"
+              ]
+            },
+            "description": "Array of audience types. For example, ['adult', 'child'] means 1 adult and 1 child. Order and count must match audienceCount."
+          },
+          "userInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the person booking (e.g., 'Jason Dawson')."
+              },
+              "contactNumber": {
+                "type": "string",
+                "description": "Contact number of the person booking (e.g., '(202) 555-0173')."
+              }
+            },
+            "required": [
+              "name",
+              "contactNumber"
+            ]
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "movieTitle",
+          "theaterName",
+          "showDate",
+          "showTime",
+          "audienceCount",
+          "audienceTypes",
+          "userInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getMovieBooking",
+      "description": "A tool that retrieves movie booking details based on the user's input and account information. It can also check bookings for a specific movie, theater, date, or time. If called repeatedly for multiple targets, results can be returned as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A natural language search query reflecting the context of the question (e.g., 'Tell me the last movie I booked', 'Show me today's ticket booking at Regal LA Live')."
+          },
+          "userId": {
+            "type": "string",
+            "description": "The account or unique user ID of the person who booked. Used to identify the user in the system."
+          },
+          "name": {
+            "type": "string",
+            "description": "The full name provided at the time of booking. Must be provided along with contactNumber."
+          },
+          "contactNumber": {
+            "type": "string",
+            "description": "The contact number registered at the time of booking. Must be provided along with name. If the combination is invalid, no booking record will be found."
+          },
+          "movieTitle": {
+            "type": "string",
+            "description": "The title of the movie to check (e.g., 'The Roundup 4', 'Kung Fu Panda 5'). If not provided, all booking records will be retrieved."
+          },
+          "theaterName": {
+            "type": "string",
+            "description": "The name of the theater to check (e.g., 'AMC Metreon', 'Regal Union Square'). If not provided, bookings for all theaters will be retrieved."
+          },
+          "showDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The screening date (e.g., 'August 1, 2024'). If not provided, only bookings within the last 30 days will be retrieved."
+          },
+          "showTime": {
+            "type": "string",
+            "description": "The screening time (e.g., '1:00 PM', '8:45 PM'). Optional."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "name",
+          "contactNumber"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelMovieBooking",
+      "description": "After retrieving the movie booking details, this tool cancels the movie booking requested by the user and processes the refund. The booking to be canceled is selected through 'getMovieBooking'. If calling repeatedly for multiple items, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined input combining the user's natural language query expressing the intent to cancel and the previous context (e.g., 'Cancel my booked movie', 'I want a refund for my movie ticket for next Saturday')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "The unique ID of the movie booking to cancel. You must use the value retrieved in advance via getMovieBooking."
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "Optional. Reason for canceling the booking (e.g., 'Plans changed', 'Not feeling well', 'Selected the wrong ticket')"
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "original_payment"
+            ],
+            "description": "Optional. The refund method must be specified as 'original_payment' only."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bookingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyMovieBooking",
+      "description": "A tool that allows you to modify movie booking details such as theater, date, time, seats, and audience types according to the user's request. Use 'getMovieBooking' to select the booking to be changed. If calling repeatedly for multiple bookings, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query reflecting the previous context and the user's movie booking change request (e.g., 'I want to move my reserved movie seats closer to the front', 'Please change the viewing date to next Friday')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "The unique ID of the movie booking to be changed. Must be retrieved from the booking history.",
+            "pattern": "^[A-Za-z0-9\\-]+$"
+          },
+          "modifiedTheaterName": {
+            "type": "string",
+            "description": "The name of the theater to change to. Example: 'AMC Lincoln Square'. When selected, you must check if the theater and time are available."
+          },
+          "modifiedShowDate": {
+            "type": "string",
+            "description": "The new viewing date. When changing, you must check if the theater and time are available.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "modifiedShowTime": {
+            "type": "string",
+            "description": "The new viewing time. Example: '17:10'. If changing along with the theater, you must confirm the showtime availability.",
+            "pattern": "^([01]?\\d|2[0-3]):[0-5]\\d$"
+          },
+          "modifiedSeatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of new seat numbers. Example: ['D7', 'D8']"
+          },
+          "modifiedAudienceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "adult",
+                "child",
+                "teen",
+                "senior"
+              ]
+            },
+            "description": "Array of new audience types. Example: ['adult', 'senior']"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "Reason for changing the booking. Example: 'My friend's schedule changed', 'Prefer better seats', 'Want to change theater', etc."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bookingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getExhibitionInfo",
+      "description": "Searches for exhibition information based on the user's request, filtering by exhibition title, venue name, visit date, whether a docent program is included, age rating, sorting options, and more. If calling repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined exhibition search query that reflects both previous context and the user's natural language request. (e.g., 'Docent-led exhibitions in New York suitable for kids', 'Recommended exhibitions for family visits')"
+          },
+          "exhibitionTitle": {
+            "type": "string",
+            "description": "The specific exhibition name you are looking for. Can be full or partial input. (e.g., 'Modern and Contemporary Art of Korea')"
+          },
+          "venueName": {
+            "type": "string",
+            "description": "The name of the exhibition hall, art museum, or museum. (e.g., 'Lincoln Center', 'The Met')"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Enter the date you wish to visit in YYYY-MM-DD format. (e.g., '2025-07-11')"
+          },
+          "includeDocent": {
+            "type": "boolean",
+            "description": "Whether to include docent programs. Set to true to find only exhibitions with docent-led tours. (e.g., true)"
+          },
+          "ageRating": {
+            "type": "string",
+            "enum": [
+              "All Ages",
+              "12 and up",
+              "15 and up",
+              "Adults Only"
+            ],
+            "description": "The viewing age restriction. For example, choose 'All ages' if attending with children."
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "soonest",
+              "highest_rated",
+              "lowest_price",
+              "most_reviewed"
+            ],
+            "description": "Sorting criteria for the results list."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookExhibitionTicket",
+      "description": "A tool that books tickets for the exhibition selected by the user, based on information such as the viewing date, number of visitors, and whether to include a docent tour. Select the exhibition to book through 'Exhibition Information'. If booking repeatedly for multiple targets, it can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence from the user's natural language booking request. (e.g., 'Book 2 tickets for the art center exhibition this Saturday')"
+          },
+          "exhibitionId": {
+            "type": "string",
+            "description": "Identifier for the exhibition to be booked (ID value obtained from the exhibition information lookup)"
+          },
+          "exhibitionTitle": {
+            "type": "string",
+            "description": "Name of the exhibition"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Date of visit (format: YYYY-MM-DD)"
+          },
+          "time": {
+            "type": "string",
+            "description": "Start time of the visit (e.g., '15:00' or '3:00 PM')"
+          },
+          "visitorCount": {
+            "type": "integer",
+            "description": "Number of visitors for the booking (e.g., 2)"
+          },
+          "includeDocent": {
+            "type": "boolean",
+            "description": "Whether to include a docent tour (e.g., true)"
+          },
+          "ticketOption": {
+            "type": "string",
+            "description": "Ticket option or category to book (e.g., 'Adult General Admission', 'Student Ticket')"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Contact information of the person booking (format: (202) 555-0173)",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          },
+          "specialRequest": {
+            "type": "string",
+            "description": "Other requests (e.g., 'Wheelchair accessibility needed')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "exhibitionId",
+          "date",
+          "visitorCount",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getExhibitionReservationInfo",
+      "description": "A tool that allows you to look up specific or all exhibition reservations based on the booker's contact information. You can filter by exhibition title or date. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence of the lookup request expressed in natural language (e.g., 'Show me the exhibition schedule I booked for this weekend')."
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Booker's contact number (format: (202) 555-0173)",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Specific date to look up (optional, format: YYYY-MM-DD)"
+          },
+          "exhibitionTitle": {
+            "type": "string",
+            "description": "Filter by a specific exhibition title (optional)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelExhibitionTicket",
+      "description": "This tool cancels an exhibition reservation. It sends a cancellation request based on the reservation ID, and you can optionally provide a reason. Cancellations are allowed up to 2 hours before the viewing time. Use 'getExhibitionReservationInfo' to select the reservation you want to cancel. If canceling multiple reservations, you can provide them as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence of the cancellation request expressed in natural language (e.g., 'Cancel the exhibition I booked for tomorrow')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "Reservation ID (retrieved from getExhibitionReservationInfo)"
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "Reason for cancellation (optional)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyExhibitionTicket",
+      "description": "A tool for modifying exhibition reservation details. You can change the visit date, time, number of visitors, ticket options, etc. Changes cannot be made on the day of the visit. At least one change item is required. Select the reservation to modify through 'getExhibitionReservationInfo'. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined sentence of the natural language change request (e.g., 'I want to postpone the exhibition date by one day')"
+          },
+          "reservationId": {
+            "type": "string",
+            "description": "Reservation ID (can be found in the reservation lookup results)"
+          },
+          "newDate": {
+            "type": "string",
+            "format": "date",
+            "description": "New date to change to (e.g., '2025-08-20')"
+          },
+          "newTime": {
+            "type": "string",
+            "description": "New time to change to (e.g., '14:00' or '2:00 PM')"
+          },
+          "newVisitorCount": {
+            "type": "integer",
+            "description": "New number of visitors"
+          },
+          "newTicketOption": {
+            "type": "string",
+            "description": "New ticket type (e.g., 'Student Ticket')"
+          },
+          "includeDocent": {
+            "type": "boolean",
+            "description": "Change whether to include a docent"
+          },
+          "contactInfo": {
+            "type": "string",
+            "description": "Contact information of the person who made the reservation (required)",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "reservationId",
+          "contactInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPerformanceInfo",
+      "description": "A tool that searches for performance information and finds shows that match the user's criteria. When calling repeatedly for multiple targets, results can be structured as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A performance search query that reflects both the user's natural language input and previous context (e.g., 'Recommend plays in New York next month', 'Musicals suitable for children')"
+          },
+          "performanceTitle": {
+            "type": "string",
+            "description": "The title of the performance to search for (e.g., 'Notre Dame de Paris', 'The Lion King')"
+          },
+          "genre": {
+            "type": "string",
+            "enum": [
+              "Musical",
+              "Play",
+              "Concert",
+              "Classical",
+              "Dance",
+              "Opera"
+            ],
+            "description": "The genre of the performance (e.g., 'Musical', 'Concert')"
+          },
+          "artistName": {
+            "type": "string",
+            "description": "The name of the performer or artist (e.g., \"Andrea Bocelli\", \"Lin-Manuel Miranda\")"
+          },
+          "venueName": {
+            "type": "string",
+            "description": "The name of the venue (e.g., 'Sydney Opera House', 'Carnegie Hall')"
+          },
+          "location": {
+            "type": "string",
+            "description": "The city or region where the performance is held (e.g., 'Chicago', 'San Francisco')"
+          },
+          "date": {
+            "type": "string",
+            "description": "The date to retrieve information for, in YYYY-MM-DD format (e.g., '2025-10-15')",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "isCurrentlyRunning": {
+            "type": "boolean",
+            "description": "Set to true if the performance is currently running (e.g., true)"
+          },
+          "ageRating": {
+            "type": "string",
+            "enum": [
+              "All Ages",
+              "12 and up",
+              "15 and up",
+              "Adults Only"
+            ],
+            "description": "The age rating for attendance (e.g., 'All Ages', '15 and up')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "soonest",
+              "highest_rated",
+              "lowest_price",
+              "most_reviewed"
+            ],
+            "description": "The sorting criteria for the performance list; defaults to 'soonest' if not specified"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "sortBy"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "bookPerformance",
+      "description": "A tool that takes information for booking a performance and reserves seats for the desired show. Use 'performance information' to select the performance to book. For multiple bookings, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query that includes the user's booking intent and related information, reflecting their request or context (e.g., 'I want to book a musical with my family', 'Reserve a play with a friend on the evening of 2025-07-05')"
+          },
+          "performanceTitle": {
+            "type": "string",
+            "description": "The title of the performance to be booked (e.g., 'Les Misérables', 'The Phantom of the Opera')"
+          },
+          "venueName": {
+            "type": "string",
+            "description": "The name of the venue where you want to attend (e.g., 'Blue Square', 'LG Arts Center')"
+          },
+          "showDate": {
+            "type": "string",
+            "description": "The desired viewing date. Can be selected up to one day before the performance and only within 2 months from today (e.g., '2025-08-15')",
+            "format": "date"
+          },
+          "showTime": {
+            "type": "string",
+            "description": "The desired viewing time (e.g., '15:00')",
+            "pattern": "^([01]\\d|2[0-3]):([0-5]\\d)$"
+          },
+          "audienceCount": {
+            "type": "integer",
+            "description": "Total number of attendees to book for (maximum 4 people, e.g., 3). For 5 or more, the system will automatically split the booking.",
+            "minimum": 1,
+            "maximum": 4
+          },
+          "audienceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "adult",
+                "child",
+                "senior",
+                "disabled"
+              ]
+            },
+            "description": "List of attendee types in order, matching the number of attendees (e.g., [\"adult\", \"adult\", \"child\"])"
+          },
+          "seatGrade": {
+            "type": "string",
+            "description": "Desired seat grade (e.g., 'VIP', 'A')",
+            "enum": [
+              "R",
+              "VIP",
+              "S",
+              "A"
+            ]
+          },
+          "seatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Optional. Specify particular seat numbers (e.g., [\"C5\", \"C6\"]); if not provided, the best available seats will be assigned automatically."
+          },
+          "userInfo": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the person booking (e.g., 'Sarah Kim')"
+              },
+              "contactNumber": {
+                "type": "string",
+                "description": "Contact number of the person booking (e.g., '(202) 555-0173')",
+                "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+              }
+            },
+            "required": [
+              "name",
+              "contactNumber"
+            ]
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "performanceTitle",
+          "venueName",
+          "showDate",
+          "showTime",
+          "audienceCount",
+          "audienceTypes",
+          "seatGrade",
+          "userInfo"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getPerformanceBooking",
+      "description": "A tool that allows you to look up performance booking information in various ways. You can use the unique booking ID, user ID, booker's name, contact number, and other criteria to accurately find the performance booking details the user wants. If calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query that reflects the user's natural language request and previous context. (e.g., 'Show me my musical bookings in June, 'Find the performance I booked yesterday')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "A unique ID that identifies the performance booking. This is the most accurate way to retrieve booking information. (e.g., 'PF20240801_015')"
+          },
+          "userId": {
+            "type": "string",
+            "description": "The unique ID of the booker's account or an identifier for authenticated user information. (e.g., 'user_9513'). At least one of userId, name, or contactNumber is required."
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the person who booked the performance or the name entered at the time of booking. (e.g., 'Michael Lee'). At least one of userId, name, or contactNumber is required."
+          },
+          "contactNumber": {
+            "type": "string",
+            "description": "The mobile phone number provided at the time of booking. Must pass format validation in the form (XXX) XXX-XXXX. (e.g., '(202) 555-0198'). At least one of userId, name, or contactNumber is required.",
+            "pattern": "^\\(\\d{3}\\) \\d{3}-\\d{4}$"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "cancelPerformanceBooking",
+      "description": "A tool to cancel performance ticket bookings and process refunds. Use 'getPerformanceBooking' to select the performance to cancel. If calling repeatedly for multiple items, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A natural language or conversation-context-based query clearly expressing the user's intent to cancel a booking (e.g., 'Due to a sudden schedule change, I want to cancel my musical ticket for 07/25/2025')."
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "The booking ID to cancel, obtained via a booking lookup (e.g., 'PF20240811_015'). You must first retrieve it using the getPerformanceBooking tool, and cancellations are allowed only up to one day before the performance date. For bookings of 2 or more tickets, partial cancellations are not allowed — you must cancel the entire booking and rebook."
+          },
+          "cancelReason": {
+            "type": "string",
+            "description": "Reason for cancellation (e.g., 'Schedule conflict', 'Performance time change', 'Health issues'). Providing a clear reason is optional but may speed up processing."
+          },
+          "refundMethod": {
+            "type": "string",
+            "enum": [
+              "original_payment",
+              "bank_transfer"
+            ],
+            "description": "Preferred refund method (e.g., 'original_payment' for the original payment method, 'bank_transfer' for a bank transfer)."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bookingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "modifyPerformanceBooking",
+      "description": "A tool that allows users to modify details of a performance ticket they have already booked. After selecting the performance to change via 'getPerformanceBooking', you can update booking details such as performance title, venue, show date, show time, seats, and audience types. If modifying multiple bookings, you can provide them in a list format.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A booking modification request query that includes both the previous conversation context and the user's natural language request (e.g., 'Change my musical ticket date to the end of July', 'Can you move my seats closer to the front?')"
+          },
+          "bookingId": {
+            "type": "string",
+            "description": "The unique booking ID to be modified. Must be retrieved using the getPerformanceBooking tool, and can only be changed within 7 days after booking & if the status is 'confirmed'. (e.g., 'PF20250810_103')"
+          },
+          "modifiedPerformanceTitle": {
+            "type": "string",
+            "description": "The new performance title you want to change to. (e.g., 'The Lion King')"
+          },
+          "modifiedVenueName": {
+            "type": "string",
+            "description": "The new venue name you want to change to. (e.g., 'Opera House at the Arts Center')"
+          },
+          "modifiedShowDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The new show date. Must be today or a future date; cannot be changed to a past date. (e.g., '08/17/2025')"
+          },
+          "modifiedShowTime": {
+            "type": "string",
+            "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$",
+            "description": "The new show start time (24-hour format, e.g., '15:00')."
+          },
+          "modifiedSeatNumbers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "An array of new seat numbers. Must match the number of audience types (modifiedAudienceTypes). (e.g., ['D5', 'D6'])"
+          },
+          "modifiedAudienceTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "adult",
+                "child",
+                "senior",
+                "student"
+              ]
+            },
+            "description": "An array of audience types to change to. Must match the number of seats, with each type corresponding to a seat. (e.g., ['adult', 'student'])"
+          },
+          "changeReason": {
+            "type": "string",
+            "description": "The reason for the booking change (e.g., 'Schedule change', 'Seat location change', 'Venue change')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "bookingId"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "searchVideo",
+      "description": "A tool that lets you search for video content matching the user's desired criteria. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A video search query that incorporates both the previous conversation context and the user's natural language request in one go (e.g., 'Popular London travel vlogs', 'K-pop boy group music videos released in 2023', 'Cooking videos featuring John Kim')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getMusicInfo",
+      "description": "A tool that allows you to search for music information based on various criteria such as song, artist, chart, genre, mood, and lyrics. When calling for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined music search query combining the conversation context and user query (e.g., 'latest pop ballads', 'upbeat songs for working out')"
+          },
+          "songTitle": {
+            "type": "string",
+            "description": "The title of the song to search for (e.g., 'Love Dive')"
+          },
+          "artistName": {
+            "type": "string",
+            "description": "Artist or singer name (e.g., 'Seventeen', 'Taylor Swift')"
+          },
+          "albumTitle": {
+            "type": "string",
+            "description": "Album name (e.g., 'Love Yourself: Answer')"
+          },
+          "chartType": {
+            "type": "string",
+            "enum": [
+              "billboard",
+              "spotify",
+              "apple_music",
+              "youtube_music"
+            ],
+            "description": "Type of music chart - if not provided, defaults to 'billboard'"
+          },
+          "chartRankRange": {
+            "type": "object",
+            "properties": {
+              "start": {
+                "type": "integer",
+                "description": "Starting chart rank (e.g., 1)"
+              },
+              "end": {
+                "type": "integer",
+                "description": "Ending chart rank (e.g., 50)"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "description": "Limit results by chart rank range (e.g., {'start': 1, 'end': 50} → Top 50 songs)"
+          },
+          "genre": {
+            "type": "string",
+            "enum": [
+              "kpop",
+              "pop",
+              "rock",
+              "hiphop",
+              "rnb",
+              "ballad",
+              "dance",
+              "jpop",
+              "remix"
+            ],
+            "description": "Music genre category (e.g., 'rock')"
+          },
+          "releaseDate": {
+            "type": "string",
+            "description": "Release date or period of the song to search for (e.g., '12/01/2024', '07/01/2024~12/31/2024')"
+          },
+          "moodTag": {
+            "type": "string",
+            "description": "Mood tag for filtering songs (e.g., 'study', 'nostalgic', 'workout')"
+          },
+          "lyricsKeyword": {
+            "type": "string",
+            "description": "Specific keyword that must be included in the lyrics (e.g., 'hope', 'love')"
+          },
+          "sortBy": {
+            "type": "string",
+            "enum": [
+              "latest",
+              "most_streamed",
+              "most_liked"
+            ],
+            "description": "Sorting criteria (e.g., latest, most streamed, most liked)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "chartType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getWebtoonInfo",
+      "description": "A tool that provides information about a webtoon (digital comic), such as its content, author, and genre. If you want to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query that reflects the previous conversation context and the user's natural language request (e.g., 'Recommend popular new fantasy webtoons', 'List famous drama comic authors')"
+          },
+          "title": {
+            "type": "string",
+            "description": "The official title of the work you want information about (e.g., 'Omniscient Reader', 'Orange Marmalade')"
+          },
+          "authorName": {
+            "type": "string",
+            "description": "Optional: The name of the author of the work (e.g., 'Son Jeho', 'Youn Jeongho')"
+          },
+          "genre": {
+            "type": "string",
+            "enum": [
+              "fantasy",
+              "romance",
+              "action",
+              "drama",
+              "comedy",
+              "slice_of_life",
+              "regression",
+              "Boys' Love",
+              "Girls' Love",
+              "thriller",
+              "horror",
+              "school_life"
+            ],
+            "description": "Optional: Select the desired genre or theme (e.g., 'romance', 'slice_of_life', 'thriller')."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

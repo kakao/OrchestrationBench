@@ -1,0 +1,326 @@
+metadata:
+  total_steps: 15
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025/3/10
+
+      userId: 2027ID-001'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'I want to talk to someone about why I often feel anxious for no clear
+      reason.
+
+      Could it be because of my MBTI? I’m an ENFJ… can you explain a bit?
+
+      Also, could you recommend some books that might help with anxiety?'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"Counseling\
+      \ about why I frequently feel anxious for no clear reason\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: counsel_agent\n      refined_query: \"Wondering if my frequent unexplained\
+      \ anxiety might be related to my MBTI type, ENFJ\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ shopping_agent\n      refined_query: \"Books that can help with feelings of\
+      \ unexplained anxiety\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"Counseling about\
+      \ frequently feeling anxious for no clear reason\"\ntool_call_result:\n  counseling:\n\
+      \    topic: \"Unexplained Anxiety\"\n    summary: \"Feelings of anxiety without\
+      \ a clear reason can often stem from stress, past experiences, physical fatigue,\
+      \ or brain chemistry. Anxiety is tied to our survival instincts and may be triggered\
+      \ by subtle internal tension or small external stimuli, even when there’s no\
+      \ obvious cause.\"\n    recommendedApproach:\n      - \"Maintain a regular routine\
+      \ with consistent sleep, meals, and physical activity\"\n      - \"Practice\
+      \ mindfulness meditation or deep breathing exercises\"\n      - \"Express your\
+      \ feelings through journaling or talking instead of suppressing them\"\n   \
+      \   - \"Consider professional counseling or consulting a mental health specialist\"\
+      \n    note: \"If anxiety continues to affect daily life significantly, professional\
+      \ diagnosis and treatment are important.\""
+- workflow_id: null
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getMbtiInfo\narguments:\n  refinedQuery: \"I’m wondering if the\
+      \ frequent feelings of anxiety I get for no clear reason might be related to\
+      \ my MBTI type, ENFJ.\"\n  mbtiType: \"enfj\"\ntool_call_result:\n  mbtiInsight:\n\
+      \    mbtiType: \"ENFJ\"\n    personalitySummary: \"ENFJs are empathetic, organized,\
+      \ and growth-oriented leaders who value harmony and people development. They\
+      \ excel at facilitating collaboration and motivating others.\"\n    emotionalTraits:\n\
+      \      - \"Highly attuned to others’ emotions; may absorb others’ stress\"\n\
+      \      - \"Dislike prolonged conflict; feel uneasy when harmony breaks\"\n \
+      \     - \"Prefer structure; sudden plan changes can feel stressful\"\n    possibleCauseOfAnxiety:\n\
+      \      - \"Overcommitment and people-pleasing leading to burnout\"\n      -\
+      \ \"Taking responsibility for others’ feelings/outcomes\"\n      - \"Ambiguity\
+      \ in relationships or feedback creating worry\"\n    suggestion:\n      - \"\
+      Set clear boundaries and practice saying no\"\n      - \"Daily 5-minute emotion\
+      \ check-in or journaling\"\n      - \"Reframe perfectionistic ‘should’ thoughts\
+      \ more flexibly\"\n      - \"Schedule buffers; protect recovery time\""
+- workflow_id: workflow_2
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Books that help\
+      \ with feelings of anxiety for no apparent reason\"\n  productCategory: \"books\"\
+      \n  sortBy: \"latest\"\ntool_call_result:\n  data:\n    recommendations:\n \
+      \     - productId: \"book-2025-061\"\n        productName: \"Comfort in Anxiety\
+      \ - John Brown\"\n        description: \"A new self-help book that presents\
+      \ concrete strategies to break the vicious cycle of procrastination caused by\
+      \ anxiety, which in turn fuels more anxiety.\"\n        price: 17\n        imageUrl:\
+      \ \"https://image.yes24.com/goods/124941953/XL\"\n        purchaseLink: \"https://www.yes24.com/Product/Goods/124941953\"\
+      \n        publicationDate: \"2024-06-12\"\n\n      - productId: \"book-2025-042\"\
+      \n        productName: \"I’m Okay Just As I Am – Daniel Wilson\"\n        description:\
+      \ \"An essay by bestselling author Daniel Wilson, sharing his experiences of\
+      \ enduring uncertainty, overcoming anxiety, and finding his own path in life.\"\
+      \n        price: 16\n        imageUrl: \"https://image.yes24.com/goods/126149023/XL\"\
+      \n        purchaseLink: \"https://www.yes24.com/Product/Goods/126149023\"\n\
+      \        publicationDate: \"2024-04-28\"\n\n      - productId: \"book-2025-013\"\
+      \n        productName: \"Lessons on Emotions – Sarah Cho\"\n        description:\
+      \ \"A psychiatrist gently explains conditions such as depression, anxiety, and\
+      \ panic disorders with illustrations, offering readers comfort and courage.\"\
+      \n        price: 16\n        imageUrl: \"https://image.yes24.com/goods/124590393/XL\"\
+      \n        purchaseLink: \"https://www.yes24.com/Product/Goods/124590393\"\n\
+      \        publicationDate: \"2023-02-10\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '1. Talking about the feeling of anxiety itself
+
+
+      ▶ Vague anxiety can arise naturally even without a clear external cause. It
+      may come from internal stress, brain chemistry, accumulated fatigue, or uncertainty
+      about the future. Instead of trying to force it away, it helps accept your current
+      state and create emotional routines such as breathing exercises or meditation.
+
+
+      Also:
+
+
+      * Keep a journal or track your emotions to observe patterns
+
+      * Consider speaking with a mental health professional if needed
+
+
+
+      2. It may also relate to your MBTI type (based on ENFJ)
+
+
+      ▶ ENFJs are sensitive to others’ emotions and they value harmony, but this often
+      means that they neglect their own inner needs, allowing emotions to build up.
+      The more you focus on others instead of yourself, the more often you may experience
+      sudden waves of anxiety without a clear reason.
+
+
+      * Using an emotion journal or a tracking app to organize your inner state regularly
+      is highly recommended.
+
+
+
+      3. Here are some related books you might find helpful
+
+
+      ▶ Comfort in Anxiety — John Brown
+
+      Publication date: 2024-06-12
+
+      Price: 17
+
+      What it’s about: Concrete, step-by-step strategies to break the procrastination–anxiety
+      loop.
+
+      Link: https://www.yes24.com/Product/Goods/124941953
+
+
+      ▶ I’m Okay Just As I Am — Daniel Wilson
+
+      Publication date: 2024-04-28
+
+      Price: 16
+
+      What it’s about: Personal essays on living with uncertainty, overcoming anxiety,
+      and finding one’s path.
+
+      Link: https://www.yes24.com/Product/Goods/126149023
+
+
+      ▶ Lessons on Emotions — Sarah Cho
+
+      Publication date: 2023-02-10
+
+      Price: 16
+
+      What it’s about: A psychiatrist’s illustrated guide to depression, anxiety,
+      and panic—gentle, practical explanations and encouragement.
+
+      Link: https://www.yes24.com/Product/Goods/124590393'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: I want to buy the book *Comfort in Anxiety*, and could you also tell
+      me about the meditation event happening in March?
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: counsel_agent\n      refined_query: \"Counseling\
+      \ about why I frequently feel anxious for no apparent reason\"\n\nworkflow_2:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: counsel_agent\n      refined_query: \"Wondering if frequently feeling\
+      \ anxious for no apparent reason is related to my MBTI type, ENFJ\"\n\nworkflow_3:\n\
+      \  status: completed\n  type: independent\n  steps:\n    - status: completed\n\
+      \      name: shopping_agent\n      refined_query: \"Books that can help with\
+      \ feelings of anxiety that arise without reason\"\n\nworkflow_4:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ shopping_agent\n      refined_query: \"Purchase the book 'Comfort in Anxiety'\
+      \ by John Brown\"\n\nworkflow_5:\n  status: pending\n  type: independent\n \
+      \ steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"Meditation events happening in March\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: The buyer’s shipping address, name, and contact information'
+- workflow_id: workflow_4
+  step_id: 11
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"March meditation events\
+      \ that can help with unexplained feelings of sadness\"\ntool_call_result:\n\
+      \  results:\n    - title: \"Mindfulness Spring Meditation Retreat\"\n      date:\
+      \ \"Sunday, March 12, 2025\"\n      time: \"10:00 AM – 5:00 PM\"\n      location:\
+      \ \"Mind Center Hall, 2457 Pinecrest Blvd, Seattle, WA 98101, USA\"\n      description:\
+      \ \"A one-day intensive mindfulness program designed to help with sadness, fatigue,\
+      \ and emotional exhaustion.\"\n      registrationLink: \"https://mindcenter.com/event/springretreat2025\"\
+      \n\n    - title: \"Breathwork – Urban Meditation Class\"\n      date: \"Every\
+      \ Wednesday in March 2025\"\n      time: \"7:00 PM – 8:30 PM\"\n      location:\
+      \ \"Healing Room Studio, 88 Mercer St, New York, NY 10012, USA\"\n      description:\
+      \ \"A weekly evening meditation focused on breath and body awareness to help\
+      \ process emotions.\"\n      registrationLink: \"https://healingroom.com/program/breathing2025\"\
+      \n\n    - title: \"Evening Meditation for Anxiety\"\n      date: \"Tuesday,\
+      \ March 18, 2025\"\n      time: \"6:30 PM – 8:00 PM\"\n      location: \"Move\
+      \ Meditation Center, 3100 Mission St, San Francisco, CA 94110, USA\"\n     \
+      \ description: \"A beginner-friendly meditation class to release tension and\
+      \ observe anxious emotions.\"\n      registrationLink: \"https://movemeditation.org/class/evening-anxiety\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: To purchase the book "Comfort in Anxiety," we need the user's address,
+      name, and contact information.
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: 1286 Atlas Ave, Unit 304, Los Angeles, CA 90013, USA / David Alex / (220)220-2220
+- workflow_id: workflow_3
+  step_id: 14
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"Purchase the book\
+      \ 'Comfort in Anxiety'\"\n  userId: \"2027ID-001\"\n  productItems:\n    - productName:\
+      \ \"Comfort in Anxiety\"\n      productId: \"book-2025-061\"\n      quantity:\
+      \ 1\n      price: 17\n  shippingAddress:\n    recipient: \"David Alex\"\n  \
+      \  address: \"1286 Atlas Ave, Unit 304, Los Angeles, CA 90013, USA\"\n    phone:\
+      \ \"(220)220-2220\"\ntool_call_result:\n  result: \"success\"\n  orderId: \"\
+      ORD-20250310-1054\"\n  productId: \"book-2025-061\"\n  productName: \"Comfort\
+      \ in Anxiety\"\n  quantity: 1\n  price: \"$17\"\n  recipient: \"David Alex\"\
+      \n  shippingAddress: \"1286 Atlas Ave, Unit 304, Los Angeles, CA 90013, USA\"\
+      \n  estimatedDelivery: \"2025-03-12\"\n  orderDetailLink: \"https://bookstore.example.com/orders/minboy09\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are some meditation programs you can join in March:
+
+
+      ▶ Mindfulness Spring Meditation Retreat
+
+      - Date/Time: Sunday, March 12, 2025 · 10:00 AM–5:00 PM
+
+      - Location: Mind Center Hall, 2457 Pinecrest Blvd, Seattle, WA 98101, USA
+
+      - About: One-day intensive mindfulness to address sadness, fatigue, and emotional
+      exhaustion.
+
+      - Register: mindcenter.com/event/springretreat2025
+
+
+      ▶ Breathwork – Urban Meditation Class
+
+      - Date/Time: Every Wednesday in March 2025 · 7:00–8:30 PM
+
+      - Location: Healing Room Studio, 88 Mercer St, New York, NY 10012, USA
+
+      - About: Weekly breath-and-body awareness practice to process emotions.
+
+      - Register: healingroom.com/program/breathing2025
+
+
+      ▶ Evening Meditation for Anxiety
+
+      - Date/Time: Tuesday, March 18, 2025 · 6:30–8:00 PM
+
+      - Location: Move Meditation Center, 3100 Mission St, San Francisco, CA 94110,
+      USA
+
+      - About: Beginner-friendly session to release tension and observe anxious feelings.
+
+      - Register: movemeditation.org/class/evening-anxiety
+
+
+      These are the meditation programs available in March.
+
+
+
+      ✅ Order Confirmed
+
+      ▶ Your order for 1 copy of *The Comfort of Anxiety* has been successfully placed.
+
+      The total payment amount is $17, and the shipping address is 1286 Atlas Ave,
+      Unit 304, Los Angeles, CA 90013, USA.
+
+      Recipient: David Alex
+
+
+      Estimated delivery date: Tuesday, March 12, 2025.
+
+      Order Number: ORD-20250310-1054
+
+      Link: https://bookstore.example.com/orders/minboy09
+
+
+      You can check the full order details at the link below.
+
+      View Order Details'

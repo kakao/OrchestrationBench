@@ -1,0 +1,99 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜 : 2025-07-15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 다음주 금요일 오전 11:00시에 치과 진료 있으니 캘린더에 등록해주고 가는날 1시간 전에 알람줘!
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"다음 주 금요일\
+      \ 오전 11:00시 치과 진료 캘린더 등록\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"다음 주 금요일 치과가기 1시간 전 알람\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"다음주 금요일 오전 11:00시\
+      \ 치과 진료 캘린더 등록\"\n  title: \"치과 진료\"\n  startDateTime: \"2025-07-25T11:00\"\n\
+      \  endDateTime: \"2025-07-25T12:00\"\ntool_call_result:\n  data:\n    tool:\
+      \ \"createSchedule\"\n    result:\n      status: \"success\"\n      scheduleId:\
+      \ \"SCH20250725001\"\n      title: \"치과 진료\"\n      startDateTime: \"2025-07-25T11:00\"\
+      \n      endDateTime: \"2025-07-25T12:00\"\n      confirmationMessage: \"2025년\
+      \ 7월 25일 금요일 오전 11시에 치과 진료 일정이 캘린더에 등록되었습니다.\"\n  source: \"캘린더 일정 시스템\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"다음 주 금요일 치과 진료 1시간\
+      \ 전 알람\"\n  reminderContent: \"치과 진료 1시간 전입니다\"\n  reminderTime: \"2025-07-25T10:00\"\
+      \n  deliveryMethod: \"chat\"\n  priority: \"normal\"\n  repeatRule: \"none\"\
+      \ntool_call_result:\n  data:\n    tool: \"remindSchedule\"\n    result:\n  \
+      \    status: \"scheduled\"\n      reminderId: \"reminder-20250725-dental\"\n\
+      \      reminderContent: \"치과 진료 1시간 전입니다\"\n      reminderTime: \"2025-07-25T10:00\"\
+      \n      deliveryMethod: \"chat\"\n      priority: \"normal\"\n      repeatRule:\
+      \ \"none\"\n      note: \"2025년 7월 25일 오전 10시에 알림이 전송될 예정입니다.\"\n  source: \"\
+      알림 예약 시스템\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '다음 주 금요일 치과 진료 일정이 성공적으로 등록되었으며, 이에 대한 알림도 함께 예약되었습니다.
+
+
+      일정 정보:
+
+
+      일정 제목: 치과 진료
+
+
+      날짜: 2025년 7월 25일 금요일
+
+
+      시간: 오전 11시부터 오후 12시까지
+
+
+      일정 ID: SCH20250725001
+
+
+      -----------------------
+
+
+      알림 정보:
+
+
+      알림 내용: 치과 진료 1시간 전입니다
+
+
+      알림 시간: 2025년 7월 25일 금요일 오전 10시
+
+
+      전송 방식: 채팅 메시지
+
+
+      우선순위: 일반
+
+
+      반복 설정: 없음
+
+
+      예약된 알림은 예정된 시간에 맞춰 자동으로 전송될 예정입니다.
+
+      진료 일정에 늦지 않도록 참고해 주세요.'

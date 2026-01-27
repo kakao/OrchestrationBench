@@ -1,0 +1,157 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- current time: 2026-07-14T10:14:00+09:00
+
+      - current location: Seongnam-si, Gyeonggi-do, South Korea
+
+      - user id: pkq822213'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 지난주에 직구한 핸드폰 어디까지 왔어?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"지난 주에\
+      \ 직구한 핸드폰 주문 조회\"\n    - status: pending\n      name: delivery_agent\n     \
+      \ refined_query: \"지난 주에 직구한 핸드폰 주문 정보를 통한 배송 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"2026년 7월 6일부터 12일에\
+      \ 구매한 핸드폰 구매 내역 조회\"\n  userId: \"pkq822213\"\ntool_call_result:\n  status:\
+      \ success\n  data:\n    orderId: 2026071079936841\n    productItems:\n     \
+      \ - productId: 8150780252\n        name: \"블랙베리 핸드폰 블랙베리 Q10 블랙 16G 수험생폰 학생폰\
+      \ 수능폰 세컨폰\"\n        color: \"화이트\"\n        quantity: 1\n        price: 109000\n\
+      \    shippingAddress:\n      recipient: \"박지완\"\n      address: \"경기도 성남시 분당구\
+      \ 판교대장로7길 22 판교행복플레이스 313동 502호\"\n      phone: \"010-1347-9999\"\n    deliveryInfo:\n\
+      \      trackingNumber: \"BR002076570MG\"\n      carrier: \"EMS\"\n    personalCustomCode:\
+      \ \"P1192736291\""
+- workflow_id: null
+  step_id: 5
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"직구 핸드폰 배송 조회\"\n\
+      \  trackingNumber: \"BR002076570MG\"\n  carrier: \"EMS\"\ntool_call_result:\n\
+      \  status: \"success\"\n  data:\n    senderName: \"Shenzhen mobile phone accessories\
+      \ online Store (CHINA)\"\n    receiverName: \"박치완 (KOREA)\"\n    records:\n\
+      \      - message: \"주문이 정상적으로 완료되었습니다.\"\n        date: \"2026-07-10T20:11:21+08:00\"\
+      \n      - message: \"판매자가 배송 준비를 하고 있습니다.\"\n        date: \"2026-07-12T10:12:11+08:00\"\
+      \n      - message: \"배송사 물품 수령 완료\"\n        date: \"2026-07-12T11:23:00+08:00\"\
+      \n      - message: \"출발국 물류센터에서 출발\"\n        date: \"2026-07-12T19:37:01+08:00\"\
+      \n      - message: \"항공편 대기 중\"\n        date: \"2026-07-12T23:22:51+08:00\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '7월 10일에 구매하신 핸드폰은 현재 공항에서 항공편 대기 중 입니다.
+
+      조만간 항공편을 통해 국내로 들어와 배송될 예정이에요.
+
+
+      최근 배송 정보
+
+      - 2026-07-13 00:22:51: 항공편 대기 중
+
+      - 2026-07-12 20:37:01: 출발국 물류센터에서 출발
+
+      - 2026-07-12 12:23:00: 배송사 물품 수령 완료'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 그럼 내 핸드폰에 쓸 젤리 케이스 추천해줘. 투명색으로
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      지난 주에 직구한 핸드폰 주문 조회\"\n    - status: completed\n      name: delivery_agent\n\
+      \      refined_query: \"지난 주에 직구한 핸드폰 주문 정보를 통한 배송 조회\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ shopping_agent\n      refined_query: \"블랙베리 Q10 투명 젤리케이스 추천\""
+- workflow_id: null
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"블랙베리 Q10 투명 젤리케이스\"\
+      \n  productCategory: \"핸드폰케이스\"\n  color: \"투명\"\n  sortBy: \"latest\"\ntool_call_result:\n\
+      \  data: success\n  products:\n    - productId: 10808999417\n      seller:\n\
+      \        name: \"비가토링크\"\n        foreign: true\n      name: \"블랙베리 투명 케이스 Q10\
+      \ Q5 핸드폰 Q20 9900 9930 Q30 클리어 워터\"\n      colors:\n        - \"키원 반투명\"\n \
+      \       - \"Q5 투명 커버\"\n        - \"Q10 반투명\"\n        - \"Q20 화이트 반투명\"\n \
+      \       - \"9900 9930 풀 시스루\"\n      price: 19720\n    - productId: 11802792644\n\
+      \      seller:\n        name: \"아마르테아\"\n        foreign: false\n      name:\
+      \ \"블랙베리케이스 블랙베리 Q5 클리어 투명 Q10 Q20 9930 워터 핸드폰 Q30 1 9900 9930 반투명 소프트\"\n \
+      \     colors:\n        - \"9900 9930 반투명 소프트\"\n        - \"9900 9930 올인원 소프트커버\"\
+      \n      price: 23400\n    - productId: 11841394964\n      seller:\n        name:\
+      \ \"GRAYCO\"\n        foreign: false\n      name: \"블랙베리 Q10 슬림핏 투명 케이스\"\n\
+      \      price: 2900"
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "배송 중인 블랙베리 Q10을 위한 투명 젤리케이스를 찾아봤어요!\n\n1. 블랙베리 투명 케이스 Q10 Q5 핸드폰 Q20\
+      \ 9900 9930 Q30 클리어 워터 (비가토링크)  \n- 특징: 해외 직구 배송 / 반투명 색상 포함 다양한 옵션  \n- 가격:\
+      \ 19,720원\n\n2. 블랙베리케이스 블랙베리 Q5 클리어 투명 Q10 Q20 9930 워터 핸드폰 Q30 1 9900 9930 반투명\
+      \ 소프트 (아마르테아)  \n- 특징: 반투명 소프트커버 옵션 포함  \n- 가격: 23,400원\n\n3. 블랙베리 Q10 슬림핏 투명\
+      \ 케이스 (GRAYCO)  \n- 특징: 투명 젤리케이스 / 두께 얇은 슬림핏  \n- 가격: 2,900원\n\n필요하면 더 자세한 정보나\
+      \ 구매 도움도 드릴게요!"
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 3번째걸로 주문해줘
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      지난 주에 직구한 핸드폰 주문 조회\"\n    - status: completed\n      name: delivery_agent\n\
+      \      refined_query: \"지난 주에 직구한 핸드폰 주문 정보를 통한 배송 조회\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ shopping_agent\n      refined_query: \"블랙베리 Q10 투명 젤리케이스 추천\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: shopping_agent\n      refined_query: \"블랙베리 Q10 슬림핏 투명 케이스 (GRAYCO)\
+      \ 구매\""
+- workflow_id: workflow_3
+  step_id: 13
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"블랙베리 Q10 슬림핏 투명 케이스\
+      \ 구매\"\n  userId: \"pkq822213\"\n  productItems:\n    productId: 11841394964\n\
+      \    productName: \"블랙베리 Q10 슬림핏 투명 케이스\"\n    quantity: 1\n    price: 2900\n\
+      \  shippingAddress:\n    recipient: \"박지완\"\n    address: \"경기도 성남시 분당구 판교대장로7길\
+      \ 22 판교행복플레이스 313동 502호\"\n    phone: \"010-1347-9999\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    orderId: \"20260714101411023\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: 블랙베리 Q10 슬림핏 투명 케이스를 구매했어요. 판매자가 주문을 확인하고 곧 배송할 예정입니다.

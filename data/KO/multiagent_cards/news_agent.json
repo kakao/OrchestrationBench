@@ -1,0 +1,141 @@
+{
+  "agent_card": {
+    "name": "뉴스(news)",
+    "agent_id": "news_agent",
+    "description": "국내외 주요 뉴스를 빠르게 확인하고, 원하는 주제나 분야의 뉴스를 검색·요약·브리핑 형태로 제공하는 뉴스 전문 에이전트입니다.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": true
+    },
+    "skills": [
+      {
+        "id": "searchNews",
+        "name": "뉴스 검색",
+        "description": "사용자가 입력한 키워드나 주제에 따라 최근 뉴스 기사를 검색해줍니다. 정렬 기준(최신순, 인기순 등)이나 기간 필터도 설정할 수 있으며, 이후 요약 또는 브리핑에 연계할 수 있습니다.",
+        "examples": [
+          "카카오 관련 최근 뉴스 검색해줘",
+          "AI 윤리 논란에 대한 뉴스 기사 찾아줘",
+          "지난주 미국 대선 관련 기사 보여줘",
+          "오늘 오후에 나온 삼성전자 뉴스 검색할 수 있어?",
+          "트렌드에 오른 IT 뉴스만 모아서 보여줘"
+        ]
+      },
+      {
+        "id": "summarizeNews",
+        "name": "뉴스 요약",
+        "description": "뉴스 주제 브리핑 또는 특정 기사 요약을 처리합니다. 주제 기반 브리핑을 요청하거나 기사 URL/본문이 제공된 경우 해당 기사 요약을 제공합니다. ",
+        "examples": [
+          "이 기사 요약해줘: https://news.example.com/article/1234",
+          "AI 정책 기사 핵심만 뽑아줘",
+          "긴 기사 읽기 귀찮으니 핵심만 정리해줘",
+          "정치권 이슈 요약 브리핑 해줄래?",
+          "방금 나온 속보 위주로 브리핑해줘",
+          "이번 주 뉴스 키워드별로 정리해줘"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "searchNews",
+      "description": "사용자 쿼리를 기반으로 관련 뉴스 기사들을 검색하여 헤드라인과 URL 목록으로 반환합니다. 날짜 필터, 카테고리, 결과 수 제한도 지원합니다. 여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "정제된 뉴스 검색 쿼리 (예: '카카오 주식 관련 최근 뉴스')"
+          },
+          "fromDate": {
+            "type": "string",
+            "format": "date",
+            "description": "검색 시작일 (ISO 8601 형식, 선택값)"
+          },
+          "toDate": {
+            "type": "string",
+            "format": "date",
+            "description": "검색 종료일 (ISO 8601 형식, 선택값)"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "politics",
+              "economy",
+              "technology",
+              "sports",
+              "entertainment",
+              "world",
+              "health",
+              "etc"
+            ],
+            "description": "뉴스 카테고리 필터 (선택값)"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "검색 결과 개수 제한 (기본값: 5)"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "limit"
+        ]
+      }
+    },
+    {
+      "name": "summarizeNews",
+      "description": "뉴스 주제 브리핑 또는 특정 기사 요약을 처리합니다. 주제 기반 브리핑을 요청하거나 기사 URL/본문이 제공된 경우 해당 기사 요약을 제공합니다.  여러 대상에 대해 반복적으로 호출할 경우, 리스트 형태로 구성할 수 있습니다.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "요약 또는 브리핑 목적을 정제한 문장 (예: '천안함 사건 뉴스 요약해줘', '이 기사 핵심만 알려줘')"
+          },
+          "topic": {
+            "type": "string",
+            "description": "브리핑 주제 또는 키워드 (예: '천안함 사건', '부동산 정책')"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "politics",
+              "economy",
+              "technology",
+              "sports",
+              "entertainment",
+              "world",
+              "health",
+              "etc"
+            ],
+            "description": "뉴스 분야 필터 (선택값, 주제 기반 브리핑일 때만 사용)"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "브리핑 기준 날짜 YYYY-MM-DD 형태 (선택값)"
+          },
+          "url": {
+            "type": "string",
+            "description": "요약할 뉴스 기사 URL (선택값, 기사 요약에 사용)"
+          },
+          "style": {
+            "type": "string",
+            "enum": [
+              "headlines",
+              "summary",
+              "bulletPoints",
+              "short",
+              "detailed"
+            ],
+            "description": "요약 또는 브리핑 형식. 브리핑 시에는 'headlines'/'summary'/'bulletPoints', 기사 요약 시에는 'short'/'detailed' 사용 권장"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- date: 2026-01-15
+
+      - 사용자 이름: 박서준'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 발리에 화재가 크게 났다고 하는데 피해 규모가 얼마나 되는지 뉴스 좀 찾아봐. 발리 가는 항공권 예매한 거는 취소해주고 2월
+      1일 하와이행으로 다시 알아봐줘. 근데 하와이 2월 날씨가 괜찮나?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: news_agent\n      refined_query: \"발리 화재 발생 피해\
+      \ 규모\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n  \
+      \  - status: pending\n      name: travel_agent\n      refined_query: \"발리행 항공권\
+      \ 예매 내역 조회\"\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"발리행 항공권 예매 취소\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"2월 1일 하와이행 항공권 정보 조회\"\n\nworkflow_4:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: weather_agent\n      refined_query:\
+      \ \"하와이 2월 날씨\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"발리 화재 발생 피해 규모\"\n \
+      \ limit: 5\ntool_call_result:\n  data:\n    refinedQuery: \"발리 화재 발생 피해 규모\"\
+      \n    newsArticles:\n      - title: \"발리 대형 화재 발생, 피해 규모 증가\"\n        description:\
+      \ \"최근 발리에서 발생한 대형 화재로 인해 수백 명이 대피하고 수십 채의 건물이 소실되었습니다.\"\n        source: \"\
+      세계일보\"\n        publishDate: \"2026-01-13\"\n        url: \"https://www.segye.com/news/articleView.html?idxno=202508280001\"\
+      \n      - title: \"발리 화재 피해, 관광 산업에 큰 타격\"\n        description: \"발리 화재로 인해\
+      \ 주요 관광지가 피해를 입으며 관광 산업에 큰 타격이 예상됩니다.\"\n        source: \"조선일보\"\n        publishDate:\
+      \ \"2026-01-14\"\n        url: \"https://www.chosun.com/international/article202508290002\"\
+      \n      - title: \"발리 화재 원인 조사 중, 인재 가능성 배제 못해\"\n        description: \"발리\
+      \ 당국은 화재 원인을 조사 중이며, 인재 가능성도 배제하지 않고 있습니다.\"\n        source: \"동아일보\"\n   \
+      \     publishDate: \"2026-01-13\"\n        url: \"https://www.donga.com/news/International/article202508300003\"\
+      \n      - title: \"피해 복구 시작된 발리 화재 현장\"\n        description: \"당국은 발리 화재 피해\
+      \ 지역의 복구 작업을 시작했으며, 피해 주민들을 돕기 위한 지원을 진행 중입니다.\"\n        source: \"한겨레\"\n\
+      \        publishDate: \"2026-01-15\"\n        url: \"https://www.hani.co.kr/arti/international/country202508310004\"\
+      \n      - title: \"발리 화재, 국제적인 지원 요청\"\n        description: \"발리 정부는 국제 사회에\
+      \ 지원을 요청하며 화재 피해 복구에 협력할 것을 촉구했습니다.\"\n        source: \"경향신문\"\n        publishDate:\
+      \ \"2026-01-15\"\n        url: \"https://www.khan.co.kr/world/article202509010005\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약자 연락처'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"2월 1일 하와이행 항공권 정보\
+      \ 조회\"\n  departure: \"ICN\"\n  destination: \"하와이\"\n  departureDate: \"2026-02-01\"\
+      \ntool_call_result:\n  flights:\n    - flight_number: KE001\n      tripId: FLIGHT-2026-0201-ICN-HNL-KE001\n\
+      \      airline: Korean Air\n      departure_airport: ICN\n      arrival_airport:\
+      \ HNL\n      departure_time: \"2026-02-01T09:00:00+09:00\"\n      arrival_time:\
+      \ \"2026-02-01T20:30:00-10:00\"\n      duration: \"11시간 30분\"\n      price:\
+      \ 1500000\n      currency: KRW\n      seat_class: Economy\n      available_seats:\
+      \ 25\n    - flight_number: OZ123\n      tripId: FLIGHT-2026-0201-ICN-HNL-OZ123\n\
+      \      airline: Asiana Airlines\n      departure_airport: ICN\n      arrival_airport:\
+      \ HNL\n      departure_time: \"2026-02-01T13:00:00+09:00\"\n      arrival_time:\
+      \ \"2026-02-01T02:30:00-10:00\"\n      duration: \"11시간 30분\"\n      price:\
+      \ 1450000\n      currency: KRW\n      seat_class: Economy\n      available_seats:\
+      \ 30\n    - flight_number: DL456\n      tripId: FLIGHT-2026-0201-ICN-HNL-DL456\n\
+      \      airline: Delta Airlines\n      departure_airport: ICN\n      arrival_airport:\
+      \ HNL\n      departure_time: \"2026-02-01T17:00:00+09:00\"\n      arrival_time:\
+      \ \"2026-02-01T06:30:00-10:00\"\n      duration: \"11시간 30분\"\n      price:\
+      \ 1520000\n      currency: KRW\n      seat_class: Economy\n      available_seats:\
+      \ 20"
+- workflow_id: workflow_4
+  step_id: 7
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getGlobalWeather\narguments:\n  refinedQuery: \"하와이 2월 날씨\"\n\
+      \  location: \"Hawaii\"\n  date: \"2월\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"하와이 2월 날씨\"\n    location: \"Hawaii\"\n    date: \"2월\"\n    weatherSummary:\n\
+      \      averageTemperature: \"18°C - 26°C\"\n      conditions: \"대체로 맑음\"\n \
+      \     precipitation: \"낮은 강수량\"\n      wind: \"북동풍, 평균 시속 15km\"\n      humidity:\
+      \ \"습도 평균 70%\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 항공권 취소를 위한 예매 내역을 확인하기 위해서는 예약자 연락처가 필요합니다.
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1234-1234
+- workflow_id: workflow_2
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getFlightReservation\narguments:\n  refinedQuery: \"발리행 항공권 예매\
+      \ 내역 조회\"\n  contactNumber: \"010-1234-1234\"\ntool_call_result:\n  reservations:\n\
+      \    - reservationId: \"RESERV-101\"\n      flight_number: \"GA879\"\n     \
+      \ tripId: \"FLIGHT-2026-02-01-ICN-DPS-GA879\"\n      airline: \"Garuda Indonesia\"\
+      \n      departure_airport: \"ICN\"\n      arrival_airport: \"DPS\"\n      departure_time:\
+      \ \"2026-02-01T10:00:00+09:00\"\n      arrival_time: \"2026-02-01T16:00:00+08:00\"\
+      \n      seat_class: \"Economy\"\n      passenger_name: \"Park Seojun\"\n   \
+      \   seat_number: \"15A\"\n      price: 970000\n      currency: KRW\n      status:\
+      \ \"confirmed\"\n      change_count: 0"
+- workflow_id: null
+  step_id: 11
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelFlight\narguments:\n  refinedQuery: \"발리행 항공권 예매 취소\"\n\
+      \  reservationId: \"RESERV-101\"\n  refundMethod: \"original_payment\"\ntool_call_result:\n\
+      \  cancellation:\n    reservationId: \"RESERV-101\"\n    status: \"cancelled\"\
+      \n    refundAmount: 970000\n    currency: KRW\n    refundMethod: \"original_payment\"\
+      \n    message: \"환불이 완료되었습니다. 환불 금액은 원래 결제 수단으로 처리됩니다.\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "◾발리에서 발생한 대형 화재에 대한 최근 뉴스\n\n1. \"발리 대형 화재 발생, 피해 규모 증가\" - 발리에서 발생한\
+      \ 대형 화재로 인해 수백 명이 대피하고 수십 채의 건물이 소실되었습니다. [세계일보](https://www.segye.com/news/articleView.html?idxno=202508280001)\
+      \ (2026-01-13)\n\n2. \"발리 화재 피해, 관광 산업에 큰 타격\" - 주요 관광지가 피해를 입어, 발리의 관광 산업에\
+      \ 큰 타격이 예상됩니다. [조선일보](https://www.chosun.com/international/article202508290002)\
+      \ (2026-01-14)\n\n3. \"발리 화재 원인 조사 중, 인재 가능성 배제 못해\" - 발리 당국은 화재 원인을 조사 중이며,\
+      \ 인재 가능성도 배제하지 않고 있습니다. [동아일보](https://www.donga.com/news/International/article202508300003)\
+      \ (2026-01-13)\n\n4. \"피해 복구 시작된 발리 화재 현장\" - 피해 지역의 복구 작업이 시작되었고, 피해 주민들을 돕기\
+      \ 위한 지원이 진행 중입니다. [한겨레](https://www.hani.co.kr/arti/international/country202508310004)\
+      \ (2026-01-15)\n\n5. \"발리 화재, 국제적인 지원 요청\" - 발리 정부는 국제 사회에 지원을 요청하며 화재 피해 복구에\
+      \ 협력할 것을 촉구했습니다. [경향신문](https://www.khan.co.kr/world/article202509010005) (2026-01-15)\n\
+      \n상황의 심각성을 반영한 다양한 기사들이 보도되고 있으며, 국제 사회의 관심과 지원이 필요한 상황입니다.\n\n\n◾발리행 항공권 예매\
+      \ 취소\n- 박서준 님의 예약 번호 RESERV-101번 발리행 항공권이 성공적으로 취소되었습니다. 환불 금액 970,000원이 원래\
+      \ 결제 수단으로 처리됩니다.\n\n\n◾2월 1일 하와이행 항공권 정보 조회\n- 다음은 2026년 2월 1일 인천(ICN)에서 하와이(HNL)로\
+      \ 가는 항공편 정보입니다:\n\n1. 대한항공(KE001)\n   - 출발: 09:00\n   - 도착: 20:30\n   - 소요 시간:\
+      \ 11시간 30분\n   - 가격: 1,500,000₩\n   - 남은 좌석: 25\n\n2. 아시아나항공(OZ123)\n   - 출발:\
+      \ 13:00\n   - 도착: 02:30 (다음날)\n   - 소요 시간: 11시간 30분\n   - 가격: 1,450,000₩\n \
+      \  - 남은 좌석: 30\n\n3. 델타항공(DL456)\n   - 출발: 17:00\n   - 도착: 06:30 (다음날)\n   -\
+      \ 소요 시간: 11시간 30분\n   - 가격: 1,520,000₩\n   - 남은 좌석: 20\n\n모든 항공편은 이코노미 클래스 기준입니다.\n\
+      \n\n◾하와이 2월 날씨 정보\n\n- 평균 기온: 18°C에서 26°C 사이\n- 날씨 상태: 대체로 맑음\n- 강수량: 낮은 수준\n\
+      - 바람: 북동풍으로 평균 시속 15km\n- 평균 습도: 70%\n\n하와이는 2월에 온화하고 맑은 날씨를 즐기기에 적합한 시기입니다.\
+      \ 여행 계획에 참고하시기 바랍니다."

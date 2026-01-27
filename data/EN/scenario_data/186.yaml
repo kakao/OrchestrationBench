@@ -1,0 +1,283 @@
+metadata:
+  total_steps: 16
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Current date: 2027/06/01'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you compare the different ways to get to Boston without driving,
+      considering both time and cost, and then book the best option?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"Search for\
+      \ flight information to Boston\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Search for train and bus information to Boston\"\n\n\
+      workflow_3:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"Book a flight to Boston\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Book a train or a bus to Boston\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure location and departure date'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Departure location and departure date'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Yes, I can compare the options for getting to Boston and help you make
+      a reservation. To give you an accurate comparison, could you tell me your departure
+      location and the date when you’d like to travel?
+
+
+      In order to provide you with train and bus information, could you please let
+      me know the train station and bus stop from which you plan to depart?'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 'Oh, I''m leaving from New York and I’d like to go this Friday morning.
+
+
+      I plan to take the train from New York Penn Station and the bus from Port Authority
+      Bus Terminal.'
+- workflow_id: workflow_1
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"Flights from New\
+      \ York to Boston this Friday morning\"\n  departure: \"New York\"\n  destination:\
+      \ \"Boston\"\n  departureDate: \"2027-06-04\"\ntool_call_result:\n  data:\n\
+      \    - tripId: \"JBUJFKBOS20270604_01\"\n      airline: \"JetBlue Airways\"\n\
+      \      departureAirport: \"JFK\"\n      arrivalAirport: \"BOS\"\n      departureTime:\
+      \ \"2027-06-04T09:00:00\"\n      arrivalTime: \"2027-06-04T10:05:00\"\n    \
+      \  duration: \"01:05\"\n      price: 150\n      currency: \"USD\"\n      seatClass:\
+      \ \"economy\"\n      isDirectFlight: true\n    - tripId: \"DALJFKBOS20270604_02\"\
+      \n      airline: \"Delta Air Lines\"\n      departureAirport: \"JFK\"\n    \
+      \  arrivalAirport: \"BOS\"\n      departureTime: \"2027-06-04T10:00:00\"\n \
+      \     arrivalTime: \"2027-06-04T11:10:00\"\n      duration: \"01:10\"\n    \
+      \  price: 140\n      currency: \"USD\"\n      seatClass: \"economy\"\n     \
+      \ isDirectFlight: true"
+- workflow_id: workflow_2
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getTransitSchedule\n    arguments:\n      refinedQuery:\
+      \ \"Train schedule from New York Penn Station to Boston this Friday morning\"\
+      \n      transportType: \"train\"\n      departureStation: \"New York Penn Station\"\
+      \n      arrivalStation: \"Boston South Station\"\n      departureDate: \"2027-06-04\"\
+      \n  - tool: getTransitSchedule\n    arguments:\n      refinedQuery: \"Bus schedule\
+      \ from New York Port Authority Bus Terminal to Boston this Friday morning\"\n\
+      \      transportType: \"bus\"\n      departureStation: \"York Port Authority\
+      \ Bus Terminal\"\n      arrivalStation: \"Boston South Station\"\n      departureDate:\
+      \ \"2027-06-04\"\n\ntool_call_result:\n  - data:\n      - transportType: \"\
+      Amtrak\"\n        departureStation: \"New York Penn Station\"\n        arrivalStation:\
+      \ \"Boston South Station\"\n        departureTime: \"2027-06-04T08:30:00\"\n\
+      \        arrivalTime: \"2027-06-04T12:10:00\"\n        duration: \"3 hours 40\
+      \ minutes\"\n        price: 120\n        currency: \"USD\"\n        seatClass:\
+      \ \"Standard\"\n      - transportType: \"Amtrak\"\n        departureStation:\
+      \ \"New York Penn Station\"\n        arrivalStation: \"Boston South Station\"\
+      \n        departureTime: \"2027-06-04T09:30:00\"\n        arrivalTime: \"2027-06-04T13:00:00\"\
+      \n        duration: \"3 hours 30 minutes\"\n        price: 160\n        currency:\
+      \ \"USD\"\n        seatClass: \"Business\"\n  - data:\n      - transportType:\
+      \ \"bus\"\n        busId: \"GH301\"\n        departureStation: \"New York Port\
+      \ Authority Bus Terminal\"\n        arrivalStation: \"Boston South Station\"\
+      \n        departureTime: \"2027-06-04T08:00:00\"\n        arrivalTime: \"2027-06-04T12:30:00\"\
+      \n        duration: \"4 hours 30 minutes\"\n        price: 45\n        currency:\
+      \ \"USD\"\n        seatAvailability: \"available\"\n      - transportType: \"\
+      bus\"\n        busId: \"GH302\"\n        departureStation: \"New York Port Authority\
+      \ Bus Terminal\"\n        arrivalStation: \"Boston South Station\"\n       \
+      \ departureTime: \"2027-06-04T09:00:00\"\n        arrivalTime: \"2027-06-04T13:15:00\"\
+      \n        duration: \"4 hours 15 minutes\"\n        price: 40\n        currency:\
+      \ \"USD\"\n        seatAvailability: \"available\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Transportation choice, full name, date of birth, gender, contact
+      information, seat class, baggage options, and whether mileage points will be
+      used'
+- workflow_id: workflow_4
+  step_id: 11
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Transportation, contact information, and number of passengers'
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 'Sure, let me compare the options for traveling from New York to Boston
+      this Friday morning, focusing on time and cost.
+
+
+      - Flight (JFK → BOS)
+
+
+      Travel time: About 1 hour 10 minutes (excluding airport transfer and check-in)
+
+      Estimated cost: $140 ~ $160
+
+      Notes: Fastest travel time, but the total duration may increase due to airport
+      transfers and waiting.
+
+
+      - Train (Amtrak)
+
+
+      Travel time: About 3 hours 30 minutes ~ 4 hours
+
+      Estimated cost: $120 ~ $160
+
+      Notes: Convenient city-center access and reliable schedules, making it a preferred
+      option.
+
+
+      - Express Bus
+
+
+      Travel time: About 4 hours 15 minutes ~ 4 hours 30 minutes
+
+      Estimated cost: $40 ~ $45
+
+      Notes: Cheapest option, but travel time can vary depending on traffic.
+
+
+      ✨ Overall Recommendation
+
+      Considering both time and cost, the Amtrak train at about 3 hours 30 minutes
+      for around $120 looks like the most balanced choice.
+
+
+      ----------
+
+
+      Which option would you like me to help you book? Depending on your choice, I’ll
+      need the following details:
+
+
+      - Flight Booking
+
+
+      Full Name:
+
+      Date of Birth:
+
+      Gender:
+
+      Phone Number:
+
+      Seat Class (Economy, Business):
+
+      Baggage Options:
+
+      Frequent Flier Miles Use:
+
+
+      - Train or Bus Booking
+
+      Contact Number:
+
+      Number of Passengers:'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: Book it on Amtrak! My number is (202)555-1234 and it’s for one person.
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: travel_agent\n      refined_query: \"Search for\
+      \ flight information to Boston\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Search for train and bus information to Boston\"\n\n\
+      workflow_3:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\
+      \n  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"Book a flight to Boston\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Book a train or a bus from New York to Boston\""
+- workflow_id: null
+  step_id: 15
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookTransitTicket\narguments:\n  refinedQuery: \"Book 1 ticket\
+      \ on the Amtrak train departing from New York Penn Station to Boston South Station\
+      \ on June 4, 2027 at 9:30 AM. Contact: (202)555-1234\"\n  transportType: \"\
+      train\"\n  departureStation: \"New York Penn Station\"\n  arrivalStation: \"\
+      Boston South Station\"\n  departureDate: \"2027-06-04\"\n  departureTime: \"\
+      09:30\"\n  seatType: \"standard\"\n  roundTrip: false\n  passengerCount: 1\n\
+      \  contactInfo: \"(202)555-1234\"\ntool_call_result:\n  data:\n    reservationId:\
+      \ \"RSV20270604_AMTRAK0930\"\n    status: \"confirmed\"\n    transportType:\
+      \ \"train\"\n    trainType: \"Amtrak\"\n    departureStation: \"New York Penn\
+      \ Station\"\n    arrivalStation: \"Boston South Station\"\n    departureTime:\
+      \ \"2027-06-04T09:30:00\"\n    arrivalTime: \"2027-06-04T13:00:00\"\n    seatType:\
+      \ \"coach\"\n    contactInfo: \"(202)555-1234\"\n    price: 120\n    currency:\
+      \ \"USD\"\n    message: \"Your Amtrak coach class ticket has been booked successfully.\""
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your requested Amtrak train reservation has been confirmed. Here are
+      the details:
+
+
+      Train type: Amtrak (Standard Class)
+
+      Departure: New York Penn Station
+
+      Arrival: Boston South Station
+
+      Departure time: June 4, 2027, 9:30 AM
+
+      Arrival time: 1:00 PM
+
+      Ticket price: $120
+
+      Reservation number: RSV20270604_AMTRAK0930
+
+      Contact number: (202)555-1234
+
+
+      If you want, I can add this schedule to your calendar or provide transportation
+      and weather information for your destination.'

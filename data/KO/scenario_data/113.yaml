@@ -1,0 +1,204 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2027-03-13
+
+      name: 김갈비
+
+      userId : 2027-MOV-3'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 아이언맨3 영화 예매 한거랑 김가네 양갈비 예약한거 두개 확인좀 해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      아이언맨3 영화 예매 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"김가네\
+      \ 양갈비 예약 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 연락처'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 연락처'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 예매와 예약 확인을 위해 사용자의 연락처가 필요합니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1122-3344
+- workflow_id: workflow_1
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieBooking\narguments:\n  refinedQuery: \"아이언맨3 영화 예매 조회\"\
+      \n  name: \"김갈비\"\n  contactNumber: \"010-1122-3344\"\n  movieTitle: \"아이언맨\
+      \ 3\"\n  userId: \"2027-MOV-3\"\ntool_call_result:\n  bookingInfo:\n    bookingId:\
+      \ \"MOV-20250811-00045\"\n    movieTitle: \"아이언맨 3\"\n    theater: \"CGV 강남\"\
+      \n    screen: \"IMAX관\"\n    seatNumbers:\n      - \"F12\"\n      - \"F13\"\n\
+      \    showDateTime: \"2027-03-15T19:30\"\n    bookingDate: \"2027-03-10\"\n \
+      \   ticketCount: 2\n    price: \"₩28,000\"\n    paymentMethod: \"신용카드\"\n  \
+      \  status: \"예매확정\"\n    bookedBy: \"김갈비\"\n    contactNumber: \"010-1122-3344\""
+- workflow_id: null
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"김가네 양갈비\
+      \ 예약 조회\"\n  contactInfo: \"010-1122-3344\"\n  placeCategory: \"음식점\"\n  placeName:\
+      \ \"김가네 양갈비\"\ntool_call_result:\n  reservationInfo:\n    reservationId: \"\
+      RES-FOOD-20270315-00123\"\n    placeName: \"김가네 양갈비\"\n    placeCategory: \"\
+      음식점\"\n    reservationName: \"김갈비\"\n    contactInfo: \"010-1122-3344\"\n  \
+      \  reservationDate: \"2027-03-15\"\n    startDateTime: \"2027-03-15T19:00\"\n\
+      \    endDateTime: \"2027-03-15T20:30\"\n    partySize: 2\n    table: \"홀-04\"\
+      \n    status: \"예약확정\"\n    notes:\n      - \"도착 후 이름 확인\"\n      - \"15분 지연\
+      \ 시 자동 취소 가능\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 영화 아이언맨 3 예매가 확인되었습니다.
+
+      상영일시는 2027년 3월 15일 19:30이며, 상영관은 CGV 강남 IMAX관입니다.
+
+      좌석은 F12, F13번이고, 예매 인원은 2명입니다.
+
+      결제 금액은 ₩28,000이며, 결제수단은 신용카드입니다.
+
+      예매 상태는 ‘예매확정’입니다.
+
+
+
+      ▶ 김가네 양갈비 예약이 확인되었습니다.
+
+      예약일시는 2027년 3월 15일 19:00부터 20:30까지이며, 예약 인원은 2명입니다.
+
+      테이블은 홀-04번으로 배정되어 있으며, 도착 후 이름 확인 절차가 필요합니다.
+
+      15분 이상 지연 시 예약이 자동 취소될 수 있으니 유의해 주세요.'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: '아 멍청하게 같은시간으로 예매를 했네
+
+      CGV 강남에서 아이언맨 3 예매 시간을 3시쯤 하는걸로 바꿔줘!'
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"아이언맨3 영화 예매 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: place_agent\n      refined_query:\
+      \ \"김가네 양갈비 예약 조회\" \n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"CGV 강남에서 영화 아이언맨 3 3월 15일 오후 3시 상영시간 조회\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n\
+      \      name: entertainment_agent\n      refined_query: \"영화 아이언맨 3 예매 시간을 3시쯤\
+      \ 상영하는 것으로 변경\""
+- workflow_id: workflow_3
+  step_id: 13
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"CGV 강남에서 영화 아이언맨 3\
+      \ 3월 15일 오후 3시 상영시간 조회\"\n  movieTitle: \"아이언맨 3\"\n  theaterLocation: \"CGV\
+      \ 강남\"\n  sortBy: \"releaseDate\"\n  screeningDate: \"2027-03-15\"\ntool_call_result:\n\
+      \  movieInfo:\n    movieTitle: \"아이언맨 3\"\n    theater: \"CGV 강남\"\n    screeningDate:\
+      \ \"2027-03-15\"\n    screenings:\n      - screen: \"IMAX관\"\n        showDateTime:\
+      \ \"2027-03-15T15:10\"\n        availableSeats: 42\n        totalSeats: 120\n\
+      \        format: \"IMAX 3D\"\n      - screen: \"7관\"\n        showDateTime:\
+      \ \"2027-03-15T15:25\"\n        availableSeats: 58\n        totalSeats: 100\n\
+      \        format: \"2D\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 변경할 시간'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: '영화 아이언맨 3 는 2027년 3월 15 CGV 강남에서 다음과 같이 상영됩니다.
+
+
+      *IMAX관: 오후 3시 10분 (남은 좌석 42석 / 총 120석, IMAX 3D)
+
+      *7관: 오후 3시 25분 (남은 좌석 58석 / 총 100석, 2D)
+
+
+      예매 변경을 위해 원하시는 시간대를 말씀해 주세요.'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 7관 3시 25분 껄로 바꿔줘
+- workflow_id: null
+  step_id: 17
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyMovieBooking\narguments:\n  refinedQuery: \"기존 예매 되어 있던\
+      \ 아이언맨 3 시간을 오후 3:25 7관으로 변경\"\n  bookingId: \"MOV-20250811-00045\"\n  modifiedShowTime:\
+      \ \"15:25\"\n  changeReason: \"상영시간 변경 희망\"\ntool_call_result:\n  modificationResult:\n\
+      \    bookingId: \"MOV-20250811-00045\"\n    movieTitle: \"아이언맨 3\"\n    theater:\
+      \ \"CGV 강남\"\n    screen: \"7관\"\n    oldShowDateTime: \"2027-03-15T19:30\"\n\
+      \    newShowDateTime: \"2027-03-15T15:25\"\n    seatNumbers:\n      - \"F12\"\
+      \n      - \"F13\"\n    ticketCount: 2\n    price: \"₩28,000\"\n    paymentMethod:\
+      \ \"신용카드\"\n    status: \"변경완료\"\n    changeFee: \"₩0\"\n    message: \"상영 시간이\
+      \ 2027-03-15 15:25로 성공적으로 변경되었습니다.\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: '영화 아이언맨 3 의 예매 시간이 변경되었습니다.
+
+      기존 상영 시간: 2027년 3월 15일 19:30
+
+      변경된 상영 시간: 2027년 3월 15일 15:25
+
+      상영관: CGV 강남 7관
+
+      좌석: F12, F13
+
+      변경 수수료 없이 변경이 완료되었습니다.'

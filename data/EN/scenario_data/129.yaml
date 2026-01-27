@@ -1,0 +1,126 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current time: 4:14 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Find me a parking lot near Lexington Avenue Station and give me the fastest
+      route using Google Map navigation.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"Parking\
+      \ lot locations near Lexington Avenue Station\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"Guide me with the fastest\
+      \ route to a parking lot near Lexington Avenue Station using Google Map navigation\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"Parking lots near\
+      \ Lexington Avenue Station\"\n  location: \"Lexington Avenue Station\"\n  searchRadius:\
+      \ 500\n  sortBy: \"nearest\"\ntool_call_result:\n  data:\n    parkingLots:\n\
+      \      - name: \"Icon Parking — 110 E 60th St\"\n        address: \"110 E 60th\
+      \ St, New York, NY 10022\"\n        capacity: 120\n        availableSpots: 34\n\
+      \        hourlyRate: \"$22\"\n        isOpen24Hours: true\n      - name: \"\
+      GGMC Parking — 150 E 58th St\"\n        address: \"150 E 58th St, New York,\
+      \ NY 10155\"\n        capacity: 90\n        availableSpots: 18\n        hourlyRate:\
+      \ \"$20\"\n        isOpen24Hours: false\n      - name: \"SP+ — 140 E 63rd St\"\
+      \n        address: \"140 E 63rd St, New York, NY 10065\"\n        capacity:\
+      \ 150\n        availableSpots: 47\n        hourlyRate: \"$25\"\n        isOpen24Hours:\
+      \ true"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Parking lot selected by user'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s some information about parking lots near Lexington Avenue Station.\
+      \ You can check available spaces, rates, and operating hours.\n\n1. Icon Parking\
+      \ — 110 E 60th St\n\nAddress: 110 E 60th St, New York, NY 10022\nCapacity: 120\
+      \ • Available now: 34\nRate: $22/hour\nOpen 24/7: Yes\n\n2. GGMC Parking — 150\
+      \ E 58th St\n\nAddress: 150 E 58th St, New York, NY 10155\nCapacity: 90 • Available\
+      \ now: 18\nRate: $20/hour\nOpen 24/7: No\n\n3. SP+ — 140 E 63rd St\n\nAddress:\
+      \ 140 E 63rd St, New York, NY 10065\nCapacity: 150 • Available now: 47\nRate:\
+      \ $25/hour\nOpen 24/7: Yes\n\nFor which parking lot would you like directions?\
+      \ \nTo provide directions, I’ll need your starting point. For example, you can\
+      \ say \"home,\" \"Seoul Station,\" or \"current location.\""
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Give me directions to Icon Parking. I’ll be leaving from IFC Mall in
+      Lexington.
+- workflow_id: null
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Guide me with Google\
+      \ Maps navigation from IFC Mall in Lexington to Icon Parking as quickly as possible\"\
+      \n  origin: \"IFC Mall\"\n  destination: \"Icon Parking\"\n  departureTime:\
+      \ \"16:14\"\n  transportModes: \"car\"\n  optimizeBy: \"fastest\"\n  navigationMode:\
+      \ true\n  source: \"Google Maps\"\ntool_call_result:\n  data:\n    estimatedTime:\
+      \ \"32 minutes\"\n    distance: \"8.9 miles\"\n    transportMode: \"car\"\n\
+      \    route:\n      - step: 1\n        instruction: \"Exit IFC Mall and head\
+      \ southeast on the mall drive toward the main road.\"\n      - step: 2\n   \
+      \     instruction: \"Turn right to the arterial road and follow the signs for\
+      \ the expressway (fastest route).\"\n      - step: 3\n        instruction: \"\
+      Merge onto the expressway; continue about 6.8 miles toward Downtown.\"\n   \
+      \   - step: 4\n        instruction: \"Take Exit 7 for Downtown; keep left at\
+      \ the fork and follow the signs for Icon Parking.\"\n      - step: 5\n     \
+      \   instruction: \"Turn right to the Icon Parking garage entrance and proceed\
+      \ to the ticket gate.\"\n    tollFare: 0\n    realTimeTrafficApplied: true\n\
+      \    navigationLink: \"https://maps.google.com/link/to/Icon Parking\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Final Directions (English)
+
+      Start: IFC Mall (navigation mode on)
+
+      Destination: Icon Parking
+
+      ETA/Distance: ~32 minutes • 8.9 miles • Tolls: $0 • Real-time traffic applied
+
+
+      Exit IFC Mall and head southeast to the main road.
+
+
+      Turn right and follow the signs for the expressway (fastest route).
+
+
+      Merge onto the expressway; continue ~6.8 miles toward Downtown.
+
+
+      Take Exit 7 for Downtown; keep left and follow the signs for Icon Parking.
+
+
+      Turn right to the Icon Parking garage entrance; proceed to the ticket gate.
+
+
+      Google Maps: Use the provided navigation link in your tool result.'

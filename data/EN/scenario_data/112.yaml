@@ -1,0 +1,110 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'where: Riverview District, Midtown
+
+      date: 2027-08-23
+
+      userId: WH2027-0823
+
+      name: Peter White'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Don’t buy that so-called miracle bleach for love… They said 100% refund
+      is available if it doesn’t work, but it really had zero effect. Please help
+      me get a refund. Also, can you find me a nearby self-service laundromat?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"Check\
+      \ purchase history for Love Bleach\"\n    - status: pending\n      name: shopping\n\
+      \      refined_query: \"Request refund because Love Bleach was ineffective\"\
+      \n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"Recommend nearby\
+      \ self-service laundromats\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check purchase history\
+      \ for Love Bleach\"\n  userId: \"WH2027-0823\"\n  recipientName: \"Peter White\"\
+      \ntool_call_result:\n  orderInfo:\n    orderId: \"ORD-20250729-00123\"\n   \
+      \ productId: \"PB-LV-20240729-001\"\n    productName: \"Love Bleach\"\n    quantity:\
+      \ 2\n    orderDate: \"2027-08-20\"\n    deliveryStatus: \"Delivered\"\n    recipientName:\
+      \ \"Peter White\"\n    deliveryAddress: \"123-45 Main St, Uptown, New York,\
+      \ NY\"\n    paymentMethod: \"Credit Card\"\n    totalPrice: \"$39.80\"\n   \
+      \ refundEligible: true\n    refundPolicy: \"Full refund available within 30\
+      \ days of receipt if unsatisfied with results\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Recommended nearby\
+      \ self-service laundromats\"\n  placeCategory: \"self-service laundromat\"\n\
+      \  location: \"Riverview District, Midtown\"\n  sortBy: \"distance\"\ntool_call_result:\n\
+      \  places:\n    - name: \"Wash & Dry Riverview\"\n      address: \"32-5 Riverview\
+      \ District, Midtown\"\n      phone: \"(212) 345-6789\"\n      distance: \"400\
+      \ ft (0.1 miles)\"\n      features:\n        - Open 24 hours\n        - Equipped\
+      \ with large dryers\n        - Automatic detergent dispenser\n      link: \"\
+      https://example.com/place/washndry-riverview\"\n\n    - name: \"CoinWash Central\
+      \ Riverview\"\n      address: \"45-8 Riverview District, Midtown\"\n      phone:\
+      \ \"(212) 987-6543\"\n      distance: \"920 ft (0.2 miles)\"\n      features:\n\
+      \        - High-speed washers\n        - Special bedding wash cycle\n      \
+      \  - Free Wi-Fi\n      link: \"https://example.com/place/coinwash-central\"\n\
+      \n    - name: \"SelfClean Laundry Riverview\"\n      address: \"50-12 Riverview\
+      \ District, Midtown\"\n      phone: \"(212) 123-4567\"\n      distance: \"1,480\
+      \ ft (0.3 miles)\"\n      features:\n        - Uses eco-friendly detergent\n\
+      \        - Clothing sterilization function\n        - Spacious waiting area\n\
+      \      link: \"https://example.com/place/selfclean-riverview\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: refundProducts\narguments:\n  refinedQuery: \"Refund Love's Bleach\"\
+      \n  orderId: \"ORD-20250729-00123\"\n  itemList:\n    - productId: \"PB-LV-20240729-001\"\
+      \n      quantity: 2\n      reason: \"No noticeable effect from the product\"\
+      \n  reasonCode: \"OTHER\"\n  detailedReason: \"The product promises a 100% refund\
+      \ if ineffective, and it had no effect.\"\n  refundMethod: \"ORIGINAL_PAYMENT\"\
+      \ntool_call_result:\n  refundResult:\n    orderId: \"ORD-20250729-00123\"\n\
+      \    refundId: \"RF-20250811-00056\"\n    status: \"Refund Completed\"\n   \
+      \ refundedItems:\n      - productId: \"PB-LV-20240729-001\"\n        productName:\
+      \ \"Love's Bleach\"\n        quantity: 2\n        refundAmount: \"$39.80\"\n\
+      \    refundMethod: \"ORIGINAL_PAYMENT\"\n    processedDate: \"2027-08-23T14:35\"\
+      \n    message: \"Your requested refund has been processed using your original\
+      \ payment method. The refund will be deposited within 3–5 business days.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "<Love's Bleach Refund Confirmation>\nYour order ORD-20250729-00123 for\
+      \ Love's Bleach (2 units) has been successfully refunded.\n\n* Refund Amount:\
+      \ \\$39.80\n* Refund Method: Original payment method\n* Date Processed: August\
+      \ 23, 2027\n\n> The refund should appear in your account within 3–5 business\
+      \ days.\n\n\n<Nearby Self-Service Laundromats (Riverview District, Midtown)>\n\
+      \n1. Wash & Dry Riverview\n\n   * Address: 32-5 Riverview District, Midtown\n\
+      \   * Phone: (212) 345-6789\n   * Distance: 400 ft (0.1 miles)\n   * Features:\
+      \ Open 24 hours, large dryers, automatic detergent dispenser\n   * Website:\
+      \ [https://example.com/place/washndry-riverview](https://example.com/place/washndry-riverview)\n\
+      \n2. CoinWash Central Riverview\n\n   * Address: 45-8 Riverview District, Midtown\n\
+      \   * Phone: (212) 987-6543\n   * Distance: 920 ft (0.2 miles)\n   * Features:\
+      \ High-speed washers, bedding cycle, free Wi-Fi\n   * Website: [https://example.com/place/coinwash-central](https://example.com/place/coinwash-central)\n\
+      \n3. SelfClean Laundry Riverview\n\n   * Address: 50-12 Riverview District,\
+      \ Midtown\n   * Phone: (212) 123-4567\n   * Distance: 1,480 ft (0.3 miles)\n\
+      \   * Features: Eco-friendly detergent, clothing sterilization, spacious waiting\
+      \ area\n   * Website: [https://example.com/place/selfclean-riverview](https://example.com/place/selfclean-riverview)"

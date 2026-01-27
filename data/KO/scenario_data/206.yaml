@@ -1,0 +1,138 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-08-15
+
+      현재시각: 오후 15:11분'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 해외 직구 사이트에 주소 입력해야 하는데, 우리 집 주소 영문으로 바꾸고 우편번호도 같이 찾아줘. 그리고 070-8282-8282
+      전화번호 이거 스팸인지도 확인해 줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"우리 집\
+      \ 주소 영문으로 바꾸기\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \  - status: pending\n    name: life_info_agent\n    refined_query: \"우리 집 주소\
+      \ 우편번호 찾기\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: life_info_agent\n      refined_query: \"\
+      070-8282-8282 전화번호 이거 스팸인지 확인\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주소'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주소'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPhoneNumberInfo\narguments:\n  refinedQuery: \"070-8282-8282\
+      \ 전화번호 이거 스팸인지 확인\"\n  phoneNumber: \"07082828282\"\ntool_call_result:\n  data:\n\
+      \    phoneNumber: \"070-8282-8282\"\n    isSpam: true\n    spamType: \"보이스피싱\
+      \ 의심\"\n    reportCount: 143\n    lastReported: \"2025-08-07\"\n    description:\
+      \ \"해외 투자 권유, 대출 유도 등으로 신고된 번호입니다. 주의가 필요합니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: 변환하고자 하는 주소를 알려주세요
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 우리집 주소는 서울시 구로구 구로1동 구일우성아파트 101동 101호야
+- workflow_id: workflow_1
+  step_id: 9
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: convertToEnglishAddress\narguments:\n  refinedQuery: \"우리 집 주소\
+      \ 영문으로 바꾸기\"\n  addressQuery: \"서울시 구로구 구로1동 구일우성아파트 101동 101호\"\ntool_call_result:\n\
+      \  data:\n    originalAddress: \"서울시 구로구 구로1동 구일우성아파트 101동 101호\"\n    englishAddress:\
+      \ \"101-101, GUIL WOOSUNG Apartment, Guro 1-dong, Guro-gu, Seoul, Republic of\
+      \ Koreaa\"\n    status: \"converted\"\n    notes: \"영문 주소는 국제 우편 발송 시 사용하기 적합한\
+      \ 형식입니다.\""
+- workflow_id: workflow_2
+  step_id: 10
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getPostalCode\narguments:\n  refinedQuery: \"우리집 주소 우편번호 찾기\"\n\
+      \  addressQuery: \"서울시 구로구 구로1동 구일우성아파트 101동 101호\"\ntool_call_result:\n  data:\n\
+      \    originalAddress: \"서울시 구로구 구로1동 구일우성아파트 101동 101호\"\n    postalCode: \"\
+      08286\"\n    status: \"found\"\n    notes: \"해당 우편번호는 도로명주소 체계에 따라 조회된 결과입니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 주소 영문 변환
+
+      입력하신 주소:
+
+      서울시 구로구 구로1동 구일우성 101동 101호
+
+      - 영문 표기:
+
+      101-101, GUIL WOOSUNG Apartment, Guro 1-dong, Guro-gu, Seoul, Republic of Korea
+
+      국제 우편 발송 시 적합한 형식입니다.
+
+
+      ----------
+
+
+      ▶ 주소 우편번호
+
+      - 해당 주소의 우편번호는 08286입니다.
+
+
+      도로명 주소 체계 기준으로 조회된 결과입니다.
+
+
+      ----------
+
+
+      ▶ 전화번호 정보 확인
+
+      - 전화번호 070-8282-8282는 스팸으로 확인된 번호입니다.
+
+
+      - 스팸 유형: 보이스피싱 의심
+
+
+      - 신고 건수: 총 143건
+
+
+      - 최근 신고일: 2025년 8월 7일
+
+
+      - 설명: 해외 투자 권유 및 대출 유도 등으로 다수 신고된 번호입니다.
+
+      → 주의가 필요하며, 해당 번호로부터 전화가 오면 응답을 피하는 것이 좋습니다.'

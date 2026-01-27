@@ -1,0 +1,176 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2026년 2월 5일
+
+      - 현재 시각: 15:30'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 요즘 폰만 보면 정신이 너무 산만하고 스트레스도 심해. 상담해줄 수 있어? 그래서 이번 주말에는 핸드폰 안 보고 좀 쉬려고
+      하는데, 디지털 디톡스에 대해 알려줘. 실천하는 방법이나 이런 거.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"폰만 보면 정신이\
+      \ 산만하고 스트레스가 심해져서 상담을 받고 싶어요.\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"디지털 디톡스를 실천하는 방법\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"폰만 보면 정신이 산만하고 스트레스가\
+      \ 심해져서 상담을 받고 싶어요.\"\ntool_call_result:\n  data:\n    refinedQuery: \"폰만 보면\
+      \ 정신이 산만하고 스트레스가 심해져서 상담을 받고 싶어요.\"\n    status: \"상담 안내 제공\"\n    counselingAdvice:\
+      \ \n      - issueIdentified: \"디지털 기기 사용으로 인해 정신이 산만하고 스트레스가 심해지는 문제\"\n   \
+      \   - preliminarySteps: \n          - \"매일 정해진 시간 동안 폰 사용을 제한하고, 그 시간을 활용해 책을\
+      \ 읽거나 새로운 취미를 시작해 보세요.\"\n          - \"매일 일정 시간 동안 규칙적으로 운동을 하거나 자연 속에서 산책하면서\
+      \ 상쾌한 기분을 느껴보세요.\"\n          - \"명상 앱을 활용해 하루 10분 정도 마음을 안정시키는 시간을 가져보세요.\"\
+      \n      - professionalHelp:\n          - \"현재의 증상이 일상생활에 지장을 초래하거나 개선되지 않는다면\
+      \ 전문가의 도움이 필요합니다.\"\n          - \"스트레스 관리 및 디지털 중독 관련 전문 심리상담사와 상담을 예약하는 것을\
+      \ 고려해보세요.\"\n          - \"가까운 심리 상담 센터나 정신 건강 기관을 방문해 전문가의 조언을 받아보세요.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"디지털 디톡스를 실천하는 방법\"\n\
+      tool_call_result:\n  data:\n    refinedQuery: \"디지털 디톡스를 실천하는 방법\"\n    status:\
+      \ \"검색 완료\"\n    searchResults:\n      - title: \"디지털 디톡스: 시작하는 방법\"\n     \
+      \   summary: \"디지털 디톡스를 시작하려면 일상에서 디지털 기기 사용 패턴을 점검하고, 사용 시간을 점차 줄여 나가는 것이 중요합니다.\
+      \ 식사 중 휴대폰을 멀리 두거나 특정 시간 동안 SNS 알림을 꺼두는 방법이 있습니다. 작은 변화들이 큰 효과를 가져올 수 있습니다.\"\
+      \n        link: \"https://www.example.com/digital-detox-start\"\n      - title:\
+      \ \"일주일간의 디지털 디톡스 계획\"\n        summary: \"일주일 동안 디지털 기기 사용을 줄이기 위한 구체적인 계획을\
+      \ 세워보세요. 월요일에는 30분 동안 화면을 보지 않거나, 화요일에는 하루 동안 SNS를 사용하지 않는 등 하루하루 목표를 설정해 실천해보세요.\
+      \ 이는 디지털 기기 의존도를 줄이는 데 도움이 됩니다.\"\n        link: \"https://www.example.com/digital-detox-week-plan\"\
+      \n      - title: \"디지털 디톡스를 통해 얻을 수 있는 효과\"\n        summary: \"디지털 디톡스를 통해\
+      \ 정신적 피로 감소, 수면의 질 향상, 집중력 및 창의력 증가 등의 효과를 얻을 수 있습니다. 지속적인 실천은 스트레스 감소와 삶의 질\
+      \ 향상뿐만 아니라 인간관계 강화, 실생활 소통 증진을 가져올 수 있습니다.\"\n        link: \"https://www.example.com/digital-detox-benefits\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "◾상담 안내 제공\n\n디지털 기기 사용으로 인해 정신이 산만하고 스트레스가 심해지는 문제에 대한 상담 안내를 제공드립니다.\
+      \ 다음과 같은 단계를 통해 개선을 체험해 보세요:\n\n1. 일상 관리\n   - 매일 정해진 시간 동안 폰 사용을 제한하고, 그 시간을\
+      \ 활용해 책을 읽거나 새로운 취미를 시작해 보세요.\n   - 규칙적인 운동이나 자연 속 산책을 통해 상쾌한 기분을 느껴보세요.\n \
+      \  - 명상 앱을 활용하여 하루 10분 정도 마음을 안정시키는 시간을 가져보세요.\n\n2. 전문가 상담\n   - 현재의 증상이 일상생활에\
+      \ 지장을 초래하거나 개선되지 않는다면 전문가의 도움이 필요할 수 있습니다.\n   - 스트레스 관리 및 디지털 중독 관련 전문 심리상담사와의\
+      \ 상담을 예약하시는 것을 고려해보세요.\n   - 가까운 심리 상담 센터나 정신 건강 기관에서 전문가의 조언을 받으실 수 있습니다.\n\
+      \n위의 조언을 실천해 보시고, 필요한 경우 전문가의 도움을 받는 것을 권장드립니다. 조금씩 변화를 시작하셔서 더 나은 정신적 건강을 누리시길\
+      \ 바랍니다.\n\n\n◾디지털 디톡스 실천 방법\n\n디지털 디톡스를 실천하는 방법에 대해 검색한 결과를 공유드립니다. 디지털 기기 사용을\
+      \ 줄이고 스트레스를 줄이는 데 도움이 되는 정보를 확인하세요.\n\n1. 디지털 디톡스: 시작하는 방법\n   - 일상 속 디지털 기기\
+      \ 사용 패턴을 분석하고, 특정 시간 동안 기기 사용을 줄여보세요. 작은 변화가 큰 효과를 가져올 수 있습니다.\n   - [더 자세히\
+      \ 보기](https://www.example.com/digital-detox-start)\n\n2. 일주일간의 디지털 디톡스 계획\n\
+      \   - 일주일 동안 하루하루 목표를 설정해 디지털 기기 사용을 줄이는 구체적인 방안을 제시합니다. 이런 계획은 기기 의존도를 줄이는\
+      \ 데 효과적입니다.\n   - [더 자세히 보기](https://www.example.com/digital-detox-week-plan)\n\
+      \n3. 디지털 디톡스를 통해 얻을 수 있는 효과\n   - 정신적 피로 감소, 수면의 질 향상, 집중력 증가와 같은 효과를 기대할 수\
+      \ 있습니다. 지속적으로 실천하면 스트레스 감소와 인간관계 강화에도 도움이 됩니다.\n   - [더 자세히 보기](https://www.example.com/digital-detox-benefits)\n\
+      \n위의 정보를 참고하여 디지털 디톡스를 효과적으로 시작해 보시기 바랍니다. 도움이 되시길 바랍니다!"
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 좋아. 당장 오늘부터 시작이다! 디지털 없이 조용한 공간에서 나를 좀 돌봐야겠어. 목동에 서울숲처럼 조용하고 자연으로 둘러싸인
+      산책로 있어? 동네 사람들이 추천하는 인기있는 곳이면 더 좋아. 도보로 얼마나 걸리는지 알아봐줘.
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: counsel_agent\n      refined_query: \"폰만\
+      \ 보면 정신이 산만하고 스트레스가 심해져서 상담을 받고 싶어요.\"\n\nworkflow_2:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: search_agent\n\
+      \      refined_query: \"디지털 디톡스를 실천하는 방법\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"동네 주민들이 추천하는 자연으로 둘러싸인 조용한 목동 인기 산책로\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      자연으로 둘러싸인 조용한 목동 산책로까지 도보로 소요되는 시간\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"동네 주민들이 추천하는 자연으로\
+      \ 둘러싸인 조용한 목동 인기 산책로\"\n  placeCategory: \"산책로\"\n  location: \"목동\"\n  sortBy:\
+      \ \"popularity\"\ntool_call_result:\n  data:\n    refinedQuery: \"동네 주민들이 추천하는\
+      \ 자연으로 둘러싸인 조용한 목동 인기 산책로\"\n    placeCategory: \"산책로\"\n    location: \"목동\"\
+      \n    sortBy: \"popularity\"\n    status: \"추천 성공\"\n    popularPlaces:\n  \
+      \    - name: \"목동 공원 산책로\"\n        description: \"목동 중심에 위치한 공원으로, 울창한 숲과 함께\
+      \ 조용한 분위기를 즐길 수 있는 산책로입니다.\"\n        features: \n          - \"잘 정비된 산책로\"\n\
+      \          - \"휴식 공간\"\n          - \"조용한 환경\"\n        localRecommendation:\
+      \ true\n      - name: \"강동산성 산책로\"\n        description: \"풍성한 자연과 함께 완만한 경사를\
+      \ 따라 걷기 좋은 코스로, 동네 주민들이 자주 찾는 곳입니다.\"\n        features: \n          - \"아름다운\
+      \ 경관\"\n          - \"자연과의 조화\"\n          - \"쉬운 접근성\"\n        localRecommendation:\
+      \ true"
+- workflow_id: workflow_4
+  step_id: 10
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 산책로 사용자 선택, 출발지 정보'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "목동 지역에서 동네 주민들이 추천하는 자연으로 둘러싸인 조용한 산책로를 소개합니다.\n\n1. 목동 공원 산책로\n   -\
+      \ 목동 중심에 위치한 이 산책로는 울창한 숲과 조용한 분위기를 자랑합니다. 잘 정비된 산책로와 휴식 공간이 마련되어 있어 여유롭게 자연을\
+      \ 즐길 수 있습니다.\n\n2. 강동산성 산책로\n   - 자연과 함께 걷기 좋은 코스로 유명한 이 산책로는 완만한 경사를 따라 아름다운\
+      \ 경관을 제공합니다. 주민들이 자주 찾는 장소로 쉬운 접근성 덕분에 누구나 편하게 방문할 수 있습니다.\n\n이 산책로들은 지역 주민들이\
+      \ 자주 찾는 곳으로, 조용하고 쾌적한 환경에서 여유를 찾고 싶을 때 추천드립니다.\n\n어떤 산책로를 선택하시겠어요? 소요 시간을 알기\
+      \ 위해서는 출발지 정보도 함께 알려주시기 바랍니다."
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 경사가 완만한 강동산성 산책로가 좋겠어. 우리 집에서 출발할거고 위치는 신목동역 1번 출구야.
+- workflow_id: null
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"신목동역 1번 출구에서 강동산성\
+      \ 산책로까지 도보로 소요되는 시간\"\n  departureTime: \"15:30\"\n  transportModes: \"walk\"\
+      \n  optimizeBy: \"fastest\"\n  origin: \"신목동역 1번 출구\"\n  destination: \"강동산성\
+      \ 산책로\"\ntool_call_result:\n  data:\n    refinedQuery: \"신목동역 1번 출구에서 강동산성 산책로까지\
+      \ 도보로 소요되는 시간\"\n    departureTime: \"15:30\"\n    transportModes: \"walk\"\n\
+      \    optimizeBy: \"fastest\"\n    origin: \"신목동역 1번 출구\"\n    destination: \"\
+      강동산성 산책로\"\n    status: \"경로 검색 성공\"\n    estimatedTime: \"약 15분\"\n    directions:\n\
+      \      - \"신목동역 1번 출구를 나와 목동대로를 직진합니다.\"\n      - \"첫 번째 교차로에서 좌회전하여 강동산성길로\
+      \ 들어섭니다.\"\n      - \"약 5분 정도 직진 후 강동산성 산책로 입구에 도착합니다.\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: '신목동역 1번 출구에서 강동산성 산책로까지 도보로 이동하는 경로 안내입니다. 최적의 경로로 약 15분이 소요됩니다.
+
+
+      1. 신목동역 1번 출구를 나와 목동대로를 직진합니다.
+
+      2. 첫 번째 교차로에서 좌회전하여 강동산성길로 들어섭니다.
+
+      3. 약 5분 정도 직진하면 강동산성 산책로 입구에 도착합니다.
+
+
+      위의 경로를 따라 가시면 자연과 함께하는 산책을 즐길 수 있습니다. 즐거운 시간 되세요!'

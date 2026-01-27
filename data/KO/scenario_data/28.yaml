@@ -1,0 +1,113 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2025-04-02'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 동물학대에 대한 연구를 하고 있어. 오늘을 포함해서 최근 3개월 이내의 동물학대 관련 뉴스 찾아주고 요약도 해줘. 사이코패스의
+      정의와 특징과 동물학대 관련 법안도 찾아줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: news_agent\n      refined_query: \"오늘을 포함한 최근\
+      \ 3개월 이내 동물학대 관련 뉴스 검색\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: news_agent\n\
+      \      refined_query: \"오늘을 포함한 최근 3개월 이내 동물학대 관련 뉴스 요약\"\n\nworkflow_3:\n \
+      \ status: pending\n  type: independent\n  steps:\n    - status: pending\n  \
+      \    name: search_agent\n      refined_query: \"사이코패스의 정의와 특징과 동물학대 관련 법안 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"오늘을 포함한 최근 3개월 이내 동물학대\
+      \ 관련 뉴스 검색\"\n  fromDate: \"2025-01-02\"\n  toDate: \"2025-04-02\"\n  limit:\
+      \ 5\ntool_call_result:\n  data:\n    searchQuery: \"오늘을 포함한 최근 3개월 이내 동물학대 관련\
+      \ 뉴스 검색\"\n    resultCount: 5\n    newsArticles:\n      - title: \"동물학대 사건 증가,\
+      \ 시민들 경각심 높아져\"\n        url: \"http://news.example.com/article1\"\n       \
+      \ datePublished: \"2025-03-28\"\n      - title: \"동물 보호 단체, 학대 피해 동물 구조 활동 강화\"\
+      \n        url: \"http://news.example.com/article2\"\n        datePublished:\
+      \ \"2025-03-15\"\n      - title: \"동물학대 처벌 강화 법안 국회 통과\"\n        url: \"http://news.example.com/article3\"\
+      \n        datePublished: \"2025-02-20\"\n      - title: \"유기 동물 증가와 동물학대 문제,\
+      \ 사회적 관심 필요\"\n        url: \"http://news.example.com/article4\"\n        datePublished:\
+      \ \"2025-01-30\"\n      - title: \"동물학대 예방 캠페인, 전국적으로 확산 중\"\n        url: \"\
+      http://news.example.com/article5\"\n        datePublished: \"2025-01-10\""
+- workflow_id: workflow_3
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: searchInfo\n    arguments:\n      refinedQuery:\
+      \ \"사이코패스의 정의와 특징\"\n\n  - tool: searchInfo\n    arguments:\n      refinedQuery:\
+      \ \"동물학대 관련 법안\"\n\ntool_call_result:\n  - tool: searchInfo\n    data:\n   \
+      \   summary: >\n        사이코패스는 감정 공감 능력이 부족하고, 충동적이며, 반사회적 행동을 보이는 인격 장애의 일종입니다.\
+      \ \n        주로 타인의 권리를 무시하고 거짓말, 조작, 무책임한 행동을 반복하며, 죄책감이나 후회가 거의 없습니다. \n  \
+      \      특징으로는 매력적이지만 냉담한 성격, 충동적이고 공격적인 행동, 책임 회피 등이 있습니다.\n      details:\n\
+      \        - 항목: \"정의\"\n          내용: \"감정 공감 능력 결여와 반사회적 행동을 특징으로 하는 인격 장애\"\
+      \n        - 항목: \"주요 특징\"\n          내용: \"충동성, 무책임, 거짓말, 조작, 죄책감 결여\"\n   \
+      \     - 항목: \"행동 양식\"\n          내용: \"타인 권리 무시, 감정적 냉담, 공격성\"\n        - 항목:\
+      \ \"사회적 영향\"\n          내용: \"범죄, 대인 관계 문제, 직장 내 갈등 유발\"\n\n  - tool: searchInfo\n\
+      \    data:\n      summary: >\n        동물학대 관련 법안은 동물의 권리 보호와 학대 행위 처벌을 강화하기\
+      \ 위해 제정된 법률입니다. \n        주요 내용으로는 동물 학대 행위의 정의, 처벌 기준, 신고 의무, 보호 조치 등이 포함되어\
+      \ 있습니다.\n      details:\n        - 항목: \"법안명\"\n          내용: \"동물보호법\"\n  \
+      \      - 항목: \"주요 내용\"\n          내용: \"동물 학대 금지, 학대 시 벌금 및 징역형 부과, 동물 보호 시설\
+      \ 설치 의무\"\n        - 항목: \"처벌 강화\"\n          내용: \"반복 학대자에 대한 가중 처벌 및 사회봉사\
+      \ 명령\"\n        - 항목: \"신고 및 조사\"\n          내용: \"학대 의심 시 신고 의무화 및 신속한 조사 절차\
+      \ 마련\"\n      lastUpdated: \"2025-04-02\""
+- workflow_id: workflow_2
+  step_id: 6
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"동물학대 사건 증가, 시민들 경각심 높아져 뉴스 요약\"\n      url: \"http://news.example.com/article1\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"동물 보호 단체,\
+      \ 학대 피해 동물 구조 활동 강화 뉴스 요약\"\n      url: \"http://news.example.com/article2\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"동물학대 처벌 강화\
+      \ 법안 국회 통과 뉴스 요약\"\n      url: \"http://news.example.com/article3\"\n\n  - tool:\
+      \ summarizeNews\n    arguments:\n      refinedQuery: \"유기 동물 증가와 동물학대 문제, 사회적\
+      \ 관심 필요 뉴스 요약\"\n      url: \"http://news.example.com/article4\"\n\n  - tool:\
+      \ summarizeNews\n    arguments:\n      refinedQuery: \"동물학대 예방 캠페인, 전국적으로 확산\
+      \ 중 뉴스 요약\"\n      url: \"http://news.example.com/article5\"\n\ntool_call_result:\n\
+      \  - tool: summarizeNews\n    result: |\n      동물학대 사건이 최근 증가하면서 시민들의 경각심이 크게\
+      \ 높아지고 있습니다.  \n      관련 기관들은 예방과 단속을 강화하고 있으며, 사회적 관심이 더욱 요구되고 있습니다.\n\n  -\
+      \ tool: summarizeNews\n    result: |\n      동물 보호 단체들이 학대 피해 동물들을 적극적으로 구조하고\
+      \ 있으며, 이들의 복지 향상을 위해 다양한 지원 활동을 펼치고 있습니다.  \n      사회 전반의 관심과 협력이 더욱 필요한 상황입니다.\n\
+      \n  - tool: summarizeNews\n    result: |\n      동물학대 처벌을 강화하는 법안이 국회를 통과하여,\
+      \ 학대 행위에 대한 법적 제재가 한층 강화되었습니다.  \n      이는 동물 보호를 위한 중요한 진전으로 평가받고 있습니다.\n\n\
+      \  - tool: summarizeNews\n    result: |\n      유기 동물의 수가 증가함에 따라 동물학대 문제에 대한\
+      \ 사회적 관심과 적극적인 대응이 필요해지고 있습니다.  \n      관련 기관과 시민들의 협력이 더욱 중요해지고 있습니다.\n\n \
+      \ - tool: summarizeNews\n    result: |\n      동물학대 예방을 위한 캠페인이 전국적으로 확산되면서,\
+      \ 시민들의 인식 개선과 참여가 활발히 이루어지고 있습니다.  \n      이러한 노력이 동물 보호에 긍정적인 영향을 미치고 있습니다."
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "다음은 요청하신 동물학대 관련 정보 및 분석 자료입니다.\n\n■ 최근 3개월 이내 동물학대 관련 주요 뉴스 요약 (2025-01-02\
+      \ ~ 2025-04-02)\n\n1. 동물학대 사건 증가, 시민들 경각심 높아져\n - 동물학대 사례가 증가하며, 시민들의 경각심과 관련\
+      \ 기관의 단속이 강화되고 있습니다.\n - 기사 보기: http://news.example.com/article1\n\n2. 동물 보호\
+      \ 단체, 학대 피해 동물 구조 활동 강화\n - 피해 동물 구조 및 복지 지원이 활발히 진행 중이며, 사회 전반의 협력이 요구되고 있습니다.\n\
+       - 기사 보기: http://news.example.com/article2\n\n3. 동물학대 처벌 강화 법안 국회 통과\n - 학대\
+      \ 행위에 대한 법적 제재가 강화되어 동물 보호에 큰 진전이 있었습니다.\n - 기사 보기: http://news.example.com/article3\n\
+      \n4. 유기 동물 증가와 동물학대 문제, 사회적 관심 필요\n - 유기 동물 증가와 함께 학대 방지를 위한 사회적 관심이 더욱 절실해지고\
+      \ 있습니다.\n - 기사 보기: http://news.example.com/article4\n\n5. 동물학대 예방 캠페인, 전국적으로\
+      \ 확산 중\n - 인식 개선과 시민 참여가 활발해지며 동물 보호 분위기가 확산되고 있습니다.\n - 기사 보기: http://news.example.com/article5\n\
+      \n■ 사이코패스의 정의와 특징\n\n• 정의: 감정 공감 결여, 충동성, 반사회적 행동을 보이는 인격 장애\n• 주요 특징:\n  -\
+      \ 충동적이고 무책임함\n  - 거짓말, 조작, 죄책감 결여\n  - 감정적 냉담, 공격성\n  - 사회적 영향: 범죄, 대인 관계 문제,\
+      \ 직장 내 갈등 유발\n\n■ 동물학대 관련 법안 (2025-04-02 기준)\n\n• 법안명: 동물보호법\n• 핵심 내용:\n  -\
+      \ 동물 학대 금지 및 처벌 기준 명시\n  - 벌금 및 징역형 가능\n  - 보호 시설 설치 및 관리 의무\n  - 반복 학대자에 대한\
+      \ 가중 처벌\n  - 학대 의심 시 신고 의무화 및 신속한 조사 절차 마련\n\n더 자세한 자료가 필요하거나 특정 주제에 대해 심화 정보가\
+      \ 필요하시면 알려주세요."

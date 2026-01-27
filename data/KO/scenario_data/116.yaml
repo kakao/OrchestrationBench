@@ -1,0 +1,71 @@
+metadata:
+  total_steps: 4
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 부모님 결혼기념일 선물 안마기 빼고 30만원 이내로 추천해줘.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"안마기를 제외한\
+      \ 30만원 이내 부모님 결혼기념일 선물\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"안마기를 제외한 30만원 이내\
+      \ 부모님 결혼기념일 선물\"\n  recipientType: \"부모님\"\n  occasion: \"결혼기념일\"\n  maxPrice:\
+      \ 300000\n  exclude_items: \"안마기\"\ntool_call_result:\n  data:\n    - giftID:\
+      \ \"gift_10231\"\n      name: \"프리미엄 커플 스파 이용권\"\n      price: 280000\n    \
+      \  description: \"부모님이 함께 힐링할 수 있는 고급 스파 패키지입니다.\"\n      category: \"체험형\"\n\
+      \    - giftID: \"gift_10456\"\n      name: \"프리미엄 와인 & 치즈 세트\"\n      price:\
+      \ 150000\n      description: \"고급스러운 와인과 수제 치즈 구성으로 분위기를 더해줍니다.\"\n      category:\
+      \ \"식음료\"\n    - giftID: \"gift_10789\"\n      name: \"가족사진 촬영권\"\n      price:\
+      \ 250000\n      description: \"가족의 특별한 순간을 사진으로 남길 수 있는 기회입니다.\"\n      category:\
+      \ \"기념/촬영\"\n    - giftID: \"gift_10801\"\n      name: \"프리미엄 수면 건강베개 2개 세트\"\
+      \n      price: 198000\n      description: \"편안한 수면을 도와주는 기능성 베개로 건강을 챙기세요.\"\
+      \n      category: \"생활용품\"\n    - giftID: \"gift_10922\"\n      name: \"부모님\
+      \ 건강검진 커플 패키지\"\n      price: 300000\n      description: \"두 분 모두를 위한 정밀 건강검진\
+      \ 선물입니다.\"\n      category: \"건강관리\""
+- workflow_id: null
+  step_id: 4
+  agent: main
+  agent_type: main
+  data:
+    content: '아래는 부모님 결혼기념일을 위한 30만원 이하 선물 추천 목록입니다. 어떤 선물이 마음에 드시나요?
+
+
+      프리미엄 커플 스파 이용권 (체험형, 28만원)
+
+      – 부모님이 함께 힐링할 수 있는 고급 스파 패키지입니다.
+
+
+      프리미엄 와인 & 치즈 세트 (식음료, 15만원)
+
+      – 분위기 있는 기념일을 위한 고급 와인과 수제 치즈 구성입니다.
+
+
+      가족사진 촬영권 (기념/촬영, 25만원)
+
+      – 가족의 따뜻한 순간을 전문 스튜디오에서 남길 수 있습니다.
+
+
+      프리미엄 수면 건강베개 2개 세트 (생활용품, 19만8천원)
+
+      – 편안한 잠자리를 위한 기능성 건강베개입니다.
+
+
+      부모님 건강검진 커플 패키지 (건강관리, 30만원)
+
+      – 두 분 모두의 건강을 위한 정밀 건강검진 프로그램입니다.
+
+
+      어떤 선물이 좋으신가요? 선택해 주시면 바로 도와드리겠습니다.'

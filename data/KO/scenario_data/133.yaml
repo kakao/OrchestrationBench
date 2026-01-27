@@ -1,0 +1,190 @@
+metadata:
+  total_steps: 15
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2024년 6월 1일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 블랙핑크 드디어 완전체로 컴백한대. 컴백 티저 영상 보여줘. 서울에서 열리는 콘서트 일정도 확인해서 예매해주고, 공연 시작
+      전에 콘서트장 근처에 밥 먹을만한 데도 알아봐줘. 나 혼자 갈 거니까 혼밥하기 좋은 한식집이었으면 좋겠어.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      블랙핑크 컴백 티저 영상\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"서울에서 열리는 블랙핑크 콘서트 일정 조회\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"서울에서 열리는 블랙핑크 콘서트 예매\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"공연 시작 전 블랙핑크 콘서트장 근처 혼자 방문해서\
+      \ 혼밥하기 좋은 한식집\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"블랙핑크 컴백 티저 영상\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"블랙핑크 컴백 티저 영상\"\n    videos:\n      - videoTitle:\
+      \ \"블랙핑크 NEW ERA: 'Break Down' 컴백 티저 영상\"\n        videoUrl: \"https://www.example.com/video1\"\
+      \n        uploadDate: \"2024-05-25\"\n        description: \"블랙핑크의 새로운 신곡 'Break\
+      \ Down'의 컴백 티저 영상입니다. 곧 발매될 곡을 미리 만나보세요!\"\n    status: \"success\"\n    notes:\
+      \ \"1개의 블랙핑크 컴백 티저 영상이 조회되었습니다.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getPerformanceInfo\narguments:\n  refinedQuery: \"서울에서 열리는 블랙핑크\
+      \ 콘서트 일정 조회\"\n  genre: \"콘서트\"\n  artistName: \"블랙핑크\"\n  location: \"서울\"\n\
+      \  sortBy: \"soonest\"\ntool_call_result:\n  data:\n    refinedQuery: \"서울에서\
+      \ 열리는 블랙핑크 콘서트 일정 조회\"\n    genre: \"콘서트\"\n    artistName: \"블랙핑크\"\n    location:\
+      \ \"서울\"\n    sortBy: \"soonest\"\n    performances:\n      - performanceTitle:\
+      \ \"BORN PINK: 블랙핑크 월드 투어 서울 콘서트\"\n        venueName: \"서울 올림픽체조경기장\"\n   \
+      \     showDate: \"2024-06-15\"\n        showTime: \"19:00\"\n      - performanceTitle:\
+      \ \"BORN PINK 앙코르: 블랙핑크 서울 콘서트\"\n        venueName: \"서울 고척돔\"\n        showDate:\
+      \ \"2024-07-05\"\n        showTime: \"18:00\"\n    status: \"success\"\n   \
+      \ notes: \"총 2건의 블랙핑크 콘서트 일정이 조회되었습니다.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예매할 콘서트명, 예약자 이름, 인원, 이용 대상 정보, 전화번호, 희망 좌석 등급'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "◾블랙핑크 컴백 티저 영상\n\n- 제목: 블랙핑크 NEW ERA: 'Break Down' 컴백 티저 영상\n- 영상 링크:\
+      \ [여기를 클릭하여 시청하기](https://www.example.com/video1)\n- 업로드 날짜: 2024년 5월 25일\n\
+      - 설명: 블랙핑크의 새로운 신곡 'Break Down'의 컴백 티저 영상입니다. \n\n이 영상은 블랙핑크의 새 시대를 알리는 신곡 'Break\
+      \ Down' 티저 영상을 통해 곧 발매될 곡을 미리 만나보세요!\n\n\n◾블랙핑크 서울 콘서트 일정\n다음은 블랙핑크의 서울 콘서트\
+      \ 일정에 대한 정보입니다:\n\n1. BORN PINK: 블랙핑크 월드 투어 서울 콘서트\n   - 장소: 서울 올림픽체조경기장\n \
+      \  - 날짜: 2024년 6월 15일\n   - 시간: 19:00\n\n2. BORN PINK 앙코르: 블랙핑크 서울 콘서트\n   -\
+      \ 장소: 서울 고척돔\n   - 날짜: 2024년 7월 5일\n   - 시간: 18:00\n\n총 2건의 블랙핑크 콘서트 일정이 있습니다.\
+      \ 예매를 원하시는 콘서트명을 말씀해주세요. \n\n티켓 예매를 위해서는 예약자 성함 및 인원과 이용 대상 정보, 전화번호, 희망 좌석\
+      \ 등급을 알려주세요. 이용 대상 정보는 '성인, 어린이, 노인, 장애인' 중 하나를 택하시면 됩니다."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 아 근데 지수 지금 건강 괜찮은 거 맞아? 최근 기사 봤어?
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"블랙핑크 컴백 티저 영상\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"서울에서 열리는 블랙핑크 콘서트 일정 조회\"\n\nworkflow_3:\n  status: paused\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: paused\n      name: entertainment_agent\n\
+      \      refined_query: \"서울에서 열리는 블랙핑크 콘서트 예매\"\n\ninterrupted_workflow_3-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: person_agent\n      refined_query: \"블랙핑크 지수 최근 건강 관련 기사\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_3\"\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"공연 시작\
+      \ 전 블랙핑크 콘서트장 근처 혼자 방문해서 혼밥하기 좋은 한식집\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"블랙핑크 지수 최근 건강 관련\
+      \ 기사\"\ntool_call_result:\n  data:\n    refinedQuery: \"블랙핑크 지수 최근 건강 관련 기사\"\
+      \n    articles:\n      - title: \"블랙핑크 지수, 최근 건강 관련 소식 전해\"\n        url: \"\
+      https://www.example.com/article1\"\n        publishDate: \"2024-05-30\"\n  \
+      \      summary: \"블랙핑크의 멤버 지수가 최근 건강 문제로 잠시 활동을 중단했으나, 현재 회복 중에 있으며, 곧 다시 팬들에게\
+      \ 돌아올 준비를 하고 있습니다. 소속사 측은 지수의 상태가 점차 호전되고 있으며, 팬들에게 걱정 말라는 메시지를 전달했습니다.\"\n\
+      \    status: \"success\"\n    notes: \"1개의 블랙핑크 지수 관련 건강 기사가 조회되었습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '블랙핑크 지수 님에 대한 최근 건강 관련 기사가 조회되었습니다.
+
+
+      - 제목: 블랙핑크 지수, 최근 건강 관련 소식 전해
+
+      - 링크: [기사 읽기](https://www.example.com/article1)
+
+      - 발행일: 2024년 5월 30일
+
+      - 요약: 블랙핑크의 멤버 지수가 최근 건강 문제로 잠시 활동을 중단했으나, 현재 회복 중에 있으며, 곧 다시 팬들에게 돌아올 준비를 하고
+      있습니다. 소속사 측은 지수의 상태가 점차 호전되고 있으며, 팬들에게 걱정 말라는 메시지를 전달했습니다.
+
+
+
+      예매를 원하시는 콘서트명을 알려주시면 예매를 도와드리겠습니다.
+
+      티켓 예매를 위해서는 예약자 성함 및 인원과 이용 대상 정보, 전화번호, 희망 좌석 등급을 알려주세요. 이용 대상 정보는 ''성인, 어린이,
+      노인, 장애인'' 중 하나를 택하시면 됩니다.'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 앙코르 콘서트로 예매할래. 이름은 이로제, 성인 한 명 예약이고 좌석은 아무데나 상관없어. 번호는 010-1234-5678이야.
+- workflow_id: workflow_3
+  step_id: 13
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookPerformance\narguments:\n  refinedQuery: \"'BORN PINK 앙코르:\
+      \ 블랙핑크 서울 콘서트' 예매\"\n  performanceTitle: \"'BORN PINK 앙코르: 블랙핑크 서울 콘서트\"\n \
+      \ venueName: \"서울 고척돔\"\n  showDate: \"2024-07-05\"\n  showTime: \"18:00\"\n\
+      \  audienceCount: 1\n  audienceTypes: \n    - \"adult\"\n  seatGrade: \"A석\"\
+      \n  userInfo:\n    name: \"이로제\"\n    contactNumber: \"010-1234-5678\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"'BORN PINK 앙코르: 블랙핑크 서울 콘서트' 예매\"\n    performanceTitle:\
+      \ \"BORN PINK 앙코르: 블랙핑크 서울 콘서트\"\n    venueName: \"서울 고척돔\"\n    venueAddress:\
+      \ \"서울특별시 구로구 경인로 430, 고척동\"\n    showDate: \"2024-07-05\"\n    showTime: \"\
+      18:00\"\n    audienceCount: 1\n    audienceTypes: \n      - \"adult\"\n    seatGrade:\
+      \ \"A석\"\n    userInfo:\n      name: \"이로제\"\n      contactNumber: \"010-1234-5678\"\
+      \n    bookingStatus: \"success\"\n    ticketId: \"BLKPNK-20240705-001\"\n  \
+      \  notes: \"예매가 성공적으로 완료되었습니다. 티켓 정보를 저장해 주세요.\""
+- workflow_id: workflow_4
+  step_id: 14
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"'BORN PINK\
+      \ 앙코르: 블랙핑크 서울 콘서트' 시작 전 서울 고척동에 위치한 고척돔 근처 혼자 방문해서 혼밥하기 좋은 한식집\"\n  location:\
+      \ \"서울 고척동\"\n  cuisineType: \"한식\"\n  sortBy: \"highest_rated\"\n  ambience:\
+      \ \"혼밥하기 좋음\"\n  partySize: \"1\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"'BORN PINK 앙코르: 블랙핑크 서울 콘서트' 시작 전 서울 고척동에 위치한 고척돔 근처 혼자 방문해서 혼밥하기 좋은 한식집\"\
+      \n    location: \"서울 고척동\"\n    cuisineType: \"한식\"\n    sortBy: \"highest_rated\"\
+      \n    ambience: \"혼밥하기 좋음\"\n    partySize: \"1\"\n    restaurants:\n      -\
+      \ name: \"고척원조비빔밥\"\n        address: \"서울특별시 구로구 고척로 76\"\n        rating:\
+      \ 4.7\n        description: \"신선한 재료로 만든 비빔밥 전문점. 혼밥하기 좋은 아늑한 분위기를 제공합니다.\"\n\
+      \      - name: \"온돌한식당\"\n        address: \"서울특별시 구로구 경인로 480\"\n        rating:\
+      \ 4.5\n        description: \"다양한 한식 메뉴를 제공하며 혼자 식사하기에 편안한 자리를 제공합니다.\"\n  \
+      \  status: \"success\"\n    notes: \"총 2개의 혼밥하기 좋은 한식집이 추천되었습니다.\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "◾블랙핑크 콘서트 예매\n\n\"BORN PINK 앙코르: 블랙핑크 서울 콘서트\" 예매가 완료되었습니다! 티켓 정보를 꼭\
+      \ 저장해 두세요.\n\n- 날짜: 2024년 7월 5일\n- 시간: 18:00\n- 장소: 서울 고척돔\n- 좌석 등급: A석\n- 티켓\
+      \ ID: BLKPNK-20240705-001\n\n\n◾서울 고척돔 근처에서 혼밥하기 좋은 한식집 추천 목록\n\n1. 고척원조비빔밥\n\
+      \   - 주소: 서울특별시 구로구 고척로 76\n   - 평점: 4.7\n   - 설명: 신선한 재료로 만든 비빔밥 전문점으로, 혼밥하기\
+      \ 좋은 아늑한 분위기를 제공합니다.\n\n2. 온돌한식당\n   - 주소: 서울특별시 구로구 경인로 480\n   - 평점: 4.5\n\
+      \   - 설명: 다양한 한식 메뉴를 제공하며, 혼자 식사하기에 편안한 자리를 제공합니다.\n\n이 두 곳은 \"BORN PINK 앙코르:\
+      \ 블랙핑크 서울 콘서트\" 전에 방문하기에 좋은 식당입니다. 맛있는 식사하시고 즐거운 공연 관람하세요!"

@@ -1,0 +1,178 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-08-04
+
+      현재시각: 오후 13:19분'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 오늘 서울 태풍 온다는데 태풍 이동 예상경로와 비올 확률 알려주고 오후 18:00 비올 확률 50% 이상이면 '우산 챙겨'라고
+      여자친구한테 카톡 보내주고 50% 아래면 '올때 메로나'라고 보내
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"오늘 서울 태풍\
+      \ 이동 예상 경로와 오후 18:00시에 비 올 확률\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"오후 18:00시 비 올 확률 50% 이상이면 '우산 챙겨'라고 보내고 50% 아래면 '올때\
+      \ 메로나'라고 여자친구에게 카톡 보내기\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"오늘 서울 태풍 이동\
+      \ 예상 경로와 오후 18:00시에 비 올 확률\"\n  location: \"서울\"\n  date: \"2025-08-04\"\ntool_call_result:\n\
+      \  data:\n    weatherForecast:\n      location: \"서울\"\n      date: \"2025-08-04\"\
+      \n      typhoonPath:\n        expected: true\n        name: \"태풍 카눈(Khanun)\"\
+      \n        currentLocation: \"전남 여수 남동쪽 해상 약 120km 부근\"\n        currentSpeed:\
+      \ \"시속 35km\"\n        direction: \"북북동 (20°)\"\n        expectedCourse:\n \
+      \         - time: \"2025-08-04T12:00+09:00\"\n            location: \"경남 통영\
+      \ 부근 상륙\"\n          - time: \"2025-08-04T15:00+09:00\"\n            location:\
+      \ \"대전 서쪽 30km 내륙 통과\"\n          - time: \"2025-08-04T18:00+09:00\"\n     \
+      \       location: \"서울 남서쪽 50km 접근\"\n          - time: \"2025-08-04T21:00+09:00\"\
+      \n            location: \"경기 북부 및 춘천 부근 통과\"\n          - time: \"2025-08-05T00:00+09:00\"\
+      \n            location: \"강원 고성 진출 후 동해로 빠져나감\"\n        warningLevel: \"태풍주의보\"\
+      \n        advisory: \"강풍과 집중호우에 유의 필요, 외출 자제 권고\"\n      rainProbability:\n\
+      \        time: \"18:00\"\n        probability: 80\n        expectedRainfall:\
+      \ \"10~30mm\"\n        note: \"짧은 시간 강한 비 가능성 있음\"\n      status: \"success\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 받는분 연락처'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 여자친구분께 메시지를 보내려면 연락처(전화번호)가 필요해요. 전화번호를 알려주시겠어요?
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1234-1234
+- workflow_id: null
+  step_id: 8
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"오후 18:00시 비 올 확률 50%\
+      \ 이상이면 '우산 챙겨'라고 여자친구에게 카톡 보내기\"\n  channel: \"kakaotalk\"\n  phoneNumber: \"\
+      010-1234-1234\"\n  message: \"우산 챙겨\"\n  repeatRule: \"none\"\n  priority: \"\
+      normal\"\ntool_call_result:\n  - data:\n      messageSendResult:\n        channel:\
+      \ \"kakaotalk\"\n        phoneNumber: \"010-1234-1234\"\n        message: \"\
+      우산 챙겨\"\n        status: \"success\"\n        deliveryReport: \"상대방에게 성공적으로\
+      \ 전달됨\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "서울 지역의 오늘(8월 4일) 오후 날씨와 태풍 정보입니다.\n\n▶ 태풍 이동 경로\n현재 제6호 태풍 *카눈(Khanun)*은\
+      \ 전남 여수 남동쪽 해상 약 120km 부근에서 시속 35km의 속도로 북북동(20°) 방향으로 이동 중입니다.\n기상청 예보에 따르면\
+      \ 태풍은 다음과 같은 경로로 이동할 것으로 예상됩니다:\n\n12:00 – 경남 통영 부근 상륙\n15:00 – 대전 서쪽 30km 내륙\
+      \ 통과\n18:00 – 서울 남서쪽 50km 부근 접근\n21:00 – 경기 북부 및 춘천 부근 통과\n익일 00:00 – 강원 고성\
+      \ 진출 후 동해로 빠져나갈 것으로 보입니다.\n\n서울에는 오후 6시경 태풍의 직접적인 영향이 예상되며, 현재 태풍주의보가 발효 중입니다.\
+      \ 강풍과 집중호우에 유의하시고, 가급적 외출은 삼가시는 것이 좋겠습니다.\n\n▶ 18시 강수 확률\n\n강수 확률: 80%\n\n예상\
+      \ 강수량: 10~30mm\n\n 짧은 시간 동안 강한 비가 집중될 수 있습니다.\n\n안전을 위해 창문과 배수로 점검하시고, 야외 활동은\
+      \ 피해주세요.메시지를 성공적으로 보냈습니다.\n\n-----------\n\n- 카카오톡 메시지 전송 완료\n\n- 수신자: 010-1234-1234\n\
+      \n- 메시지 내용: \"우산 챙겨\"\n\n- 상태: 성공적으로 전달됨\n\n상대방에게 알림이 정상적으로 도착했습니다. 혹시 반복 전송이나\
+      \ 예약 기능이 필요하시면 알려주세요!"
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: 비오니까 칼국수 먹고싶네 구로디지털단지역에 칼국수집 찾아봐
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: weather_agent\n      refined_query: \"오늘\
+      \ 서울 태풍 이동 예상 경로와 오후 18:00시에 비올 확률\"\n\nworkflow_2:\n  status: completed\n \
+      \ type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n\
+      \      name: message_agent\n      refined_query: \"오후 18:00시 비올 확률 50% 이상이면\
+      \ '우산 챙겨'라고 보내고 50%아래면 '올때 메로나'라고 여자친구에게 카톡 보내기\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ place_agent\n      refined_query: \"구로디지털단지역 칼국수집\""
+- workflow_id: null
+  step_id: 12
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"구로디지털단지역 칼국수집\"\
+      \n  location: \"구로디지털단지역\"\n  cuisineType: \"한식\"\n  specificDishes: \"칼국수\"\
+      \n  sortBy: \"highest_rated\"\ntool_call_result:\n  data:\n    restaurants:\n\
+      \      - name: \"옛날손칼국수\"\n        address: \"서울 구로구 디지털로32나길 17\"\n       \
+      \ description: \"진한 멸치육수와 쫄깃한 면발로 유명한 집으로, 비 오는 날 뜨끈한 칼국수 한 그릇 하기에 제격입니다.\"\n\
+      \        cuisineType: \"한식\"\n        specificDishes: [\"손칼국수\", \"만두\", \"\
+      수제비\"]\n        rating: 4.6\n        reviewCount: 812\n        ambience: \"\
+      소박하고 따뜻한 실내 분위기\"\n        reservationRequired: false\n\n      - name: \"이화수\
+      \ 전통칼국수 구로디지털점\"\n        address: \"서울 구로구 디지털로26길 123\"\n        description:\
+      \ \"고소한 들깨 칼국수와 얼큰한 얼큰이칼국수가 인기 메뉴이며, 비 오는 날 고객이 많은 곳입니다.\"\n        cuisineType:\
+      \ \"한식\"\n        specificDishes: [\"들깨칼국수\", \"얼큰이칼국수\", \"보쌈\"]\n        rating:\
+      \ 4.4\n        reviewCount: 659\n        ambience: \"깔끔하고 가족단위 손님에게 적합\"\n \
+      \       reservationRequired: false\n\n      - name: \"명동칼국수 구로디지털점\"\n     \
+      \   address: \"서울 구로구 디지털로32길 30\"\n        description: \"매일 직접 뽑는 면발과 깊은 국물맛이\
+      \ 특징인 칼국수 전문점입니다. 실내 넓고 쾌적하여 비 오는 날에도 편안한 식사가 가능합니다.\"\n        cuisineType:\
+      \ \"한식\"\n        specificDishes: [\"해물칼국수\", \"비빔칼국수\", \"김치\"]\n        rating:\
+      \ 4.3\n        reviewCount: 504\n        ambience: \"넓고 조용한 실내\"\n        reservationRequired:\
+      \ false"
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: '구로디지털단지역 근처에서 비 오는 날 먹기 좋은 칼국수집을 찾으신다면, 다음 세 곳을 추천드립니다.
+
+
+      1. 옛날손칼국수
+
+      - 서울 구로구 디지털로32나길 17
+
+      - 진한 멸치 육수와 쫄깃한 손칼국수로 유명한 곳입니다. 소박하고 따뜻한 실내 분위기 덕분에 비 오는 날에 특히 잘 어울리는 식당이며,
+      만두와 수제비도 함께 인기 있는 메뉴입니다.
+
+      - 평점 4.6 / 리뷰 수 812건
+
+
+      2. 이화수 전통칼국수 구로디지털점
+
+      - 서울 구로구 디지털로26길 123
+
+      - 고소한 들깨칼국수와 얼큰한 칼국수가 인기 메뉴입니다. 실내가 깔끔하고 가족 단위 손님에게도 적합해 우천 시에도 편하게 이용할 수 있는
+      곳입니다.
+
+      - 평점 4.4 / 리뷰 수 659건
+
+
+      3. 명동칼국수 구로디지털점
+
+      - 서울 구로구 디지털로32길 30
+
+      - 매일 직접 뽑는 면발과 깊은 국물 맛이 특징입니다. 실내가 넓고 조용해 혼밥이나 조용한 식사에도 잘 어울리며, 비 오는 날에도 쾌적하게
+      식사할 수 있는 환경을 제공합니다.
+
+      - 평점 4.3 / 리뷰 수 504건
+
+
+      세 곳 모두 예약 없이 방문 가능하며, 비 오는 날 따뜻한 국물이 당길 때 만족도 높은 선택지가 될 수 있습니다.'

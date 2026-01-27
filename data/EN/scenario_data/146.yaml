@@ -1,0 +1,215 @@
+metadata:
+  total_steps: 17
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: Friday, June 6, 2025
+
+      - Current time: 6:00 PM
+
+      - userId: U0DK23134'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I want to pick up some flowers on my way home. Can you tell me if there
+      are any flower shops near Chicago Union Station that are open right now? If
+      there’s a good one, I’d like to reserve a bouquet with a natural green & white
+      look—something with eucalyptus, hydrangeas, and lisianthus. I’ll probably be
+      able to pick it up after 7 pm.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Flower shops\
+      \ currently open near Chicago Union Station\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"Among the flower shops currently\
+      \ open near Chicago Union Station, reserve a pickup after 7 PM for a natural\
+      \ green & white bouquet with eucalyptus, hydrangeas, and lisianthus\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Flower shops near\
+      \ Chicago Union Station open on Friday, June 6th at 6 PM\"\n  placeCategory:\
+      \ \"flower shop\"\n  location: \"Chicago Union Station\"\n  availableDate: \"\
+      2025-06-06\"\n  availableTime: \"after 7 PM\"\n  sortBy: \"distance\"\ntool_call_result:\n\
+      \  data:\n    requestDate: \"2025-06-06\"\n    requestTime: \"after 7 PM\"\n\
+      \    searchLocation: \"Chicago Union Station\"\n    placeCategory: \"flower\
+      \ shop\"\n    searchResults:\n      - shopName: \"Bloom World\"\n        distanceFromLocation:\
+      \ \"1,640 feet\"\n        operatingHours: \"9:00 AM - 9:00 PM\"\n        closedDays:\
+      \ \"Sunday\"\n      - shopName: \"Flower Garden\"\n        distanceFromLocation:\
+      \ \"2,132 feet\"\n        operatingHours: \"10:00 AM - 8:00 PM\"\n        closedDays:\
+      \ \"Open year-round\"\n      - shopName: \"Blooming Flowers\"\n        distanceFromLocation:\
+      \ \"2,461 feet\"\n        operatingHours: \"9:30 AM - 10:00 PM\"\n        closedDays:\
+      \ \"Monday\"\n    status: \"Search complete\"\n    notes: \"List of flower shops\
+      \ open after 7 PM\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Flower shop selected by user, reserver’s contact information,
+      and reservation time'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "Here’s a list of flower shops near Chicago Union Station that are available\
+      \ for pickup after 7:00 PM on Friday, June 6, 2025:\n\n1. Bloom World\n   *\
+      \ Distance: 1,640 feet\n   * Hours: 9:00 AM - 9:00 PM\n   * Closed: Sunday\n\
+      \n2. Flower Garden\n   * Distance: 2,132 feet\n   * Hours: 10:00 AM - 8:00 PM\n\
+      \   * Closed: Open year-round\n\n3. Blooming Flowers\n   * Distance: 2,461 feet\n\
+      \   * Hours: 9:30 AM - 10:00 PM\n   * Closed: Monday\n\nPlease let me know which\
+      \ shop you’d like to reserve, along with your contact information and preferred\
+      \ pickup time, and I’ll assist you in making the reservation."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: I’d like to make a reservation at Flower Garden. My phone number is (202)
+      555-0173, and I plan to arrive at around 7:15 PM. Would that time be okay?
+- workflow_id: null
+  step_id: 8
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: Reservations can only be made on the hour or half-hour.'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: Reservations can only be made on the hour or half past. Please let me
+      know your preferred time again and I’ll help you book it.
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: Okay, then book it for 7 o’clock.
+- workflow_id: null
+  step_id: 11
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"Reserve a bouquet\
+      \ at Flower Garden with a natural green & white combination using eucalyptus,\
+      \ hydrangeas, and lisianthus, for pickup at 7 PM\"\n  placeName: \"Flower Garden\"\
+      \n  placeCategory: \"flower shop\"\n  reservationDate: \"2025-06-06\"\n  reservationTime:\
+      \ \"19:00\"\n  userId: \"U0DK23134\"\n  contactInfo: \"(202) 555-0173\"\n  specialRequest:\
+      \ \"Please make it a natural green & white combination using eucalyptus, hydrangeas,\
+      \ and lisianthus.\"\ntool_call_result:\n  data:\n    refinedQuery: \"Reserve\
+      \ a bouquet at Flower Garden with a natural green & white combination using\
+      \ eucalyptus, hydrangeas, and lisianthus, for pickup at 7 PM\"\n    placeName:\
+      \ \"Flower Garden\"\n    placeCategory: \"flower shop\"\n    reservationDate:\
+      \ \"2025-06-06\"\n    reservationTime: \"19:00\"\n    userId: \"U0DK23134\"\n\
+      \    contactInfo: \"(202) 555-0173\"\n    specialRequest: \"Please make it a\
+      \ natural green & white combination using eucalyptus, hydrangeas, and lisianthus.\"\
+      \n    status: \"Reservation confirmed\"\n    notes: \"Bouquet prepared according\
+      \ to special request\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your bouquet pickup reservation at Flower Garden has been successfully
+      completed. Here are the reservation details:
+
+
+      - Pickup Location: Flower Garden (flower shop)
+
+      - Pickup Date: June 6, 2025
+
+      - Pickup Time: 7:00 PM
+
+      - Contact: (202) 555-0173
+
+
+      Special Request: We will prepare a beautiful bouquet with a natural green &
+      white combination, featuring eucalyptus, hydrangeas, and lisianthus.
+
+
+      If you expect to be late for your scheduled pickup time, please contact us in
+      advance.'
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: 'I’m excited! Suddenly I’m curious about the meaning of lisianthus flowers.
+
+      Oh, and I also want to look for a cute vase to put in the living room. I’m thinking
+      of spending up to about $40.'
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: place_agent\n      refined_query: \"Flower\
+      \ shops currently open near Chicago Union Station\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    -\
+      \ status: completed\n      name: place_agent\n      refined_query: \"Among the\
+      \ flower shops currently open near Chicago Union Station, reserve a pickup after\
+      \ 7 PM for a natural green & white bouquet with eucalyptus, hydrangeas, and\
+      \ lisianthus\"\n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: search_agent\n      refined_query: \"Meaning\
+      \ of lisianthus flowers\"\n\nworkflow_4:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"A cute vase under $40 that’s good for the living room\""
+- workflow_id: workflow_3
+  step_id: 15
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Lisianthus flower meaning\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Lisianthus flower meaning\"\
+      \n    flowerName: \"Lisianthus\"\n    flowerMeanings:\n      - \"Charm and elegance\"\
+      \n      - \"Gratitude\"\n      - \"Everlasting love\"\n    notes: \"Lisianthus\
+      \ is often used in weddings or occasions of appreciation.\"\n    status: \"\
+      success\""
+- workflow_id: workflow_4
+  step_id: 16
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"Cute vases under\
+      \ $40 that look great in the living room\"\n  productCategory: \"vase\"\n  maxPrice:\
+      \ 40\n  sortBy: \"latest\"\ntool_call_result:\n  data:\n    refinedQuery: \"\
+      Cute vases under $40 that look great in the living room\"\n    productCategory:\
+      \ \"vase\"\n    maxPrice: 40\n    products:\n      - productName: \"Minimalist\
+      \ Ceramic Vase\"\n        price: 30\n        description: \"A simple design\
+      \ that fits well in any space.\"\n        link: \"https://example.com/product/vase1\"\
+      \n      - productName: \"Vintage-Style Ceramic Vase\"\n        price: 40\n \
+      \       description: \"Brings a classic atmosphere with an antique touch.\"\n\
+      \        link: \"https://example.com/product/vase2\"\n    status: \"success\""
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Lisianthus Flower Meaning\n\n- Flower Name: Lisianthus\n- Symbolism:\n\
+      \  - Charm and elegance\n  - Gratitude\n  - Everlasting love\n\n\n◾ Vase Product\
+      \ Search Results\nHere are some cute vases under $40 that would look great in\
+      \ your living room:\n\n1. Minimalist Ceramic Vase – $30\n   A simple design\
+      \ that fits well in any space.\n   [View Product](https://example.com/product/vase1)\n\
+      \n2. Vintage-Style Ceramic Vase – $40\n   Brings a classic atmosphere with an\
+      \ antique touch.\n   [View Product](https://example.com/product/vase2)\n\nYou\
+      \ can click the links to check details or make a purchase. Both options are\
+      \ stylish and budget-friendly for your living room."

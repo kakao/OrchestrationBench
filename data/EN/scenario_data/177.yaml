@@ -1,0 +1,277 @@
+metadata:
+  total_steps: 17
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2025-07-16
+
+      Time: 10:30
+
+      Location: Midtown Manhattan, New York, NY 10036, USA
+
+      userId: USR951031'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I'm planning to watch Jurassic World this Saturday. Where would be the
+      best place to go? I'll head out after lunch, around 1 PM, and I'd like it to
+      be within a 30-minute drive from Times Sq-42 St Station. Oh, and could you also
+      recommend a good restaurant nearby for dinner after the movie?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Find showtimes and theater information for Jurassic World near Times Sq–42 St\
+      \ Station this Saturday after 1 PM\"\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Check driving time from Times Sq-42 St Station to the\
+      \ Jurassic World theater after 1 PM\"\n\nworkflow_2:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"Recommend good dinner restaurants\
+      \ near a movie theater within 30 minutes of Times Sq–42 St Station this Saturday\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"Movie theater listings\
+      \ near Times Sq–42 St Station this Saturday for Jurassic World, showtimes after\
+      \ 1 PM\"\n  movieTitle: \"Jurassic World\"\n  theaterLocation: \"Times Sq–42\
+      \ St Station\"\n  screeningDate: \"2025-07-19\"\n  isReleased: true\n  sortBy:\
+      \ \"releaseDate\"\ntool_call_result:\n  data:\n    - movieTitle: \"Jurassic\
+      \ World\"\n      theaterName: \"AMC Empire 25\"\n      showTimes:\n        -\
+      \ \"2:00 PM\"\n        - \"5:00 PM\"\n        - \"8:00 PM\"\n    - movieTitle:\
+      \ \"Jurassic World\"\n      theaterName: \"Regal E-Walk\"\n      showTimes:\n\
+      \        - \"1:30 PM\"\n        - \"4:30 PM\"\n        - \"7:30 PM\"\n    -\
+      \ movieTitle: \"Jurassic World\"\n      theaterName: \"Lincoln Square IMAX\"\
+      \n      showTimes:\n        - \"2:20 PM\"\n        - \"5:20 PM\"\n        -\
+      \ \"8:20 PM\""
+- workflow_id: null
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: getDirections\n    arguments:\n      refinedQuery:\
+      \ \"Check driving time from Times Sq–42 St Station to AMC Empire 25 after 1\
+      \ PM\"\n      origin: \"Times Sq–42 St Station\"\n      destination: \"AMC Empire\
+      \ 25\"\n      departureTime: \"13:00\"\n      transportModes: \"car\"\n    \
+      \  optimizeBy: fastest\n\n  - tool: getDirections\n    arguments:\n      refinedQuery:\
+      \ \"Check driving time from Times Sq–42 St Station to Regal E-Walk after 1 PM\"\
+      \n      origin: \"Times Sq–42 St Station\"\n      destination: \"Regal E-Walk\"\
+      \n      departureTime: \"13:00\"\n      transportModes: \"car\"\n      optimizeBy:\
+      \ fastest\n\n  - tool: getDirections\n    arguments:\n      refinedQuery: \"\
+      Check driving time from Times Sq–42 St Station to Lincoln Square IMAX after\
+      \ 1 PM\"\n      origin: \"Times Sq–42 St Station\"\n      destination: \"Lincoln\
+      \ Square IMAX\"\n      departureTime: \"13:00\"\n      transportModes: \"car\"\
+      \n      optimizeBy: fastest\n\ntool_call_result:\n  - tool: getDirections\n\
+      \    result:\n      origin: \"Times Sq–42 St Station\"\n      destination: \"\
+      AMC Empire 25\"\n      transportMode: \"car\"\n      optimizeBy: \"fastest\"\
+      \n      estimatedDuration: \"12 minutes\"\n      estimatedDistance: \"3.4 km\"\
+      \n      recommendedRoute:\n        summary: \"Via 8th Ave → W 42nd St\"\n  \
+      \      steps:\n          - \"Start at Times Sq–42 St Station (Exit on 8th Ave)\"\
+      \n          - \"Head north along 8th Ave\"\n          - \"Turn left at W 42nd\
+      \ St\"\n          - \"Continue straight for 300m\"\n          - \"AMC Empire\
+      \ 25 will be on your right\"\n      realTimeTraffic: \"Moderate\"\n      navigationAvailable:\
+      \ true\n      navigationUrl: \"https://maps.google.com/?q=AMC+Empire+25\"\n\n\
+      \  - tool: getDirections\n    result:\n      origin: \"Times Sq–42 St Station\"\
+      \n      destination: \"Regal E-Walk\"\n      transportMode: \"car\"\n      optimizeBy:\
+      \ \"fastest\"\n      estimatedDuration: \"15 minutes\"\n      estimatedDistance:\
+      \ \"4.2 km\"\n      recommendedRoute:\n        summary: \"Via 8th Ave → W 42nd\
+      \ St\"\n        steps:\n          - \"Start at Times Sq–42 St Station (Exit\
+      \ toward W 42nd St)\"\n          - \"Go west along W 42nd St, then cross 9th\
+      \ Ave\"\n          - \"Continue 200m, Regal E-Walk will be on the left\"\n \
+      \     realTimeTraffic: \"Some congestion\"\n      navigationAvailable: true\n\
+      \      navigationUrl: \"https://maps.google.com/?q=Regal+E-Walk+NYC\"\n\n  -\
+      \ tool: getDirections\n    result:\n      origin: \"Times Sq–42 St Station\"\
+      \n      destination: \"Lincoln Square IMAX\"\n      transportMode: \"car\"\n\
+      \      optimizeBy: \"fastest\"\n      estimatedDuration: \"35 minutes\"\n  \
+      \    estimatedDistance: \"7.1 km\"\n      recommendedRoute:\n        summary:\
+      \ \"Via Broadway → Columbus Ave\"\n        steps:\n          - \"Start at Times\
+      \ Sq–42 St Station (Exit toward Broadway)\"\n          - \"Head north along\
+      \ Broadway\"\n          - \"Merge onto Columbus Ave after 65th St\"\n      \
+      \    - \"Lincoln Square IMAX will be near 68th St on your right\"\n      realTimeTraffic:\
+      \ \"Heavy\"\n      navigationAvailable: true\n      navigationUrl: \"https://maps.google.com/?q=Lincoln+Square+IMAX\""
+- workflow_id: workflow_2
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Movie theater location'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "On Saturday, July 19, 2025 after 1:00 PM, you can watch Jurassic World\
+      \ within a 30-minute drive from Times Sq–42 St Station at either AMC Empire\
+      \ 25 or Regal E-Walk.\n\nRecommended theaters for Jurassic World (Saturday,\
+      \ July 19 · Afternoon)\n\n1. AMC Empire 25\n   Showtimes: 2:00 PM / 5:00 PM\
+      \ / 8:00 PM\n   Driving time: about 12 minutes\n   Highlights: Closest theater,\
+      \ fastest access\n\n2. Regal E-Walk\n   Showtimes: 1:30 PM / 4:30 PM / 7:30\
+      \ PM\n   Driving time: about 15 minutes\n   Highlights: Conveniently located\
+      \ in the Theater District, plenty of nearby dining options\n\nWhich theater\
+      \ would you like me to use as the basis for restaurant recommendations?"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: Show me both. I’ll decide after looking at the restaurants.
+- workflow_id: null
+  step_id: 9
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: recommendRestaurants\n    arguments:\n      refinedQuery:\
+      \ \"Recommend highly rated dinner restaurants near AMC Empire 25\"\n      location:\
+      \ \"AMC Empire 25\"\n      reservationTime: \"dinner\"\n      sortBy: \"highest_rated\"\
+      \n\n  - tool: recommendRestaurants\n    arguments:\n      refinedQuery: \"Recommend\
+      \ highly rated dinner restaurants near Regal E-Walk\"\n      location: \"Regal\
+      \ E-Walk\"\n      reservationTime: \"dinner\"\n      sortBy: \"highest_rated\"\
+      \n\ntool_call_result:\n  - tool: recommendRestaurants\n    data:\n      - restaurantId:\
+      \ \"REST_AMC_001\"\n        name: \"Becco\"\n        cuisineType: \"Italian\"\
+      \n        location: \"355 W 46th St, New York, NY\"\n        rating: 4.8\n \
+      \       description: \"A famous Italian restaurant run by Lidia Bastianich.\
+      \ The unlimited pasta and rich wine list make it perfect for dinner.\"\n\n \
+      \     - restaurantId: \"REST_AMC_002\"\n        name: \"Carmine’s Italian Restaurant\
+      \ - Times Square\"\n        cuisineType: \"Italian / Family Style\"\n      \
+      \  location: \"200 W 44th St, New York, NY\"\n        rating: 4.6\n        description:\
+      \ \"New York’s iconic family-style Italian spot. The generous portions and lively\
+      \ atmosphere make it ideal for gatherings before or after a movie.\"\n\n   \
+      \   - restaurantId: \"REST_AMC_003\"\n        name: \"STK Steakhouse Midtown\"\
+      \n        cuisineType: \"Steakhouse / American\"\n        location: \"1114 6th\
+      \ Ave, New York, NY\"\n        rating: 4.7\n        description: \"A modern\
+      \ upscale steakhouse. Prime steaks and cocktails are especially popular.\"\n\
+      \n  - tool: recommendRestaurants\n    data:\n      - restaurantId: \"REST_REGAL_001\"\
+      \n        name: \"5 Napkin Burger\"\n        cuisineType: \"American / Burgers\"\
+      \n        location: \"630 9th Ave, New York, NY\"\n        rating: 4.5\n   \
+      \     description: \"One of Midtown’s most popular burger joints. Enjoy gourmet\
+      \ burgers and a variety of cocktails.\"\n\n      - restaurantId: \"REST_REGAL_002\"\
+      \n        name: \"Trattoria Trecolori\"\n        cuisineType: \"Italian\"\n\
+      \        location: \"254 W 47th St, New York, NY\"\n        rating: 4.8\n  \
+      \      description: \"Authentic Italian restaurant known for hearty pasta dishes\
+      \ and warm service. Highly recommended for dinner.\"\n\n      - restaurantId:\
+      \ \"REST_REGAL_003\"\n        name: \"Del Frisco’s Double Eagle Steakhouse\"\
+      \n        cuisineType: \"Steakhouse\"\n        location: \"1221 6th Ave, New\
+      \ York, NY\"\n        rating: 4.7\n        description: \"One of New York’s\
+      \ top steakhouses. The excellent wine selection makes it great for a special\
+      \ evening.\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Dinner restaurant recommendations near AMC Theater in Midtown\n\n\
+      *Becco (Italian, ★4.8)\n  A famous Italian restaurant run by Lidia Bastianich.\
+      \ The unlimited pasta and rich wine list make it perfect for dinner.\n\n*Carmine’s\
+      \ Italian Restaurant – Times Square (Italian / Family Style, ★4.6)\n  New York’s\
+      \ iconic family-style Italian spot. The generous portions and lively atmosphere\
+      \ make it ideal for gatherings before or after a movie.\n\n*STK Steakhouse Midtown\
+      \ (Steakhouse / American, ★4.7)\n  A modern upscale steakhouse. Prime steaks\
+      \ and cocktails are especially popular.\n\n-\n\n▶ Dinner restaurant recommendations\
+      \ near Regal Theater at Times Square\n\n*5 Napkin Burger (American / Burgers,\
+      \ ★4.5)\n  One of Midtown’s most popular burger joints. Enjoy gourmet burgers\
+      \ and a variety of cocktails.\n\n*Trattoria Trecolori (Italian, ★4.8)\n  Authentic\
+      \ Italian restaurant known for hearty pasta dishes and warm service. Highly\
+      \ recommended for dinner.\n\n*Del Frisco’s Double Eagle Steakhouse (Steakhouse,\
+      \ ★4.7)\n  One of New York’s top steakhouses. The excellent wine selection makes\
+      \ it great for a special evening.\n\nLet me know if you’d like me to make a\
+      \ reservation!"
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: Book 2 adult tickets for the 2 PM show at AMC Empire 25.
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Find showtimes and theater information for Jurassic World near Times Sq–42\
+      \ St Station this Saturday after 1 PM\"\n    - status: completed\n      name:\
+      \ transport_agent\n      refined_query: \"Check driving time from Times Sq–42\
+      \ St Station to the Jurassic World theater after 1 PM\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    -\
+      \ status: completed\n      name: place_agent\n      refined_query: \"Recommend\
+      \ good dinner restaurants near a movie theater within 30 minutes of Times Sq–42\
+      \ St Station this Saturday\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Reserve 2 adult tickets for Jurassic World at AMC Empire 25 this Saturday\
+      \ at 2 PM\""
+- workflow_id: workflow_3
+  step_id: 13
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Booker''s name and contact information'
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: Okay, I’ll go ahead and book 2 adult tickets for Jurassic World on Saturday,
+      July 19, 2025 at 2:00 PM at AMC Empire 25. To complete the reservation, could
+      you please provide the name of the person making the booking and contact number?
+- workflow_id: null
+  step_id: 15
+  agent: user
+  agent_type: user
+  data:
+    content: 'Name: Michael Jackson
+
+      Phone Number: (202) 123-4567'
+- workflow_id: null
+  step_id: 16
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookMovieTicket\narguments:\n  refinedQuery: \"AMC Empire 25 Jurassic\
+      \ World Saturday 2 PM 2 adults booking\"\n  movieTitle: \"Jurassic World\"\n\
+      \  theaterName: \"AMC Empire 25\"\n  showDate: \"2025-07-19\"\n  showTime: \"\
+      14:00\"\n  audienceCount: 2\n  audienceTypes: [\"adult\", \"adult\"]\n  userInfo:\n\
+      \    name: \"Michael Jackson\"\n    contactNumber: \"(202) 123-4567\"\ntool_call_result:\n\
+      \  data:\n    reservationId: \"MOV20250719_001\"\n    status: \"confirmed\"\n\
+      \    movieTitle: \"Jurassic World\"\n    theater: \"AMC Empire 25\"\n    showDate:\
+      \ \"2025-07-19\"\n    showTime: \"14:00\"\n    seatNumbers:\n      - \"E7\"\n\
+      \      - \"E8\"\n    audienceCount: 2\n    paymentMethod: \"Apple Pay\"\n  \
+      \  totalPrice: 24.00"
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your reservation for "Jurassic World" at AMC Times Square this Saturday
+      (July 19, 2025) at 2:00 PM for 2 adults has been confirmed.
+
+
+      Reservation Details
+
+      *   Movie: Jurassic World
+
+      *   Theater: AMC Empire 25
+
+      *   Date & Time: Saturday, July 19, 2025, 2:00 PM
+
+      *   Seats: E7, E8
+
+      *   Total Payment: $24.00
+
+      *   Reservation Number: MOV20250719_001
+
+
+      I''ve also sent your reservation details via text message.'

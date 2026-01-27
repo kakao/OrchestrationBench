@@ -1,0 +1,108 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'Date: 2025-07-16
+
+      Time: 10:30
+
+      Location: 58 West 84th Street New York, NY 10024, USA
+
+      userId: USR951031'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I’m a Scorpio, born on October 31, 1995, and I’m curious about my astrological
+      compatibility with actor Aaron Taylor-Johnson.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"Actor Aaron\
+      \ Taylor-Johnson profile information lookup\"\n    - status: pending\n     \
+      \ name: counsel_agent\n      refined_query: \"Compatibility information between\
+      \ a Scorpio woman born on October 31, 1995 and Aaron Taylor-Johnson\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"Search for actor Aaron\
+      \ Taylor-Johnson profile information\"\n  personName: \"Aaron Taylor-Johnson\"\
+      \n  roleType: \"Actor\"\ntool_call_result:\n  data:\n    personName: \"Aaron\
+      \ Taylor-Johnson\"\n    roleType: \"Actor\"\n    birthDate: \"1990-06-13\"\n\
+      \    starSign: \"Gemini\"\n    nationality: \"British\"\n    agency: \"Brillstein\
+      \ Entertainment Partners\"\n    physical: \"5'11\\\"\"\n    debut: \"2001, TV\
+      \ series 'Armadillo'\"\n    knownFor:\n      - \"Kick-Ass\"\n      - \"Avengers:\
+      \ Age of Ultron\"\n      - \"Nocturnal Animals\"\n      - \"Bullet Train\"\n\
+      \      - \"Kraven the Hunter\"\n    instagramId: \"arontheactor\""
+- workflow_id: null
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getStarSignInfo\narguments:\n  refinedQuery: \"Compatibility information\
+      \ between a Scorpio woman born on October 31, 1995 and a Gemini man born on\
+      \ June 13, 1990 (Aaron Taylor-Johnson)\"\n  starSign: \"Scorpio\"\n  partnerStarSign:\
+      \ \"Gemini\"\ntool_call_result:\n  data:\n    personA:\n      birthDate: \"\
+      1995-10-31\"\n      starSign: \"Scorpio\"\n    personB:\n      birthDate: \"\
+      1990-06-13\"\n      starSign: \"Gemini\"\n    compatibilityScore: 65\n    summary:\
+      \ \"Scorpio and Gemini are drawn to each other’s differences, but their contrasting\
+      \ natures mean that the relationship requires patience and compromise.\"\n \
+      \   details:\n      - aspect: \"Emotional Depth\"\n        content: \"Scorpio\
+      \ seeks deep, intense emotional bonds, whereas Gemini tends to keep things light\
+      \ and playful. This mismatch can sometimes lead to frustration.\"\n        score:\
+      \ 60\n      - aspect: \"Communication\"\n        content: \"Gemini thrives on\
+      \ variety and quick conversations, whereas Scorpio values honesty and depth.\
+      \ Open dialogue is crucial to bridge these differences.\"\n        score: 70\n\
+      \      - aspect: \"Growth Potential\"\n        content: \"If both are willing\
+      \ to embrace differences—Scorpio offering stability, Gemini providing flexibility—the\
+      \ relationship can be stimulating and it can help both grow.\"\n        score:\
+      \ 65"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s the compatibility reading with actor Aaron Taylor-Johnson.
+
+
+      Your compatibility score is 65 out of 100, showing that while there are attraction
+      and fascination between the two of you, conscious effort is also required to
+      harmonize your different natures.
+
+
+      Here are the details of your compatibility:
+
+
+      *Overall Summary: Scorpio seeks depth and emotional intensity, whereas Gemini
+      thrives on variety and freedom. This contrast can be exciting but also challenging
+      unless both of you adjust expectations.
+
+
+      *Emotional Depth: You, as a Scorpio, desire deep and transformative bonds, whereas
+      Gemini tends to keep things light and playful. This mismatch can sometimes lead
+      to frustration. (Score: 60)
+
+
+      *Communication: Gemini brings liveliness and adaptability, whereas Scorpio offers
+      focus and determination. Together, this balance can create a dynamic relationship,
+      but misalignment may lead to friction. (Score: 70)
+
+
+      *Growth Potential: If both are willing to embrace differences—Scorpio offering
+      stability, Gemini providing flexibility—the relationship can be stimulating
+      and it can help both grow. (Score: 65)
+
+
+      If you’d like to explore further, I can dive deeper into **love languages, moon
+      signs, or other aspects of compatibility** for a more complete picture.'

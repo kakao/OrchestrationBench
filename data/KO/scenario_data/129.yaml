@@ -1,0 +1,250 @@
+metadata:
+  total_steps: 24
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 10월 17일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 지금 열리고 있는 서울시립미술관 전시 중 추천할 만한 거 있어? 내일 가려는데 미리 예매하려고.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      내일 관람할 수 있는 서울시립미술관 전시 추천\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"내일 관람할 수 있는 서울시립미술관 전시 예매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionInfo\narguments:\n  refinedQuery: \"2025년 10월 18일에\
+      \ 관람할 수 있는 서울시립미술관 전시 추천\"\n  venueName: \"서울시립미술관\"\n  date: \"2025-10-18\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"2025년 10월 18일에 관람할 수 있는 서울시립미술관\
+      \ 전시 추천\"\n    venueName: \"서울시립미술관\"\n    date: \"2025-10-18\"\n    exhibitions:\n\
+      \      - title: \"현대 예술과 혁신\"\n        description: \"현대 예술 작품을 통해 혁신적인 시각을\
+      \ 탐구하는 전시.\"\n        startDate: \"2025-09-01\"\n        endDate: \"2025-10-30\"\
+      \n        openingHours: \"10:00 - 18:00\"\n        ticketPrice: 12000\n    \
+      \    additionalInfo: \"가이드 투어는 매일 14시에 시작합니다.\"\n        exhibitionId: \"EXH20250901-002\"\
+      \n      - title: \"자연 속의 인간\"\n        description: \"자연과 인간의 관계를 탐구하는 사진전.\"\
+      \n        startDate: \"2025-09-15\"\n        endDate: \"2025-11-10\"\n     \
+      \   openingHours: \"10:00 - 18:00\"\n        ticketPrice: 10000\n        additionalInfo:\
+      \ \"주말에는 가족 할인 혜택이 있습니다.\"\n        exhibitionId: \"EXH20250720-001\"\n    \
+      \  - title: \"전통과 현대의 만남\"\n        description: \"전통 예술과 현대 기술의 융합을 보여주는 전시.\"\
+      \n        startDate: \"2025-07-10\"\n        endDate: \"2025-11-20\"\n     \
+      \   openingHours: \"09:00 - 19:00\"\n        ticketPrice: 15000\n        additionalInfo:\
+      \ \"특별 강연이 매주 토요일에 열립니다.\"\n        exhibitionId: \"EXH20250710-003\"\n    \
+      \  - title: \"미래 도시의 비전\"\n        description: \"미래의 도시와 건축에 대한 예술적 비전을 담은\
+      \ 전시.\"\n        startDate: \"2025-09-01\"\n        endDate: \"2025-10-31\"\n\
+      \        openingHours: \"10:00 - 17:00\"\n        ticketPrice: 5000\n      \
+      \  additionalInfo: \"1층 카페에서 전시 관람객에게 음료 할인이 제공됩니다.\"\n        exhibitionId:\
+      \ \"EXH20250901-004\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예매할 전시 사용자 선택, 예약자 전화번호'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "내일 서울시립미술관에 방문하시면 관람 가능한 전시입니다! 각 전시회는 다양한 테마와 매력을 지니고 있으니 원하는 전시회를\
+      \ 선택해 방문해보세요!\n\n1. 현대 예술과 혁신  \n   - 기간: 2025년 9월 1일부터 10월 30일까지  \n   - 시간:\
+      \ 10:00 - 18:00  \n   - 입장료: 12,000원  \n   - 추가정보: 매일 14시에 가이드 투어가 진행됩니다.\n\n\
+      2. 자연 속의 인간\n   - 기간: 2025년 9월 15일부터 11월 10일까지  \n   - 시간: 10:00 - 18:00  \n\
+      \   - 입장료: 10,000원  \n   - 추가정보: 주말에는 가족 할인 혜택이 있습니다.\n\n3. 전통과 현대의 만남\n   -\
+      \ 기간: 2025년 7월 10일부터 11월 20일까지  \n   - 시간: 09:00 - 19:00  \n   - 입장료: 15,000원\
+      \  \n   - 추가정보: 매주 토요일에 특별 강연이 열립니다.\n\n4. 미래 도시의 비전\n   - 기간: 2025년 9월 1일부터\
+      \ 10월 31일까지  \n   - 시간: 10:00 - 17:00  \n   - 입장료: 5,000원  \n   - 추가정보: 1층 카페에서\
+      \ 전시 관람객에게 음료 할인이 제공됩니다.\n\n원하시는 전시를 선택하시면 예매를 도와드리겠습니다. 원활한 예약을 위해 예약하시는 분의\
+      \ 전화번호를 알려주시기 바랍니다."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 무료 전시는 없어?
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"내일 관람할 수 있는 서울시립미술관 전시 추천\"\n\nworkflow_2:\n  status: paused\n  type: dependent\n\
+      \  depend_on: \"workflow_1-1\"\n  steps:\n    - status: paused\n      name:\
+      \ entertainment_agent\n      refined_query: \"내일 관람할 수 있는 서울시립미술관 전시 예매\"\n\n\
+      workflow_1-1:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: entertainment_agent\n      refined_query: \"내일 관람할 수\
+      \ 있는 서울시립미술관 무료 전시 추천\""
+- workflow_id: workflow_1
+  step_id: 9
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionInfo\narguments:\n  refinedQuery: \"2025년 10월 18일에\
+      \ 관람할 수 있는 서울시립미술관 무료 전시 추천\"\n  venueName: \"서울시립미술관\"\n  date: \"2025-10-18\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"2025년 10월 18일에 관람할 수 있는 서울시립미술관\
+      \ 무료 전시 추천\"\n    venueName: \"서울시립미술관\"\n    date: \"2025-10-18\"\n    exhibitions:\n\
+      \      - title: \"공간의 재해석\"\n        description: \"설치미술을 통해 공간을 새롭게 해석하는 작품들로\
+      \ 구성된 전시. 작품을 통해 공간과 상호작용할 수 있는 기회를 제공합니다.\"\n        startDate: \"2025-10-01\"\
+      \n        endDate: \"2025-11-15\"\n        openingHours: \"10:00 - 18:00\"\n\
+      \        ticketPrice: \"free\"\n        additionalInfo: \"매주 목요일 오후 2시에는 설치\
+      \ 작가와의 워크숍이 진행됩니다.\"\n        exhibitionId: \"EXH20251001-005\"\n      - title:\
+      \ \"소리의 미학\"\n        description: \"사운드 아트를 통해 다양한 소리의 아름다움을 탐구하는 전시. 입장료 없이\
+      \ 색다른 음향 경험을 제공.\"\n        startDate: \"2025-10-01\"\n        endDate: \"2025-11-30\"\
+      \n        openingHours: \"10:00 - 18:00\"\n        ticketPrice: \"free\"\n \
+      \       additionalInfo: \"매일 오후 3시에 아티스트와의 특별 대화가 진행됩니다.\"\n        exhibitionId:\
+      \ \"EXH20251001-006\"\n      - title: \"빈티지의 매력\"\n        description: \"과거와\
+      \ 현대를 연결하는 빈티지 작품들로 구성된 전시. 무료 입장 가능하며, 시간여행을 즐길 수 있는 기회.\"\n        startDate:\
+      \ \"2025-10-05\"\n        endDate: \"2025-11-05\"\n        openingHours: \"\
+      09:00 - 17:00\"\n        ticketPrice: \"free\"\n        additionalInfo: \"주말에는\
+      \ 빈티지 마켓도 함께 열립니다.\"\n        exhibitionId: \"EXH20251005-007\""
+- workflow_id: workflow_2
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예매할 전시 사용자 선택, 예약자 전화번호'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "서울시립미술관에서 열리는 무료 전시회를 추천드립니다!\n\n1. 공간의 재해석\n   - 설치미술 작품으로 공간의 새로운\
+      \ 해석을 경험하실 수 있는 전시입니다.  \n   - 기간: 2025년 10월 1일부터 11월 15일까지  \n   - 시간: 10:00\
+      \ - 18:00  \n   - 매주 목요일 오후 2시에는 작가와의 워크숍이 진행됩니다.\n\n2. 소리의 미학  \n   - 사운드 아트를\
+      \ 통해 다양한 소리의 아름다움을 탐구하는 전시입니다.  \n   - 기간: 2025년 10월 1일부터 11월 30일까지  \n   -\
+      \ 시간: 10:00 - 18:00  \n   - 매일 오후 3시에 아티스트와의 특별 대화가 있습니다.\n\n3. 빈티지의 매력  \n\
+      \   - 과거와 현대를 연결하는 빈티지 작품들을 무료로 감상할 수 있습니다.  \n   - 기간: 2025년 10월 5일부터 11월 5일까지\
+      \  \n   - 시간: 09:00 - 17:00  \n   - 주말에는 빈티지 마켓도 함께 열립니다.\n\n이 전시들은 다양한 예술적\
+      \ 경험을 무료로 제공하고 있습니다. 관심 가는 전시가 있으신가요? \n원하시는 전시를 선택하시면 예매를 도와드리겠습니다. 원활한 예약을\
+      \ 위해 예약하시는 분의 전화번호를 알려주시기 바랍니다."
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 보니까 재영이도 좋아할 것 같은데 같이 갈 건지 물어볼까? 재영이한테 문자 보내줘.
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"내일 관람할 수 있는 서울시립미술관 전시 추천\"\n\nworkflow_2:\n  status: paused\n  type: dependent\n\
+      \  depend_on: \"workflow_1-1\"\n  steps:\n    - status: paused\n      name:\
+      \ entertainment_agent\n      refined_query: \"내일 관람할 수 있는 서울시립미술관 전시 예매\"\n\n\
+      workflow_1-1:\n  status: completed\n  type: independent\n  steps:\n    - status:\
+      \ completed\n      name: entertainment_agent\n      refined_query: \"내일 관람할\
+      \ 수 있는 서울시립미술관 무료 전시 추천\"\n\ninterrupted_workflow_2-1:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: message_agent\n\
+      \      refined_query: \"재영이에게 내일 전시 보러 같이 갈 건지 묻는 내용의 문자 전송\""
+- workflow_id: workflow_2
+  step_id: 14
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 문자 받는 사람 전화번호, 메시지 내용'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: 문자를 보내기 위해서는 받으시는 분의 전화번호가 필요합니다. 보내실 메시지도 함께 입력해주세요.
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 재영이 번호는 010-1234-5678이야. '내일 서울시립미술관 전시 같이 보러 갈래?'라고 보내줘.
+- workflow_id: null
+  step_id: 17
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"재영이에게 '내일 서울시립미술관 전시\
+      \ 같이 보러 갈래?'라고 문자 전송\"\n  channel: \"sms\"\n  phoneNumber: \"010-1234-5678\"\
+      \n  message: \"내일 서울시립미술관 전시 같이 보러 갈래?\"\n  repeatRule: \"none\"\n  priority:\
+      \ \"normal\"\ntool_call_result:\n  data:\n    refinedQuery: \"재영이에게 '내일 서울시립미술관\
+      \ 전시 같이 보러 갈래?'라고 문자 전송\"\n    channel: \"sms\"\n    phoneNumber: \"010-1234-5678\"\
+      \n    message: \"내일 서울시립미술관 전시 같이 보러 갈래?\"\n    repeatRule: \"none\"\n    priority:\
+      \ \"normal\"\n    status: \"전송 성공\"\n    timestamp: \"2023-11-15T16:00:00\"\n\
+      \    deliveryConfirmation: \"수신 확인됨\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: "재영님에게 문자 메시지를 성공적으로 전송했습니다!\n전송한 메시지 내용은 다음과 같습니다: \"내일 서울시립미술관 전시 같이\
+      \ 보러 갈래?\"\n\n친구 분과 함께 서울시립미술관의 다채로운 전시를 즐겨보세요! \n원하시는 전시를 선택하시면 예매를 도와드릴게요.\
+      \ 예약하시는 분의 전화번호를 알려주세요!"
+- workflow_id: null
+  step_id: 19
+  agent: user
+  agent_type: user
+  data:
+    content: 재영이는 내일 모레가 좋다고 하니까 내일 모레 '자연 속의 인간'으로 2인 예매해줘.
+- workflow_id: workflow_2
+  step_id: 20
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약자 전화번호'
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: 전시 예약을 위해 예약하시는 분의 전화번호를 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 22
+  agent: user
+  agent_type: user
+  data:
+    content: 010-5678-1234
+- workflow_id: null
+  step_id: 23
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: bookExhibitionTicket\narguments:\n  refinedQuery: \"2025년 10월\
+      \ 19일에 서울시립미술관 '자연 속의 인간' 전시 2인 예매\"\n  exhibitionId: \"EXH20250720-001\"\n\
+      \  date: \"2025-10-19\"\n  exhibitionTitle: \"자연 속의 인간\"\n  visitorCount: 2\n\
+      \  contactInfo: \"010-5678-1234\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"2025년 10월 19일에 서울시립미술관 '자연 속의 인간' 전시 2인 예매\"\n    exhibitionId: \"EXH20250720-001\"\
+      \n    date: \"2025-10-19\"\n    exhibitionTitle: \"자연 속의 인간\"\n    visitorCount:\
+      \ 2\n    contactInfo: \"010-5678-1234\"\n    bookingStatus: \"예매 성공\"\n    bookingReference:\
+      \ \"BR20250720-XYZ123\"\n    totalPrice: 20000\n    message: \"예매가 완료되었습니다.\
+      \ 예매 번호는 BR20250720-XYZ123입니다.\""
+- workflow_id: null
+  step_id: 24
+  agent: main
+  agent_type: main
+  data:
+    content: "서울시립미술관의 '자연 속의 인간' 전시회 예매가 성공적으로 완료되었습니다! \n\n◾예매 정보\n- 관람하실 전시명: 자연\
+      \ 속의 인간\n- 방문 날짜: 2025년 10월 19일\n- 방문 인원: 2명\n- 예매 번호: BR20250720-XYZ123\n-\
+      \ 총 가격: 20,000원\n\n등록된 연락처(010-5678-1234)로 예매 상세 정보가 전송되었습니다. 즐거운 전시 관람 되시길\
+      \ 바랍니다."

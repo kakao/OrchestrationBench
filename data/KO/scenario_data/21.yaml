@@ -1,0 +1,287 @@
+metadata:
+  total_steps: 21
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2026-06-30
+
+      - 이름: 박미네랄
+
+      - 연락처: 010-1313-4646'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 올해 롤드컵 제주에서 한다고 하는데 T1 경기는 언제하는지 확인해주고, 거기에 맞춰서 제주 가는 비행기표 예매해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"올해 제주 롤드컵\
+      \ T1 경기 일정 조회\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: travel_agent\n\
+      \      refined_query: \"올해 제주 롤드컵 T1 경기 일정에 맞춘 제주행 항공권 조회\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n\
+      \    - status: pending\n      name: travel_agent\n      refined_query: \"올해\
+      \ 제주 롤드컵 T1 경기 일정에 맞춘 제주행 항공권 예매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"올해 제주 롤드컵 T1 경기\
+      \ 일정 조회\"\n  teamName: \"T1\"\ntool_call_result:\n  data:\n    teamName: \"\
+      T1\"\n    league: \"LoL World Championship\"\n    schedule:\n      - date: \"\
+      2026-09-10\"\n        opponent: \"Gen.G\"\n        time: \"18:00\"\n       \
+      \ venue: \"Jeju International Convention Center\"\n        status: \"Scheduled\"\
+      \n      - date: \"2026-09-12\"\n        opponent: \"DWG KIA\"\n        time:\
+      \ \"20:00\"\n        venue: \"Jeju International Convention Center\"\n     \
+      \   status: \"Scheduled\"\n      - date: \"2026-09-15\"\n        opponent: \"\
+      DRX\"\n        time: \"18:00\"\n        venue: \"Jeju International Convention\
+      \ Center\"\n        status: \"Scheduled\"\n    lastUpdated: \"2026-06-30\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출발일'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'T1의 올해 롤드컵(LoL World Championship) 제주 경기 일정은 다음과 같아요:
+
+
+      • 9월 10일 (목) 오후 6시 vs Gen.G
+
+      • 9월 12일 (토) 오후 8시 vs DWG KIA
+
+      • 9월 15일 (화) 오후 6시 vs DRX
+
+
+      장소: 제주국제컨벤션센터 (Jeju International Convention Center)
+
+
+      이 중 어느 경기에 맞춰 제주행 비행기 표를 예매할까요?'
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 첫날이 10일구나. 그럼 9월 9일로 찾아줄래?
+- workflow_id: null
+  step_id: 8
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"9월 9일 제주행 항공권 조회\"\
+      \n  departure: \"ICN\"\n  destination: \"제주\"\n  departureDate: \"2026-09-09\"\
+      \ntool_call_result:\n  flights:\n    - tripID: \"KRSELN0502JL102\"\n      airline:\
+      \ \"대한항공\"\n      flightNumber: \"KE1234\"\n      departureTime: \"2026-09-09T09:00\"\
+      \n      arrivalTime: \"2026-09-09T10:00\"\n      price: null\n      seatClass:\
+      \ \"Business\"\n      isDirect: true\n      availability: \"매진\"\n\n    - tripID:\
+      \ \"KRSELN0502OZ5678\"\n      airline: \"아시아나항공\"\n      flightNumber: \"OZ5678\"\
+      \n      departureTime: \"2026-09-09T13:00\"\n      arrivalTime: \"2026-09-09T14:00\"\
+      \n      price: null\n      seatClass: \"Business\"\n      isDirect: true\n \
+      \     availability: \"매진\"\n\n    - tripID: \"KRSELN0502KE123ECO\"\n      airline:\
+      \ \"대한항공\"\n      flightNumber: \"KE1234\"\n      departureTime: \"2026-09-09T09:00\"\
+      \n      arrivalTime: \"2026-09-09T10:00\"\n      price: \"₩50,000 ~ ₩70,000\"\
+      \n      seatClass: \"Economy\"\n      isDirect: true\n      availability: \"\
+      잔여석 5석\"\n\n    - tripID: \"KRSELN0502OZ5678ECO\"\n      airline: \"아시아나항공\"\
+      \n      flightNumber: \"OZ5678\"\n      departureTime: \"2026-09-09T13:00\"\n\
+      \      arrivalTime: \"2026-09-09T14:00\"\n      price: \"₩50,000 ~ ₩70,000\"\
+      \n      seatClass: \"Economy\"\n      isDirect: true\n      availability: \"\
+      잔여석 5석\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 항공편, 생년월일, 성별, 좌석 등급, 수하물 옵션(무료 수하물 / 추가 수하물 / 기내 반입 수하물), 마일리지
+      사용 여부'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "2026년 9월 9일 인천(ICN) → 제주행 항공편 조회 결과,\n비즈니스석은 현재 모두 매진이며, 이코노미석은 잔여석이\
+      \ 있습니다.\n\n◾비즈니스 클래스 (매진)\n\n1. 대한항공 KE1234\n 출발: 09:00 / 도착: 10:00\n 직항 / 매진\n\
+      \n2. 아시아나항공 OZ5678\n 출발: 13:00 / 도착: 14:00\n 직항 / 매진\n\n◾이코노미 클래스 (예약 가능)\n\n\
+      1. 대한항공 KE1234\n 출발: 09:00 / 도착: 10:00\n 직항 / 잔여석 5석\n 요금: ₩50,000 ~ ₩70,000\n\
+      \n2. 아시아나항공 OZ5678\n 출발: 13:00 / 도착: 14:00\n 직항 / 잔여석 5석\n 요금: ₩50,000 ~ ₩70,000\n\
+      \n비즈니스석이 꼭 필요하시다면 다른 날짜나 항공편을 다시 확인해드릴 수 있습니다.\n이코노미석으로 예약을 진행하시려면 원하시는 항공편과\
+      \ 아래 정보를 알려주세요.\n\n• 생년월일\n• 성별\n• 좌석 등급 (예: 이코노미)\n• 수하물 옵션:\n  - 무료 수하물\n\
+      \  - 추가 수하물\n  - 기내 반입 수하물\n• 마일리지 사용 여부 (사용 / 미사용)\n\n정보 확인 후, 예매 진행해드리겠습니다."
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 아 이코노미 싫은데. 9월 8일 비즈니스는?
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: sports_agent\n      refined_query: \"올해\
+      \ 제주 롤드컵 T1 경기 일정 조회\"\n\nworkflow_2:\n  status: completed\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n      name:\
+      \ travel_agent\n      refined_query: \"올해 제주 롤드컵 T1 경기 일정에 맞춘 제주행 항공권 조회\"\n\
+      \nworkflow_3:\n  status: paused\n  type: dependent\n  depend_on: \"workflow_2-1\"\
+      \n  steps:\n    - status: paused\n      name: travel_agent\n      refined_query:\
+      \ \"9월 8일 제주행 비즈니스석 항공권 예매\"\n\nworkflow_2-1:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"9월 8일 제주행 비즈니스석 항공권 조회\""
+- workflow_id: workflow_2
+  step_id: 13
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: findFlightInfo\narguments:\n  refinedQuery: \"9월 8일 제주행 비즈니스석\
+      \ 항공권 조회\"\n  departure: \"ICN\"\n  destination: \"제주\"\n  departureDate: \"\
+      2026-09-08\"\n  seatClass: \"business\"\ntool_call_result:\n  flights:\n   \
+      \ - tripID: \"KRSELN0808KE1222ECO\"\n      airline: \"대한항공\"\n      flightNumber:\
+      \ \"KE1222\"\n      departureTime: \"2026-09-08T08:30\"\n      arrivalTime:\
+      \ \"2026-09-08T09:30\"\n      price: \"₩200,000 ~ ₩250,000\"\n      seatClass:\
+      \ \"Business\"\n      isDirect: true\n      availability: \"잔여석 8석\"\n\n   \
+      \ - tripID: \"KRSELN1245OZ5611ECO\"\n      airline: \"아시아나항공\"\n      flightNumber:\
+      \ \"OZ5611\"\n      departureTime: \"2026-09-08T12:45\"\n      arrivalTime:\
+      \ \"2026-09-08T13:45\"\n      price: \"₩200,000 ~ ₩250,000\"\n      seatClass:\
+      \ \"Business\"\n      isDirect: true\n      availability: \"잔여석 8석\""
+- workflow_id: workflow_3
+  step_id: 14
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 항공편, 생년월일, 성별, 수하물 옵션(무료 수하물 / 추가 수하물 / 기내 반입 수하물), 마일리지 사용 여부'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: "9월 8일 인천(ICN) → 제주행 비즈니스석 항공편 조회 결과입니다.\n\n◾비즈니스 클래스 (예약 가능)\n\n1. 대한항공\
+      \ KE1222\n 출발: 08:30 / 도착: 09:30\n 직항 / 잔여석 8석\n 요금: ₩200,000 ~ ₩250,000\n\n\
+      2. 아시아나항공 OZ5611\n 출발: 12:45 / 도착: 13:45\n 직항 / 잔여석 8석\n 요금: ₩200,000 ~ ₩250,000\n\
+      \n예약을 진행하시려면 원하시는 항공편과 아래 정보를 알려주세요.\n\n• 생년월일\n• 성별\n• 수하물 옵션:\n  - 무료 수하물\n\
+      \  - 추가 수하물\n  - 기내 반입 수하물\n• 마일리지 사용 여부 (사용 / 미사용)\n\n정보 확인 후, 예매 진행해드리겠습니다."
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 같이 가기로 한 친구가 못간대ㅠㅠ 마음이 심란하고 정신적 충격이 클 땐 어떻게 다스려야할까
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: sports_agent\n      refined_query: \"올해\
+      \ 제주 롤드컵 T1 경기 일정 조회\"\n\nworkflow_2:\n  status: completed\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: completed\n      name:\
+      \ travel_agent\n      refined_query: \"올해 제주 롤드컵 T1 경기 일정에 맞춘 제주행 항공권 조회\"\n\
+      \nworkflow_3:\n  status: paused\n  type: dependent\n  depend_on: \"workflow_2-1\"\
+      \n  steps:\n    - status: paused\n      name: travel_agent\n      refined_query:\
+      \ \"9월 8일 제주행 비즈니스석 항공권 예매\"\n\nworkflow_2-1:\n  status: completed\n  type:\
+      \ independent\n  steps:\n    - status: completed\n      name: travel_agent\n\
+      \      refined_query: \"9월 8일 제주행 비즈니스석 항공권 조회\"\n\ninterrupted_workflow_3-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: counsel_agent\n      refined_query: \"마음이 심란하고 정신적 충격이 클 때 다스리는\
+      \ 방법\""
+- workflow_id: workflow_3
+  step_id: 18
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"마음이 심란하고 정신적 충격이\
+      \ 클 때 다스리는 방법\"\ntool_call_result:\n  data:\n    advice:\n      - \"심호흡과 명상으로\
+      \ 마음을 안정시키세요.\"\n      - \"가까운 사람과 감정을 나누며 지지받는 시간을 가지세요.\"\n      - \"전문가 상담을\
+      \ 통해 심리적 지원을 받는 것을 고려하세요.\"\n      - \"규칙적인 운동과 충분한 휴식으로 신체 건강을 유지하세요.\"\n \
+      \     - \"부정적인 생각을 인지하고 긍정적인 마인드로 전환하려 노력하세요.\"\n    resources:\n      - \"\
+      국가 정신건강센터 상담 전화: 1577-0199\"\n      - \"지역 심리 상담 센터 안내\"\n      - \"온라인 명상 및\
+      \ 마음챙김 앱 추천\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: '1. 마음이 심란하고 정신적 충격이 클 때는 아래 방법들을 시도해보세요:
+
+
+      [마음을 안정시키는 방법]
+
+      • 심호흡과 명상을 통해 긴장을 풀어보세요.
+
+      • 규칙적인 운동과 충분한 휴식으로 몸과 마음의 밸런스를 유지하세요.
+
+      • 가까운 사람에게 감정을 나누며 지지를 받는 것도 큰 도움이 됩니다.
+
+      • 부정적인 생각을 인지하고, 의식적으로 긍정적인 방향으로 전환해보세요.
+
+      • 필요하다면 전문가의 도움을 받는 것도 중요합니다.
+
+
+      [도움이 필요할 때 연락할 곳]
+
+      • 국가 정신건강센터 상담 전화: 1577-0199
+
+      • 지역 심리상담센터 또는 병원 정신건강 클리닉
+
+      • 온라인 명상/마음챙김 앱도 일상 속에서 활용해볼 수 있어요.
+
+
+      너무 혼자서 견디려 하지 마시고, 필요하다면 언제든지 도움을 요청하세요.
+
+      마음의 회복에는 시간이 필요하다는 것도 기억해 주세요.
+
+
+
+      2. 2026년 9월 8일 인천(ICN) 출발 제주행 항공권 예매를 도와드릴까요?
+
+
+      항공권 예매를 예매를 원하시면 원하시는 항공편과 아래 정보를 알려주세요:
+
+
+      • 생년월일
+
+      • 성별
+
+      • 수하물 옵션:
+
+       - 무료 수하물
+
+       - 추가 수하물
+
+       - 기내 반입 수하물
+
+      • 마일리지 사용 여부 (사용 / 미사용)
+
+
+      정보 확인 후 예매를 진행해드리겠습니다.'
+- workflow_id: null
+  step_id: 20
+  agent: user
+  agent_type: user
+  data:
+    content: 얘 없으면 나 친구 없는데.. 혼자 가기는 싫어 ㅠ 안갈래 그냥 집에서 유튜브로 보지뭐. 제주도 안가
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: 친구와 함께 가는 게 더 좋죠. 언제든 마음이 바뀌면 편하게 말씀해 주세요. 집에서 유튜브도 좋은 선택이에요!

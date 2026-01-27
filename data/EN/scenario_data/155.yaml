@@ -1,0 +1,128 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current time: 08:00'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Find me listings for apartments near Irvine Station with 3 bedrooms and
+      2 bathrooms that are for sale. They should be available for move-in after October
+      this year—please check Zillow for reference. Among those, tell me how long the
+      commute by car would take from the earliest available option to my office.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Based on\
+      \ Zillow listings, apartments for sale near Irvine Station with 3 bedrooms and\
+      \ 2 bathrooms, available for move-in after October this year\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n\
+      \    - status: pending\n      name: transport_agent\n      refined_query: \"\
+      Based on Zillow listings, among apartments for sale near Irvine Station with\
+      \ 3 bedrooms and 2 bathrooms available for move-in after October this year,\
+      \ check the driving time from the earliest available move-in option to the office\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getRealEstateInfo\narguments:\n  refinedQuery: \"Based on Zillow\
+      \ listings, apartments for sale near Irvine Station available for move-in after\
+      \ October 2025, with 3 bedrooms and 2 bathrooms\"\n  propertyType: \"apartment\"\
+      \n  transactionType: \"sale\"\n  location: \"Irvine Station\"\n  movingDate:\
+      \ \"After October 2025\"\n  source: \"Zillow\"\n  options:\n    roomCount: 3\n\
+      \    bathroomCount: 2\ntool_call_result:\n  realEstateListings:\n    - listingId:\
+      \ \"APT-001\"\n      title: \"Irvine Spectrum Modern Apartment\"\n      apartmentName:\
+      \ \"Spectrum Residences\"\n      address: \"123 Spectrum Center Dr, Irvine,\
+      \ CA\"\n      price: 850000\n      currency: \"USD\"\n      roomCount: 3\n \
+      \     bathroomCount: 2\n      area: \"1,100 sq ft\"\n      movingDate: \"2025-11-01\"\
+      \n      contactNumber: \"(949) 123-4567\"\n      source: \"Zillow\"\n    - listingId:\
+      \ \"APT-002\"\n      title: \"Irvine Parkview Apartment\"\n      apartmentName:\
+      \ \"Parkview Irvine\"\n      address: \"456 Parkview Blvd, Irvine, CA\"\n  \
+      \    price: 920000\n      currency: \"USD\"\n      roomCount: 3\n      bathroomCount:\
+      \ 2\n      area: \"1,250 sq ft\"\n      movingDate: \"2025-12-15\"\n      contactNumber:\
+      \ \"(949) 234-5678\"\n      source: \"Zillow\"\n    - listingId: \"APT-003\"\
+      \n      title: \"Irvine Terrace Apartment\"\n      apartmentName: \"Terrace\
+      \ at Irvine\"\n      address: \"789 Terrace Rd, Irvine, CA\"\n      price: 980000\n\
+      \      currency: \"USD\"\n      roomCount: 3\n      bathroomCount: 2\n     \
+      \ area: \"1,350 sq ft\"\n      movingDate: \"2026-01-10\"\n      contactNumber:\
+      \ \"(949) 345-6789\"\n      source: \"Zillow\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Destination (office) address information'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: To calculate the travel time, please provide the destination address.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 15th Floor, Brain Tower, 27 Central Town Road, Irvine Business District,
+      Irvine, CA 92618
+- workflow_id: null
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Driving time from\
+      \ Spectrum Residences near Irvine Station to Brain Tower, 27 Central Town Road,\
+      \ Irvine Business District, Irvine, CA 92618\"\n  optimizeBy: \"fastest\"\n\
+      \  transportModes: \"car\"\n  departureTime: \"08:00\"\n  origin: \"Spectrum\
+      \ Residences, Irvine Station\"\n  destination: \"Brain Tower, 27 Central Town\
+      \ Road, Irvine Business District, Irvine, CA 92618\"\ntool_call_result:\n  directions:\n\
+      \    origin: \"Spectrum Residences, Irvine Station\"\n    destination: \"Brain\
+      \ Tower, 27 Central Town Road, Irvine Business District, Irvine, CA 92618\"\n\
+      \    departureTime: \"08:00\"\n    arrivalTime: \"08:25\"\n    duration: \"\
+      25 minutes\"\n    distance: \"12 miles\"\n    transportMode: \"car\"\n    route:\n\
+      \      - instruction: \"Head south from Spectrum Residences toward Alton Parkway\"\
+      \n        distance: \"2 miles\"\n        duration: \"5 minutes\"\n      - instruction:\
+      \ \"Merge onto I-405 South toward Irvine Business District\"\n        distance:\
+      \ \"7 miles\"\n        duration: \"12 minutes\"\n      - instruction: \"Take\
+      \ the exit to Central Town Road and continue for 3 miles to reach your destination\"\
+      \n        distance: \"3 miles\"\n        duration: \"8 minutes\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "◾Here are listings for apartments near Irvine Station with 3 bedrooms\
+      \ and 2 bathrooms available for move-in:\n\n1. Property Information:\n- Irvine\
+      \ Spectrum Modern Apartment (Spectrum Residences)\n  - Address: 123 Spectrum\
+      \ Center Dr, Irvine, CA\n  - Price: $850,000\n  - Size: 1,100 sq ft\n  - Move-in\
+      \ Date: November 1, 2025\n  - Contact: (949) 123-4567\n\n- Irvine Parkview Apartment\
+      \ (Parkview Irvine)\n  - Address: 456 Parkview Blvd, Irvine, CA\n  - Price:\
+      \ $920,000\n  - Size: 1,250 sq ft\n  - Move-in Date: December 15, 2025\n  -\
+      \ Contact: (949) 234-5678\n\n- Irvine Terrace Apartment (Terrace at Irvine)\n\
+      \  - Address: 789 Terrace Rd, Irvine, CA\n  - Price: $980,000\n  - Size: 1,350\
+      \ sq ft\n  - Move-in Date: January 10, 2026\n  - Contact: (949) 345-6789\n\n\
+      ◾From the earliest available option, “Irvine Spectrum Modern Apartment (Spectrum\
+      \ Residences),” the driving time to Brain Tower at 27 Central Town Road, Irvine\
+      \ Business District, Irvine, CA 92618 is about 25 minutes:\n\n- Departure: Spectrum\
+      \ Residences, Irvine Station\n- Destination: Brain Tower, 27 Central Town Road,\
+      \ Irvine Business District, Irvine, CA 92618\n- Departure Time: 08:00\n- Estimated\
+      \ Arrival: 08:25\n- Duration: 25 minutes\n- Distance: 12 miles\n- Transportation:\
+      \ Car\n- Directions:\n  1. Head south from Spectrum Residences toward Alton\
+      \ Parkway (2 miles, 5 minutes)\n  2. Merge onto I-405 South toward Irvine Business\
+      \ District (7 miles, 12 minutes)\n  3. Take the exit to Central Town Road and\
+      \ continue for 3 miles to arrive at the destination (3 miles, 8 minutes)\n\n\
+      This information should be useful in selecting an apartment near Irvine Station\
+      \ and planning your commute."

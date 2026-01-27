@@ -1,0 +1,89 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 시각: 16:14'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 압구정역 근처 주차장 찾아주고 카맵 내비로 가장 빠른 길 안내해줘.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"압구정역\
+      \ 근처 주차장 위치\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"압구정역 근처 주차장까지 가장 빠른 길 카카오맵 내비게이션으로 안내\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"압구정역 근처 주차장 위치\"\
+      \n  location: \"압구정역\"\n  searchRadius: 500\n  sortBy: \"nearest\"\ntool_call_result:\n\
+      \  data:\n    parkingLots:\n      - name: \"CGV 압구정 주차장\"\n        address:\
+      \ \"서울 강남구 압구정로 80길 35\"\n        capacity: 120\n        availableSpots: 43\n\
+      \        hourlyRate: 2000\n        isOpen24Hours: true\n      - name: \"현대백화점\
+      \ 압구정 본점 주차장\"\n        address: \"서울 강남구 압구정로 165\"\n        capacity: 300\n\
+      \        availableSpots: 75\n        hourlyRate: 2500\n        isOpen24Hours:\
+      \ false\n      - name: \"서울특별시 공영주차장 (압구정 제1)\"\n        address: \"서울 강남구 언주로\
+      \ 850\"\n        capacity: 90\n        availableSpots: 18\n        hourlyRate:\
+      \ 1000\n        isOpen24Hours: true"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주차장 사용자 선택'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "압구정역 근처 주차장 정보를 안내드립니다. 주차 가능 대수와 요금, 운영시간도 함께 확인하실 수 있습니다.\n\n1. CGV\
+      \ 압구정 주차장\n\n   * 주소: 서울 강남구 압구정로 80길 35\n   * 총 120면 중 43면 주차 가능\n   * 시간당\
+      \ 2,000원\n   * 24시간 운영\n\n2. 현대백화점 압구정 본점 주차장\n\n   * 주소: 서울 강남구 압구정로 165\n\
+      \   * 총 300면 중 75면 주차 가능\n   * 시간당 2,500원\n   * 24시간 운영 아님\n\n3. 서울특별시 공영주차장\
+      \ (압구정 제1)\n\n   * 주소: 서울 강남구 언주로 850\n   * 총 90면 중 18면 주차 가능\n   * 시간당 1,000원\n\
+      \   * 24시간 운영\n\n어떤 주차장으로 길 안내를 시작할까요? \n길 안내를 위해서는 출발지 주소가 필요합니다. 예를 들어 '집',\
+      \ '서울역', '현재 위치' 등으로 출발지 주소를 알려주세요."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: CGV 압구정 주차장으로 길 안내해줘. 여의도 ifc몰에서 출발할거야.
+- workflow_id: null
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"여의도 ifc몰에서 CGV 압구정\
+      \ 주차장까지 가장 빠른 길 카카오맵 내비게이션으로 안내\" \n  origin: \"여의도 ifc몰\"\n  destination: \"\
+      서울 강남구 압구정로 80길 35 CGV 압구정 주차장\"\n  departureTime: \"16:14\"\n  transportModes:\
+      \ \"car\"\n  optimizeBy: \"fastest\"\n  navigationMode: true\n  source: \"카카오맵\"\
+      \ntool_call_result:\n  data:\n    estimatedTime: \"32분\"\n    distance: \"14.3km\"\
+      \n    transportMode: \"car\"\n    route:\n      - step: 1\n        instruction:\
+      \ \"여의도 IFC몰 앞에서 올림픽대로 방향으로 출발\"\n      - step: 2\n        instruction: \"올림픽대로\
+      \ 진입 후 강변북로 방향으로 직진\"\n      - step: 3\n        instruction: \"성수대교 남단에서 우측\
+      \ 출구 이용, 압구정로로 진입\"\n      - step: 4\n        instruction: \"압구정로 따라 직진 후 CGV\
+      \ 압구정 방면으로 우회전\"\n      - step: 5\n        instruction: \"CGV 압구정 주차장 도착\"\n\
+      \    tollFare: 0\n    realTimeTrafficApplied: true\n    navigationLink: \"https://map.kakao.com/link/to/CGV압구정주차장,37.5276,127.0285\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 카카오맵 내비게이션으로 CGV 압구정 주차장까지 길 안내를 시작합니다.

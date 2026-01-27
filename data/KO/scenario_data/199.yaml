@@ -1,0 +1,275 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-08-12
+
+      현재시각: 오전 11:19분
+
+      userid: U0DK23111'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 곧 말복이네? 뭐때문에 복날 삼계탕집에 사람이 많은지 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: search_agent\n      refined_query: \"복날 삼계탕집에\
+      \ 사람이 많은 이유\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"복날 삼계탕집에 사람이 많은 이유\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"복날 삼계탕집에 사람이 많은 이유\"\n   \
+      \ result: |\n      복날에 삼계탕집에 사람이 많은 이유는 주로 다음과 같습니다:\n\n      1. **전통적인 풍습**\
+      \  \n         - 복날(초복, 중복, 말복)은 무더운 여름철 더위를 이겨내기 위해 기운을 보충하는 날로 여겨지며, 삼계탕은 대표적인\
+      \ 보양식으로 자리잡고 있습니다.\n         \n      2. **삼계탕의 보양 효과**  \n         - 닭고기, 인삼,\
+      \ 대추, 마늘 등이 들어간 삼계탕은 체력 회복에 좋다고 알려져 있어, 건강을 챙기려는 사람들이 즐겨 찾습니다.\n\n      3. **문화적\
+      \ 관성**  \n         - '복날엔 삼계탕'이라는 문화적 인식이 뿌리 깊게 자리잡아 있어, 복날에는 자동적으로 삼계탕을 먹는\
+      \ 사람들이 많습니다.\n\n      4. **미디어와 마케팅 영향**  \n         - 방송이나 기사에서 복날에는 삼계탕을 먹는\
+      \ 전통을 반복적으로 강조하고, 음식점들도 이를 마케팅 요소로 활용합니다.\n\n      5. **한정된 좌석·대기 시간**  \n \
+      \        - 수요는 폭증하지만 음식점 좌석은 제한돼 있어, 대기 줄이 길어지는 경우가 많습니다.\n\n    source: \"\
+      문화자료, 식품영양학 보고서, 온라인 뉴스 기사 등\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '복날에 삼계탕집이 유독 붐비는 데에는 몇 가지 전통적이고 문화적인 이유가 있습니다.
+
+
+      1. 전통적인 보양 문화 때문입니다.
+
+      - 복날(초복, 중복, 말복)은 무더운 여름철에 기력을 회복하기 위한 날로 여겨지며, 예로부터 ‘이열치열(以熱治熱)’의 개념으로 뜨거운
+      삼계탕을 먹는 풍습이 이어져 왔습니다.
+
+
+      2. 삼계탕의 영양적 효능 때문입니다.
+
+      - 닭고기, 인삼, 대추, 마늘 등이 들어간 삼계탕은 면역력 향상과 피로 회복에 좋다고 알려져 있어, 건강을 챙기기 위해 많은 사람들이
+      찾습니다.
+
+
+      3. 문화적 관성과 기대감도 큽니다.
+
+      - "복날엔 삼계탕"이라는 인식이 사회 전반에 널리 퍼져 있어, 특별한 날처럼 여기고 일부러 삼계탕을 먹으러 나가는 경우도 많습니다.
+
+
+      4. 미디어와 마케팅의 영향도 큽니다.
+
+      - TV, 뉴스, SNS 등을 통해 복날에 삼계탕을 먹는 장면이 반복적으로 노출되고, 음식점들도 이를 활용한 마케팅을 펼치기 때문에 수요가
+      더욱 몰립니다.
+
+
+      이러한 이유들로 인해 복날이면 전국의 삼계탕집에 손님들이 길게 줄을 서는 풍경이 매년 반복되는 것이죠.'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 나 같은 채식 주의자는 복날에 채식으로 뭘 먹을 수 있을까? 찾아줘 그리고 밀키트 있으면 집으로 주문좀 해 이따가 집에서 먹게
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: search_agent\n      refined_query: \"복날\
+      \ 삼계탕집에 사람이 많은 이유\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"채식 주의자를 위한 복날 음식은 무엇이 있는지 찾기\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: shopping_agent\n      refined_query: \"채식 주의자를 위한 복날 음식 밀키트 검색\"\
+      \n\nworkflow_4:\n  status: pending\n  type: dependent\n  depend_on: \"workflow_3\"\
+      \n  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"채식 주의자를 위한 복날 밀키트 구매\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"채식 주의자를 위한 복날음식 무엇이\
+      \ 있는지 찾기\"\ntool_call_result:\n  data:\n    searchResults:\n      - title: \"\
+      복날에 삼계탕 대신 먹는 채식 음식\"\n        snippet: \"동물성 재료 없이 즐길 수 있는 복날 채식 요리로, 버섯 삼계탕,\
+      \ 인삼 채소죽, 콩단백 닭강정 등이 소개됩니다.\"\n        url: \"https://www.happyveganlife.com/복날채식\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: searchProducts\n    arguments:\n      refinedQuery:\
+      \ \"버섯 삼계탕 밀키트\"\n      productCategory: \"밀키트\"\n      sortBy: \"latest\"\n\
+      \  - tool: searchProducts\n    arguments:\n      refinedQuery: \"콩단백 닭강정 밀키트\"\
+      \n      productCategory: \"밀키트\"\n      sortBy: \"latest\"\n  - tool: searchProducts\n\
+      \    arguments:\n      refinedQuery: \"인삼 채소죽 밀키트\"\n      productCategory:\
+      \ \"밀키트\"\n      sortBy: \"latest\"\n\ntool_call_result:\n  - data:\n      refinedQuery:\
+      \ \"버섯 삼계탕 밀키트\"\n      productCategory: \"밀키트\"\n      sortBy: \"latest\"\n\
+      \      products:\n        - productId: \"mealkit_001\"\n          productName:\
+      \ \"프리미엄 능이버섯 삼계탕 밀키트\"\n          brand: \"자연의맛\"\n          price: 25900\n\
+      \          size: \"2인분\"\n          rating: 4.8\n          stockStatus: \"재고\
+      \ 있음\"\n          deliveryEstimate: \"2025-08-14\"\n        - productId: \"\
+      mealkit_002\"\n          productName: \"새송이버섯 삼계탕 간편 밀키트\"\n          brand:\
+      \ \"오늘의식탁\"\n          price: 18500\n          size: \"1인분\"\n          rating:\
+      \ 4.5\n          stockStatus: \"재고 있음\"\n          deliveryEstimate: \"2025-08-13\"\
+      \n  - data:\n      refinedQuery: \"콩단백 닭강정 밀키트\"\n      productCategory: \"\
+      밀키트\"\n      sortBy: \"latest\"\n      products:\n        - productId: \"mealkit_vegan_001\"\
+      \n          productName: \"비건 콩단백 닭강정 밀키트\"\n          brand: \"그린푸드마켓\"\n \
+      \         price: 15900\n          size: \"2인분\"\n          rating: 4.6\n   \
+      \       stockStatus: \"재고 있음\"\n          deliveryEstimate: \"2025-08-13\"\n\
+      \        - productId: \"mealkit_vegan_002\"\n          productName: \"더그린 콩단백\
+      \ 닭강정 밀키트\"\n          brand: \"비건잇\"\n          price: 13500\n          size:\
+      \ \"400g\"\n          rating: 4.4\n          stockStatus: \"재고 있음\"\n      \
+      \    deliveryEstimate: \"2025-08-12\"\n  - data:\n      refinedQuery: \"인삼 채소죽\
+      \ 밀키트\"\n      productCategory: \"밀키트\"\n      sortBy: \"latest\"\n      products:\n\
+      \        - productId: \"mealkit_003\"\n          productName: \"풍기인삼 삼계탕 밀키트\"\
+      \n          brand: \"영주칠향계\"\n          price: 15000\n          size: \"1인분\"\
+      \n          rating: 4.5\n          stockStatus: \"재고 있음\"\n          deliveryEstimate:\
+      \ \"주문 후 제작\"\n        - productId: \"mealkit_004\"\n          productName:\
+      \ \"한살림 인삼 채소죽\"\n          brand: \"한살림\"\n          price: 9000\n        \
+      \  size: \"250g\"\n          rating: 4.7\n          stockStatus: \"재고 있음\"\n\
+      \          deliveryEstimate: \"2025-08-14\""
+- workflow_id: workflow_4
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 상품 사용자 선택, 주소, 이름, 연락처'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '복날을 맞아 채식주의자 분들도 건강하게 즐길 수 있는 복날 음식들이 많이 있어요. 동물성 재료 없이도 든든하고 영양가 높은
+      음식들이 있어서 소개해 드립니다.
+
+
+      대표적으로는
+
+
+      - 버섯 삼계탕
+
+
+      - 인삼 채소죽
+
+
+      - 콩단백 닭강정
+
+
+      이렇게 버섯과 인삼, 콩단백 등을 활용한 다양한 비건 밀키트나 요리들이 인기가 많아요. 특히 버섯과 인삼, 찹쌀, 대추 등으로 만든 비건
+      삼계탕은 채식주의자분들도 복날의 기운을 듬뿍 받을 수 있는 훌륭한 대안입니다.
+
+
+      ----------
+
+
+      요청하신 버섯 삼계탕 밀키트, 콩단백 닭강정 밀키트, 그리고 인삼 채소죽 밀키트 관련 최신 인기 상품을 안내해 드립니다.
+
+
+      ▶ 버섯 삼계탕 밀키트
+
+
+      1. 프리미엄 능이버섯 삼계탕 밀키트 (브랜드: 자연의맛)
+
+      2인분, 가격 25,900원, 평점 4.8점으로 매우 인기 있는 제품이에요. 현재 재고도 넉넉하며, 8월 14일까지 배송 예정입니다.
+
+
+      2. 새송이버섯 삼계탕 간편 밀키트 (브랜드: 오늘의식탁)
+
+      1인분, 가격 18,500원, 평점 4.5점입니다. 간편하게 즐기기 좋으며 8월 13일 배송 예정이에요.
+
+
+      ▶ 콩단백 닭강정 밀키트
+
+
+      1. 비건 콩단백 닭강정 밀키트 (2인분) (브랜드: 그린푸드마켓)
+
+      가격 15,900원, 평점 4.6점으로 건강을 생각하는 분들에게 추천드려요. 8월 13일 배송 예정입니다.
+
+
+      2. 더그린 콩단백 닭강정 밀키트 (브랜드: 비건잇)
+
+      400g, 가격 13,500원, 평점 4.4점이며 8월 12일 배송 예정입니다.
+
+
+      ▶ 인삼 채소죽 밀키트
+
+
+      1. 풍기인삼 삼계탕 밀키트 (브랜드: 영주칠향계)
+
+      1인분, 가격 15,000원, 평점 4.5점이며 주문 후 제작되어 신선하게 받아보실 수 있습니다.
+
+
+      2. 한살림 인삼 채소죽 (브랜드: 한살림)
+
+      250g, 가격 9,000원, 평점 4.7점으로 부드럽고 영양가 높은 죽입니다. 8월 14일 배송 예정이에요.
+
+
+      ----------
+
+
+      ▶ 상품 주문을 위해 아래 정보를 알려주세요:
+
+
+      - 원하시는 상품명
+
+
+      - 수령인 이름
+
+
+      - 배송받을 주소
+
+
+      -  연락 가능한 전화번호
+
+
+      정보를 확인한 후 주문을 계속 진행하겠습니다.
+
+      (※ 개인정보는 안전하게 처리됩니다.)'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: '비건 콩단백 닭강정 밀키트로 주문할게
+
+      김주드, 010-1234-1234 주소는 강원도 강릉시 박월동 00-0'
+- workflow_id: workflow_4
+  step_id: 13
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"비건 콩단백 닭강정 밀키트 주문\"\
+      \n  productItems:\n    - productName: \"비건 콩단백 닭강정 밀키트 (2인분)\"\n      productId:\
+      \ \"mealkit_vegan_001\"\n      quantity: 1\n      price: 15900\n  userId: \"\
+      U0DK23111\"\n  shippingAddress:\n    recipient: \"김주드\"\n    adress: \"강원도 강릉시\
+      \ 박월동 00-0\"\n    phone: \"010-1234-1234\" \ntool_call_result:\n  data:\n  \
+      \  orderId: \"ORD-20250805-001\"\n    userId: \"U0DK23111\"\n    status: \"\
+      주문 완료\"\n    productItems:\n      - productName: \"비건 콩단백 닭강정 밀키트 (2인분)\"\n\
+      \        productId: \"mealkit_vegan_001\"\n        quantity: 1\n        price:\
+      \ 15900\n    totalAmount: 15900\n    shippingAddress:\n      recipient: \"김주드\"\
+      \n      address: \"강원도 강릉시 박월동 00-0\"\n      phone: \"010-1234-1234\"\n    estimatedDelivery:\
+      \ \"2025-08-14\"\n    confirmationMessage: \"주문이 정상적으로 접수되었습니다. 배송은 2025-08-14까지\
+      \ 완료될 예정입니다.\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "주문이 완료되었습니다! \n\n김주드님,\n\"비건 콩단백 닭강정 밀키트 (2인분)\" 1개 상품에 대한 주문이 정상적으로\
+      \ 접수되었습니다.\n\n- 주문번호: ORD-20250805-001\n\n- 주문자: 김주드\n\n- 배송지: 강원도 강릉시 박월동 00-0\n\
+      \n- 연락처: 010-1234-1234\n\n- 결제금액: 15,900원\n\n- 예상 배송일: 2025년 8월 14일 도착 예정\n\n\
+      배송이 시작되면 별도의 알림 또는 송장 번호가 제공될 예정입니다.\n맛있고 건강한 식사 되시길 바랍니다!"

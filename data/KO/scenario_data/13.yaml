@@ -1,0 +1,194 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2026-10-13
+
+      - 이름: 유우유'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 내 적금계좌 이번 달에 만기면 다음 달 1일에 12500000원 엄마한테 보내게 내 신한은행 입출금 계좌에서 송금 예약해주고,
+      고날 카톡도 예약해줘 "선물~" 이렇게
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"적금 계좌가 이번 달에 만기인지 확인\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: personal_banking_agent\n\
+      \      refined_query: \"적금이 이번 달에 만기이면, 송금에 사용할 신한은행 입출금 계좌 조회\"\n    - status:\
+      \ pending\n      name: personal_banking_agent\n      refined_query: \"적금이 이번\
+      \ 달에 만기이면, 다음 달 1일 엄마에게 12500000원 송금 예약\"\n\nworkflow_3:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n\
+      \      name: message_agent\n      refined_query: \"적금이 이번 달에 만기이면, 다음 달 1일 엄마에게\
+      \ '선물~'이라는 카톡 전송 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 계좌번호, 수취 은행'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '적금 계좌 만기 확인을 위해 먼저 계좌번호와 수취 은행명 알려주세요.
+
+      정보 주시면 바로 조회 도와드리겠습니다!'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 신한은행 110-487-654321
+- workflow_id: null
+  step_id: 7
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"적금 계좌 만기 확인\"\
+      \n  bankName: \"신한은행\"\n  accountNumber: \"110-487-654321\"\n  accountHolderName:\
+      \ \"유우유\"\n  accountType: \"installment\"\n  includeTransactions: false\ntool_call_result:\n\
+      \  status: \"success\"\n  data:\n    bankName: \"신한은행\"\n    accountNumber:\
+      \ \"110-487-654321\"\n    accountHolderName: \"유우유\"\n    accountType: \"installment\"\
+      \n    balance: 12500000\n    maturityDate: \"2026-10-18\"\n    interestRate:\
+      \ 3.5\n    currency: \"KRW\"\n  source: \"신한은행 시스템\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 계좌번호'
+- workflow_id: workflow_3
+  step_id: 9
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수신자의 전화번호,  예약 전송 시간'
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '적금 계좌가 2026년 10월 18일에 만기 예정이에요.
+
+
+      송금과 카카오톡 메시지 전송을 위해 아래 정보를 알려주세요:
+
+
+      1. 송금에 사용할 신한은행 계좌번호
+
+      2. 카카오톡 수신자 전화번호
+
+      3. 카카오톡 메시지 예약 전송 시간'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 신한은행 123456-78-901234, 010-5555-6707, 시간은 오전 6시로
+- workflow_id: workflow_2
+  step_id: 12
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAccountBalance\narguments:\n  refinedQuery: \"신한은행 123456-78-901234\
+      \ 입출금 계좌 조회\"\n  bankName: \"신한은행\"\n  accountNumber: \"123456-78-901234\"\n\
+      \  accountHolderName: \"유우유\"\n  includeTransactions: false\n  accountType:\
+      \ \"checking\"\ntool_call_result:\n  status: \"success\"\n  data:\n    bankName:\
+      \ \"신한은행\"\n    accountNumber: \"123456-78-901234\"\n    accountHolderName:\
+      \ \"유우유\"\n    accountType: \"checking\"\n    balance: 5000000\n    currency:\
+      \ \"KRW\"\n    sourceAccountId: \"acc-20261013-001\""
+- workflow_id: workflow_3
+  step_id: 13
+  agent: message_agent
+  agent_type: agent
+  data:
+    content: "tool: sendMessage\narguments:\n  refinedQuery: \"다음 달 1일 오전 6시 엄마에게\
+      \ '선물~'이라는 카톡 전송 예약\"\n  channel: \"kakaotalk\"\n  phoneNumber: \"010-5555-6707\"\
+      \n  message: \"선물~\"\n  sendTime: \"2026-11-01T06:00\"\n  repeatRule: \"none\"\
+      \n  priority: \"normal\"\ntool_call_result:\n  status: success\n  data:\n  \
+      \  channel: \"kakaotalk\"\n    phoneNumber: \"010-5555-6707\"\n    message:\
+      \ \"선물~\"\n    sendTime: \"2026-11-01T06:00\"\n    repeatRule: \"none\"\n  \
+      \  priority: \"normal\"\n    messageStatus: \"예약 완료\"\n    messageId: \"MSG202611010600001\"\
+      \n  source: \"메시지 전송 시스템\""
+- workflow_id: workflow_2
+  step_id: 14
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 송금 대상 예금주 이름, 수취 은행 이름, 송금 대상 계좌번호, 예약 송금 시간'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: '송금 예약을 위해 아래 정보를 알려주세요!
+
+
+      1. 송금 대상 예금주 이름
+
+      2. 수취 은행 이름
+
+      3. 송금할 계좌번호
+
+      4. 예약 송금 시간 (예: 오전 9시)
+
+
+      정보 주시면 바로 예약 도와드릴게요!'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 유엄니, 하나은행, 356-910654-12345, 시간은 아까랑 똑같이
+- workflow_id: null
+  step_id: 17
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: transferMoney\narguments:\n  refinedQuery: \"다음 달 1일 오전 6시 유엄니의\
+      \ 하나은행 356-910654-12345 계좌로 12,500,000원 송금 예약\"\n  recipientName: \"유엄니\"\n\
+      \  bankName: \"하나은행\"\n  accountNumber: \"356-910654-12345\"\n  amount: 12500000\n\
+      \  scheduledAt: \"2026-11-01T06:00\"\n  sourceAccountId: \"acc-20261013-001\"\
+      \ntool_call_result:\n  status: \"scheduled\"\n  data:\n    recipientName: \"\
+      유엄니\"\n    bankName: \"하나은행\"\n    accountNumber: \"356-910654-12345\"\n   \
+      \ amount: 12500000\n    scheduledAt: \"2026-11-01T06:00\"\n    sourceAccountId:\
+      \ \"acc-20261013-001\"\n    transactionId: \"txn-20261101-0001\"\n  message:\
+      \ \"2026년 11월 1일 오전 6시에 적금 만기 금액 12,500,000원이 유엄니님의 하나은행 계좌로 송금 예약되었습니다.\"\n\
+      \  source: \"금융 이체 시스템\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: '송금과 메시지 예약 모두 완료됐어요!
+
+
+      • 적금 만기 금액 12,500,000원은 2026년 11월 1일 오전 6시,
+
+      유엄니님(하나은행 356-910654-12345) 계좌로 송금될 예정입니다.
+
+
+      • 같은 시간에 카카오톡으로 ''선물~''이라는 메시지도
+
+      010-5555-6707 번호로 전송될 거예요.'

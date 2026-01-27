@@ -1,0 +1,74 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜 : 2025-07-16'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: AI관련 공부를 하고 싶어! 집에서 인강 보면서 혼자하려는데 관련 무료 인강 영상이랑 AI관련 정보좀 찾아줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      AI 관련 무료 인강 영상\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: search_agent\n      refined_query: \"AI\
+      \ 관련 정보\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"AI 관련 무료 인강\"\ntool_call_result:\n\
+      \    data:\n      results:\n        - title: \"초보자를 위한 인공지능 강의 - 생활코딩\"\n  \
+      \        summary: \"AI의 기본 개념부터 간단한 실습까지 다루는 생활코딩의 무료 강의 시리즈입니다.\"\n       \
+      \   url: \"https://www.youtube.com/watch?v=2ePf9rue1Ao\"\n        - title: \"\
+      AI for Everyone - Andrew Ng (한글자막)\"\n          summary: \"AI 분야의 세계적 권위자 Andrew\
+      \ Ng가 진행하는 입문 강의로, 비전공자도 이해하기 쉬운 구성입니다.\"\n          url: \"https://www.youtube.com/watch?v=aircAruvnKk\"\
+      \n        - title: \"파이썬으로 배우는 인공지능 기초\"\n          summary: \"파이썬을 활용한 머신러닝\
+      \ 기본 알고리즘 구현 강좌로, 유튜브에서 무료 제공됩니다.\"\n          url: \"https://www.youtube.com/watch?v=VwC8dBqGgIw\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"AI 관련 정보\"\ntool_call_result:\n\
+      \    data:\n      results:\n        - title: \"인공지능(AI)이란 무엇인가?\"\n        \
+      \  summary: \"AI는 인간의 지능적 기능을 모방하도록 설계된 컴퓨터 시스템으로, 머신러닝과 딥러닝 등의 기술이 포함됩니다.\"\
+      \n          source: \"https://ko.wikipedia.org/wiki/인공지능\"\n        - title:\
+      \ \"2025년 AI 기술 동향\"\n          summary: \"생성형 AI, 자율주행, 의료 진단 보조 등 다양한 산업 분야에서\
+      \ AI 활용이 빠르게 확대되고 있습니다.\"\n          source: \"https://www.techtrend2025.com/ai\"\
+      \n        - title: \"AI 윤리와 규제\"\n          summary: \"AI 기술의 오남용을 방지하기 위해 글로벌\
+      \ 차원의 법적·윤리적 논의가 활발히 진행되고 있습니다.\"\n          source: \"https://www.bbc.com/news/technology-ai-ethics\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "AI 관련 무료 인강을 찾고 계시다면, 다음과 같은 유용한 영상 강의를 추천드립니다:\n\n초보자를 위한 인공지능 강의 -\
+      \ 생활코딩\nAI의 기본 개념부터 간단한 실습까지 단계적으로 설명해주는 강의로, 입문자에게 적합한 콘텐츠입니다.\nurl: https://www.youtube.com/watch?v=2ePf9rue1Ao\n\
+      \nAI for Everyone - Andrew Ng (한글자막)\n스탠포드 대학의 Andrew Ng 교수가 진행하는 입문 강의로, AI가\
+      \ 무엇인지, 어떤 식으로 사회에 적용되고 있는지를 쉽게 설명해 줍니다. 비전공자도 부담 없이 들을 수 있어요.\nurl: https://www.youtube.com/watch?v=aircAruvnKk\n\
+      \n파이썬으로 배우는 인공지능 기초\n파이썬을 기반으로 머신러닝의 핵심 알고리즘을 직접 구현해보며 학습할 수 있는 실전형 강의입니다.\n\
+      url: https://www.youtube.com/watch?v=VwC8dBqGgIw\n\n이 영상들은 모두 무료로 제공되며, 유튜브에서\
+      \ 바로 시청 가능합니다. 필요에 따라 기초 개념 위주 또는 실습 중심 강의를 선택해 보세요!\n\n------------\n\nAI(인공지능)는\
+      \ 인간의 사고와 학습, 문제 해결 능력을 컴퓨터가 수행할 수 있도록 설계된 기술입니다. 머신러닝, 딥러닝, 자연어 처리와 같은 다양한\
+      \ 하위 분야를 포함하고 있으며, 현재 사회 전반에 큰 영향을 미치고 있습니다.\n\n최근 AI 관련 주요 정보는 다음과 같습니다:\n\n\
+      AI란 무엇인가?\n인공지능은 단순한 자동화 기술을 넘어, 데이터 기반으로 스스로 학습하고 판단하는 시스템을 의미합니다. 대표적으로 음성\
+      \ 인식, 이미지 분석, 챗봇, 추천 알고리즘 등이 있으며, 교육, 금융, 제조, 의료 등 다양한 분야에 적용되고 있습니다.\n 위키백과\
+      \ - 인공지능\n\n2025년 AI 기술 트렌드\n현재 가장 주목받는 분야는 생성형 AI(GPT 등), 자율주행 차량, 의료 보조 진단\
+      \ 시스템, 그리고 스마트팩토리와 같은 산업 자동화입니다. 특히 생성형 AI는 콘텐츠 제작, 업무 자동화, 고객 응대 등에서 활용이 빠르게\
+      \ 확산되고 있습니다.\n 2025년 AI 트렌드 보기\n\nAI 윤리와 규제 논의\nAI의 발전과 함께 투명성, 책임성, 편향 방지 등\
+      \ 윤리적 문제가 대두되고 있으며, 이를 해결하기 위한 글로벌 규제 논의도 활발히 진행되고 있습니다. 유럽연합(EU)은 AI 법안을 추진\
+      \ 중이고, 국내외 기업들도 자체 윤리 가이드라인을 마련하고 있습니다.\n BBC - AI 윤리 기사\n\nAI는 더 이상 먼 미래의 기술이\
+      \ 아니라, 오늘날 우리의 삶과 사회를 바꾸고 있는 핵심 동력입니다. 관심 있는 분야가 있다면 더 구체적인 자료도 도와드릴 수 있어요!"

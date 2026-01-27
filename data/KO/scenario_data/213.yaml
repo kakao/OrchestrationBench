@@ -1,0 +1,137 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- datetime: "2025-08-16 16:00"
+
+      - userId: 12345
+
+      - location: 수원시 망포동'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 어제 장본 걸로 저녁 뭐해먹을까 오늘 날씨에 어울리는 걸로 추천 좀 해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"어제 주문\
+      \ 목록 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: weather_agent\n      refined_query: \"오늘\
+      \ 저녁 날씨\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ [\"workflow_1\", \"workflow_2\"]\n  steps:\n    - status: pending\n      name:\
+      \ search_agent\n      refined_query: \"어제 장 본 상품으로 오늘 날씨에 어울리는 저녁 요리 레시피 검색\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"어제 주문 내역\"\n  userId:\
+      \ \"12345\"\n  orderDate: \"2025-08-15\"\ntool_call_result:\n  orderStatus:\n\
+      \    - orderId: \"001\"\n      items:\n        - name: \"피코크 평양냉면 육수\"\n   \
+      \       quantity: 2\n        - name: \"피코크 메밀면 5인분\"\n          quantity: 1\n\
+      \        - name: \"풀무원 얇은피 고기만두 300g\"\n          quantity: 3\n        - name:\
+      \ \"오뚜기 진라면 매운맛 5개입\"\n          quantity: 1\n        - name: \"참쉬운 들깨 삼계탕\"\
+      \n          quantity: 1\n        - name: \"청정원 맛있는 밥상 김치찌개\"\n          quantity:\
+      \ 1\n      status: \"배송 완료\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"2025-08-16 저녁\
+      \ 날씨\"\n  location: \"수원시 망포동\"\n  date: \"2025-08-16\"\ntool_call_result:\n\
+      \  weather: \"가끔 소나기\"\n  temperature: \"32도\"\n  humidity: \"60%\"\n  wind_speed:\
+      \ \"10m/s\""
+- workflow_id: workflow_2
+  step_id: 6
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"무덥고 비오는 날 평양냉면육수 메밀면\
+      \ 고기만두 진라면 삼계탕 김치찌개 등 재료로 한 요리 레시피\"\ntool_call_result:\n  data:\n    - name:\
+      \ \"평양냉면 정식\"\n      ingredients:\n        - 메밀면\n        - 평양냉면 육수\n      \
+      \  - 고기만두\n        - 오이채\n        - 삶은 달걀\n        - 식초\n        - 겨자\n    \
+      \  instructions: >\n        1. 메밀면을 삶아 찬물에 헹군 뒤 그릇에 담습니다.\n        2. 냉면 육수는\
+      \ 미리 차게 식혀 부어줍니다.\n        3. 삶은 달걀, 오이채, 고기만두를 곁들여 장식합니다.\n        4. 기호에 따라\
+      \ 식초와 겨자를 넣어 완성합니다.\n\n    - name: \"진라면 만둣국\"\n      ingredients:\n       \
+      \ - 진라면\n        - 고기만두\n        - 계란\n        - 대파\n        - 김치찌개 국물 약간\n\
+      \      instructions: >\n        1. 냄비에 물을 끓인 뒤 진라면 스프와 면을 넣습니다.\n        2.\
+      \ 라면이 거의 익을 때 고기만두와 계란을 추가합니다.\n        3. 기호에 따라 김치찌개 국물 한 국자를 넣어 칼칼한 맛을 더합니다.\n\
+      \        4. 대파를 올려 마무리합니다.\n\n    - name: \"삼계탕 김치죽\"\n      ingredients:\n\
+      \        - 참쉬운 들깨 삼계탕\n        - 청정원 김치찌개\n        - 밥\n        - 참기름\n    \
+      \    - 들깨가루\n      instructions: >\n        1. 삼계탕의 국물과 고기를 분리하여 국물은 끓이고 고기는\
+      \ 잘게 찢어둡니다.\n        2. 김치찌개 약간과 밥을 넣고 중불로 끓입니다.\n        3. 고기를 다시 넣고 끓인 후\
+      \ 들깨가루를 뿌려 마무리합니다.\n        4. 기호에 따라 참기름을 살짝 둘러줍니다."
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '* 어제 주문 내역 (8월 15일)
+
+
+      배송이 완료되었습니다. 아래 품목들을 받으셨습니다:
+
+      - 피코크 평양냉면 육수 × 2
+
+      - 피코크 메밀면 5인분 × 1
+
+      - 풀무원 얇은피 고기만두 300g × 3
+
+      - 오뚜기 진라면 매운맛 5개입 × 1
+
+      - 참쉬운 들깨 삼계탕 × 1
+
+      - 청정원 맛있는 밥상 김치찌개 × 1
+
+
+      * 오늘 저녁 날씨 (2025년 8월 16일)
+
+
+      - 상태: 무덥고 가끔 소나기
+
+      - 기온: 32도
+
+      - 습도: 60%
+
+      - 풍속: 10m/s
+
+
+      무덥고 습한 저녁, 따뜻하면서도 입맛 돋우는 메뉴가 좋겠네요!
+
+
+      * 오늘 추천 요리 레시피
+
+
+      1. 평양냉면 정식
+
+      - 메밀면을 삶아 차가운 육수에 담고, 삶은 달걀과 고기만두를 곁들이면 완성!
+
+      - 식초와 겨자를 살짝 넣어 시원하게 즐겨보세요.
+
+
+      2. 진라면 만둣국
+
+      - 진라면 국물에 고기만두와 계란, 김치찌개 국물을 곁들여 칼칼하게!
+
+      - 푸짐하면서도 비 오는 날에 딱 어울리는 메뉴입니다.
+
+
+      3. 삼계탕 김치죽
+
+      - 삼계탕과 김치찌개를 활용해 고소하고 깊은 맛의 죽으로 재탄생!
+
+      - 몸도 속도 따뜻하게 데워줄 수 있어요.
+
+
+      필요하시면 레시피를 이미지 카드나 캘린더 일정으로도 만들어드릴 수 있어요. 더 궁금하신 게 있다면 언제든지 말씀해주세요!'

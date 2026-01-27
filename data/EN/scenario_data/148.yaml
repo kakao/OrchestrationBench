@@ -1,0 +1,230 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: November 11, 2025'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Set a reminder for me about an hour before next week’s episode of *America’s
+      Supernanny (Lifetime)* so that I don’t miss it. The situations remind me a lot
+      of my own child, so I really want to watch. Who is Deborah Tillman? What kind
+      of person is she? The things she says really resonate with me. Can you also
+      tell me about her other shows  or books she’s written?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Check the broadcast date and time for 'America’s Supernanny (Lifetime)' next\
+      \ week\"\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"Check the broadcast date and time for 'America’s Supernanny (Lifetime)'\
+      \ next week and set a reminder one hour before the show airs\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: person_agent\n      refined_query: \"Find information about Deborah\
+      \ Tillman, including her biography, TV shows, and list of published books\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"Check the broadcast\
+      \ date and time for 'America’s Supernanny (Lifetime)' next week\"\n  programTitle:\
+      \ \"America’s Supernanny (Lifetime)\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Check the broadcast date and time for 'America’s Supernanny (Lifetime)'\
+      \ next week\"\n    programTitle: \"America’s Supernanny (Lifetime)\"\n    broadcastSchedule:\n\
+      \      - date: \"November 18\"\n        day: \"Tuesday\"\n        time: \"8:00\
+      \ PM\"\n    status: \"Broadcast schedule retrieved successfully\"\n    notes:\
+      \ \"Please note that the schedule is subject to change, so confirm in advance.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"Profile information\
+      \ of Deborah Tillman, including TV appearances and list of publications\"\n\
+      \  personName: \"Deborah Tillman\"\n  roleType: \"Doctor\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Profile information of Deborah Tillman, including\
+      \ TV appearances and list of publications\"\n    personName: \"Deborah Tillman\"\
+      \n    roleType: \"Doctor\"\n    profile:\n      personalInfo:\n        name:\
+      \ \"Deborah Tillman\"\n        occupation: \"Doctor, Psychiatrist\"\n      \
+      \  knownFor: \"Expert in child and family counseling\"\n      tvAppearances:\n\
+      \        - programTitle: \"America’s Supernanny (Lifetime)\"\n          role:\
+      \ \"Expert Panelist\"\n          description: \"Provides advice and solutions\
+      \ for family issues\"\n        - programTitle: \"Our Child Has Changed\"\n \
+      \         role: \"Lead Expert\"\n          description: \"Guides parents and\
+      \ corrects children's behavior\"\n        - programTitle: \"Counseling Center\"\
+      \n          role: \"Host\"\n          description: \"Offers in-depth counseling\
+      \ and practical solutions\"\n      publications:\n        - bookTitle: \"Accidental\
+      \ Adult – Dr. Deborah’s Parenting Advice\"\n          year: 2020\n         \
+      \ description: \"Practical advice on parenting challenges\"\n        - bookTitle:\
+      \ \"Raising Anxious Children in a Healthy Way\"\n          year: 2018\n    \
+      \      description: \"Explores children's mental health and parenting methods\"\
+      \n    status: \"Information search completed\"\n    notes: \"Deborah Tillman\
+      \ has helped countless parents and families through her TV appearances and published\
+      \ works.\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"Set a reminder at\
+      \ 7:00 PM on November 18 to watch 'America’s Supernanny (Lifetime)', which airs\
+      \ at 8:00 PM.\"\n  reminderContent: \"Watch 'America’s Supernanny (Lifetime)'\"\
+      \n  reminderTime: \"2025-11-18T19:00\"\n  repeatRule: \"none\"\n  priority:\
+      \ \"normal\"\n  deliveryMethod: \"chat\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Set a reminder at 7:00 PM on November 18 to watch 'America’s Supernanny\
+      \ (Lifetime),' which airs at 8:00 PM.\"\n    reminderContent: \"Watch 'America’s\
+      \ Supernanny (Lifetime)'\"\n    reminderTime: \"2025-11-18T19:00\"\n    repeatRule:\
+      \ \"none\"\n    priority: \"normal\"\n    deliveryMethod: \"chat\"\n    status:\
+      \ \"Reminder successfully set\"\n    notes: \"A chat reminder will be sent at\
+      \ 7:00 PM on November 18 to watch 'America’s Supernanny (Lifetime)'.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Reminder Notification Setup Complete\n\nA reminder has been set so\
+      \ that you don’t forget to watch *America’s Supernanny (Lifetime)* airing next\
+      \ week.\n\n- Air Date: November 18\n- Air Time: 8:00 PM\n- Reminder Time: November\
+      \ 18, 7:00 PM\n- Reminder Message: Watch *America’s Supernanny (Lifetime)*\n\
+      \nOn the day of the broadcast, the reminder will be sent via chat at the scheduled\
+      \ time. Enjoy the show!\n\n\n◾ Deborah Tillman – Profile and Career Highlights\n\
+      \n- Profile:\n  - Name: Deborah Tillman\n  - Occupation: Physician, Psychiatrist\n\
+      \  - Specialization: Child and Family Counseling\n\n- Current TV Appearances:\n\
+      \  - *America’s Supernanny (Lifetime)*: Serves as an expert panelist providing\
+      \ advice and solutions for family issues\n  - *Our Child Has Changed*: Featured\
+      \ as a leading expert in child behavior correction and parent guidance\n  -\
+      \ *Counseling Center*: Hosts the program, offering in-depth counseling and practical\
+      \ solutions\n\n- Books:\n  - *Accidental Adult – Parenting Advice by Deborah\
+      \ Tillman* (2020): Offers realistic parenting guidance\n  - *Raising Anxious\
+      \ Children in a Healthy Way* (2018): Explores children’s mental health and parenting\
+      \ strategies\n\nDeborah Tillman continues to support countless parents and families\
+      \ through her TV appearances and publications."
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: What’s the difference between the Counseling Center and America’s Supernanny
+      (Lifetime)? Anyway, I’m really stressed from conflicts with my teenage kid and
+      I’d like to get some counseling.
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"Check the broadcast date and time for 'America’s Supernanny (Lifetime)'\
+      \ next week\"\n    - status: completed\n      name: calendar_agent\n      refined_query:\
+      \ \"Check the broadcast date and time for 'America’s Supernanny (Lifetime)'\
+      \ next week and set a reminder one hour before it airs\"\n\nworkflow_2:\n  status:\
+      \ completed\n  type: independent\n  steps:\n    - status: completed\n      name:\
+      \ person_agent\n      refined_query: \"Information about Deborah Tillman, including\
+      \ her TV appearances and list of published books\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ entertainment_agent\n      refined_query: \"Introduction to the show 'Counseling\
+      \ Center' and comparison with America’s Supernanny (Lifetime)\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: counsel_agent\n      refined_query: \"Requesting counseling about\
+      \ stress caused by conflicts while raising a teenage child\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"Introduction to\
+      \ the program 'Counseling Center' and comparison with America’s Supernanny (Lifetime)\"\
+      \n  programTitle: \"Counseling Center\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Introduction to the program 'Counseling Center' and comparison with America’s\
+      \ Supernanny (Lifetime)\"\n    programTitle: \"Counseling Center\"\n    programInfo:\n\
+      \      introduction: \"Counseling Center is a program that provides in-depth\
+      \ counseling and solutions, offering expert advice and guidance to people with\
+      \ a wide range of concerns.\"\n      differences:\n        - aspect: \"Format\"\
+      \n          Counseling Center: \"Focuses on personal concerns and issues through\
+      \ counseling\"\n          America’s Supernanny (Lifetime): \"Provides solutions\
+      \ centered on family and parent-child relationship issues\"\n        - aspect:\
+      \ \"Target Audience\"\n          Counseling Center: \"Offers diverse kinds of\
+      \ counseling for people of all ages\"\n          America’s Supernanny (Lifetime):\
+      \ \"Aimed at parents dealing with family or child-related issues\"\n    status:\
+      \ \"Information search complete\"\n    notes: \"Both programs feature Deborah\
+      \ Tillman, who helps address and resolve various issues.\""
+- workflow_id: workflow_4
+  step_id: 11
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"Requesting counseling\
+      \ on stress caused by conflicts while raising a teenage child\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Requesting counseling on stress caused by conflicts\
+      \ while raising a teenage child\"\n    advice:\n      message: \"Conflicts with\
+      \ teenage children are a natural process that many parents experience. To reduce\
+      \ stress, you can try the following approaches:\"\n      tips:\n        - \"\
+      Try to see things from your child's perspective: adolescence is a time of many\
+      \ changes, so make an effort to understand your child's point of view.\"\n \
+      \       - \"Encourage open communication: create an environment where you and\
+      \ your child can talk honestly.\"\n        - \"Set consistent rules: make household\
+      \ rules and expectations clear, and apply them consistently.\"\n        - \"\
+      Practice self-care: parents also need time to manage their own stress.\"\n \
+      \       - \"Consider professional counseling: if necessary, seeking help from\
+      \ a family counselor can be very beneficial.\"\n    status: \"Counseling advice\
+      \ provided\"\n    notes: \"Conflicts during adolescence are a natural process,\
+      \ and proper communication and understanding are key.\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '◾ Program Introduction: Counseling Center
+
+
+      Counseling Center is a program that provides in-depth counseling and solutions,
+      offering expert advice and guidance to people dealing with a wide range of concerns.
+      Here’s how it differs from similar shows:
+
+
+      - Format: Counseling Center focuses on personal struggles and individual issues,
+      while My Precious Child centers on family and parent-child relationship challenges.
+
+      - Audience: Counseling Center offers counseling for people of all ages, whereas
+      My Precious Child is specifically aimed at parents dealing with issues related
+      to their children and family dynamics.
+
+
+      Deborah Tillman appears in both programs to help resolve various problems.
+
+
+
+      ◾ Providing Psychological Counseling and Advice
+
+
+      Stress from conflicts with teenage children is a natural process that many parents
+      experience. Here are some tips that may help manage it:
+
+
+      - Consider your child’s perspective: Adolescence is a time of many changes,
+      so try to understand your child''s point of view.
+
+      - Encourage open communication: Create an environment where honest conversations
+      can happen.
+
+      - Set consistent rules: Make household expectations clear and apply them consistently.
+
+      - Practice self-care: Parents should also take time to manage their own stress.
+
+      - Seek professional help: If needed, consulting a family counselor can be very
+      beneficial.
+
+
+      By trying these approaches, you may be able to reduce stress, and if necessary,
+      consider seeking professional counseling support.'

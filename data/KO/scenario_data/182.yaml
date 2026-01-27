@@ -1,0 +1,77 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 현재 날짜 : 2025-07-15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 한화오션 주식 어제 종가 얼만지 알아보고 왜 이렇게 가격 오르는지 알아봐줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"한화오션 주식\
+      \ 종가 시세\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: finance_agent\n      refined_query: \"한화오션\
+      \ 주식 오르는 이유\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getStockPrice\narguments:\n  refinedQuery: \"한화오션 주식 종가 시세\"\n\
+      \  stockName: \"한화오션\"\n  date: \"2025-07-15\"\n  priceType: \"종가\"\ntool_call_result:\n\
+      \  data:\n    tool: \"getStockPrice\"\n    result:\n      refinedQuery: \"한화오션\
+      \ 주식 시세\"\n      stockName: \"한화오션\"\n      date: \"2025-07-15\"\n      priceType:\
+      \ \"종가\"\n      price: 35400\n      currency: \"KRW\"\n      market: \"KOSPI\"\
+      \n      note: \"2025년 7월 15일 기준 한화오션의 종가는 35,400원입니다.\"\n  status: \"success\"\
+      \n  timestamp: \"2025-07-15T18:05:00+09:00\"\n  source: \"KRX 한국거래소\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: searchFinanceInfo\narguments:\n  refinedQuery: \"한화오션 주식 오르는 이유\"\
+      \ntool_call_result:\n  data:\n    summary: \"한화오션 주가가 상승한 주요 요인은 최근 방산 수출 확대\
+      \ 기대감과 조선업 수주 호조입니다. 특히 중동 및 동남아 지역을 중심으로 한 방산 계약 체결 가능성이 부각되었고, 조선 부문에서는 고부가가치\
+      \ 선박 수주 소식이 이어지면서 투자 심리를 자극하고 있습니다. 또한 국내 증권사들의 목표주가 상향 조정도 긍정적인 영향을 주고 있습니다.\"\
+      \n    keywords:\n      - 방산 수출 확대\n      - 고부가가치 선박 수주\n      - 중동·동남아 계약 기대\n\
+      \      - 증권사 목표주가 상향\n      - 투자심리 개선"
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '2025년 7월 15일 기준으로 한화오션의 주식 종가는 35,400원(KRW)입니다.
+
+
+      궁금하신 다른 날짜의 시세나 종목이 있으시면 알려주세요!
+
+
+      해당 정보는 당일 주식 시장 기준으로 제공된 데이터입니다.
+
+      ------
+
+      한화오션 주가가 상승한 이유는 다음과 같습니다:
+
+
+      방산 수출 확대 기대감: 중동 및 동남아 지역을 중심으로 방산 계약 체결 가능성이 부각되며 투자자들의 관심을 끌고 있습니다.
+
+      조선업 수주 호조: 고부가가치 선박 수주 소식이 이어지면서 조선 부문에서 긍정적인 흐름이 나타나고 있습니다.
+
+      증권사 목표주가 상향: 국내 주요 증권사들이 한화오션의 실적 개선 전망에 따라 목표주가를 상향 조정하면서 주가에 긍정적인 영향을 주고 있습니다.
+
+      투자심리 개선: 위와 같은 호재들이 복합적으로 작용하면서 전반적인 투자심리가 좋아진 것도 상승의 배경입니다.
+
+
+      이러한 요인들이 맞물리며 한화오션 주가가 강세를 보이고 있습니다.'

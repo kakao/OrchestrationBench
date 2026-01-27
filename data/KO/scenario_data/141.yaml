@@ -1,0 +1,145 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 8월 20일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 요즘 환율이 많이 올랐다던데, 오늘 미국 달러 환율 좀 알려줘. 이번 달에 딸한테 보낼 생활비 자동이체 내역도 같이 확인해줘.
+      25일에 나가던 거 있잖아. 환율 봐서 금액 조금 조정할 수도 있을 것 같아.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: finance_agent\n      refined_query: \"오늘 미국 달러\
+      \ 환율 조회\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"매달 25일에 딸에게 보내는 생활비 자동이체 내역 조회\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: finance_agent
+  agent_type: agent
+  data:
+    content: "tool: getExchangeRate\narguments:\n  refinedQuery: \"2025년 8월 20일 미국\
+      \ 달러 환율 조회\"\n  baseCurrency: \"KRW\"\n  targetCurrency: \"USD\"\n  date: \"\
+      2025-08-20\"\n  exchangeType: \"spot\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"2025년 8월 20일 미국 달러 환율 조회\"\n    baseCurrency: \"KRW\"\n    targetCurrency:\
+      \ \"USD\"\n    date: \"2025-08-20\"\n    exchangeType: \"spot\"\n    exchangeRate:\
+      \ \"1,150.50\"\n    status: \"환율 조회 완료\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출금 계좌 예금주명, 출금 계좌번호'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 자동이체 내역 조회를 위해서는 출금 계좌 예금주명과 출금 계좌번호 정보를 알려주시기 바랍니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 박승호, 123-4567-890123
+- workflow_id: null
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"매달 25일에 딸에게\
+      \ 보내는 생활비 자동이체 내역 조회\"\n  accountHolderName: \"박승호\"\n  fromAccountNumber: \"\
+      123-4567-890123\"\n  transferDay: \"25\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"매달 25일에 딸에게 보내는 생활비 자동이체 내역 조회\"\n    accountHolderName: \"박승호\"\n    fromAccountNumber:\
+      \ \"123-4567-890123\"\n    transferDay: \"25\"\n    autoTransferList:\n    \
+      \  - autoTransferId: \"AT-20230801-001\"\n        beneficiaryName: \"박시아\"\n\
+      \        beneficiaryAccountNumber: \"987-6543-210987\"\n        amount: \"1,000,000\"\
+      \n        memo: \"생활비\"\n    status: \"자동이체 내역 조회 완료\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: '◾환율 정보 조회
+
+
+      2025년 8월 20일의 미국 달러(USD) 대비 한국 원(KRW)의 스팟 환율이 조회되었습니다. 해당 날짜의 환율은 1,150.50원입니다.
+
+
+
+      ◾자동이체 내역 조회
+
+
+      박승호 님의 계좌(123-4567-890123)에서 매달 25일에 진행되는 자동이체 내역을 조회한 결과는 다음과 같습니다:
+
+
+      - 수취인: 박시아
+
+      - 수취인 계좌 번호: 987-6543-210987
+
+      - 이체 금액: 1,000,000원
+
+      - 메모: 생활비
+
+
+      자동이체 내역이 성공적으로 조회되었습니다.'
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: 날짜를 25일에서 30일로 미뤄주고, 금액도 50만 원 더 올려줘.
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: finance_agent\n      refined_query: \"오늘\
+      \ 미국 달러 환율 조회\"\n\nworkflow_2:\n  status: completed\n  type: independent\n \
+      \ steps:\n    - status: completed\n      name: personal_banking_agent\n    \
+      \  refined_query: \"매달 25일에 딸에게 보내는 생활비 자동이체 내역 조회\"\n\nworkflow_3:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ personal_banking_agent\n      refined_query: \"딸에게 보내는 생활비 자동이체일을 매달 25일에서\
+      \ 30일로 변경하고 이체 금액을 50만원 증액\""
+- workflow_id: workflow_3
+  step_id: 12
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyAutoTransfer\narguments:\n  refinedQuery: \"딸 박시아에게 보내는\
+      \ 생활비 자동이체일을 매달 25일에서 30일로 변경하고 이체 금액을 150만원으로 변경\"\n  autoTransferId: \"AT-20230801-001\"\
+      \n  amount: 1500000\n  transferDay: \"30\"\ntool_call_result:\n  data:\n   \
+      \ refinedQuery: \"딸 박시아에게 보내는 생활비 자동이체일을 매달 25일에서 30일로 변경하고 이체 금액을 150만원으로 변경\"\
+      \n    autoTransferId: \"AT-20230801-001\"\n    amount: 1500000\n    transferDay:\
+      \ \"30\"\n    status: \"자동이체 변경 완료\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: '자동이체 정보가 다음과 같이 성공적으로 변경되었습니다:
+
+
+      - 수취인: 박시아
+
+      - 이체 금액: 1,500,000원
+
+      - 이체일: 매달 30일
+
+
+      이제 매달 30일마다 1,500,000원이 자동이체됩니다. 변경된 내용을 참고하여 금융 관리를 진행하시기 바랍니다.'

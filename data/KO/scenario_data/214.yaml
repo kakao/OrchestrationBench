@@ -1,0 +1,76 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- datetime: "2025-07-13 18:34"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 어떡해 지금 주유 칸이 1개 남았어 ㅠㅠ 지금 내 위치에서 가장 빨리 갈 수 있는 주유소 카카오내비로 길 안내해
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"내 위치에서 가장\
+      \ 가까운 주유소 검색\"\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"내 위치에서 가장 빨리 갈 수 있는 주유소 카카오내비로 길 안내\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 위치 정보'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 주변 주유소를 찾기 위해서 현재 계신 위치를 알려주세요.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 나 지금 광교호수공영제1주차장이야.
+- workflow_id: null
+  step_id: 7
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"광교호수공영제1주차장 주변 주유소\"\
+      \n  placeCategory: \"주유소\"\n  location: \"광교호수공영제1주차장\"\n  sortBy: \"distance\"\
+      \ntool_call_result:\n  places:\n    - name: \"S-Oil 수원광교점\"\n      location:\
+      \ \"경기도 수원시 영통구 광교중앙로 123\"\n      distanceFromCurrentLocation: \"5km\"\n  \
+      \  - name: \"현대오일뱅크 티파니블루점\"\n      location: \"경기도 수원시 영통구 센트럴타운로 456\"\n \
+      \     distanceFromCurrentLocation: \"8km\""
+- workflow_id: null
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"광교호수공영제1주차장에서 S-Oil\
+      \ 수원광교점까지 가는 길 카카오내비로 안내\"\n  origin: \"광교호수공영제1주차장\"\n  destination: \"S-Oil\
+      \ 수원광교점\"\n  transportModes: \"car\"\n  departureTime: \"18:34\"\n  optimizeBy:\
+      \ \"fastest\"\n  source: \"카카오내비\"\n  navigationMode: true\ntool_call_result:\n\
+      \  directions:\n    - step: \"광교호수공영제1주차장에서 출발\"\n    - step: \"광교중앙로를 따라 직진\
+      \ 후 1.5km 이동\"\n    - step: \"광교중앙사거리에서 유턴 후 약 300m 직진\"\n    - step: \"오른쪽에\
+      \ S-Oil 수원광교점 도착\"\n  totalDuration: \"약 11분\"\n  totalDistance: \"5.1km\"\n\
+      \  estimatedArrivalTime: \"18:45\"\n  congestionLevel: \"보통\"\n  source: \"\
+      카카오내비\"\n  navigationMode: true"
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 광교호수공영제1주차장에서 가장 가까운 주유소인 'S-Oil 수원광교점'까지 카카오내비로 길 안내를 시작합니다.

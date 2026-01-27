@@ -1,0 +1,135 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2026/02/11
+
+      time: 1:00 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I heard there’s a large protest happening in front of New York City Hall.
+      Can you give me a quick summary of the related news and also check if traffic
+      is congested?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: news_agent\n      refined_query: \"Large-scale\
+      \ protest in front of New York City Hall\"\n    - status: pending\n      name:\
+      \ news_agent\n      refined_query: \"Brief news summary about the large-scale\
+      \ protest in front of New York City Hall\"\n\nworkflow_2:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Traffic congestion around the large-scale protest in\
+      \ front of New York City Hall\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"Large-scale protest\
+      \ in front of New York City Hall\"\n  limit: 5\ntool_call_result:\n  data:\n\
+      \    searchQuery: \"Large-scale protest in front of New York City Hall\"\n \
+      \   resultCount: 5\n    issue: \"Housing price stabilization and stronger tenant\
+      \ protection laws\"\n    description: \"Around 10,000 citizens have gathered\
+      \ in front of New York City Hall to protest rising housing costs and to demand\
+      \ stronger tenant protection laws. Protesters are calling on the city government\
+      \ to implement more aggressive policies.\"\n    newsArticles:\n      - title:\
+      \ \"Mass protest for affordable housing causes traffic congestion in Lower Manhattan\"\
+      \n        url: \"http://news.example.com/article1\"\n        datePublished:\
+      \ \"2026-02-11\"\n      - title: \"Protesters strongly demand that city improve\
+      \ housing policies\"\n        url: \"http://news.example.com/article2\"\n  \
+      \      datePublished: \"2026-02-11\"\n      - title: \"Mayor listens to citizens’\
+      \ voices at New York City Hall protest\"\n        url: \"http://news.example.com/article3\"\
+      \n        datePublished: \"2026-02-11\"\n      - title: \"Nearby businesses\
+      \ disrupted by affordable housing protest\"\n        url: \"http://news.example.com/article4\"\
+      \n        datePublished: \"2026-02-11\"\n      - title: \"Police step up safety\
+      \ measures for New York City Hall housing protest\"\n        url: \"http://news.example.com/article5\"\
+      \n        datePublished: \"2026-02-11\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTrafficInfo\narguments:\n  refinedQuery: \"Traffic congestion\
+      \ due to large-scale protest in front of New York City Hall\"\n  location: \"\
+      New York City Hall\"\n  timeRange: \"2026-02-11T13:00\"\n  trafficType: \"Car\"\
+      \n  incidentType: \"Event\"\n  sortBy: \"congestion_score\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Traffic congestion due to large-scale protest\
+      \ in front of New York City Hall\"\n    location: \"New York City Hall\"\n \
+      \   timeRange: \"now\"\n    trafficType: \"car\"\n    incidentType: \"protest\"\
+      \n    currentCongestionScore: 8.7\n    congestionLevel: \"Severe congestion\"\
+      \n    mainRoutesImpacted:\n      - routeName: \"Broadway\"\n        congestionScore:\
+      \ 9.0\n        estimatedDelay: \"20 minutes\"\n      - routeName: \"FDR Drive\"\
+      \n        congestionScore: 8.5\n        estimatedDelay: \"15 minutes\"\n   \
+      \ alternativeRoutes:\n      - route: \"Houston Street\"\n        congestionScore:\
+      \ 6.0\n        estimatedDelay: \"5 minutes\"\n      - route: \"Subway Line 1\"\
+      \n        congestionScore: 2.0\n        estimatedDelay: \"0 minutes\"\n    notes:\
+      \ \"Due to the protest in front of New York City Hall, car traffic on major\
+      \ roads in Lower Manhattan is heavily congested. Please use detours or take\
+      \ public transportation.\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: summarizeNews\n    arguments:\n      refinedQuery:\
+      \ \"'Massive affordable housing protest in front of New York City Hall causes\
+      \ traffic congestion' short news summary\"\n      style: \"short\"\n      url:\
+      \ \"http://news.example.com/article1\"\n\n  - tool: summarizeNews\n    arguments:\n\
+      \      refinedQuery: \"'Protesters strongly demand that city improve housing\
+      \ policies' short news summary\"\n      style: \"short\"\n      url: \"http://news.example.com/article2\"\
+      \n\n  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"'Mayor listens\
+      \ to citizens' voices at the New York City Hall protest site' short news summary\"\
+      \n      style: \"short\"\n      url: \"http://news.example.com/article3\"\n\n\
+      \  - tool: summarizeNews\n    arguments:\n      refinedQuery: \"'Nearby businesses\
+      \ disrupted due to affordable housing protest' short news summary\"\n      style:\
+      \ \"short\"\n      url: \"http://news.example.com/article4\"\n\n  - tool: summarizeNews\n\
+      \    arguments:\n      refinedQuery: \"'Police step up safety measures at New\
+      \ York City Hall affordable housing protest' short news summary\"\n      style:\
+      \ \"short\"\n      url: \"http://news.example.com/article5\"\n\n\ntool_call_result:\n\
+      \  - tool: summarizeNews\n    result:\n      summary:\n        title: \"Massive\
+      \ affordable housing protest in front of New York City Hall causes traffic congestion\"\
+      \n        keyPoints: \"Around 10,000 citizens gathered in front of New York\
+      \ City Hall demanding affordable housing and stronger tenant protection laws.\"\
+      \n\n  - tool: summarizeNews\n    result:\n      summary:\n        title: \"\
+      Protesters strongly demand that city improve housing policies\"\n        keyPoints:\
+      \ \"Protesters called on the city government to take more active and practical\
+      \ steps to improve housing policies.\"\n\n  - tool: summarizeNews\n    result:\n\
+      \      summary:\n        title: \"Mayor listens to citizens' voices at the New\
+      \ York City Hall protest site\"\n        keyPoints: \"The mayor visited the\
+      \ protest site at New York City Hall and listened directly to citizens' concerns.\"\
+      \n\n  - tool: summarizeNews\n    result:\n      summary:\n        title: \"\
+      Nearby businesses disrupted due to affordable housing protest\"\n        keyPoints:\
+      \ \"The protest caused traffic congestion in Lower Manhattan and disrupted operations\
+      \ for nearby shops.\"\n\n  - tool: summarizeNews\n    result:\n      summary:\n\
+      \        title: \"Police step up safety measures at New York City Hall affordable\
+      \ housing protest\"\n        keyPoints: \"Police increased safety management\
+      \ at the protest, but no physical clashes occurred.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ News Summary — Large Protest at New York City Hall\n\nRoughly 10,000\
+      \ people gathered outside -New York City Hall calling for -affordable housing\
+      \ measures and stronger -tenant protections. The demonstration intensified pressure\
+      \ on the city to deliver more aggressive, practical housing policy reforms.\
+      \ The -Mayor visited the site to hear concerns directly, while -police increased\
+      \ safety measures; there were -no reports of physical clashes. Some nearby businesses\
+      \ experienced disruptions, and traffic in -Lower Manhattan was impacted.\n\n\
+      Traffic Update — Around New York City Hall (current)\n\n- Congestion Index:\
+      \ -8.7 (Severe)  \n\n- Major Affected Roads:  \n  - -Broadway: congestion 9.0\
+      \ · ~20 min delay  \n  - -FDR Drive: congestion 8.5 · ~15 min delay  \n\n- Alternate\
+      \ Routes / Transit:  \n  - -Houston Street: congestion 6.0 · ~5 min delay  \n\
+      \  - -Subway (1 train): congestion 2.0 · No delay → Recommended  \n\n- Advisory:\
+      \ Expect heavy delays near City Hall. Use transit or detours where possible."

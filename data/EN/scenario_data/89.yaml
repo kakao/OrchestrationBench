@@ -1,0 +1,140 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Could you tell me the name of the famous theme composed by John Williams
+      for the Harry Potter soundtrack? And while we’re on the topic, could you also
+      recommend some animated films that are especially well-known for their memorable
+      soundtracks?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      The famous theme composed by John Williams for the *Harry Potter* soundtrack\"\
+      \n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: entertainment_agent\n      refined_query: \"Recommend\
+      \ animated films that are especially well-known for their memorable soundtracks\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMusicInfo\narguments:\n  refinedQuery: \"The famous theme composed\
+      \ by John Williams for the 'Harry Potter' soundtrack\"\n  artistName: \"John\
+      \ Williams\"\n  albumTitle: \"Harry Potter Original Motion Picture Soundtrack\"\
+      \n  chartType: \"billboard\"\ntool_call_result:\n  music:\n    - title: \"Hedwig's\
+      \ Theme\"\n      artist: \"John Williams\"\n      album: \"Harry Potter Original\
+      \ Motion Picture Soundtrack\"\n      releaseYear: \"2001\"\n      duration:\
+      \ \"5 min 10 sec\"\n      description: \"The iconic main theme of the 'Harry\
+      \ Potter' series, instantly recognizable for its magical and mysterious melody.\"\
+      \n      link: \"https://www.youtube.com/watch?v=wtH-hdOF1uA\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"Recommend animated\
+      \ movies that are especially well-known for their memorable soundtracks\"\n\
+      \  genre: \"Animation\"\n  sortBy: \"popularity\"\ntool_call_result:\n  movies:\n\
+      \    - title: \"The Lion King\"\n      director: \"Roger Allers & Rob Minkoff\"\
+      \n      releaseYear: \"1994\"\n      genre: \"Animation, Musical, Family\"\n\
+      \      description: \"The classic Disney tale of Simba’s journey, with soundtrack\
+      \ by Hans Zimmer and songs by Elton John & Tim Rice. 'Circle of Life' is particularly\
+      \ iconic.\"\n      notableOST: \"Circle of Life – Elton John & Tim Rice\"\n\n\
+      \    - title: \"Coco\"\n      director: \"Lee Unkrich\"\n      releaseYear:\
+      \ \"2017\"\n      genre: \"Animation, Musical, Family\"\n      description:\
+      \ \"A story about a boy who discovers the importance of family through music\
+      \ in the Land of the Dead. The song 'Remember Me' won the Academy Award for\
+      \ Best Original Song.\"\n      notableOST: \"Remember Me – Kristen Anderson-Lopez\
+      \ & Robert Lopez\"\n\n    - title: \"Frozen\"\n      director: \"Chris Buck\
+      \ & Jennifer Lee\"\n      releaseYear: \"2013\"\n      genre: \"Animation, Musical,\
+      \ Family\"\n      description: \"A tale of two sisters, Elsa and Anna, with\
+      \ a soundtrack featuring the hit song 'Let It Go,' which became a global phenomenon.\"\
+      \n      notableOST: \"Let It Go – Kristen Anderson-Lopez & Robert Lopez\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Here’s an introduction to the famous theme composed by John Williams\
+      \ for the *Harry Potter* soundtrack.\n\n* Title: Hedwig’s Theme\n* Composer:\
+      \ John Williams\n* Album: *Harry Potter Original Motion Picture Soundtrack*\n\
+      * Release Year: 2001\n* Duration: 5 minutes 10 seconds\n* Description: The iconic\
+      \ main theme of the *Harry Potter* series, instantly recognizable for its magical\
+      \ and mysterious melody.\n* Listen here: [https://www.youtube.com/watch?v=wtH-hdOF1uA](https://www.youtube.com/watch?v=wtH-hdOF1uA)\n\
+      \nEnjoy it in a magical, enchanting atmosphere.\n\n---\n\n▶ Animated Films Famous\
+      \ for Their Soundtracks\n\nHere are three animated films especially well-known\
+      \ for their memorable soundtracks:\n\n1. *The Lion King* (1994, directed by\
+      \ Roger Allers & Rob Minkoff)\n\n   * The classic Disney tale of Simba’s journey.\
+      \ Hans Zimmer composed the score, with songs by Elton John & Tim Rice. The song\
+      \ *Circle of Life* is particularly iconic.\n\n2. *Coco* (2017, directed by Lee\
+      \ Unkrich)\n\n   * A moving story about a boy discovering the importance of\
+      \ family through music in the Land of the Dead. The song *Remember Me* won the\
+      \ Academy Award for Best Original Song.\n\n3. *Frozen* (2013, directed by Chris\
+      \ Buck & Jennifer Lee)\n\n   * The story of sisters Elsa and Anna, featuring\
+      \ music that became a global phenomenon. The song *Let It Go* is a standout\
+      \ highlight of the soundtrack.\n\nEach of these films is highly recommended\
+      \ for anyone who wants to enjoy the perfect combination of emotion and music."
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: Oh, then can you also tell me some websites where I can download sheet
+      music for Hedwig’s Theme and other popular movie or TV soundtrack piano pieces?
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: entertainment_agent\n      refined_query:\
+      \ \"The famous theme composed by John Williams for the *Harry Potter* soundtrack\"\
+      \n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n    - status:\
+      \ completed\n      name: entertainment_agent\n      refined_query: \"Recommend\
+      \ animated films that are especially well-known for their memorable soundtracks\"\
+      \n\nworkflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: search_agent\n      refined_query: \"Websites where I\
+      \ can download the sheet music for 'Hedwig’s Theme' and other popular movie\
+      \ or TV soundtrack piano pieces\""
+- workflow_id: workflow_3
+  step_id: 8
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"Recommend sites to download\
+      \ sheet music for 'Hedwig’s Theme' and other popular movie or TV soundtrack\
+      \ piano pieces\"\ntool_call_result:\n  sites:\n    - name: \"MuseScore\"\n \
+      \     description: \"A platform where users worldwide share sheet music, including\
+      \ a wide range of movie and TV soundtrack pieces, available for free or for\
+      \ purchase\"\n      url: \"https://musescore.com\"\n\n    - name: \"IMSLP\"\n\
+      \      description: \"A public domain classical sheet music library that also\
+      \ includes some modern movie and TV soundtrack arrangements\"\n      url: \"\
+      https://imslp.org\"\n\n    - name: \"Sheet Music Plus\"\n      description:\
+      \ \"A commercial site where you can buy or download piano sheet music, including\
+      \ film and TV soundtrack pieces\"\n      url: \"https://www.sheetmusicplus.com\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Websites to Download Sheet Music for Hedwig’s Theme and Other Movie/TV\
+      \ Soundtrack Piano Pieces\n\nHere are some websites where you can find sheet\
+      \ music:\n\n1. MuseScore\n\n   * Description: A platform where users worldwide\
+      \ share sheet music, including a wide range of movie and TV soundtrack pieces,\
+      \ available for free or for purchase\n   * URL: [https://musescore.com](https://musescore.com)\n\
+      \n2. IMSLP\n\n   * Description: A public domain classical sheet music library\
+      \ that also includes some modern movie and TV soundtrack arrangements\n   *\
+      \ URL: [https://imslp.org](https://imslp.org)\n\n3. Sheet Music Plus\n\n   *\
+      \ Description: A commercial site where you can buy or download piano sheet music,\
+      \ including film and TV soundtrack pieces\n   * URL: [https://www.sheetmusicplus.com](https://www.sheetmusicplus.com)\n\
+      \nThese resources are great for anyone who wants to play **Hedwig’s Theme**\
+      \ or other popular soundtrack piano pieces."

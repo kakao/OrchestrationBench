@@ -1,0 +1,346 @@
+metadata:
+  total_steps: 19
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- date: 2024-09-03
+
+      - 현재 위치: 부산광역시 연제구 중앙대로 1001 부산광역시청
+
+      - 시간: 17:51'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 하 이직할까? 퇴사할까? 상담이 필요하다.. enfj에게 맞는 직업 알려주고, enfj 유명 인물들도 알려줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"이직할지 퇴사할지\
+      \ 상담 필요\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: counsel_agent\n      refined_query: \"enfj에게\
+      \ 맞는 직업 추천과 enfj 유명 인물\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"이직할지 퇴사할지 상담\"\n\
+      tool_call_result:\n  status: success\n  data:\n    counselingTopic: \"이직 및 퇴사\
+      \ 고민\"\n    advice:\n      - \"현재 직장에서의 장단점을 명확히 파악하세요.\"\n      - \"이직 시 고려해야\
+      \ 할 조건과 목표를 정리해보세요.\"\n      - \"퇴사 결정 전 재정 상태와 다음 계획을 충분히 준비하세요.\"\n      -\
+      \ \"가까운 지인이나 전문가와 상담을 통해 다양한 의견을 들어보는 것이 도움이 됩니다.\"\n    recommendedNextSteps:\n\
+      \      - \"자기 분석 및 경력 목표 설정\"\n      - \"시장 조사 및 이직 준비\"\n      - \"퇴사 시기와 절차\
+      \ 계획\"\n  source: \"상담 서비스\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getMbtiInfo\narguments:\n  refinedQuery: \"enfj 성향에 맞는 직업 추천과\
+      \ enfj 유명 인물\"\n  mbtiType: \"enfj\"\ntool_call_result:\n  data:\n    mbtiType:\
+      \ \"ENFJ\"\n    personalityTraits:\n      - \"외향적이고 사교적임\"\n      - \"타인의 감정을\
+      \ 잘 이해하고 공감함\"\n      - \"리더십이 뛰어나며 조직 내 조화를 중시함\"\n      - \"창의적이고 열정적임\"\n\
+      \    recommendedCareers:\n      - \"교육자\"\n      - \"상담사\"\n      - \"마케팅 전문가\"\
+      \n      - \"인사 담당자\"\n      - \"사회복지사\"\n    famousPeople:\n      - name: \"\
+      오프라 윈프리\"\n        profession: \"방송인, 사업가\"\n        description: \"미국의 유명 토크쇼\
+      \ 진행자이자 영향력 있는 미디어 사업가\"\n      - name: \"바락 오바마\"\n        profession: \"정치인\"\
+      \n        description: \"미국의 제44대 대통령으로 뛰어난 리더십과 소통 능력을 가진 인물\"\n      - name:\
+      \ \"제니퍼 로페즈\"\n        profession: \"가수, 배우\"\n        description: \"다재다능한\
+      \ 엔터테이너로서 활발한 사회 활동과 리더십을 보여줌\"\n    source: \"MBTI 정보 시스템\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "1. 이직 및 퇴사 고민 상담\n- 현재 직장에서의 장단점을 잘 파악하고, 이직 조건과 목표를 명확히 정리하는 것이 중요해요.\n\
+      - 퇴사 전에 재정 상태와 다음 계획도 충분히 준비하시고, 주변 지인이나 전문가와 상담하는 것도 큰 도움이 됩니다.\n- 다음 단계로 자기\
+      \ 분석, 시장 조사, 퇴사 시기 계획을 차근차근 진행해 보세요.\n\n\n2. ENFJ 성향에 맞는 직업 추천\n- ENFJ 유형은 외향적이고\
+      \ 사교적이며, 타인의 감정을 잘 이해하고 공감하는 성향을 가졌습니다.  \n- 리더십과 조직 내 조화를 중시하며, 창의적이고 열정적인\
+      \ 특징이 있습니다.  \n- 추천 직업:  \n  - 교육자  \n  - 상담사  \n  - 마케팅 전문가  \n  - 인사 담당자 \
+      \ \n  - 사회복지사 \n\n\n3. ENFJ 유명 인물\n- 오프라 윈프리: 미국의 유명 토크쇼 진행자이자 영향력 있는 미디어 사업가\
+      \  \n- 바락 오바마: 미국 제44대 대통령, 뛰어난 리더십과 소통 능력 보유  \n- 제니퍼 로페즈: 가수, 배우, 다재다능한 엔터테이너로\
+      \ 활발한 사회 활동과 리더십 발휘\n\n이 분들은 ENFJ의 대표적인 특징을 잘 보여줍니다."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 흠 이직 스트레스 해소하게 부산에 놀러가야겠어. 부산에서 유명한 쇼핑 거리 추천해줘
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: counsel_agent\n      refined_query: \"이직할지\
+      \ 퇴사할지 상담\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: counsel_agent\n      refined_query: \"\
+      enfj에게 맞는 직업 추천과 enfj 유명 인물\"\n\nworkflow_3:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: travel_agent\n      refined_query:\
+      \ \"부산에서 유명한 쇼핑 거리 추천\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getPopularPlaceInfo\narguments:\n  refinedQuery: \"부산에서 유명한 쇼핑\
+      \ 거리 추천\"\n  location: \"부산\"\n  placeType: \"쇼핑 거리\"\n  sortBy: \"highest_rated\"\
+      \ntool_call_result:\n  data:\n    query: 부산에서 유명한 쇼핑 거리 추천\"\n    location:\
+      \ \"부산\"\n    placeType: \"쇼핑\"\n    sortBy: \"highest_rated\"\n    places:\n\
+      \      - name: \"신세계 센텀시티 백화점\"\n        address: \"부산 해운대구 센텀남대로 35\"\n   \
+      \     rating: 4.7\n        description: \"아시아 최대 규모의 백화점으로 다양한 브랜드와 편리한 쇼핑 환경\
+      \ 제공\"\n        openingHours: \"10:30~20:00\"\n      - name: \"광복동 패션 거리\"\n\
+      \        address: \"부산 중구 광복동 일대\"\n        rating: 4.5\n        description:\
+      \ \"트렌디한 패션 아이템과 다양한 쇼핑 옵션이 있는 부산의 대표 쇼핑 거리\"\n        openingHours: \"10:00~22:00\"\
+      \n      - name: \"부산 롯데백화점 광복점\"\n        address: \"부산 중구 중앙대로 2\"\n      \
+      \  rating: 4.4\n        description: \"다양한 브랜드와 맛집이 함께 있는 쇼핑과 문화 공간\"\n    \
+      \    openingHours: \"10:30~20:00\"\n  source: \"장소 추천 시스템\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '부산에서 이직 스트레스를 해소할 수 있는 쇼핑 장소를 추천해드릴게요!
+
+
+      1. 신세계 센텀시티 백화점
+
+      아시아 최대 규모의 백화점으로 다양한 브랜드와 편리한 쇼핑 환경을 제공합니다.
+
+      - 위치: 부산 해운대구 센텀남대로 35
+
+      - 영업시간: 오전 10시 30분부터 오후 8시까지
+
+
+      2. 광복동 패션 거리
+
+      트렌디한 패션 아이템과 다양한 쇼핑 옵션이 있는 부산의 대표 쇼핑 거리입니다.
+
+      - 위치: 부산 중구 광복동 일대
+
+      - 영업시간: 오전 10시부터 오후 10시까지
+
+
+      3. 부산 롯데백화점 광복점
+
+      다양한 브랜드와 맛집이 함께 있는 쇼핑과 문화 공간입니다.
+
+      - 위치: 부산 중구 중앙대로 2
+
+      - 영업시간: 오전 10시 30분부터 오후 8시까지
+
+
+      원하는 장소가 있으면 더 자세한 정보나 길찾기도 도와드릴게요!'
+- workflow_id: null
+  step_id: 11
+  agent: user
+  agent_type: user
+  data:
+    content: 그럼 광복동 패션 거리 주차는 어때? 근처 공영 주차장 있어? 지금 바로 갈까하는데 전기차 충전소 있어야해 있으면 바로 차
+      끌고 가게 패션 거리까지 내비 길 안내해줘. 아 그리고 드라이브할 때 듣기 좋은 팝송 추천 부탁해!
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: counsel_agent\n      refined_query: \"이직할지\
+      \ 퇴사할지 상담\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: counsel_agent\n      refined_query: \"\
+      enfj에게 맞는 직업 추천과 enfj 유명 인물\"\n\nworkflow_3:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: travel_agent\n      refined_query:\
+      \ \"부산에서 유명한 쇼핑 거리 추천\"\n\nworkflow_4:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"지금 광복동 패션 거리 근처 전기차 충전소가 있는 공영 주차장\"\n\nworkflow_5:\n  status: pending\n\
+      \  type: independent\n  steps:\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"드라이브할 때 듣기 좋은 팝송 추천\"\n\nworkflow_6:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_4\"\n  steps:\n    - status: pending\n\
+      \      name: transport_agent\n      refined_query: \"광복동 패션 거리 근처에 전기차 충전소가\
+      \ 있는 공영 주차장이 있으면 지금 광복동 패션 거리까지 차로 이동하는 내비게이션 길 안내\""
+- workflow_id: workflow_4
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getParkingInfo\narguments:\n  refinedQuery: \"지금 광복동 패션 거리 근처\
+      \ 전기차 충전소가 있는 공영 주차장\"\n  location: \"광복동 패션 거리\"\n  searchRadius: 500\n  parkingType:\
+      \ \"public\"\n  date: \"2024-09-03\"\n  sortBy: \"nearest\"\n  vehicleType:\
+      \ \"EV\"\ntool_call_result:\n  data:\n    query: \"지금 광복동 패션 거리 근처 전기차 충전소가\
+      \ 있는 공영 주차장\"\n    location: \"광복동 패션 거리\"\n    searchRadius: 500\n    parkingType:\
+      \ \"public\"\n    date: \"2024-09-03\"\n    sortBy: \"nearest\"\n    vehicleType:\
+      \ \"EV\"\n    parkingLots:\n      - name: \"광복동 공영주차장 1\"\n        address:\
+      \ \"부산 중구 광복동2가 12-3\"\n        distanceMeters: 250\n        availableChargers:\
+      \ 4\n        hourlyRate: 2000\n        totalSpaces: 150\n        reservationAvailable:\
+      \ true\n        openingHours: \"06:00~23:00\"\n      - name: \"부산역 공영주차장\"\n\
+      \        address: \"부산 동구 초량동 123-5\"\n        distanceMeters: 480\n       \
+      \ availableChargers: 2\n        hourlyRate: 1800\n        totalSpaces: 120\n\
+      \        reservationAvailable: false\n        openingHours: \"07:00~22:00\"\n\
+      \  source: \"주차장 정보 시스템\""
+- workflow_id: workflow_5
+  step_id: 14
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMusicInfo\narguments:\n  refinedQuery: \"드라이브할 때 듣기 좋은 팝송 추천\"\
+      \n  chartType: \"melon\"\n  genre: \"pop\"\n  moodTag: \"drive\"\ntool_call_result:\n\
+      \  data:\n    query: \"드라이브할 때 듣기 좋은 팝송 추천\"\n    chartType: \"melon\"\n   \
+      \ genre: \"pop\"\n    moodTag: \"drive\"\n    songs:\n      - title: \"Blinding\
+      \ Lights\"\n        artist: \"The Weeknd\"\n        album: \"After Hours\"\n\
+      \        releaseDate: \"2019-11-29\"\n        duration: \"3:20\"\n      - title:\
+      \ \"Levitating\"\n        artist: \"Dua Lipa\"\n        album: \"Future Nostalgia\"\
+      \n        releaseDate: \"2020-03-27\"\n        duration: \"3:23\"\n      - title:\
+      \ \"Watermelon Sugar\"\n        artist: \"Harry Styles\"\n        album: \"\
+      Fine Line\"\n        releaseDate: \"2019-11-16\"\n        duration: \"2:54\"\
+      \n      - title: \"Can't Stop the Feeling!\"\n        artist: \"Justin Timberlake\"\
+      \n        album: \"Trolls (Original Motion Picture Soundtrack)\"\n        releaseDate:\
+      \ \"2016-05-06\"\n        duration: \"3:56\"\n  source: \"Melon Music Chart\""
+- workflow_id: workflow_6
+  step_id: 15
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출발지'
+- workflow_id: null
+  step_id: 16
+  agent: main
+  agent_type: main
+  data:
+    content: '광복동 패션 거리까지 길 안내를 도와드리려면 출발지 정보가 필요해요.
+
+      ''집'', ''서울역'', ''현재 위치''과 같이 말씀해주세요!'
+- workflow_id: null
+  step_id: 17
+  agent: user
+  agent_type: user
+  data:
+    content: 내위치
+- workflow_id: null
+  step_id: 18
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"지금 내위치에서 광복동 패션 거리까지\
+      \ 차로 이동하는 내비게이션 길 안내\"\n  origin: \"부산광역시 연제구 중앙대로 1001 부산광역시청\"\n  destination:\
+      \ \"광복동 패션 거리\"\n  departureTime: \"17:51\"\n  transportModes: \"car\"\n  optimizeBy:\
+      \ \"fastest\"\n  navigationMode: true\ntool_call_result:\n  data:\n    origin:\
+      \ \"부산광역시 연제구 중앙대로 1001 부산광역시청\"\n    destination: \"광복동 패션 거리\"\n    departureTime:\
+      \ \"17:51\"\n    transportModes: \"car\"\n    optimizeBy: \"fastest\"\n    navigationMode:\
+      \ true\n    route:\n      distanceKm: 7.8\n      estimatedTimeMinutes: 20\n\
+      \      steps:\n        - instruction: \"부산광역시청 앞 중앙대로에서 출발하여 남쪽으로 이동하세요.\"\n\
+      \          distanceMeters: 500\n          estimatedTimeMinutes: 2\n        -\
+      \ instruction: \"중앙대로를 따라 직진 후, 서면 교차로에서 좌회전하세요.\"\n          distanceMeters:\
+      \ 3000\n          estimatedTimeMinutes: 7\n        - instruction: \"광복로를 따라\
+      \ 계속 직진하세요.\"\n          distanceMeters: 3000\n          estimatedTimeMinutes:\
+      \ 8\n        - instruction: \"광복동 패션 거리 근처에 도착하면 오른쪽으로 진입하세요.\"\n          distanceMeters:\
+      \ 300\n          estimatedTimeMinutes: 1\n    advisory: \"퇴근 시간대 교통 체증이 있을 수\
+      \ 있으니 여유 있게 출발하세요.\"\n  source: \"교통 내비게이션 시스템\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: '◾공영 주차장 정보
+
+      광복동 패션 거리 근처에서 전기차 충전이 가능한 공영 주차장 정보는 다음과 같습니다.
+
+
+      1. 광복동 공영주차장 1
+
+
+      • 주소: 부산 중구 광복동2가 12-3
+
+      • 거리: 약 250m
+
+      • 전기차 충전기: 4기
+
+      • 시간당 요금: 2,000원
+
+      • 총 주차면수: 150면
+
+      • 운영시간: 06:00 ~ 23:00
+
+      • 예약 가능 여부: 가능
+
+
+      2. 부산역 공영주차장
+
+
+      • 주소: 부산 동구 초량동 123-5
+
+      • 거리: 약 480m
+
+      • 전기차 충전기: 2기
+
+      • 시간당 요금: 1,800원
+
+      • 총 주차면수: 120면
+
+      • 운영시간: 07:00 ~ 22:00
+
+      • 예약 가능 여부: 불가
+
+
+
+      ◾드라이브에 어울리는 팝송 추천
+
+      멜론 차트를 기반으로 선별된 곡들이에요:
+
+
+      • Blinding Lights – The Weeknd
+
+      • Levitating – Dua Lipa
+
+      • Watermelon Sugar – Harry Styles
+
+      • Can''t Stop the Feeling! – Justin Timberlake
+
+
+
+      ◾경로 안내
+
+      부산광역시청에서 광복동 패션 거리까지 차로 이동하는 경로 안내드릴게요!
+
+
+      출발지: 부산광역시청
+
+      도착지: 광복동 패션 거리
+
+      이동 수단: 차량
+
+      예상 거리/시간: 약 7.8km / 약 20분
+
+
+      1. 중앙대로를 따라 남쪽으로 직진
+
+      → 약 500m (약 2분)
+
+
+      2. 서면 교차로에서 좌회전
+
+      → 약 3km (약 7분)
+
+
+      3. 광복로를 따라 직진
+
+      → 약 3km (약 8분)
+
+
+      4. 광복동 패션 거리 근처에서 오른쪽 진입
+
+      → 약 300m (약 1분)
+
+
+      퇴근 시간 교통 체증이 예상되니 여유 있게 출발해 주세요!
+
+      지금 바로 내비게이션을 실행해드릴게요.'

@@ -1,0 +1,111 @@
+{
+  "agent_card": {
+    "name": "Sports",
+    "agent_id": "sports_agent",
+    "description": "A specialized agent that provides real-time sports information across various events, including game schedules, scores, rankings, and player stats.",
+    "url": "http://localhost:10004/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getSportGameInfo",
+        "name": "Sports Game Information",
+        "description": "Check the latest game schedules, scores, and player stats for your selected sports team. Searchable by league, team, date, or player name.",
+        "examples": [
+          "Tell me the New York Yankees game schedule for this week.",
+          "Who’s starting for Liverpool in tomorrow’s EPL match?",
+          "Can I see the list of players who hit home runs in yesterday’s MLB games?",
+          "Where is next week’s Golden State Warriors NBA game being held?",
+          "Check if Lionel Messi scored today."
+        ]
+      },
+      {
+        "id": "getSportRank",
+        "name": "Sports Rankings",
+        "description": "Provides comprehensive ranking and record information, including team standings by league, season win rates, and individual player stats. Searchable by league, season, team name, or player name.",
+        "examples": [
+          "Show me the current EPL standings.",
+          "Which teams made the 2024 NBA playoffs?",
+          "What’s the New York Yankees’ rank in the MLB today?",
+          "Who is the NBA top scorer this season?",
+          "What’s Shohei Ohtani’s batting average this year?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getSportGameInfo",
+      "description": "A tool to retrieve sports-related information such as game schedules, results, and team/player stats for domestic and international leagues. When calling for multiple targets, results can be returned as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search query that reflects both the current conversation context and the user's natural language request (e.g., 'Players who scored in last weekend’s Yankees game', 'Show me Manchester United’s schedule for this month')"
+          },
+          "teamName": {
+            "type": "string",
+            "description": "The name of the team you want to search for (supports various sports and leagues such as KBO, EPL, NBA, e.g., 'New York Yankees', 'Chelsea FC')"
+          },
+          "league": {
+            "type": "string",
+            "description": "The name of the league for which you want to retrieve games or stats (e.g., 'EPL', NBA', 'NFL', 'MLB')"
+          },
+          "targetDate": {
+            "type": "string",
+            "description": "The date or period to search for (e.g., 2024-08-15, 'next week'; if omitted, defaults to today)"
+          },
+          "playerName": {
+            "type": "string",
+            "description": "The name of the player when you want to know specific stats or information (e.g., 'Jung-hoo Lee', 'Erling Haaland')"
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getSportRank",
+      "description": "A tool to look up league rankings and team/player stats for various sports. When querying multiple targets, you can structure them as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A detailed search query reflecting the user's natural language request or chat context (e.g., '2024 pro soccer top scorer', 'latest baseball rankings')"
+          },
+          "league": {
+            "type": "string",
+            "description": "The name of the sports league for which you want rankings. This is a required parameter; if not provided, you must prompt the user for the league name. (e.g., 'EPL', 'NBA', 'NFL', 'MLB')"
+          },
+          "season": {
+            "type": "string",
+            "description": "Desired season year. Enter as a 4-digit number (e.g., '2024'). If omitted, the current year is used."
+          },
+          "targetDate": {
+            "type": "string",
+            "description": "The reference date for the data or a specific date. Use ISO 8601 format (e.g., '2024-08-15') or relative expressions ('today', 'last week'). If the season or date lacks a year, the current year is assumed."
+          },
+          "teamName": {
+            "type": "string",
+            "description": "Full team name when querying by team (e.g., 'New York Yankees', 'Los Angeles Lakers')"
+          },
+          "playerName": {
+            "type": "string",
+            "description": "Full player name when requesting individual stats (e.g., 'LeBron James', 'Lionel Messi')"
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "league"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

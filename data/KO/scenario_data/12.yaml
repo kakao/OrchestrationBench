@@ -1,0 +1,276 @@
+metadata:
+  total_steps: 22
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2027-12-11
+
+      - 이름: 최달수
+
+      - 시간: 15:16
+
+      - 연락처: 010-9999-4446
+
+      - userId: user_837462'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 크리스마스 선물 카톡으로 선물하는 거랑 저때 갈만한 레스토랑 예약까지 다 해줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"크리스마스\
+      \ 선물 추천\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: place_agent\n      refined_query: \"크리스마스에\
+      \ 갈만한 레스토랑 추천\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n  depend_on:\
+      \ \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"크리스마스 선물을 카톡으로 선물하기\"\n\nworkflow_4:\n  status: pending\n\
+      \  type: dependent\n  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n\
+      \      name: place_agent\n      refined_query: \"크리스마스에 갈만한 레스토랑 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"크리스마스 선물 추천\"\n\
+      \  occasion: \"크리스마스\"\ntool_call_result:\n  data:\n    query: \"크리스마스 선물 추천\"\
+      \n    gifts:\n      - productId: \"gift_001\"\n        name: \"프리미엄 향초 세트\"\n\
+      \        description: \"따뜻한 분위기를 연출하는 고급 향초 세트\"\n        price: 35000\n   \
+      \     currency: \"KRW\"\n        rating: 4.7\n      - productId: \"gift_002\"\
+      \n        name: \"럭셔리 초콜릿 박스\"\n        description: \"다양한 맛의 고급 초콜릿 세트\"\n\
+      \        price: 45000\n        currency: \"KRW\"\n        rating: 4.8\n    \
+      \  - productId: \"gift_003\"\n        name: \"스마트 무선 이어폰\"\n        description:\
+      \ \"최신 기술이 적용된 무선 이어폰\"\n        price: 120000\n        currency: \"KRW\"\n\
+      \        rating: 4.6\n    status: \"조회 완료\"\n  source: \"선물 추천 API\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"크리스마스에 갈만한\
+      \ 레스토랑 추천\"\n  location: \"서울\"\n  sortBy: \"highest_rated\"\n  event: \"크리스마스\"\
+      \ntool_call_result:\n  data:\n    query: \"크리스마스에 갈만한 레스토랑 추천\"\n    sortBy:\
+      \ \"highest_rated\"\n    event: \"크리스마스\"\n    restaurants:\n      - name: \"\
+      라 메종 드 크리스마스\"\n        address: \"서울 강남구 테헤란로 123\"\n        rating: 4.9\n\
+      \        specialties: [\"프렌치 코스\", \"와인 페어링\"]\n        openingHours: \"18:00\
+      \ - 23:00\"\n      - name: \"산타의 키친\"\n        address: \"서울 용산구 이태원로 45\"\n\
+      \        rating: 4.8\n        specialties: [\"이탈리안\", \"크리스마스 스페셜 메뉴\"]\n  \
+      \      openingHours: \"17:00 - 22:30\"\n      - name: \"윈터 가든 레스토랑\"\n     \
+      \   address: \"서울 종로구 삼청로 78\"\n        rating: 4.7\n        specialties: [\"\
+      모던 아시안\", \"디저트 바\"]\n        openingHours: \"18:30 - 23:00\"\n    status: \"\
+      조회 완료\"\n  source: \"레스토랑 추천 API\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 선물로 보낼 상품명, 수신자 이름, 수신자 연락처'
+- workflow_id: workflow_4
+  step_id: 7
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약 장소명, 예약 날짜, 예약 시간'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "[크리스마스 선물 추천]\n\n크리스마스에 어울리는 선물로 다음 상품들을 추천해 드립니다:\n\n1. 프리미엄 향초 세트\
+      \  \n   - 가격: 35,000원  \n   - 설명: 따뜻한 분위기를 연출하는 고급 향초 세트  \n   - 평점: 4.7  \n\
+      \n2. 럭셔리 초콜릿 박스  \n   - 가격: 45,000원  \n   - 설명: 다양한 맛의 고급 초콜릿 세트  \n   - 평점:\
+      \ 4.8  \n\n3. 스마트 무선 이어폰  \n   - 가격: 120,000원  \n   - 설명: 최신 기술이 적용된 무선 이어폰\
+      \  \n   - 평점: 4.6  \n\n어떤 선물이 마음에 드시나요?\n주문을 원하시면 아래 정보를 알려주세요:\n• 상품명\n• 받는\
+      \ 분 이름 / 연락처\n\n\n[크리스마스에 갈만한 레스토랑 추천]\n\n크리스마스 분위기를 즐길 수 있는 평점 높은 레스토랑입니다:\n\
+      \n1. 라 메종 드 크리스마스  \n   - 주소: 서울 강남구 테헤란로 123  \n   - 평점: 4.9  \n   - 특선 메뉴:\
+      \ 프렌치 코스, 와인 페어링  \n   - 운영시간: 18:00 - 23:00  \n\n2. 산타의 키친  \n   - 주소: 서울 용산구\
+      \ 이태원로 45  \n   - 평점: 4.8  \n   - 특선 메뉴: 이탈리안, 크리스마스 스페셜 메뉴  \n   - 운영시간: 17:00\
+      \ - 22:30  \n\n3. 윈터 가든 레스토랑  \n   - 주소: 서울 종로구 삼청로 78  \n   - 평점: 4.7  \n \
+      \  - 특선 메뉴: 모던 아시안, 디저트 바  \n   - 운영시간: 18:30 - 23:00  \n\n\n예약을 원하시면 다음 정보를\
+      \ 알려주세요:\n• 레스토랑명 / 날짜 / 시간\n\n필요한 정보를 주시면 선물 주문과 예약을 바로 진행해 드리겠습니다!"
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: 일단 다 다시 찾아줬으면 좋겠어. 선물은 찐친한테 줄건데 최대 600만원까지 추천해주고, 케이크 빼줘. 약간 요즘 26살 남자들에게
+      인기있는 크리스마스 선물로 잘 추천해줘봐. 밥 먹으러도 얘랑 둘이 갈거고, 피자 맛집으로 찾아봐줘
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      크리스마스 선물 추천\"\n\nworkflow_2:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: place_agent\n      refined_query: \"크리스마스에\
+      \ 갈만한 레스토랑 추천\"\n\nworkflow_3:\n  status: paused\n  type: dependent\n  depend_on:\
+      \ \"workflow_1-1\"\n  steps:\n    - status: paused\n      name: shopping_agent\n\
+      \      refined_query: \"600만원 이내 케이크 제외한 크리스마스 선물을 찐친에게 카톡으로 선물하기\"\n\nworkflow_4:\n\
+      \  status: paused\n  type: dependent\n  depend_on: \"workflow_2-1\"\n  steps:\n\
+      \    - status: paused\n      name: place_agent\n      refined_query: \"26살 남자인\
+      \ 찐친과 크리스마스에 갈만한 피자 맛집 2인 예약\"\n\nworkflow_1-1:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"26살 남자인 찐친에게 줄 600만원 이내 케이크 제외한 크리스마스 인기 선물 추천\"\n\n\
+      workflow_2-1:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: place_agent\n      refined_query: \"26살 남자인 찐친과 크리스마스에\
+      \ 갈만한 2인 피자 맛집 추천\""
+- workflow_id: workflow_1
+  step_id: 11
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: max_price 500만원 이상으로 추천 불가'
+- workflow_id: workflow_2
+  step_id: 12
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendRestaurants\narguments:\n  refinedQuery: \"26살 남자인 찐친과\
+      \ 크리스마스에 갈만한 2인 피자 맛집 추천\"\n  location: \"서울\"\n  sortBy: \"highest_rated\"\n\
+      \  event: \"크리스마스\"\n  specificDishes: \"피자\"\n  partySize: \"2명\"\ntool_call_result:\n\
+      \  data:\n    query: \"26살 남자인 찐친과 크리스마스에 갈만한 피자 맛집 추천\"\n    location: \"서울\"\
+      \n    sortBy: \"highest_rated\"\n    event: \"크리스마스\"\n    cuisineType: \"피자\"\
+      \n    partySize: \"2\"\n    restaurants:\n      - name: \"피자알볼로 강남점\"\n    \
+      \    address: \"서울 강남구 강남대로 456\"\n        rating: 4.9\n        specialties:\
+      \ [\"수제 피자\", \"크리스마스 한정 메뉴\"]\n        openingHours: \"11:30 - 22:00\"\n  \
+      \    - name: \"더피자서울 홍대점\"\n        address: \"서울 마포구 홍익로 12\"\n        rating:\
+      \ 4.8\n        specialties: [\"화덕 피자\", \"트러플 오일 피자\"]\n        openingHours:\
+      \ \"12:00 - 23:00\"\n      - name: \"피자마루 이태원점\"\n        address: \"서울 용산구\
+      \ 이태원로 34\"\n        rating: 4.7\n        specialties: [\"이탈리안 피자\", \"크리스마스\
+      \ 스페셜 세트\"]\n        openingHours: \"11:00 - 21:30\"\n    status: \"조회 완료\"\n\
+      \  source: \"레스토랑 추천 API\""
+- workflow_id: workflow_4
+  step_id: 13
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약 장소명, 예약 날짜, 예약 시간'
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: 죄송하지만 추천 가능한 선물 가격은 10,000원부터 5,000,000원까지입니다. 600만원은 범위를 초과하니, 이 범위
+      내에서 다시 요청해 주세요.
+- workflow_id: null
+  step_id: 15
+  agent: user
+  agent_type: user
+  data:
+    content: 아아 미안 오타야 60만원
+- workflow_id: workflow_1
+  step_id: 16
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"26살 남자인 찐친에게 줄 60만원\
+      \ 이내 케이크 제외한 크리스마스 인기 선물 추천\"\n  recipientType: \"찐친\"\n  occasion: \"크리스마스\"\
+      \n  age: \"26살\"\n  gender: \"남성\"\n  maxPrice: 600000\n  exclude_items: \"\
+      케이크\"\ntool_call_result:\n  data:\n    query: \"찐친에게 줄 60만원 이내 케이크 제외 크리스마스\
+      \ 선물 추천\"\n    recipientType: \"찐친\"\n    occasion: \"크리스마스\"\n    age: 26\n\
+      \    gender: \"남성\"\n    maxPrice: 600000\n    excludeItems: \"케이크\"\n    gifts:\n\
+      \      - productId: \"gift_101\"\n        name: \"프리미엄 가죽 지갑\"\n        description:\
+      \ \"고급 가죽 소재로 제작된 세련된 남성용 지갑\"\n        price: 150000\n        currency: \"\
+      KRW\"\n        rating: 4.8\n      - productId: \"gift_102\"\n        name: \"\
+      무선 노이즈 캔슬링 헤드폰\"\n        description: \"최신 기술이 적용된 고음질 무선 헤드폰\"\n        price:\
+      \ 350000\n        currency: \"KRW\"\n        rating: 4.7\n      - productId:\
+      \ \"gift_103\"\n        name: \"스마트워치\"\n        description: \"건강 모니터링과 다양한\
+      \ 기능을 갖춘 스마트워치\"\n        price: 580000\n        currency: \"KRW\"\n       \
+      \ rating: 4.6\n    status: \"조회 완료\"\n  source: \"선물 추천 API\""
+- workflow_id: workflow_3
+  step_id: 17
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 선물로 보낼 상품명, 수신자 연락처'
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: "■ 크리스마스 인기 선물 추천\n26살 남성 찐친에게 줄 60만원 이내 케이크 제외 선물로 다음 상품들을 추천해 드립니다:\n\
+      \n1. 프리미엄 가죽 지갑  \n   - 가격: 150,000원  \n   - 설명: 고급 가죽 소재로 제작된 세련된 남성용 지갑  \n\
+      \   - 평점: 4.8  \n\n2. 무선 노이즈 캔슬링 헤드폰  \n   - 가격: 350,000원  \n   - 설명: 최신 기술이\
+      \ 적용된 고음질 무선 헤드폰  \n   - 평점: 4.7  \n\n3. 스마트워치  \n   - 가격: 580,000원  \n   -\
+      \ 설명: 건강 모니터링과 다양한 기능을 갖춘 스마트워치  \n   - 평점: 4.6  \n\n어떤 선물이 마음에 드시나요?\n주문을 원하시면\
+      \ 아래 정보를 알려주세요:\n• 상품명 / 받는 분 연락처\n\n\n■ 크리스마스에 갈만한 피자 맛집 추천\n26살 남자인 찐친과 함께\
+      \ 크리스마스 분위기를 즐길 수 있는 평점 높은 피자 맛집입니다:\n\n1. 피자알볼로 강남점  \n   - 주소: 서울 강남구 강남대로\
+      \ 456  \n   - 평점: 4.9  \n   - 특선 메뉴: 수제 피자, 크리스마스 한정 메뉴  \n   - 운영시간: 11:30\
+      \ - 22:00  \n\n2. 더피자서울 홍대점  \n   - 주소: 서울 마포구 홍익로 12  \n   - 평점: 4.8  \n  \
+      \ - 특선 메뉴: 화덕 피자, 트러플 오일 피자  \n   - 운영시간: 12:00 - 23:00  \n\n3. 피자마루 이태원점  \n\
+      \   - 주소: 서울 용산구 이태원로 34  \n   - 평점: 4.7  \n   - 특선 메뉴: 이탈리안 피자, 크리스마스 스페셜 세트\
+      \  \n   - 운영시간: 11:00 - 21:30  \n\n예약을 원하시면 다음 정보를 알려주세요:\n• 예약 장소명 / 날짜 / 시간\n\
+      \n필요한 정보를 주시면 선물 주문과 예약을 바로 진행해 드리겠습니다!"
+- workflow_id: null
+  step_id: 19
+  agent: user
+  agent_type: user
+  data:
+    content: 노이즈 캔슬링 헤드폰이랑 스마트워치 카톡으로 보내야겠어.010-2222-5858임. 그리고 더피자서울 홍대점 예약해줘. 피잣집은
+      12월 23일에 갈거야 저녁 6시
+- workflow_id: null
+  step_id: 20
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: sendGifts\n    arguments:\n      refinedQuery:\
+      \ \"노이즈 캔슬링 헤드폰을 찐친에게 카톡으로 선물\"\n      productId: \"gift_102\"\n      recipientName:\
+      \ \"찐친\"\n      phoneNumber: \"010-2222-5858\"\n      deliveryMethod: \"kakaotalk\"\
+      \n      quantity: 1\n\n  - tool: sendGifts\n    arguments:\n      refinedQuery:\
+      \ \"스마트워치를 찐친에게 카톡으로 선물\"\n      productId: \"gift_103\"\n      recipientName:\
+      \ \"찐친\"\n      phoneNumber: \"010-2222-5858\"\n      deliveryMethod: \"kakaotalk\"\
+      \n      quantity: 1\n\ntool_call_result:\n  - tool: sendGifts\n    result:\n\
+      \      query: \"노이즈 캔슬링 헤드폰을 찐친에게 카톡으로 선물\"\n      productId: \"gift_102\"\n\
+      \      recipientName: \"찐친\"\n      phoneNumber: \"010-2222-5858\"\n      deliveryMethod:\
+      \ \"kakaotalk\"\n      sendTime: \"2027-12-11T15:16\"\n      giftStatus: \"\
+      성공\"\n      message: \"노이즈 캔슬링 헤드폰 선물이 찐친님께 카카오톡으로 정상 발송되었습니다.\"\n\n  - tool:\
+      \ sendGifts\n    result:\n      query: \"스마트워치를 찐친에게 카톡으로 선물\"\n      productId:\
+      \ \"gift_103\"\n      recipientName: \"찐친\"\n      phoneNumber: \"010-2222-5858\"\
+      \n      deliveryMethod: \"kakaotalk\"\n      sendTime: \"2027-12-11T15:16\"\n\
+      \      giftStatus: \"성공\"\n      message: \"스마트워치 선물이 찐친님께 카카오톡으로 정상 발송되었습니다.\""
+- workflow_id: workflow_4
+  step_id: 21
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"12월 23일 저녁 6시 더피자서울\
+      \ 홍대점 2명 예약\"\n  placeName: \"더피자서울 홍대점\"\n  reservationDate: \"2027-12-23\"\
+      \n  reservationTime: \"18:00\"\n  partySize: 2\n  userId: \"user_837462\"\n\
+      \  contactInfo: \"010-9999-4446\"\ntool_call_result:\n  data:\n    reservationId:\
+      \ \"resv_20271223180001\"\n    placeName: \"더피자서울 홍대점\"\n    reservationDate:\
+      \ \"2027-12-23\"\n    reservationTime: \"18:00\"\n    partySize: 2\n    userId:\
+      \ \"user_837462\"\n    contactInfo: \"010-9999-4446\"\n    status: \"예약 완료\"\
+      \n    message: \"더피자서울 홍대점 12월 23일 저녁 6시 2명 예약이 정상적으로 완료되었습니다.\"\n  source:\
+      \ \"장소 예약 API\""
+- workflow_id: null
+  step_id: 22
+  agent: main
+  agent_type: main
+  data:
+    content: '찐친님께 노이즈 캔슬링 헤드폰과 스마트워치가 카카오톡으로 정상 발송되었습니다.
+
+
+      또한, 2027년 12월 23일 저녁 6시에 더피자서울 홍대점 2인 예약도 성공적으로 완료했습니다.
+
+
+      즐거운 크리스마스 되세요!'

@@ -1,0 +1,126 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s Date: November 4, 2025
+
+      - Name: Summer Lane
+
+      - Contact: (202) 555-1234
+
+      - userId: U0DK23047'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I already sent my winter clothes ahead to the dorm via UPS—can you check
+      the shipping status for me? Also, two days ago I ordered a 6-pack of 2-liter
+      bottles of water to the dorm, but it hasn’t arrived yet. Can you confirm if
+      the order went through properly?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: delivery_agent\n      refined_query: \"Check\
+      \ the delivery status of the winter clothes I sent to the dorm via UPS\"\n\n\
+      workflow_2:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"Check if the order\
+      \ for six 2-liter bottles of water I placed for the dorm two days ago was successfully\
+      \ processed\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: delivery_agent
+  agent_type: agent
+  data:
+    content: "tool: trackDelivery\narguments:\n  refinedQuery: \"Check the delivery\
+      \ status of the winter clothes I sent to the dorm via UPS\"\n  carrier: \"UPS\"\
+      \n  senderPhone: \"(202) 555-1234\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"Check the delivery status of the winter clothes I sent to the dorm via UPS\"\
+      \n    trackingStatus:\n      trackingNumber: \"1234567890123\"\n      currentStatus:\
+      \ \"In Transit\"\n      estimatedDelivery: \"2025-11-05\"\n      lastLocation:\
+      \ \"New York Distribution Center\"\n      history:\n        - date: \"2025-11-02\"\
+      \n          location: \"Los Angeles Distribution Center\"\n          status:\
+      \ \"Shipped\"\n        - date: \"2025-11-03\"\n          location: \"Chicago\
+      \ Distribution Center\"\n          status: \"In Transit\"\n        - date: \"\
+      2025-11-04\"\n          location: \"New York Distribution Center\"\n       \
+      \   status: \"Arrived at Facility\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"Check if the order\
+      \ for six 2-liter bottles of water I placed for the dorm two days ago was successfully\
+      \ processed\"\n  userId: \"U0DK23047\"\n  recipientName: \"Summer Lane\"\n \
+      \ phoneNumber: \"(202) 555-1234\"\n  orderDate: \"2025-11-02\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"Check if the order for six 2-liter bottles of\
+      \ water I placed for the dorm two days ago was successfully processed\"\n  \
+      \  orderStatus:\n      orderId: \"ORD87654321\"\n      orderDate: \"2025-11-02\"\
+      \n      recipientName: \"Summer Lane\"\n      phoneNumber: \"(202) 555-1234\"\
+      \n      items:\n        - name: \"2-liter bottled water\"\n          quantity:\
+      \ 6\n      status: \"Order Confirmed\"\n      estimatedDelivery: \"2025-11-05\"\
+      \n      deliveryAddress: \"123 Dormitory, College Town, New York, NY 10027\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: '◾UPS Package Delivery Tracking
+
+
+      Here is the delivery status for the winter clothes you sent to the dorm via
+      UPS:
+
+
+      - Tracking Number: 1234567890123
+
+      - Current Status: In Transit
+
+      - Estimated Delivery Date: November 5, 2025
+
+      - Last Location: New York Regional Distribution Center
+
+
+      Delivery Route:
+
+      - November 2, 2025: Shipped from Los Angeles Distribution Center
+
+      - November 3, 2025: Processed at Chicago Distribution Center
+
+      - November 4, 2025: Arrived at New York Regional Distribution Center
+
+
+      The package is moving smoothly and it is expected to arrive on the scheduled
+      date.
+
+
+
+      ◾Order Status
+
+
+      Here is the order status for the 6 bottles of 2L spring water you purchased:
+
+
+      - Order Date: November 2, 2025
+
+      - Recipient: Summer Lane
+
+      - Phone Number: (202) 555-1234
+
+      - Order Status: Order Confirmed
+
+      - Estimated Delivery Date: November 5, 2025
+
+      - Delivery Address: 123 Dormitory, College Town, New York, NY 10027
+
+
+      Your order has been successfully processed and will be delivered on the scheduled
+      date.'

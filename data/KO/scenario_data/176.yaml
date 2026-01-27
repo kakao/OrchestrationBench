@@ -1,0 +1,120 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'userId: "USR951031"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 얼굴 피부장벽 회복에 좋은 화장품 뭐 없을까?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"얼굴 피부\
+      \ 장벽 회복 및 강화에 좋은 화장품 추천\""
+- workflow_id: null
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"피부 장벽 강화 및 회복을 위한\
+      \ 화장품 추천\"\n  productCategory: \"화장품\"\n  sortBy: \"latest\"\ntool_call_result:\n\
+      \  data:\n    - productId: \"DRG_RBCSC_01\"\n      productName: \"닥터지 레드 블레미쉬\
+      \ 시카 수딩 크림\"\n      brand: \"닥터지(Dr.G)\"\n      description: \"5-시카 콤플렉스와 식물\
+      \ 유래 성분이 민감해진 피부를 진정시키고 무너진 피부 장벽을 건강하게 케어해주는 수분 크림입니다. 여드름성 피부 사용 적합 테스트를 완료했습니다.\"\
+      \n      price: 28000\n    - productId: \"AEST_ATB365_02\"\n      productName:\
+      \ \"에스트라 아토베리어365 크림\"\n      brand: \"에스트라(Aestura)\"\n      description: \"\
+      피부 지질 유사 구조체 '더마온'이 건조하고 민감한 피부의 장벽을 강화하고, 고농축 세라마이드가 깊은 보습감을 제공하여 100시간 보습을\
+      \ 유지해줍니다.\"\n      price: 32000\n    - productId: \"PHYS_DMTFC_03\"\n      productName:\
+      \ \"피지오겔 DMT 페이셜 크림\"\n      brand: \"피지오겔(Physiogel)\"\n      description:\
+      \ \"피부와 유사한 성분으로 이루어진 바이오미믹 테크놀로지를 적용하여 피부 장벽을 강화하고 수분 손실을 막아줍니다. 하이포알러제닉 테스트를\
+      \ 완료하여 민감성 피부도 안심하고 사용할 수 있습니다.\"\n      price: 26500"
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "피부 장벽 회복에 효과가 좋다고 평가받는 화장품들을 찾아봤어요.\n\n1.  닥터지 레드 블레미쉬 시카 수딩 크림\n  \
+      \  *   특징: 5-시카 콤플렉스가 민감한 피부를 진정시키고 장벽을 건강하게 케어해주는 수분 크림입니다.\n\n2.  에스트라 아토베리어365\
+      \ 크림\n    *   특징: 고농축 세라마이드 성분이 피부 장벽을 강화하고 100시간 지속되는 깊은 보습감을 제공합니다.\n\n3.\
+      \  피지오겔 DMT 페이셜 크림\n    *   특징: 피부와 유사한 성분으로 수분 손실을 막아주며, 하이포알러제닉 테스트를 완료하여\
+      \ 민감성 피부에 적합합니다.\n\n상품으로 구매를 원하시면 말씀해주세요!"
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 닥터지 크림으로 구매할게
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      얼굴 피부 장벽 회복 및 강화에 좋은 화장품 추천\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"닥터지 레드 블레미쉬 시카 수딩 크림 주문\""
+- workflow_id: workflow_2
+  step_id: 8
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 받을 사람 이름, 연락처, 주소'
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 네, '닥터지 레드 블레미쉬 시카 수딩 크림'으로 주문 도와드리겠습니다. 상품을 받으실 분의 성함, 연락처, 그리고 주소를
+      알려주시겠어요?
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: 김예리, 010-1234-5678, 서울시 강남구 테헤란로 123, 행복아파트 101동 202호로 보내줘
+- workflow_id: null
+  step_id: 11
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"닥터지 레드 블레미쉬 시카 수딩\
+      \ 크림 주문\"\n  userId: \"USR951031\"\n  productItems:\n    productId: \"DRG_RBCSC_01\"\
+      \n    productName: \"닥터지 레드 블레미쉬 시카 수딩 크림\"\n    quantity: 1\n    price: 28000\n\
+      \  shippingAddress:\n    recipient: \"김예리\"\n    phone: \"010-1234-5678\"\n\
+      \    address: \"서울시 강남구 테헤란로 123, 행복아파트 101동 202호\"\ntool_call_result:\n  data:\n\
+      \    orderId: \"ORD20240718_001\"\n    status: \"completed\"\n    message: \"\
+      주문이 정상적으로 완료되었습니다. 입력하신 주소로 배송이 시작될 예정입니다. 예상 도착일: 2024-07-20\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: '주문이 완료되었습니다.
+
+
+      *   주문 번호: ORD20240718_001
+
+      *   상품명: 닥터지 레드 블레미쉬 시카 수딩 크림 (1개)
+
+      *   결제 금액: 28,000원
+
+      *   배송지: 서울시 강남구 테헤란로 123, 행복아파트 101동 202호
+
+      *   예상 도착일: 2024년 7월 20일
+
+
+      구매해주셔서 감사합니다'

@@ -1,0 +1,297 @@
+metadata:
+  total_steps: 18
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2026-05-01
+
+      - 연락처: 010-2222-7777
+
+      - userId: user_3f7b92d1a6c94c58'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 3주 뒤에 강아지랑 같이 이사 가는데, 동탄 후기 좋은 포장 이사랑 화서역 주변 유명한 동물병원 알아봐주고 검진 예약도 해줘.
+      이사하는 날 동탄 날씨는 어때?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"후기 좋은 동탄\
+      \ 포장 이사와 화서역 주변 유명한 동물병원 검색\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: weather_agent\n      refined_query:\
+      \ \"3주 뒤 이사하는 날 동탄 날씨\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: place_agent\n\
+      \      refined_query: \"화서역 주변 유명한 동물병원 검진 예약\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool_call:\n  - tool: searchPlaces\n    arguments:\n      refinedQuery:\
+      \ \"후기 좋은 동탄 포장 이사\"\n      placeCategory: \"이삿짐센터\"\n      location: \"동탄\"\
+      \n      sortBy: \"highest_rated\"\n\n  - tool: searchPlaces\n    arguments:\n\
+      \      refinedQuery: \"화서역 주변 유명한 동물병원\"\n      placeCategory: \"동물병원\"\n  \
+      \    location: \"화서역\"\n      sortBy: \"popularity\"\n\ntool_call_result:\n\
+      \  - tool: searchPlaces\n    query: \"후기 좋은 동탄 포장 이사\"\n    placeCategory: \"\
+      이삿짐센터\"\n    location: \"동탄\"\n    sortBy: \"highest_rated\"\n    results:\n\
+      \      - companyName: \"동탄명품포장이사\"\n        rating: 4.9\n        reviewsCount:\
+      \ 152\n        contact: \"031-123-4567\"\n        address: \"경기 화성시 동탄대로 123\"\
+      \n      - companyName: \"동탄스마트포장이사\"\n        rating: 4.8\n        reviewsCount:\
+      \ 98\n        contact: \"031-234-5678\"\n        address: \"경기 화성시 동탄중앙로 45\"\
+      \n      - companyName: \"동탄프리미엄포장이사\"\n        rating: 4.7\n        reviewsCount:\
+      \ 110\n        contact: \"031-345-6789\"\n        address: \"경기 화성시 동탄기흥로 67\"\
+      \n\n  - tool: searchPlaces\n    query: \"화서역 주변 유명한 동물병원\"\n    placeCategory:\
+      \ \"동물병원\"\n    location: \"화서역\"\n    sortBy: \"popularity\"\n    results:\n\
+      \      - hospitalName: \"화서동물병원\"\n        rating: 4.8\n        reviewsCount:\
+      \ 210\n        contact: \"031-987-6543\"\n        address: \"경기 수원시 팔달구 화서로\
+      \ 56\"\n      - hospitalName: \"굿펫동물병원\"\n        rating: 4.7\n        reviewsCount:\
+      \ 180\n        contact: \"031-876-5432\"\n        address: \"경기 수원시 팔달구 화서로\
+      \ 78\"\n      - hospitalName: \"힐링동물병원\"\n        rating: 4.6\n        reviewsCount:\
+      \ 150\n        contact: \"031-765-4321\"\n        address: \"경기 수원시 팔달구 화서로\
+      \ 102\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 날짜'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예약 장소명, 예약 날짜, 예약 시간'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '[동탄 후기 좋은 포장이사 TOP 3]
+
+
+      업체 선정에 도움이 될 수 있도록 인기 업체를 정리해 드렸어요.
+
+
+      1. 동탄명품포장이사
+
+      • 평점: ★4.9 (리뷰 152개)
+
+      • 주소: 경기 화성시 동탄대로 123
+
+      • 연락처: 031-123-4567
+
+
+      2. 동탄스마트포장이사
+
+      • 평점: ★4.8 (리뷰 98개)
+
+      • 주소: 경기 화성시 동탄중앙로 45
+
+      • 연락처: 031-234-5678
+
+
+      3. 동탄프리미엄포장이사
+
+      • 평점: ★4.7 (리뷰 110개)
+
+      • 주소: 경기 화성시 동탄기흥로 67
+
+      • 연락처: 031-345-6789
+
+
+
+      [화서역 주변 유명한 동물병원 TOP 3]
+
+
+      검진 예약을 위해 아래 병원 중 한 곳을 선택해 주세요.
+
+      병원 이름, 희망 예약 날짜/시간을 알려주시면 예약 도와드릴게요.
+
+
+      1. 화서동물병원
+
+      • 평점: ★4.8 (리뷰 210개)
+
+      • 주소: 경기 수원시 팔달구 화서로 56
+
+      • 연락처: 031-987-6543
+
+
+      2. 굿펫동물병원
+
+      • 평점: ★4.7 (리뷰 180개)
+
+      • 주소: 경기 수원시 팔달구 화서로 78
+
+      • 연락처: 031-876-5432
+
+
+      3. 힐링동물병원
+
+      • 평점: ★4.6 (리뷰 150개)
+
+      • 주소: 경기 수원시 팔달구 화서로 102
+
+      • 연락처: 031-765-4321
+
+
+      예: “화서동물병원, 8월 14일 오후 3시 예약해줘”
+
+
+
+      [이사하는 날 날씨 정보]
+
+
+      이사 당일 날씨를 알려드리기 위해서는 이사 예정 날짜가 필요해요.
+
+      이사 날짜도 함께 알려주시면 확인해 드릴게요!'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 굿닥터동물병원이 없어? 여기 화서에서 진짜 유명한데? 혹시 폐업했거나 딴데로 옮긴건지 봐줄래?
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: place_agent\n      refined_query: \"후기 좋은\
+      \ 동탄 포장 이사와 화서역 주변 유명한 동물병원 검색\"\n\nworkflow_2:\n  status: paused\n  type: independent\n\
+      \  steps:\n    - status: paused\n      name: place_agent\n      refined_query:\
+      \ \"3주 뒤 이사하는 날 동탄 날씨\"\n\nworkflow_3:\n  status: paused\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: paused\n      name: weather_agent\n\
+      \      refined_query: \"화서역 주변 유명한 동물병원 검진 예약\"\n\ninterrupted_workflow_3-1:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: place_agent\n      refined_query: \"화서 굿닥터동물병원이 폐업했거나 이전한 건지 확인\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"화서 굿닥터동물병원이 폐업했거나\
+      \ 이전한 건지 확인\"\n  placeCategory: \"동물병원\"\n  placeName: \"굿닥터동물병원\"\n  location:\
+      \ \"화서\"\n  sortBy: \"distance\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"화서 굿닥터동물병원이 폐업했거나 이전한 건지 확인\"\n    placeCategory: \"동물병원\"\n    placeName:\
+      \ \"굿닥터동물병원\"\n    location: \"화서\"\n    sortBy: \"distance\"\n    status: \"\
+      폐업\"\n    message: \"굿닥터동물병원은 병원 사정상 폐업한 것으로 확인되었습니다.\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: '[굿닥터동물병원 영업 여부]
+
+      굿닥터동물병원은 병원 사정상 폐업한 것으로 확인됩니다.
+
+
+
+      [이사하는 날 날씨 정보]
+
+
+      이사 당일 날씨를 알려드리기 위해서는 이사 예정 날짜가 필요해요.
+
+      이사 날짜도 함께 알려주시면 확인해 드릴게요!
+
+
+
+      [화서역 주변 동물병원 검진 예약]
+
+
+      검진 예약을 위해 추천된 병원 중 한 곳을 선택해 주세요.
+
+      병원 이름, 희망 예약 날짜/시간을 알려주시면 예약 도와드릴게요.'
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 아하 이사는 5월24일이고, 병원 예약은 화서동물병원으로 7월 18일 오전 10시로 해줘
+- workflow_id: workflow_2
+  step_id: 13
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"2026년 5월 24일\
+      \ 동탄 날씨\"\n  location: \"동탄\"\n  date: \"2026-05-24\"\ntool_call_result:\n \
+      \ data:\n    refinedQuery: \"2026년 5월 24일 동탄 날씨\"\n    location: \"동탄\"\n  \
+      \  date: \"2026-05-24\"\n    weather:\n      temperature: \"22°C\"\n      condition:\
+      \ \"맑음\"\n      precipitationChance: \"10%\"\n      windSpeed: \"5 km/h\"\n\
+      \      humidity: \"60%\""
+- workflow_id: workflow_3
+  step_id: 14
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 예약 날짜가 오늘로부터 60일 초과로 설정되어 예약 불가'
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: '동물병원 예약은 오늘로부터 최대 60일 이내 날짜만 선택하실 수 있어요.
+
+      선택하신 날짜는 범위를 초과해서 예약이 어렵습니다.
+
+      다시 한 번 날짜를 확인해 주시겠어요?'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 그럼 6월 5일 오전 10시로 할게
+- workflow_id: null
+  step_id: 17
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: reservePlaces\narguments:\n  refinedQuery: \"6월 5일 화서동물병원 오전 10시\
+      \ 검진 예약\"\n  placeCategory: \"동물병원\"\n  placeName: \"화서동물병원\"\n  reservationDate:\
+      \ \"2026-06-05\"\n  reservationTime: \"10:00\"\n  userId: \"user_3f7b92d1a6c94c58\"\
+      \n  contactInfo: \"010-2222-7777\"\ntool_call_result:\n  data:\n    status:\
+      \ \"success\"\n    message: \"화서동물병원 6월 5일 10:00 검진 예약이 완료되었습니다.\"\n    reservationDetails:\n\
+      \      placeCategory: \"동물병원\"\n      placeName: \"화서동물병원\"\n      reservationDate:\
+      \ \"2026-06-05\"\n      reservationTime: \"10:00\"\n      userId: \"user_3f7b92d1a6c94c58\"\
+      \n      contactInfo: \"010-2222-7777\""
+- workflow_id: null
+  step_id: 18
+  agent: main
+  agent_type: main
+  data:
+    content: '[5월 24일 동탄 날씨]
+
+
+      5월 24일 동탄 이사 날, 날씨는 맑고 기온은 22°C로 이사하기 좋은 날씨예요.
+
+      강수 확률은 10%, 바람은 시속 5km로 불어 큰 걱정 없을 것 같아요.
+
+
+
+      [화서동물병원 예약 완료]
+
+
+      화서동물병원 예약이 완료되었어요.
+
+      • 예약 날짜: 2026년 6월 5일
+
+      • 시간: 오전 10:00
+
+      • 장소: 화서동물병원
+
+      • 연락처: 010-2222-7777'

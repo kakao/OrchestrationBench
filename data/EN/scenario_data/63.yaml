@@ -1,0 +1,115 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-05-16'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: What are the current NBA standings as of today? Please provide the stats
+      and profile of LeBron James of the Los Angeles Lakers, including details about
+      his cameo appearance in a TV show.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: sports_agent\n      refined_query: \"Check current\
+      \ NBA standings as of today\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: sports_agent\n      refined_query:\
+      \ \"Look up player stats for LeBron James of the Los Angeles Lakers\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: person_agent\n      refined_query: \"Search for player profile and\
+      \ cameo appearances of LeBron James of the Los Angeles Lakers in a TV show\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportRank\narguments:\n  refinedQuery: \"Check current NBA\
+      \ standings as of today\"\n  league: \"NBA\"\n  targetDate: \"2025-05-16\"\n\
+      tool_call_result:\n  data:\n    league: \"NBA\"\n    date: \"2025-05-16\"\n\
+      \    rankings:\n      - rank: 1\n        team: \"Los Angeles Lakers\"\n    \
+      \    wins: 32\n        losses: 10\n        win_rate: 0.762\n        games_behind:\
+      \ 0.0\n      - rank: 2\n        team: \"Boston Celtics\"\n        wins: 29\n\
+      \        losses: 13\n        win_rate: 0.690\n        games_behind: 3.0\n  \
+      \    - rank: 3\n        team: \"Golden State Warriors\"\n        wins: 27\n\
+      \        losses: 15\n        win_rate: 0.642\n        games_behind: 5.0\n  \
+      \    - rank: 4\n        team: \"Miami Heat\"\n        wins: 24\n        losses:\
+      \ 18\n        win_rate: 0.571\n        games_behind: 8.0\n      - rank: 5\n\
+      \        team: \"Milwaukee Bucks\"\n        wins: 22\n        losses: 20\n \
+      \       win_rate: 0.524\n        games_behind: 10.0\n      - rank: 6\n     \
+      \   team: \"Phoenix Suns\"\n        wins: 20\n        losses: 22\n        win_rate:\
+      \ 0.476\n        games_behind: 12.0\n      - rank: 7\n        team: \"Dallas\
+      \ Mavericks\"\n        wins: 18\n        losses: 24\n        win_rate: 0.429\n\
+      \        games_behind: 14.0\n      - rank: 8\n        team: \"Philadelphia 76ers\"\
+      \n        wins: 15\n        losses: 27\n        win_rate: 0.357\n        games_behind:\
+      \ 17.0\n      - rank: 9\n        team: \"Toronto Raptors\"\n        wins: 13\n\
+      \        losses: 29\n        win_rate: 0.310\n        games_behind: 19.0\n \
+      \     - rank: 10\n        team: \"New York Knicks\"\n        wins: 10\n    \
+      \    losses: 32\n        win_rate: 0.238\n        games_behind: 22.0"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: sports_agent
+  agent_type: agent
+  data:
+    content: "tool: getSportGameInfo\narguments:\n  refinedQuery: \"Check NBA Los\
+      \ Angeles Lakers player LeBron James's stats\"\n  teamName: \"Los Angeles Lakers\"\
+      \n  league: \"NBA\"\n  playerName: \"LeBron James\"\ntool_call_result:\n  data:\n\
+      \    league: \"NBA\"\n    teamName: \"Los Angeles Lakers\"\n    playerName:\
+      \ \"LeBron James\"\n    date: \"2025-05-16\"\n    playerStats:\n      points:\
+      \ 24\n      rebounds: 7\n      assists: 5\n      steals: 2\n      blocks: 1\n\
+      \      turnovers: 3\n      minutesPlayed: \"35:12\"\n      fieldGoalPercentage:\
+      \ 0.52\n      threePointPercentage: 0.38\n      freeThrowPercentage: 0.85\n\
+      \    gameInfo:\n      opponent: \"Boston Celtics\"\n      gameDate: \"2025-05-16\"\
+      \n      result: \"Win\"\n      score: \"89-78\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"NBA Los Angeles Lakers\
+      \ player LeBron James profile and cameo appearances search\"\n  personName:\
+      \ \"LeBron James\"\n  groupName: \"Los Angeles Lakers\"\n  roleType: \"athlete\"\
+      \ntool_call_result:\n  data:\n    personName: \"LeBron James\"\n    groupName:\
+      \ \"Los Angeles Lakers\"\n    roleType: \"athlete\"\n    profile:\n      fullName:\
+      \ \"LeBron James\"\n      birthDate: \"1984-12-30\"\n      nationality: \"American\"\
+      \n      position: \"Forward\"\n      height: \"6ft 9in\"\n      weight: \"250\
+      \ lbs\"\n      careerStart: \"2003\"\n      teams:\n        - \"Cleveland Cavaliers\"\
+      \n        - \"Miami Heat\"\n        - \"Los Angeles Lakers\"\n      achievements:\n\
+      \        - \"17× NBA All-Star\"\n        - \"4× NBA Champion\"\n        - \"\
+      4× NBA MVP\"\n      dramaAppearances:\n        - title: \"Behind the Game\"\n\
+      \          year: 2024\n          role: \"Himself\"\n          description: \"\
+      Made a special appearance in a TV show\"\n        - title: \"Celebrity Night\
+      \ Live\"\n          year: 2025\n          role: \"Cameo\"\n          description:\
+      \ \"Appeared briefly in a popular TV show, generating fan interest\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "■ Current NBA Standings (as of 2025-05-16)\n\n1st: Los Angeles Lakers\
+      \ (32-10, Win % 0.762)\n2nd: Boston Celtics (29-13, Win % 0.690)\n3rd: Golden\
+      \ State Warriors (27-15, Win % 0.642)\n4th: Miami Heat (24-18, Win % 0.571)\n\
+      5th: Milwaukee Bucks (22-20, Win % 0.524)\n6th: Phoenix Suns (20-22, Win % 0.476)\n\
+      7th: Dallas Mavericks (18-24, Win % 0.429)\n8th: Philadelphia 76ers (15-27,\
+      \ Win % 0.357)\n9th: Toronto Raptors (13-29, Win % 0.310)\n10th: New York Knicks\
+      \ (10-32, Win % 0.238)\n\n■ Player Stats – LeBron James (2025-05-16 vs. Boston\
+      \ Celtics)\n\n• Points: 24\n• Rebounds: 7\n• Assists: 5\n• Steals: 2\n• Blocks:\
+      \ 1\n• Turnovers: 3\n• Minutes Played: 35:12\n• Field Goal %: 52%\n• 3-Point\
+      \ %: 38%\n• Free Throw %: 85%\n• Game Result: 89-78 Win\n\n■ Player Profile\
+      \ – LeBron James\n\n• Date of Birth: December 30, 1984\n• Nationality: American\n\
+      • Position: Forward\n• Height/Weight: 6'9\" / 250 lbs\n• Debut: 2003 (with Cleveland\
+      \ Cavaliers)\n• Teams: Cleveland Cavaliers, Miami Heat, Los Angeles Lakers\n\
+      • Major Achievements:\n  - 17× NBA All-Star\n  - 4× NBA Champion\n  - 4× NBA\
+      \ MVP\n  • TV Appearances / Cameos:\n    - 2024 “Behind the Game” – appeared\
+      \ as himself in a TV show\n    - 2025 “Celebrity Night Live” – cameo appearance\
+      \ in a popular TV show, generating fan interest"

@@ -1,0 +1,140 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-07-17
+
+      이름: 조운'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 이번주 일요일 과천 날씨 확인해봐 그리고 비 안오면 서울대공원 캠핑장 입장권 성인 2장 기프티콘으로 구매해줘. 그리고 캠핑
+      알차게 즐기는법 유튜브 영상 찾아줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: weather_agent\n      refined_query: \"이번주 일요일\
+      \ 과천 날씨\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"캠핑 알차게 즐기기 유튜브 영상\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"비 안오면 서울 대공원 캠핑장 입장권 성인 2장 기프티콘 검색\"\n\nworkflow_4:\n\
+      \  status: pending\n  type: dependent\n  depend_on: [\"workflow_1\", \"workflow_3\"\
+      ]\n  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"비 안오면 서울 대공원 캠핑장 입장권 성인 2장 기프티콘 구매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"7월 20일 이번주 일요일\
+      \ 과천 날씨 확인\"\n  location: \"과천\"\n  date: \"2025-07-20\"\ntool_call_result:\n\
+      \  status: success\n  data:\n    location: \"과천\"\n    date: \"2025-07-20\"\n\
+      \    weather:\n      summary: \"맑고 무더운 날씨\"\n      temperature:\n        min:\
+      \ 26\n        max: 33\n      feelsLikeTemperature:\n        min: 28\n      \
+      \  max: 36\n      precipitationProbability: \"10%\"\n      humidity: \"70%\"\
+      \n      wind:\n        speed: \"2 m/s\"\n        direction: \"남서풍\"\n      uvIndex:\
+      \ \"매우 높음\"\n      fineDust: \"보통\"\n    source: \"기상청\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: searchVideo\narguments:\n  refinedQuery: \"캠핑 알차게 즐기기 유튜브 영상\"\
+      \ntool_call_result:\n  status: success\n  data:\n        - title: \"초보 캠핑, 이것만\
+      \ 알면 고수! 캠핑 200% 즐기는 꿀팁 대방출\"\n          creator: \"캠핑고수\"\n          url: \"\
+      https://www.youtube.com/watch?v=example1\"\n          description: \"텐트 설치부터\
+      \ 요리, 불멍, 다양한 놀거리까지 캠핑을 알차게 즐길 수 있는 모든 꿀팁을 알려드립니다. 초보자도 이 영상 하나면 캠핑 마스터!\"\n\
+      \        - title: \"캠핑가서 뭐해먹지? 역대급 캠핑요리 BEST 5\"\n          creator: \"먹방캠퍼\"\
+      \n          url: \"https://www.youtube.com/watch?v=example2\"\n          description:\
+      \ \"간단하면서도 맛은 보장하는 캠핑 요리 레시피를 소개합니다. 그리들 요리부터 간단한 안주까지, 캠핑의 즐거움을 더해주는 요리를 만나보세요.\"\
+      \n        - title: \"돈 아끼는 캠핑장비 추천! 가성비 캠핑용품 하울\"\n          creator: \"알뜰캠핑\"\
+      \n          url: \"https://www.youtube.com/watch?v=example3\"\n          description:\
+      \ \"비싼 장비 없이도 캠핑을 즐길 수 있어요! 가성비 좋은 필수 캠핑용품들을 소개하고 현명하게 장비를 선택하는 노하우를 공유합니다.\""
+- workflow_id: workflow_3
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"비 안오면 서울대공원 캠핑장\
+      \ 성인 2명 입장권 기프티콘 찾기\"\n  items: \"입장권\"\ntool_call_result:\n  data:\n    recommendations:\n\
+      \      - productId: \"SGP-CAMP-TICKET-ADULT\"\n        productName: \"서울대공원\
+      \ 캠핑장 당일 입장권 (성인)\"\n        description: \"서울대공원 캠핑장 공간을 당일 이용할 수 있는 입장권입니다.\
+      \ 텐트 등 시설 이용료는 별도이며, 온라인 사전 예매가 필수입니다.\"\n        price: 2000\n        currency:\
+      \ \"KRW\"\n        options:\n          - \"대상: 성인 (만 19~64세)\"\n        notes:\n\
+      \          - \"이 입장권은 캠핑장 입장 전용이며, 서울대공원(동물원/테마가든) 입장료는 포함되어 있지 않습니다.\"\n  \
+      \        - \"캠핑장 이용객이 많아 예매가 조기에 마감될 수 있습니다.\"\n        imageUrl: \"https://grandpark.seoul.go.kr/images/seoul-grand-park/main/main-visual-01.jpg\"\
+      \n        purchaseLink: \"https://grandpark.seoul.go.kr/reservation/camping/list.do\"\
+      \n    source: \"서울대공원 공식 홈페이지\""
+- workflow_id: workflow_4
+  step_id: 7
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 이름, 연락처, 기프티콘 전송방법'
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "일요일 (7월 20일) 과천 날씨\n\n일요일은 아주 맑고 무더운 날씨입니다.\n\n- 날씨 요약: 맑고 무더움 \n\n\
+      - 실제 기온: 최저 26℃ / 최고 33℃ (체감온도 최고 36℃)\n\n- 자외선 지수: 매우 높음\n\n특히 자외선 지수가 '매우\
+      \ 높음' 단계였기 때문에, 야외 활동 시에는 선크림과 모자가 필수적인 날입니다.\n\n-----------\n\n비가 오지않으니 서울\
+      \ 대공원 캠핑장 입장권 구매를 도와 드릴게요, 아래 정보를 입력해 주세요\n\n1. 받는 분 성함:\n\n2. 연락처 (휴대폰 번호 또는\
+      \ 이메일 주소):\n\n3. 전송 방법: (아래 목록에서 선택)\n\n- sms (문자 메시지)\n\n- kakaotalk (카카오톡)\n\
+      \n- email (이메일)\n\n아래와 같이 답변해 주세요.\n\n받는 분 성함: 홍길동\n연락처: 010-1234-0000\n전송 방법:\
+      \ 카카오톡"
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: '조운
+
+      010-1234-5678
+
+      카톡'
+- workflow_id: workflow_4
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: sendGifts\narguments:\n  refinedQuery: \"서울 대공원 캠핑장 성인 2명 입장권\
+      \ 기프티콘 구매\"\n  productId: \"SGP-CAMP-TICKET-ADULT\"\n  recipientName: \"조운\"\
+      \n  phoneNumber: \"010-1234-5678\"\n  deliveryMethod: \"kakaotalk\"\n  quantity:\
+      \ 2\ntool_call_result:\n  data:\n    orderId: \"GIFT-20250724-SGP001\"\n   \
+      \ status: \"발송 완료\"\n    timestamp: \"2025-07-24T11:48:50\"\n    productDetails:\n\
+      \      productId: \"SGP-CAMP02\"\n      productName: \"서울대공원 캠핑장 당일 입장권 (성인)\"\
+      \n      quantity: 2\n    pricingDetails:\n      pricePerUnit: 2000\n      totalPrice:\
+      \ 4000\n      currency: \"KRW\"\n    recipientDetails:\n      name: \"조운\"\n\
+      \      contact: \"010-****-5678\"\n    deliveryDetails:\n      method: \"카카오톡\"\
+      \n      status: \"메시지 발송이 완료되었습니다.\"\n    message: \"조운님께 선물이 성공적으로 발송되었습니다.\"\
+      \n    source: \"기프트 발송 시스템\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "- 전송 완료\n\n 조운님께 요청하신 기프티콘 선물을 성공적으로 발송했습니다.\n\n[선물 발송 내역]\n\n받는 분:\
+      \ 조운 (010-****-5678)\n\n선물: 서울대공원 캠핑장 당일 입장권 (성인) 2매\n\n결제 금액: 4,000원\n\n전송\
+      \ 방법: 카카오톡 메시지\n\n조운님께 카카오톡으로 선물 메시지가 곧 도착할 거예요. 함께 즐거운 시간 보내시길 바랍니다!\n\n----------\n\
+      \n캠핑을 더 즐겁게 보낼 수 있는 유용한 영상들도 함께 찾아봤어요.\n\n캠핑 200% 즐기는 꿀팁\n영상: 초보 캠핑, 이것만 알면\
+      \ 고수! 캠핑 200% 즐기는 꿀팁 대방출\n\n1. 채널: 캠핑고수\n\n설명: 텐트 설치부터 요리, 불멍, 다양한 놀거리까지 캠핑을\
+      \ 알차게 즐길 수 있는 모든 꿀팁을 알려드립니다. 초보자도 이 영상 하나면 캠핑 마스터!\n\n링크: https://www.youtube.com/watch?v=example1\n\
+      \n영상: 캠핑가서 뭐해먹지? 역대급 캠핑요리 BEST 5\n\n2. 채널: 먹방캠퍼\n\n설명: 간단하면서도 맛은 보장하는 캠핑 요리\
+      \ 레시피를 소개합니다. 그리들 요리부터 간단한 안주까지, 캠핑의 즐거움을 더해주는 요리를 만나보세요.\n\n링크: https://www.youtube.com/watch?v=example2\
+      \ \n\n영상: 돈 아끼는 캠핑장비 추천! 가성비 캠핑용품 하울\n\n3. 채널: 알뜰캠핑\n\n설명: 비싼 장비 없이도 캠핑을 즐길\
+      \ 수 있어요! 가성비 좋은 필수 캠핑용품들을 소개하고 현명하게 장비를 선택하는 노하우를 공유합니다.\n\n링크: https://www.youtube.com/watch?v=example3\
+      \ \n\n즐거운 캠핑 되세요!"

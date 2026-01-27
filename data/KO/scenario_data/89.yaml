@@ -1,0 +1,243 @@
+metadata:
+  total_steps: 15
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025/3/10
+
+      userId: 2027ID-001'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: "이유없이 불안한 마음이 빈번하게 드는 까닭을 상담 받고 싶어\n 내 MBTI 때문일까? ENFJ 인데.. 좀 알려줘!\n\
+      불안한 감정에 도움이되는 책들도 추천해줘!"
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"이유 없이 불안한\
+      \ 마음이 빈번하게 드는 까닭에 대하여 상담\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: counsel_agent\n      refined_query:\
+      \ \"이유 없이 불안한 마음이 빈번하게 드는 까닭이 본인의 MBTI ENFJ와도 관련이 있는지 궁금\"\n\nworkflow_3:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: shopping_agent\n      refined_query: \"이유 없이 불안한 감정이 드는 마음에 도움이\
+      \ 되는 책\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"이유 없이 불안한 마음이 빈번하게\
+      \ 드는 까닭에 대하여 상담\"\ntool_call_result:\n  counseling:\n    topic: \"이유 없는 불안\"\
+      \n    summary: \"이유 없이 불안한 감정은 종종 스트레스, 과거 경험, 신체적 피로, 혹은 뇌 화학적 요인에서 기인할 수 있습니다.\
+      \ 불안은 생존 본능과 관련된 감정으로, 명확한 원인이 없어도 내면의 심리적 긴장이나 외부 환경의 미세한 자극에 의해 촉발될 수 있습니다.\"\
+      \n    recommendedApproach:\n      - \"정기적인 수면과 식사, 신체활동을 통한 기본 생활 리듬 유지\"\n\
+      \      - \"마음 챙김 명상 또는 심호흡 훈련\"\n      - \"불안을 느낄 때 감정을 억누르지 말고 일기나 말로 표현하기\"\
+      \n      - \"심리상담 또는 정신건강의학과 전문의 상담 고려\"\n    note: \"불안이 일상생활에 지속적 영향을 준다면 전문가의\
+      \ 진단과 치료가 중요합니다.\""
+- workflow_id: null
+  step_id: 5
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getMbtiInfo\narguments:\n  refinedQuery: \"이유 없이 불안한 마음이 빈번하게\
+      \ 드는 까닭이 본인의 MBTI ENFJ와도 관련이 있는지 궁금\"\n  mbtiType: \"enfj\"\ntool_call_result:\n\
+      \  mbtiInsight:\n    mbtiType: \"ENFJ\"\n    personalitySummary: \"ENFJ는 목표\
+      \ 지향적이며 논리적 사고를 중시하는 성향으로, 리더십이 강하고 문제 해결에 집중하는 타입입니다. 감정보다는 결과를 우선시하며, 효율성과\
+      \ 성취를 중시합니다.\"\n    emotionalTraits:\n      - \"불확실한 상황에 스트레스를 받는 경향이 있음\"\n\
+      \      - \"자신이 통제할 수 없는 감정 상태에 대해 불편함을 느낌\"\n      - \"높은 기대치를 스스로에게 부여해, 감정적\
+      \ 피로를 유발할 수 있음\"\n    possibleCauseOfAnxiety:\n      - \"자기 주도성과 완벽주의적 성향으로\
+      \ 인해 스스로를 지나치게 몰아붙임\"\n      - \"내면 감정을 억제하다가 압박감으로 불안감이 드러날 수 있음\"\n      -\
+      \ \"실패 또는 비효율에 대한 두려움이 감정적 긴장으로 연결될 수 있음\"\n    suggestion:\n      - \"감정을 정리할\
+      \ 시간을 의식적으로 확보\"\n      - \"감정 표현이나 공유를 연습해 내면 스트레스를 해소\"\n      - \"완벽보다 유연한\
+      \ 사고방식 시도\""
+- workflow_id: workflow_2
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: searchProducts\narguments:\n  refinedQuery: \"이유 없이 불안한 감정이 드는\
+      \ 마음에 도움이 되는 책\"\n  productCategory: \"도서\"\n  sortBy: \"latest\"\ntool_call_result:\n\
+      \  data:\n    recommendations:\n      - productId: \"book-2025-061\"\n     \
+      \   productName: \"불안이라는 위안 - 조성준\"\n        description: \"불안해서 미루고, 미루기 때문에\
+      \ 더 불안해지는 악순환을 끊어내는 구체적인 행동 설계 방법을 제시하는 최신 자기계발서\"\n        price: 17800\n \
+      \       imageUrl: \"https://image.yes24.com/goods/124941953/XL\"\n        purchaseLink:\
+      \ \"https://www.yes24.com/Product/Goods/124941953\"\n\n      - productId: \"\
+      book-2025-042\"\n        productName: \"지금 이대로 괜찮은 나 – 최인철\"\n        description:\
+      \ \"베스트셀러 작가 김영하가 불확실한 삶 속에서 불안을 견디고 자신만의 길을 찾아가는 경험을 담아낸 에세이\"\n        price:\
+      \ 16500\n        imageUrl: \"https://image.yes24.com/goods/126149023/XL\"\n\
+      \        purchaseLink: \"https://www.yes24.com/Product/Goods/126149023\"\n\n\
+      \      - productId: \"book-2025-013\"\n        productName: \"감정 수업 – 최성애\"\n\
+      \        description: \"정신과 의사가 그림과 함께 우울, 불안, 공황 등 다양한 마음의 병에 대해 친절하게 설명하여\
+      \ 독자에게 따뜻한 위로와 용기를 주는 책\"\n        price: 16800\n        imageUrl: \"https://image.yes24.com/goods/124590393/XL\"\
+      \n        purchaseLink: \"https://www.yes24.com/Product/Goods/124590393\"\n\n\
+      \      - productId: \"book-2024-074\"\n        productName: \"나는 왜 불안한가 – 롤로\
+      \ 메이\"\n        description: \"스마트폰과 소셜 미디어의 확산이 Z세대의 정신 건강과 불안감에 미치는 영향을 심도\
+      \ 깊게 분석하고, 건강한 미래를 위한 대안을 제시하는 책\"\n        price: 26820\n        imageUrl:\
+      \ \"https://image.yes24.com/goods/129602366/XL\"\n        purchaseLink: \"https://www.yes24.com/Product/Goods/129602366\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "1. 불안이라는 감정 자체에 대해 상담해보면\n\n막연한 불안은 외부 원인이 분명하지 않아도 내면의 스트레스나 뇌 화학작용,\n\
+      그리고 피로 누적이나 미래 불확실성에 의해 자연스럽게 발생할 수 있습니다.\n억지로 없애려 하기보다, 지금의 상태를 받아들이고\n호흡이나\
+      \ 명상 같은 감정 루틴을 만드는 것이 도움이 됩니다.\n\n또한,\n\n* 일기나 감정 기록을 통해 패턴을 관찰하거나\n* 필요 시 정신건강\
+      \ 전문가의 상담을 고려해보는 것도 좋은 선택입니다.\n\n\n2. 본인의 MBTI 성향과도 관련이 있을 수 있어요 (ENFJ 기준)\n\
+      \nENFJ는 타인의 감정에 민감하고 조화를 중시하는 성향으로,\n정작 자신의 내면을 돌보지 못한 채 감정이 쌓이기 쉬운 유형입니다.\n\
+      \n자신의 감정보다 타인의 상태에 더 집중할수록,\n불안이 이유 없이 솟아나는 듯한 순간이 자주 찾아올 수 있어요.\n\n* 감정 일기나\
+      \ 기록 앱 등을 활용해\n  자신의 내면을 주기적으로 정리해보는 것을 추천드립니다.\n\n\n3. 관련된 도서들도 함께 소개드릴게요\n\
+      \n▶ 불안이라는 위안 – 조성준\n불안해서 미루고, 미루기 때문에 더 불안해지는 악순환을 끊어내는\n구체적인 행동 설계 방법을 담은 최신\
+      \ 자기계발서입니다.\n₩17,800\n[도서 상세보기](https://www.yes24.com/Product/Goods/124941953)\n\
+      \n▶ 지금 이대로 괜찮은 나 – 최인철\n베스트셀러 작가 김영하가 불확실한 삶 속에서\n불안을 견디며 자신만의 길을 찾아가는 경험을 풀어낸\
+      \ 따뜻한 에세이입니다.\n₩16,500\n[도서 상세보기](https://www.yes24.com/Product/Goods/126149023)\n\
+      \n▶ 감정 수업 – 최성애\n우울, 불안, 공황 등 다양한 마음의 병에 대해\n정신과 의사가 친절하게 설명하며 위로와 용기를 주는 책입니다.\n\
+      ₩16,800\n[도서 상세보기](https://www.yes24.com/Product/Goods/124590393)\n\n▶ 나는 왜\
+      \ 불안한가 – 롤로 메이\n스마트폰과 소셜 미디어가 불안에 미치는 영향을 분석하고\nZ세대를 위한 심리적 대안을 제시하는 통찰력 있는\
+      \ 심리서입니다.\n₩26,820\n[도서 상세보기](https://www.yes24.com/Product/Goods/129602366)"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 불안이라는 위안 책 구매하고싶어 그리고 3월에 하는 명상 행사 관련해서도 좀 알려줘
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: counsel_agent\n      refined_query: \"이유\
+      \ 없이 불안한 마음이 빈번하게 드는 까닭에 대하여 상담\"\n\nworkflow_2:\n  status: completed\n  type:\
+      \ independent\n  steps:\n    - status: completed\n      name: counsel_agent\n\
+      \      refined_query: \"이유 없이 불안한 마음이 빈번하게 드는 까닭이 본인의 MBTI ENFJ와도 관련이 있는지 궁금\"\
+      \n\nworkflow_3:\n  status: completed\n  type: independent\n  steps:\n    - status:\
+      \ completed\n      name: shopping_agent\n      refined_query: \"이유 없이 불안한 감정이\
+      \ 드는 마음에 도움이 되는 책\"\n\nworkflow_4:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: shopping_agent\n      refined_query:\
+      \ \"불안이라는 위안 - 조성준 책 구매\"\n\nworkflow_5:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"3월에 하는 명상 행사\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 배송 받을 주소, 이름, 연락처'
+- workflow_id: workflow_4
+  step_id: 11
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"이유없는 우울한 감정에 도움이 될 3월에\
+      \ 하는 명상 행사\"\ntool_call_result:\n  results:\n    - title: \"마음챙김 봄 명상 리트릿\"\n\
+      \      date: \"2025년 3월 9일(일)\"\n      time: \"10:00 ~ 17:00\"\n      location:\
+      \ \"서울시 종로구 수운회관\"\n      description: \"우울감, 무기력, 정서 피로 회복을 위한 하루 집중 마음챙김 명상\
+      \ 프로그램\"\n      registrationLink: \"https://mindcenter.kr/event/springretreat2025\"\
+      \n\n    - title: \"숨 고르기 – 도심 속 명상 클래스\"\n      date: \"2025년 3월 매주 수요일\"\n\
+      \      time: \"19:00 ~ 20:30\"\n      location: \"서울 성동구 성수동 힐링룸\"\n      description:\
+      \ \"감정정리를 위한 저녁 정기 명상, 호흡·신체 인식 위주\"\n      registrationLink: \"https://healingroom.com/program/breathing2025\"\
+      \n\n    - title: \"불안을 위한 저녁 명상\"\n      date: \"2025년 3월 18일(화)\"\n      time:\
+      \ \"18:30 ~ 20:00\"\n      location: \"서울 마포구 서교동 무브명상센터\"\n      description:\
+      \ \"마음의 긴장을 풀고 불안한 감정을 바라보는 초심자용 명상 수업\"\n      registrationLink: \"https://movemeditation.org/class/evening-anxiety\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 불안이라는 위안' 도서 구매를 위해 사용자의 주소, 이름, 연락처가 필요합니다.
+- workflow_id: null
+  step_id: 13
+  agent: user
+  agent_type: user
+  data:
+    content: 경기도 의왕시 평촌동 701-0 / 이상민 / 010-0000-0000
+- workflow_id: workflow_3
+  step_id: 14
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"불안이라는 위안 책 구매\"\n\
+      \  userId: \"2027ID-001\"\n  productItems:\n    - productName: \"불안이라는 위안\"\n\
+      \      productId: \"book-2025-061\"\n      quantity: 1\n      price: 17800\n\
+      \  shippingAddress:\n    recipient: \"이상민\"\n    address: \"경기도 의왕시 평촌동 701-0\"\
+      \n    phone: \"010-0000-0000\"\ntool_call_result:\n  result: \"success\"\n \
+      \ orderId: \"ORD-20250310-1054\"\n  productId: \"book-2025-061\"\n  productName:\
+      \ \"불안이라는 위안\"\n  quantity: 1\n  price: \"₩17,800\"\n  recipient: \"이상민\"\n\
+      \  shippingAddress: \"경기도 의왕시 평촌동 701-0\"\n  estimatedDelivery: \"2025-03-12\"\
+      \n  orderDetailLink: \"https://bookstore.example.com/orders/minboy09\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: '3월에 참여할 수 있는 명상 프로그램을 안내드립니다
+
+
+      ▶ 마음챙김 봄 명상 리트릿
+
+
+      * 일시: 2025년 3월 9일(일) 10:00 \~ 17:00
+
+      * 장소: 서울시 종로구 수운회관
+
+      * 내용: 우울감, 무기력, 정서 피로 회복을 위한 하루 집중 마음챙김 명상
+
+      * 신청: [mindcenter.kr 바로가기](https://mindcenter.kr/event/springretreat2025)
+
+
+      ▶ 숨 고르기 – 도심 속 명상 클래스
+
+
+      * 일정: 2025년 3월 매주 수요일 19:00 \~ 20:30
+
+      * 장소: 서울 성동구 성수동 힐링룸
+
+      * 내용: 감정 정리를 위한 호흡·신체 인식 기반 저녁 명상 수업
+
+      * 신청: [healingroom.com 바로가기](https://healingroom.com/program/breathing2025)
+
+
+      ▶ 불안을 위한 저녁 명상
+
+
+      * 일시: 2025년 3월 18일(화) 18:30 \~ 20:00
+
+      * 장소: 서울 마포구 서교동 무브명상센터
+
+      * 내용: 불안한 감정을 바라보고 긴장을 풀어내는 초심자용 명상 수업
+
+      * 신청: [movemeditation.org 바로가기](https://movemeditation.org/class/evening-anxiety)
+
+
+      3월에 있는 명상 프로그램을 안내드려요.
+
+
+
+      ✅ 주문 완료
+
+      ▶ 『불안이라는 위안』 1권 주문이 정상적으로 완료되었습니다.
+
+      총 결제 금액은 ₩17,800이며, 배송지는 경기도 의왕시 평촌동 701-0,
+
+      수령인은 이상민입니다.
+
+
+      예상 도착일은 3월 12일(화)입니다.
+
+      주문번호: ORD-20250310-1054
+
+
+      자세한 주문 내역은 아래 링크에서 확인하실 수 있습니다.
+
+      주문내역 확인하기'

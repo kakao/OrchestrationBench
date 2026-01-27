@@ -1,0 +1,45 @@
+metadata:
+  total_steps: 4
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 전도연이 나온 영화중에 영화제목 제일 긴거 뭐지?
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      전도연 출연 영화 중 영화 제목이 가장 긴 작품\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getMovieInfo\narguments:\n  refinedQuery: \"전도연 출연 영화 중 영화 제목이\
+      \ 가장 긴 작품\"\n  actorName: \"전도연\"\n  sortBy: \"titleLength\"\ntool_call_result:\n\
+      \  data:\n    query: \"전도연 출연 영화 중 영화 제목이 가장 긴 작품\"\n    actorName: \"전도연\"\n\
+      \    movies:\n      - title: \"밀양에서 온 편지\"\n        releaseYear: \"2007\"\n\
+      \        rating: 4.8\n        duration: 128\n        genre:\n          - \"\
+      드라마\"\n          - \"멜로\"\n        description: \"전도연 주연의 감성적인 드라마 영화\"\n  \
+      \    - title: \"해피엔드\"\n        releaseYear: \"1999\"\n        rating: 4.5\n\
+      \        duration: 110\n        genre:\n          - \"드라마\"\n          - \"\
+      스릴러\"\n        description: \"복잡한 인간관계를 그린 영화\"\n      - title: \"집으로 가는 길\"\
+      \n        releaseYear: \"2002\"\n        rating: 4.6\n        duration: 115\n\
+      \        genre:\n          - \"드라마\"\n        description: \"가족과의 관계를 다룬 영화\"\
+      \n      - title: \"너는 내 운명\"\n        releaseYear: \"2005\"\n        rating:\
+      \ 4.7\n        duration: 120\n        genre:\n          - \"로맨스\"\n        \
+      \  - \"코미디\"\n        description: \"운명적인 사랑 이야기를 다룬 영화\"\n    status: \"조회\
+      \ 완료\""
+- workflow_id: null
+  step_id: 4
+  agent: main
+  agent_type: main
+  data:
+    content: "전도연이 출연한 영화 중  \n제목이 가장 긴 작품은 2007년작 「밀양에서 온 편지」입니다.\n\n- 장르: 드라마, 멜로\
+      \  \n- 평점: 4.8점 (높은 평가)  \n\n감성적인 이야기로 많은 사랑을 받은 작품이에요."

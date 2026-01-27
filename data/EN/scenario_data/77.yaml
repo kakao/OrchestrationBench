@@ -1,0 +1,72 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2026-04-21'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Can you recommend some quiet cafés around Greenpoint or Williamsburg
+      where I can study?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Recommend\
+      \ a quiet café in Greenpoint or Williamsburg where I can study\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool_call: \n  - tool: recommendRestaurants\n    arguments:\n      refinedQuery:\
+      \ \"Recommend quiet cafes in Greenpoint for studying\"\n      location: \"Greenpoint\"\
+      \n      ambience: \"quiet\"\n      event: \"study\"\n      sortBy: \"highest_rated\"\
+      \n  - tool: recommendRestaurants\n    arguments:\n      refinedQuery: \"Recommend\
+      \ quiet cafes in Williamsburg for studying\"\n      location: \"Williamsburg\"\
+      \n      ambience: \"quiet\"\n      event: \"study\"\n      sortBy: \"highest_rated\"\
+      \n\ntool_call_result:\n  - tool: recommendRestaurants\n    result:\n      recommendations:\n\
+      \        - name: \"Variety Coffee Roasters (Greenpoint)\"\n          address:\
+      \ \"1289 Bedford Ave, Brooklyn, NY 11222\"\n          operatingHours: \"7:00\
+      \ AM - 8:00 PM\"\n          ambience: \"quiet\"\n          features:\n     \
+      \       - \"Plenty of outlets\"\n            - \"Spacious seating\"\n      \
+      \      - \"Good for studying\"\n        - name: \"Cafe Grumpy (Greenpoint)\"\
+      \n          address: \"193 Meserole Ave, Brooklyn, NY 11222\"\n          operatingHours:\
+      \ \"7:00 AM - 7:00 PM\"\n          ambience: \"quiet\"\n          features:\n\
+      \            - \"Local neighborhood vibe\"\n            - \"Calm and focused\
+      \ atmosphere\"\n            - \"Good for solo work\"\n\n  - tool: recommendRestaurants\n\
+      \    result:\n      recommendations:\n        - name: \"Bakeri\"\n         \
+      \ address: \"150 Wythe Ave, Brooklyn, NY 11211\"\n          operatingHours:\
+      \ \"8:00 AM - 6:00 PM\"\n          ambience: \"calm\"\n          features:\n\
+      \            - \"Scandinavian-inspired decor\"\n            - \"Quiet vibe\"\
+      \n            - \"Fresh pastries\"\n        - name: \"Devoción\"\n         \
+      \ address: \"69 Grand St, Brooklyn, NY 11249\"\n          operatingHours: \"\
+      8:00 AM - 6:00 PM\"\n          ambience: \"calm\"\n          features:\n   \
+      \         - \"Lots of natural light\"\n            - \"Greenery and cozy seating\"\
+      \n            - \"Power outlets available\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ Recommended Cafés in Greenpoint\n\n1. Variety Coffee Roasters (Greenpoint)\
+      \  \n- 1289 Bedford Ave, Brooklyn, NY 11222  \n- Hours: 7:00 AM – 8:00 PM  \n\
+      - Spacious and quiet with plenty of outlets. Great for studying or laptop work.\
+      \  \n\n2. Cafe Grumpy (Greenpoint)  \n- 193 Meserole Ave, Brooklyn, NY 11222\
+      \  \n- Hours: 7:00 AM – 7:00 PM  \n- Cozy neighborhood vibe with a calm, focused\
+      \ atmosphere. Ideal for solo work and concentration.  \n\n---\n\n▶ Recommended\
+      \ Cafés in Williamsburg\n\n1. Bakeri  \n- 150 Wythe Ave, Brooklyn, NY 11211\
+      \  \n- Hours: 8:00 AM – 6:00 PM  \n- Scandinavian-inspired bakery café with\
+      \ a quiet, relaxed vibe. Fresh pastries make it a perfect spot to study comfortably.\
+      \  \n\n2. Devoción  \n- 69 Grand St, Brooklyn, NY 11249  \n- Hours: 8:00 AM\
+      \ – 6:00 PM  \n- Bright and airy with lots of natural light, greenery, and power\
+      \ outlets. An inspiring environment for long study sessions."

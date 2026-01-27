@@ -1,0 +1,78 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: Do you know who got cast as the lead in *Sweet Home*? I heard it’s based
+      on a webtoon. I’m also curious as to what other webtoons were created by the
+      author.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      The actor cast as the lead in the drama 'Sweet Home'\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ entertainment_agent\n      refined_query: \"The name of the webtoon author\
+      \ of 'Sweet Home'\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"Other works by the webtoon author of 'Sweet Home'\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getTvProgramInfo\narguments:\n  refinedQuery: \"Actor cast as\
+      \ the lead in the drama 'Sweet Home'\"\n  programTitle: \"Sweet Home\"\ntool_call_result:\n\
+      \  data:\n    programTitle: \"Sweet Home\"\n    cast:\n      - name: \"Ethan\
+      \ Park\"\n        role: \"Charlie Hyun (Main Character)\"\n        description:\
+      \ \"A high school student who is trying to survive after humans suddenly transform\
+      \ into monsters in his apartment complex.\"\n      - name: \"Daniel Cho\"\n\
+      \        role: \"Leo Eun (Supporting Character)\"\n        description: \"A\
+      \ fellow resident who helps Charlie navigate the dangerous situation and protect\
+      \ others.\"\n      - name: \"Michael Lee\"\n        role: \"Sam Pyeon (Antagonist)\"\
+      \n        description: \"A mysterious, dangerous figure who plays a key role\
+      \ in the outbreak within the building.\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getWebtoonInfo\narguments:\n  refinedQuery: \"Webtoon author name\
+      \ for 'Sweet Home'\"\n  title: \"Sweet Home\"\ntool_call_result:\n  data:\n\
+      \    title: \"Sweet Home\"\n    author: \"Sam Bauer\"\n    platform: \"WEBTOON\"\
+      \n    genre: [\"Thriller\", \"Mystery\"]\n    serializationStatus: \"Completed\""
+- workflow_id: null
+  step_id: 5
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getWebtoonInfo\narguments:\n  refinedQuery: \"List of works by\
+      \ Sam Bauer, author of 'Sweet Home'\"\n  authorName: \"Sam Bauer\"\ntool_call_result:\n\
+      \  data:\n    authorName: \"Sam Bauer\"\n    works:\n      - title: \"Dream\
+      \ Hole\"\n        platform: \"WEBTOON\"\n        genre: [\"Fantasy\", \"Drama\"\
+      ]\n        status: \"Completed\"\n      - title: \"Bad Person\"\n        platform:\
+      \ \"WEBTOON\"\n        genre: [\"Thriller\", \"Psychological\"]\n        status:\
+      \ \"Completed\"\n      - title: \"San Francisco Gallery\"\n        platform:\
+      \ \"WEBTOON\"\n        genre: [\"Drama\"]\n        status: \"Ongoing\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Drama Cast:\n\n* Charlie Hyun (Main Character) – Played by Ethan Park\n\
+      \  A high school student who is trying to survive after humans suddenly transform\
+      \ into monsters in his apartment complex.\n* Leo Eun (Supporting Character)\
+      \ – Played by Daniel Cho\n  A fellow resident who helps Charlie navigate the\
+      \ dangerous situation and protect others.\n* Sam Pyeon (Antagonist) – Played\
+      \ by Michael Lee\n  A mysterious, dangerous figure who plays a key role in the\
+      \ outbreak within the building.\n\n◾ Original Webtoon:\n\n* Title: Sweet Home\n\
+      * Author: Sam Bauer\n* Platform: WEBTOON\n* Genre: Thriller, Mystery\n* Serialization\
+      \ Status: Completed\n\n◾ Other Works by Sam Bauer:\n\n* Dream Hole – Fantasy,\
+      \ Drama (Completed)\n* Bad Person – Thriller, Psychological (Completed)\n* San\
+      \ Francisco Gallery – Drama (Ongoing)"

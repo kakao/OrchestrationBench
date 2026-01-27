@@ -1,0 +1,98 @@
+metadata:
+  total_steps: 6
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Current date: 2025-07-15'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I have a dentist appointment next Friday at 11:00 AM. Please add it to
+      my calendar and set a reminder one hour before!
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: calendar_agent\n      refined_query: \"Add dentist\
+      \ appointment to calendar next Friday at 11:00 AM\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ calendar_agent\n      refined_query: \"Set reminder 1 hour before dentist\
+      \ appointment next Friday\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: createSchedule\narguments:\n  refinedQuery: \"Register a dentist\
+      \ appointment on the calendar for next Friday at 11:00 AM\"\n  title: \"Dentist\
+      \ Appointment\"\n  startDateTime: \"2025-07-25T11:00\"\n  endDateTime: \"2025-07-25T12:00\"\
+      \ntool_call_result:\n  data:\n    tool: \"createSchedule\"\n    result:\n  \
+      \    status: \"success\"\n      scheduleId: \"SCH20250725001\"\n      title:\
+      \ \"Dentist Appointment\"\n      startDateTime: \"2025-07-25T11:00\"\n     \
+      \ endDateTime: \"2025-07-25T12:00\"\n      confirmationMessage: \"Your dentist\
+      \ appointment has been added to the calendar for Friday, July 25, 2025 at 11:00\
+      \ AM.\"\n  source: \"Calendar Scheduling System\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: remindSchedule\narguments:\n  refinedQuery: \"Alarm 1 hour before\
+      \ next Friday's dentist appointment\"\n  reminderContent: \"Your dentist appointment\
+      \ is in 1 hour\"\n  reminderTime: \"2025-07-25T10:00\"\n  deliveryMethod: \"\
+      chat\"\n  priority: \"normal\"\n  repeatRule: \"none\"\ntool_call_result:\n\
+      \  data:\n    tool: \"remindSchedule\"\n    result:\n      status: \"scheduled\"\
+      \n      reminderId: \"reminder-20250725-dentist\"\n      reminderContent: \"\
+      Your dentist appointment is in 1 hour\"\n      reminderTime: \"2025-07-25T10:00\"\
+      \n      deliveryMethod: \"chat\"\n      priority: \"normal\"\n      repeatRule:\
+      \ \"none\"\n      note: \"A reminder will be sent on July 25, 2025 at 10:00\
+      \ AM.\"\n  source: \"Reminder Scheduling System\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your dentist appointment for next Friday has been scheduled successfully,
+      and a reminder has been set as well.
+
+
+      1. Appointment Details:
+
+
+      Title: Dentist Appointment
+
+      Date: Friday, July 25, 2025
+
+      Time: 11:00 AM – 12:00 PM
+
+      Schedule ID: SCH20250725001
+
+
+      ----------
+
+
+      2. Reminder Details:
+
+
+      Message: Your dentist appointment is in 1 hour
+
+      Reminder Time: Friday, July 25, 2025, 10:00 AM
+
+      Delivery Method: Chat message
+
+      Priority: Normal
+
+      Repeat: None
+
+
+      The scheduled reminder will be sent automatically at the set time.
+
+      Please make sure you''re not late for your appointment.'

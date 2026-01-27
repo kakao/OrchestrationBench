@@ -1,0 +1,121 @@
+metadata:
+  total_steps: 10
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2025-01-12
+
+      현재시각: 오후 11:01
+
+      이름: 윤주드
+
+      연락처: 010-777-7777
+
+      현위치: 경기 성남시 분당구 대왕판교로644번길 12'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 갑자기 대리운전 불러야 할 일이 생겼네. 지금 현 위치에서 집까지 45분 뒤에 대리운전 예약해 줘. 그리고 내일 조기축구 일정
+      아침 8시에서 9시로 바꿔줘
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: transport_agent\n      refined_query: \"45분 뒤에\
+      \ 현 위치에서 집까지 대리운전 예약\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: calendar_agent\n      refined_query:\
+      \ \"내일 조기축구 일정 조회\"\n    - status: pending\n      name: calendar_agent\n   \
+      \   refined_query: \"내일 조기축구 일정 오전 8시에서 9시로 변경\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 도착지 정보, 운행 예정 차량 정보'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"내일 조기축구 일정 조회\"\n \
+      \ startDate: \"2025-01-13\"\n  endDate: \"2025-01-13\"\n  keyword: \"조기 축구\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"내일 조기축구 일정 조회\"\n    startDate:\
+      \ \"2025-01-13\"\n    endDate: \"2025-01-13\"\n    keyword: \"조기 축구\"\n    status:\
+      \ \"조회 완료\"\n    message: \"2025년 1월 13일에 해당하는 '조기 축구' 일정이 성공적으로 조회되었습니다.\"\n\
+      \    schedules:\n      - scheduleID: \"sch20250113_001\"\n        title: \"\
+      조기축구 정기 모임\"\n        date: \"2025-01-13\"\n        time: \"08:00\"\n      \
+      \  location: \"서울 송파구 올림픽공원 보조경기장\"\n        description: \"송파 조기축구회의 주간 정기\
+      \ 모임\""
+- workflow_id: null
+  step_id: 6
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: modifySchedule\narguments:\n  refinedQuery: \"내일 조기축구 일정 오전 8시에서\
+      \ 9시로 변경\"\n  scheduleID: \"sch20250113_001\"\n  newStartDateTime: \"2025-01-13T09:00:00\"\
+      \n  newEndDateTime: \"2025-01-13T10:00:00\"\ntool_call_result:\n  data:\n  \
+      \  refinedQuery: \"내일 조기축구 일정 오전 8시에서 9시로 변경\"\n    scheduleID: \"sch20250113_001\"\
+      \n    title: \"조기축구 정기 모임\"\n    location: \"서울 송파구 올림픽공원 보조경기장\"\n    oldStartDateTime:\
+      \ \"2025-01-13T08:00:00\"\n    oldEndDateTime: \"2025-01-13T09:00:00\"\n   \
+      \ newStartDateTime: \"2025-01-13T09:00:00\"\n    newEndDateTime: \"2025-01-13T10:00:00\"\
+      \n    status: \"변경 완료\"\n    message: \"‘조기축구 정기 모임’ 일정이 2025-01-13 오전 8시~9시에서\
+      \ 오전 9시~10시로 성공적으로 변경되었습니다. 장소는 서울 송파구 올림픽공원 보조경기장입니다.\"\n  source: \"캘린더 시스템\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '도착지 정보와 차량의 상세정보를 알려주세요 (차종, 색상, 번호판 등. 예: ''쏘나타 흰색 32가1234'')'
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 서울 관악구 관악로30길 27, 캐스퍼 검정색 82가8282
+- workflow_id: workflow_1
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: callDesignatedDriver\narguments:\n  refinedQuery: \"45분 뒤에 현 위치에서\
+      \ 집까지 대리운전 예약\"\n  pickupLocation: \"경기 성남시 분당구 대왕판교로644번길 12\"\n  dropoffLocation:\
+      \ \"서울 관악구 관악로30길 27\"\n  pickupTime: \"2025-01-12T23:46\"\n  vehicleInfo: \"\
+      캐스퍼 검정색 82가8282\"\ntool_call_result:\n  data:\n    refinedQuery: \"45분 뒤에 현\
+      \ 위치에서 집까지 대리운전 예약\"\n    pickupLocation: \"경기 성남시 분당구 대왕판교로644번길 12\"\n   \
+      \ dropoffLocation: \"서울 관악구 관악로30길 27\"\n    pickupTime: \"2025-01-12T23:46\"\
+      \n    vehicleInfo: \"캐스퍼 검정색 82가8282\"\n    driverName: \"김도윤\"\n    driverContact:\
+      \ \"010-4567-1234\"\n    estimatedArrivalTime: \"2025-01-12T23:46\"\n    estimatedFare:\
+      \ \"32,000원\"\n    status: \"예약 완료\"\n    message: \"김도윤 기사님이 2025-01-12 23:46에\
+      \ 도착 예정이며, '캐스퍼 검정색 82가8282' 차량으로 대리운전이 진행됩니다. 예상 요금은 32,000원입니다.\"\n  source:\
+      \ \"대리운전 예약 시스템\""
+- workflow_id: null
+  step_id: 10
+  agent: main
+  agent_type: main
+  data:
+    content: '▶ 김도윤 기사님이 2025년 1월 12일 23시 46분에 도착 예정입니다.
+
+      운행 차량은 캐스퍼(검정색, 82가8282)이며, 출발지는 경기 성남시 분당구 대왕판교로644번길 12, 도착지는 서울 관악구 관악로30길
+      27입니다.
+
+      예상 요금은 32,000원입니다. 안전하고 편안한 귀가를 도와드리겠습니다.
+
+
+      ----------
+
+
+      ▶ 내일 예정된 조기축구 정기 모임 일정이 오전 8시에서 오전 9시로 변경되었습니다.
+
+      변경된 시간은 2025년 1월 13일 오전 9시부터 오전 10시까지이며, 장소는 서울 송파구 올림픽공원 보조경기장입니다.
+
+      일정 변경이 완료되었으니 참고 부탁드립니다.'

@@ -1,0 +1,103 @@
+metadata:
+  total_steps: 11
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 오늘 날짜: 2025년 3월 21일'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '월요일에 국립현대미술관 전시 <수채: 물을 그리다> 예매한 거 취소해줘. 그리고 그 날 친구랑 점심 먹기로 캘린더에 등록한
+      일정도 같이 취소해줘.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      월요일 국립현대미술관 전시 <수채: 물을 그리다> 예매 내역 조회\"\n    - status: pending\n      name: entertainment_agent\n\
+      \      refined_query: \"월요일 국립현대미술관 전시 <수채: 물을 그리다> 예매 취소\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: calendar_agent\n      refined_query: \"친구와의 월요일 점심 약속 일정 조회\"\n\
+      \    - status: pending\n      name: calendar_agent\n      refined_query: \"\
+      친구와의 월요일 점심 약속 일정 취소\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 예매자 연락처'
+- workflow_id: workflow_2
+  step_id: 5
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: getSchedule\narguments:\n  refinedQuery: \"2025년 3월 24일 월요일 친구와의\
+      \ 점심 약속 일정 조회\"\n  startDate: \"2025-03-24\"\n  endDate: \"2025-03-24\"\n  keyword:\
+      \ \"점심 약속\"\ntool_call_result:\n  data:\n    refinedQuery: \"2025년 3월 24일 월요일\
+      \ 친구와의 점심 약속 일정 조회\"\n    startDate: \"2025-03-24\"\n    endDate: \"2025-03-24\"\
+      \n    keyword: \"점심 약속\"\n    scheduleDetails:\n      - scheduleID: \"schedule-20250324-001\"\
+      \n        time: \"12:00 PM\"\n        location: \"서울 강남역 카페\"\n        participant:\
+      \ \"친구\"\n    status: \"조회 완료\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: 예매 취소를 위해 예매 내역을 조회하려면 예매하신 분의 연락처 정보가 필요합니다.
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 010-1212-3434
+- workflow_id: workflow_1
+  step_id: 8
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionReservationInfo\narguments:\n  refinedQuery: \"2025년\
+      \ 3월 24일 월요일 국립현대미술관 전시 <수채: 물을 그리다> 예매 내역 조회\"\n  contactInfo: \"010-1212-3434\"\
+      \n  date: \"2025-03-24\"\n  exhibitionTitle: \"수채: 물을 그리다\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"2025년 3월 24일 월요일 국립현대미술관 전시 <수채: 물을 그리다> 예매 내역\
+      \ 조회\"\n    contactInfo: \"010-1212-3434\"\n    date: \"2025-03-24\"\n    exhibitionTitle:\
+      \ \"수채: 물을 그리다\"\n    reservationDetails:\n      reservationID: \"reservation-20250324-789\"\
+      \n      reservationNumber: \"EX20250324-456\"\n      entryTime: \"10:00 AM\"\
+      \n      tickets: 2\n      location: \"국립현대미술관 서울관\"\n    status: \"조회 완료\""
+- workflow_id: workflow_2
+  step_id: 9
+  agent: calendar_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelSchedule\narguments:\n  refinedQuery: \"2025년 3월 24일 월요일\
+      \ 친구와의 점심 약속 일정 취소\"\n  scheduleID: \"schedule-20250324-001\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"2025년 3월 24일 월요일 친구와의 점심 약속 일정 취소\"\n    scheduleID:\
+      \ \"schedule-20250324-001\"\n    status: \"취소 완료\""
+- workflow_id: workflow_1
+  step_id: 10
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelExhibitionTicket\narguments:\n  refinedQuery: \"2025년 3월\
+      \ 24일 월요일 국립현대미술관 전시 <수채: 물을 그리다> 예매 취소\"\n  reservationId: \"reservation-20250324-789\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"2025년 3월 24일 월요일 국립현대미술관 전시\
+      \ <수채: 물을 그리다> 예매 취소\"\n    reservationID: \"reservation-20250324-789\"\n  \
+      \  status: \"취소 완료\""
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "◾전시 예매 취소 안내\n\n- 전시 제목: 수채: 물을 그리다\n- 전시장소: 국립현대미술관 서울관\n- 예약 날짜: 2025년\
+      \ 3월 24일\n- 예약 ID: reservation-20250324-789\n- 취소 상태: 완료\n\n해당 전시의 예매가 성공적으로\
+      \ 취소되었습니다. 다음 번에는 더 좋은 기회에 관람하실 수 있기를 바랍니다. \n\n\n◾점심 약속 취소 안내\n\n- 약속 날짜: 2025년\
+      \ 3월 24일\n- 취소 상태: 완료\n\n친구와의 점심 약속이 성공적으로 취소되었습니다. 새로운 일정이 필요하시면 언제든지 말씀해 주세요."

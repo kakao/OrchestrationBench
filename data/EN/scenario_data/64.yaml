@@ -1,0 +1,163 @@
+metadata:
+  total_steps: 12
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Date: 2025-05-09
+
+      - Time: 1:30 AM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 'Tell me the results of the Powerball draw on May 9, 2025 (Draw #1482).
+      Also, my relatives are traveling abroad—can you tell me the current time and
+      today’s weather there? And next Wednesday I’m going to Los Angeles, so please
+      let me know as well the weather forecast for Los Angeles that day.'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: life_info_agent\n      refined_query: \"Check\
+      \ Powerball draw results for May 9, 2025 (Draw #1482)\"\n\nworkflow_2:\n  status:\
+      \ pending\n  type: independent\n  steps:\n    - status: pending\n      name:\
+      \ life_info_agent\n      refined_query: \"Check current time overseas\"\n\n\
+      workflow_3:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: weather_agent\n      refined_query: \"Today's weather\
+      \ abroad\"\n\nworkflow_4:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: weather_agent\n      refined_query: \"Weather\
+      \ in Los Angeles next Wednesday\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getLotteryInfo\narguments:\n  refinedQuery: \"Check Powerball\
+      \ draw results for May 9, 2025 (Draw #1482)\"\n  lotteryType: \"powerball\"\n\
+      \  drawNumber: 1482\ntool_call_result:\n  data:\n    lotteryType: \"powerball\"\
+      \n    drawNumber: 1482\n    winningNumbers:\n      - 11\n      - 19\n      -\
+      \ 30\n      - 47\n      - 56\n    powerballNumber: 12\n    powerPlay: \"3X\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: If targetCity is missing, display: "Please enter a city name."'
+- workflow_id: workflow_3
+  step_id: 6
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: City or country name needed to check information'
+- workflow_id: workflow_4
+  step_id: 7
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getDomesticWeather\narguments:\n  refinedQuery: \"Weather in Los\
+      \ Angeles next Wednesday\"\n  location: \"Los Angeles\"\n  date: \"2025-05-14\"\
+      \ntool_call_result:\n  data:\n    location: \"Los Angeles\"\n    date: \"2025-05-14\"\
+      \n    weatherSummary: \"On May 14, 2025, Los Angeles will be mostly sunny with\
+      \ daytime high of around 77°F and nighttime low of around 60°F. The chance of\
+      \ rain is very low, and air quality will be good.\"\n    temperature:\n    \
+      \  max: 77\n      min: 60\n    precipitationProbability: 5\n    airQuality:\n\
+      \      pm10: \"Good\"\n      pm2_5: \"Good\"\n    wind:\n      speed: 4.2\n\
+      \      direction: \"West wind\""
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: 'To check the local time and today’s weather abroad, I’ll need the name
+      of the city or country you’re visiting.
+
+      If you let me know the city or country where your relative is, I can help you
+      right away!'
+- workflow_id: null
+  step_id: 9
+  agent: user
+  agent_type: user
+  data:
+    content: Seoul
+- workflow_id: workflow_2
+  step_id: 10
+  agent: life_info_agent
+  agent_type: agent
+  data:
+    content: "tool: getWorldTime\narguments:\n  refinedQuery: \"Check current time\
+      \ in Seoul\"\n  targetCity: \"Seoul\"\ntool_call_result:\n  data:\n    targetCity:\
+      \ \"Seoul\"\n    currentTime: \"2025-05-09T14:30:00+09:00\"\n    timeZone: \"\
+      KST (Korea Standard Time)\"\n    utcOffset: \"+09:00\""
+- workflow_id: workflow_3
+  step_id: 11
+  agent: weather_agent
+  agent_type: agent
+  data:
+    content: "tool: getGlobalWeather\narguments:\n  refinedQuery: \"Today's weather\
+      \ in Seoul\"\n  location: \"Seoul\"\n  date: \"today\"\ntool_call_result:\n\
+      \  data:\n    location: \"Seoul\"\n    date: \"2025-05-09\"\n    weatherSummary:\
+      \ \"On May 9, 2025, Seoul will be mostly sunny with daytime high of around 75°F\
+      \ and nighttime low of around 59°F. The chance of rain is low, and air quality\
+      \ will be moderate.\"\n    temperature:\n      max: 75\n      min: 59\n    precipitationProbability:\
+      \ 10\n    airQuality:\n      pm10: \"Moderate\"\n      pm2_5: \"Moderate\"\n\
+      \    wind:\n      speed: 3.2\n      direction: \"Northwest\""
+- workflow_id: null
+  step_id: 12
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here’s the information you requested:
+
+
+      ■ Powerball Draw #1482 Results (May 9, 2025)
+
+
+      • Winning Numbers: 11, 19, 30, 47, 56
+
+      • Powerball Number: 12
+
+      • Power Play: 3X
+
+
+      ■ Current Local Time & Weather in Seoul
+
+
+      • Current Time: May 9, 2025, 2:30 PM (KST, UTC+9)
+
+      • Today’s Weather: Mostly sunny
+
+      - High: 75°F / Low: 59°F
+
+      - Chance of rain: 10% (low)
+
+      - Air quality: Moderate (PM10 / PM2.5)
+
+      - Wind: Northwest, 3.2 m/s
+
+
+      ■ Weather in Los Angeles next Wednesday (May 14, 2025)
+
+
+      • Forecast: Mostly sunny
+
+      • High: 77°F / Low: 60°F
+
+      • Chance of rain: 5% (very low)
+
+      • Air quality: Good (PM10 / PM2.5)
+
+      • Wind: West, 4.2 m/s
+
+
+      If you need any other information, just let me know.'

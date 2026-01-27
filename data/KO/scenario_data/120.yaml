@@ -1,0 +1,83 @@
+metadata:
+  total_steps: 5
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: null
+  step_id: 1
+  agent: user
+  agent_type: user
+  data:
+    content: 뉴진스 전속계약 분쟁 사건이 뭔지 요약해줘. 그리고 민희진에 대해 자세히 알려줘.
+- workflow_id: null
+  step_id: 2
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: person_agent\n      refined_query: \"뉴진스 전속계약\
+      \ 분쟁 사건 요약\"\n\nworkflow_2:\n  status: pending\n  type: independent\n  steps:\n\
+      \    - status: pending\n      name: person_agent\n      refined_query: \"민희진\""
+- workflow_id: workflow_1
+  step_id: 3
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getPersonNews\narguments:\n  refinedQuery: \"뉴진스 전속계약 분쟁 사건 요약\"\
+      \ntool_call_result:\n  data:\n    summary: \"뉴진스와 어도어 간 전속계약 분쟁은 2024년 11월 뉴진스가\
+      \ 전속계약 해지를 통보하며 시작되었고, 이후 법적 공방이 이어졌습니다. 2025년 5월 서울중앙지방법원은 뉴진스의 독자 활동을 금지하는\
+      \ 판결을 내렸으며, 계약 해지 사유에 대해 법원은 뉴진스 측 주장을 인정하지 않았습니다. 향후 소송 결과에 따라 뉴진스 활동 재개 여부가\
+      \ 결정될 예정입니다.\"\n    keyEvents:\n      - date: \"2024-11-29\"\n        event:\
+      \ \"뉴진스 전속계약 해지 통보\"\n      - date: \"2024-12-05\"\n        event: \"어도어 전속계약\
+      \ 유효확인 소 제기\"\n      - date: \"2025-03-21\"\n        event: \"법원 어도어 가처분 신청\
+      \ 인용\"\n      - date: \"2025-05-30\"\n        event: \"법원 뉴진스 독자 활동 금지 판결\""
+- workflow_id: workflow_2
+  step_id: 4
+  agent: person_agent
+  agent_type: agent
+  data:
+    content: "tool: getProfile\narguments:\n  refinedQuery: \"민희진\"\n  personName:\
+      \ \"민희진\"\ntool_call_result:\n  data:\n    name: \"민희진\"\n    birthDate: \"\
+      1979-12-16\"\n    occupation: \"음악 프로듀서, 크리에이티브 디렉터\"\n    affiliation: \"어도어(ADOR)\
+      \ 대표\"\n    knownFor: \"SM 엔터테인먼트에서 독창적인 앨범 아트워크와 세계관을 기획한 크리에이티브 디렉터로 명성을 얻었으며,\
+      \ 이후 하이브 산하 레이블 어도어를 설립하고 걸그룹 뉴진스를 제작함\"\n    notableWorks:\n      - \"f(x)\
+      \ ‘Pink Tape’ 아트디렉팅\"\n      - \"EXO ‘Growl’ 콘셉트 기획\"\n      - \"NewJeans 데뷔\
+      \ 및 콘셉트 총괄\"\n    education: \"서울여자대학교 시각디자인과\""
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: '◾뉴진스와 어도어 간 전속계약 분쟁 요약
+
+
+      2024년 11월, 뉴진스가 어도어에 전속계약 해지를 통보하며 분쟁이 시작되었습니다. 이에 어도어는 전속계약 유효 확인을 위한 소송을 제기하였고,
+      법적 공방이 이어졌습니다.
+
+      2025년 3월, 법원은 어도어 측의 가처분 신청을 인용했으며, 이어 5월에는 뉴진스의 독자적인 연예 활동을 금지하는 판결이 내려졌습니다.
+      법원은 계약 해지 사유에 대해 뉴진스 측 주장을 받아들이지 않았습니다.
+
+      이번 판결로 인해 뉴진스의 향후 활동 여부는 이후 본안 소송의 결과에 따라 결정될 전망입니다.
+
+
+      -주요 사건 정리
+
+
+      * 2024.11.29: 뉴진스, 전속계약 해지 통보
+
+      * 2024.12.05: 어도어, 전속계약 유효확인 소송 제기
+
+      * 2025.03.21: 법원, 어도어 가처분 신청 인용
+
+      * 2025.05.30: 법원, 뉴진스 독자 활동 금지 판결
+
+
+      ◾민희진은 누구일까?
+
+
+      민희진은 1979년 12월 16일생으로 서울여자대학교 시각디자인과를 졸업하였고, 현재 어도어(ADOR)의 대표이자 음악 프로듀서, 크리에이티브
+      디렉터로 활동 중입니다.
+
+      SM 엔터테인먼트 재직 시절, 독창적인 앨범 아트워크와 세계관 기획으로 큰 주목을 받았으며, 특히 f(x)의 Pink Tape 아트디렉팅,
+      EXO의 Growl 콘셉트 기획 등이 대표적인 작업입니다.
+
+      이후 하이브 산하 레이블 어도어를 설립하여 걸그룹 뉴진스를 데뷔시키고, 콘셉트와 비주얼을 총괄하며 다시 한 번 대중과 업계의 주목을 받았습니다.'

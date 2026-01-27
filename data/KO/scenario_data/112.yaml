@@ -1,0 +1,99 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'where: 래미안 반포 샹들리에
+
+      date: 2027-08-23
+
+      userId: WH2027-0823
+
+      name: 김표백'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: '사랑의 표백제 사지마,, 효과 없으면 100% 환불 이라는데
+
+      진짜 효과가 하나도 없어 환불좀 도와줘
+
+      그리고 주변에 셀프 빨래방좀 찾아줘..'
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"사랑의 표백제\
+      \ 구매 내역 조회\"\n    - status: pending\n      name: shopping\n      refined_query:\
+      \ \"사랑의 표백제 효과가 없어 환불\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"주변 셀프 빨래방 추천\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: getOrderStatus\narguments:\n  refinedQuery: \"사랑의 표백제 구매 내역 조회\"\
+      \n  userId: \"WH2027-0823\"\n  recipientName: \"김표백\"\ntool_call_result:\n \
+      \ orderInfo:\n    orderId: \"ORD-20250729-00123\"\n    productId: \"PB-LV-20240729-001\"\
+      \n    productName: \"사랑의 표백제\"\n    quantity: 2\n    orderDate: \"2027-08-20\"\
+      \n    deliveryStatus: \"배송완료\"\n    recipientName: \"김표백\"\n    deliveryAddress:\
+      \ \"서울시 강남구 청담동 123-45\"\n    paymentMethod: \"신용카드\"\n    totalPrice: \"₩39,800\"\
+      \n    refundEligible: true\n    refundPolicy: \"제품 수령 후 30일 이내 효과 불만족 시 100%\
+      \ 환불 가능\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"주변 셀프 빨래방 추천\"\n \
+      \ placeCategory: \"셀프빨래방\"\n  location: \"래미안 반포 샹들리에\"\n  sortBy: \"distance\"\
+      \ntool_call_result:\n  places:\n    - name: \"워시앤드라이 반포점\"\n      address: \"\
+      서울 서초구 반포동 32-5\"\n      phone: \"02-3456-7890\"\n      distance: \"120m\"\n\
+      \      features:\n        - 24시간 운영\n        - 대형 건조기 완비\n        - 세제 자동 투입\n\
+      \      link: \"https://example.com/place/washndry-banpo\"\n\n    - name: \"\
+      코인워시 반포센트럴점\"\n      address: \"서울 서초구 반포동 45-8\"\n      phone: \"02-9876-5432\"\
+      \n      distance: \"280m\"\n      features:\n        - 고속 세탁기\n        - 이불\
+      \ 전용 세탁 코스\n        - 무료 와이파이\n      link: \"https://example.com/place/coinwash-central\"\
+      \n\n    - name: \"셀프크린 런드리 반포점\"\n      address: \"서울 서초구 반포동 50-12\"\n    \
+      \  phone: \"02-1234-5678\"\n      distance: \"450m\"\n      features:\n    \
+      \    - 친환경 세제 사용\n        - 의류 살균 기능\n        - 넓은 대기 공간\n      link: \"https://example.com/place/selfclean-banpo\""
+- workflow_id: workflow_1
+  step_id: 6
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: refundProducts\narguments:\n  refinedQuery: \"사랑의 표백제 환불\"\n \
+      \ orderId: \"ORD-20250729-00123\"\n  itemList:\n    - productId: \"PB-LV-20240729-001\"\
+      \n      quantity: 2\n      reason: \"상품의 효과 없음\"\n  reasonCode: \"OTHER\"\n\
+      \  detailedReason: \"상품의 효과가 없을 시 100% 환불 이며, 효과가 없음\"\n  refundMethod: \"ORIGINAL_PAYMENT\"\
+      \ntool_call_result:\n  refundResult:\n    orderId: \"ORD-20250729-00123\"\n\
+      \    refundId: \"RF-20250811-00056\"\n    status: \"환불완료\"\n    refundedItems:\n\
+      \      - productId: \"PB-LV-20240729-001\"\n        productName: \"사랑의 표백제\"\
+      \n        quantity: 2\n        refundAmount: \"₩39,800\"\n    refundMethod:\
+      \ \"ORIGINAL_PAYMENT\"\n    processedDate: \"2027-08-23T14:35\"\n    message:\
+      \ \"요청하신 환불이 원결제 방식으로 완료되었습니다. 환불 금액은 영업일 기준 3~5일 내 입금됩니다.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: '주문번호 ORD-20250729-00123에 대한 ‘사랑의 표백제’ 2개의 환불이 완료되었습니다. 환불 금액 ₩39,800은
+      원결제 방식으로 처리되며, 영업일 기준 3~5일 내 입금됩니다.
+
+
+      래미안 반포 샹들리에 인근 셀프 빨래방 추천 목록입니다.
+
+
+      * 워시앤드라이 반포점 (서울 서초구 반포동 32-5, 120m) – 24시간 운영, 대형 건조기 완비, 세제 자동 투입
+
+      * 코인워시 반포센트럴점 (서울 서초구 반포동 45-8, 280m) – 고속 세탁기, 이불 전용 세탁 코스, 무료 와이파이
+
+      * 셀프크린 런드리 반포점 (서울 서초구 반포동 50-12, 450m) – 친환경 세제 사용, 의류 살균 기능, 넓은 대기 공간'

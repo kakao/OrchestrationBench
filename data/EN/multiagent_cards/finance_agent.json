@@ -1,0 +1,327 @@
+{
+  "agent_card": {
+    "name": "Finance",
+    "agent_id": "finance_agent",
+    "description": "A specialized finance agent that provides real-time financial data and related information from various sources. You can quickly check the latest prices and trends for stocks, exchange rates, cryptocurrencies, interest rates, and more, as well as easily access investment and market information and a wide range of financial knowledge.",
+    "url": "http://localhost:10005/",
+    "capabilities": {
+      "streaming": false,
+      "pushNotifications": false
+    },
+    "skills": [
+      {
+        "id": "getStockPrice",
+        "name": "Get Stock Price",
+        "description": "Provides real-time or specific date prices and trading data for designated stock symbols (domestic/overseas). Supports various search options such as stock name, exchange, date, query type, and currency.",
+        "examples": [
+          "What's Hyundai Motor's stock price today?",
+          "Tell me Apple's closing price from 3 days ago.",
+          "Show me Kakao's current price listed on KOSDAQ.",
+          "Can you tell me Samsung Electronics' recent trading volume?",
+          "I'm curious about TSLA's high price."
+        ]
+      },
+      {
+        "id": "getCryptoPrice",
+        "name": "Get Cryptocurrency Price",
+        "description": "View the price, change rate, open/close/high/low, and other trading details of major cryptocurrencies in real time or historically. You can compare prices by exchange and convert into various currencies.",
+        "examples": [
+          "How much is Ethereum in USD right now?",
+          "Tell me Solana's opening price today.",
+          "Show me the most recent DOGE trading volume on Coinbase.",
+          "Compare the recent price fluctuation of Bitcoin and Ripple.",
+          "How did Polygon's price change last week?"
+        ]
+      },
+      {
+        "id": "getExchangeRate",
+        "name": "Get Exchange Rate",
+        "description": "Provides exchange rate information between major currencies. Based on real-time data from financial institutions for base, cash, and remittance rates. Default is based on USD.",
+        "examples": [
+          "What's the euro exchange rate right now?",
+          "What's the current rate from USD to JPY?",
+          "Show me the USD exchange rate trend based on TTB.",
+          "How did the yuan exchange rate close yesterday?",
+          "Find out the euro-to-dollar exchange rate including fees."
+        ]
+      },
+      {
+        "id": "getInterestRates",
+        "name": "Get Interest Rates",
+        "description": "Check benchmark interest rates of countries and major banks, as well as rates for deposits, savings, loans, etc. You can specify details such as country, bank, and term.",
+        "examples": [
+          "Check if the US benchmark interest rate changed recently.",
+          "Tell me the 1-year deposit rate at Wells Fargo Bank.",
+          "How have Japan's loan rates changed recently?",
+          "Show me changes in Korean savings rates.",
+          "Tell me the historical trend of the Eurozone benchmark rate."
+        ]
+      },
+      {
+        "id": "getGoldPrice",
+        "name": "Get Gold Price",
+        "description": "A tool to check domestic gold prices (per gram, per troy ounce).",
+        "examples": [
+          "What's the price of 1 don of gold today?",
+          "Tell me the gold price per gram.",
+          "Find out the gold price on 12/01/2024."
+        ]
+      },
+      {
+        "id": "searchFinanceInfo",
+        "name": "Financial Information",
+        "description": "Summarizes and provides general information, trends, outlooks, term explanations, and investment knowledge about financial markets, stocks, crypto, ETFs, and products.",
+        "examples": [
+          "Summarize the reasons for Amazon's stock rise.",
+          "Can you explain the difference between major coins and altcoins?",
+          "What are the most popular global ETFs recently?",
+          "What's the outlook for Kakao Bank stock?",
+          "What are some cryptocurrency security issues?"
+        ]
+      }
+    ]
+  },
+  "tools": [
+    {
+      "name": "getStockPrice",
+      "description": "A tool to query various items such as stock price, opening price, high, low, etc., for a specific date and market. You can search domestic and overseas stocks by symbol or name, and by default it returns the current price of the most recent trading day. When calling repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined natural language query reflecting previous context and user request (e.g., 'Tell me Apple’s latest stock price', 'Check Apple Inc.'s closing price on 03/01/2024')"
+          },
+          "stockName": {
+            "type": "string",
+            "description": "The name or symbol of the stock to query, Korean/English both allowed (e.g., \"Apple\", \"AAPL\", \"MSFT\", \"GOOGL\")"
+          },
+          "marketType": {
+            "type": "string",
+            "enum": [
+              "KOSPI",
+              "KOSDAQ",
+              "NYSE",
+              "NASDAQ",
+              "OTC"
+            ],
+            "description": "Market classification where the stock is listed (e.g., 'KOSPI', 'NASDAQ')"
+          },
+          "date": {
+            "type": "string",
+            "description": "The date to query, default is today. Use 'YYYY-MM-DD' format. If a weekend/holiday is entered, it is automatically adjusted to the most recent trading day."
+          },
+          "priceType": {
+            "type": "string",
+            "enum": [
+              "Current Price",
+              "Change from Previous Day",
+              "Closing Price",
+              "Opening Price",
+              "High",
+              "Low",
+              "Trading Volume"
+            ],
+            "description": "Specify the item to query (e.g., 'Closing Price', 'Opening Price'). If not entered, defaults to 'Current Price'."
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency unit to display (e.g., 'USD', 'KRW'). For foreign stocks, can choose based on whether to convert exchange rate."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "date"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getCryptoPrice",
+      "description": "A tool that allows you to check prices, trading volumes, and various price information for major cryptocurrencies worldwide, based on different currencies and exchanges. When querying multiple targets, you can structure them as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined search request reflecting the previous conversation context and the user's natural language request (e.g., 'Ethereum recent opening price', 'Bitcoin high in 05/2024')"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "The symbol or name of the cryptocurrency to look up. Must be entered in uppercase (e.g., 'BTC', 'ETH', 'SOL')."
+          },
+          "currency": {
+            "type": "string",
+            "description": "The base currency for the price. Must be entered in uppercase (e.g., 'USD', 'KRW', 'USDT'). If not specified, defaults to 'USD' or is automatically selected based on the user's country."
+          },
+          "exchange": {
+            "type": "string",
+            "description": "Optional. If specified, provides prices from that exchange (e.g., 'Binance', 'Upbit', 'Coinbase', 'Bithumb')."
+          },
+          "date": {
+            "type": "string",
+            "description": "The date to query (YYYY-MM-DD). Defaults to today's date if not entered."
+          },
+          "priceType": {
+            "type": "string",
+            "enum": [
+              "Current Price",
+              "Change from Previous Day",
+              "Closing Price",
+              "Opening Price",
+              "High",
+              "Low",
+              "Trading Volume"
+            ],
+            "description": "The type of price information to retrieve. Possible values: 'Current Price', 'Change from Previous Day', 'Closing Price', 'Opening Price', 'High', 'Low', 'Trading Volume'."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "symbol",
+          "currency",
+          "date",
+          "priceType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getExchangeRate",
+      "description": "A tool that allows you to look up various currency exchange rates for a specific date. You can select the base currency, target currency, date, and type of exchange rate to get the desired information. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined exchange rate query that reflects the full context and user request (e.g., 'Tell me today’s US dollar rate', 'What will the euro rate be tomorrow?')"
+          },
+          "baseCurrency": {
+            "type": "string",
+            "description": "The code of the currency to be used as the base for the exchange rate (e.g., 'USD', 'KRW'). If not specified, the default is 'USD'."
+          },
+          "targetCurrency": {
+            "type": "string",
+            "description": "The code of the currency to look up (e.g., 'USD', 'JPY', 'EUR', 'CNY')."
+          },
+          "date": {
+            "type": "string",
+            "description": "The date you want to check (e.g., '2024-10-15'). If a weekend or public holiday is specified, the rate for the most recent business day will be returned automatically."
+          },
+          "exchangeType": {
+            "type": "string",
+            "enum": [
+              "spot",
+              "cash_buy",
+              "cash_sell"
+            ],
+            "description": "The type of exchange rate you want. If not specified, 'spot' (base rate) will be used."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "baseCurrency",
+          "targetCurrency",
+          "date",
+          "exchangeType"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getInterestRates",
+      "description": "A tool for retrieving various interest rate information from multiple countries and financial institutions. Users can search for base rates, loan rates, deposit rates, and installment savings rates by country, bank, date, and term. For repeated queries across multiple targets, you can structure them as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined interest rate query that includes the previous conversation flow and the user's natural language question (e.g., 'Tell me the new deposit rate', 'How are loan rates in the U.S.?')"
+          },
+          "country": {
+            "type": "string",
+            "description": "Enter the name of the target country to check (e.g., 'Korea', 'United States', 'Japan', 'Eurozone'). If omitted, the default is 'Korea'."
+          },
+          "rateType": {
+            "type": "string",
+            "enum": [
+              "base",
+              "loan",
+              "deposit",
+              "savings"
+            ],
+            "description": "The type of interest rate to retrieve. 'base' means base rate, 'loan' means loan interest rate, 'deposit' means deposit interest rate, and 'savings' means installment savings rate."
+          },
+          "bankName": {
+            "type": "string",
+            "description": "The specific financial institution name to check interest rate information for (e.g., \"Bank of America\", \"Chase\", \"Wells Fargo\", \"Capital One\"). Enter if needed."
+          },
+          "date": {
+            "type": "string",
+            "description": "The reference date for the interest rate (e.g., '2025-04-30'). Defaults to today's date; if a future date is entered, it will return the latest available data or a guidance message.",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "term": {
+            "type": "string",
+            "description": "The term the interest rate applies to (e.g., '6 months', '2 years', '36 months'), used when necessary."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "rateType",
+          "country",
+          "date"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "getGoldPrice",
+      "description": "A tool to check pot/retail gold prices (per gram, per troy ounce, etc.) in the selected currency (default USD). You can check the current price or the price on a specific date, provided in Korean won. If you need to call it repeatedly for multiple targets, you can structure it as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined query based on the user's natural language request (e.g., 'Tell me today's price for 1 don of gold')."
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "g",
+              "oz"
+            ],
+            "description": "Unit of measurement. 'g': 1 gram, 'oz': 1 ounce (31.1035g)."
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "The date to check (optional, YYYY-MM-DD). If not provided, today's date will be used."
+          }
+        },
+        "required": [
+          "refinedQuery",
+          "unit"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "searchFinanceInfo",
+      "description": "A tool that searches for and summarizes a wide range of financial information, including overall market trends, digital assets, ETFs, currency exchange, specific stocks and coins, and investment trends. If you need to call it repeatedly for multiple targets, you can structure them as a list.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "refinedQuery": {
+            "type": "string",
+            "description": "A refined financial information search query that reflects both the context of the previous conversation and the user's natural language request. For example: 'Tell me the Bitcoin price outlook for this year', 'Recommend AI-related ETFs', 'When is the best time to exchange dollars?', 'Give me information on major coins in the metaverse theme', etc."
+          }
+        },
+        "required": [
+          "refinedQuery"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ]
+}

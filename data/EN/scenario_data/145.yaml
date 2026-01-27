@@ -1,0 +1,225 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- Today''s date: February 5, 2026
+
+      - Current time: 3:30 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Lately, whenever I look at my phone, I feel so distracted and stressed
+      out. Can you give me some advice? That’s why this weekend I’m planning to take
+      a break from my phone. Can you tell me about digital detox—like how to put it
+      into actual practice?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: counsel_agent\n      refined_query: \"Whenever\
+      \ I look at my phone, I feel scattered and overwhelmed with stress, so I’d like\
+      \ to get counseling.\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: search_agent\n      refined_query:\
+      \ \"Ways to practice digital detox\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: counsel_agent
+  agent_type: agent
+  data:
+    content: "tool: getCounseling\narguments:\n  refinedQuery: \"Whenever I look at\
+      \ my phone, I get distracted and feel really stressed, so I’d like to get counseling.\"\
+      \ntool_call_result:\n  data:\n    refinedQuery: \"Whenever I look at my phone,\
+      \ I get distracted and feel really stressed, so I’d like to get counseling.\"\
+      \n    status: \"Counseling guidance provided\"\n    counselingAdvice: \n   \
+      \   - issueIdentified: \"Difficulty focusing and increased stress from frequent\
+      \ phone use\"\n      - preliminarySteps: \n          - \"Set daily screen time\
+      \ limits and use that time reading or picking up a new hobby.\"\n          -\
+      \ \"Build regular exercise into your routine, or take walks outdoors to clear\
+      \ your mind.\"\n          - \"Try a mindfulness or meditation app for about\
+      \ 10 minutes each day to help reduce stress.\"\n      - professionalHelp:\n\
+      \          - \"If stress continues to interfere with daily life or doesn’t improve,\
+      \ consider seeking professional help.\"\n          - \"Book a session with a\
+      \ licensed therapist who specializes in stress management or technology overuse.\"\
+      \n          - \"Visit any local counseling center or mental health clinic to\
+      \ get expert guidance.\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"How to practice digital\
+      \ detox\"\ntool_call_result:\n  data:\n    refinedQuery: \"How to practice digital\
+      \ detox\"\n    status: \"Search complete\"\n    searchResults:\n      - title:\
+      \ \"Digital Detox: How to Get Started\"\n        summary: \"The first step in\
+      \ a digital detox is to review your daily screen habits and cut back gradually.\
+      \ For example, keep your phone out of reach during meals or turn off social\
+      \ media notifications for set hours. Small adjustments can make a big difference.\"\
+      \n        link: \"https://www.example.com/digital-detox-start\"\n      - title:\
+      \ \"One-Week Digital Detox Plan\"\n        summary: \"Design a simple week-long\
+      \ plan to reduce screen use. For instance, on Monday, avoid screens for 30 minutes;\
+      \ on Tuesday, stay off social media for the whole day. Setting daily goals helps\
+      \ build healthier tech habits.\"\n        link: \"https://www.example.com/digital-detox-week-plan\"\
+      \n      - title: \"Benefits of a Digital Detox\"\n        summary: \"Taking\
+      \ a digital detox can ease mental fatigue, improve sleep, and sharpen focus\
+      \ and creativity. Practicing regularly not only lowers stress and boosts overall\
+      \ well-being, but also strengthens relationships and encourages more face-to-face\
+      \ interaction.\"\n        link: \"https://www.example.com/digital-detox-benefits\""
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "◾ Counseling Guidance  \n\nI provide counseling guidance for issues\
+      \ such as distraction and stress caused by frequent phone use. Try the following\
+      \ steps to see improvement:  \n\n1. Daily Management  \n   - Limit phone use\
+      \ for a set time each day, and use that time to read a book or explore a new\
+      \ hobby.  \n   - Refresh yourself with regular exercise or by taking walks outdoors.\
+      \  \n   - Use a mindfulness or meditation app for about 10 minutes a day to\
+      \ calm your mind.  \n\n2. Professional Counseling  \n   - If stress continues\
+      \ to interfere with daily life or doesn’t improve, professional help may be\
+      \ needed.  \n   - Consider booking a session with a licensed therapist who specializes\
+      \ in stress management or technology overuse.  \n   - You can also seek advice\
+      \ from any local counseling center or mental health clinic.  \n\nI recommend\
+      \ trying these steps and reaching out for professional support if necessary.\
+      \ Small changes can set the foundation for better mental health.  \n\n---\n\n\
+      ◾ How to Practice Digital Detox  \n\nHere are some tips on how to practice digital\
+      \ detox. These strategies can help you reduce screen time and lower stress:\
+      \  \n\n1. How to Start a Digital Detox  \n   - Review your daily screen habits\
+      \ and try reducing use during specific hours. Even small changes can make a\
+      \ big difference.  \n   - [Learn more](https://www.example.com/digital-detox-start)\
+      \  \n\n2. One-Week Digital Detox Plan  \n   - Follow a simple week-long plan\
+      \ that sets daily goals. For example, avoid screens for 30 minutes on Monday,\
+      \ and stay off social media for a full day on Tuesday. Structured plans help\
+      \ build healthier tech habits.  \n   - [Learn more](https://www.example.com/digital-detox-week-plan)\
+      \  \n\n3. Benefits of a Digital Detox  \n   - A digital detox can reduce mental\
+      \ fatigue, improve sleep quality, and boost focus and creativity. Practicing\
+      \ regularly also lowers stress and strengthens face-to-face relationships. \
+      \ \n   - [Learn more](https://www.example.com/digital-detox-benefits)  \n\n\
+      I hope this guidance helps you begin your digital detox and move toward healthier\
+      \ balance with technology."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: Alright. Starting today! I need to take care of myself in a quiet space
+      without digital distractions. Is there a walking trail in Brooklyn that’s peaceful
+      and surrounded by nature, kind of like Central Park? Even better if it’s a popular
+      spot recommended by locals. Can you also check how long it would take to walk
+      there?
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: counsel_agent\n      refined_query: \"Whenever\
+      \ I look at my phone, I feel distracted and overwhelmed with stress, so I’d\
+      \ like to get counseling.\"\n\nworkflow_2:\n  status: completed\n  type: independent\n\
+      \  steps:\n    - status: completed\n      name: search_agent\n      refined_query:\
+      \ \"Ways to practice digital detox\"\n\nworkflow_3:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: travel_agent\n \
+      \     refined_query: \"A quiet walking trail in Brooklyn surrounded by nature\
+      \ that locals recommend\"\n\nworkflow_4:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_3\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"Walking time to reach the quiet walking trail in Brooklyn\""
+- workflow_id: workflow_3
+  step_id: 9
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"A quiet walking trail\
+      \ in Brooklyn surrounded by nature that locals recommend\"\n  placeCategory:\
+      \ \"walking trail\"\n  location: \"Brooklyn\"\n  sortBy: \"popularity\"\ntool_call_result:\n\
+      \  data:\n    refinedQuery: \"A quiet walking trail in Brooklyn surrounded by\
+      \ nature that locals recommend\"\n    placeCategory: \"walking trail\"\n   \
+      \ location: \"Brooklyn\"\n    sortBy: \"popularity\"\n    status: \"Recommendation\
+      \ successful\"\n    popularPlaces:\n      - name: \"Prospect Park Trail\"\n\
+      \        description: \"A large park at the heart of Brooklyn, offering peaceful\
+      \ walking paths surrounded by lush greenery.\"\n        features:\n        \
+      \  - \"Well-maintained trails\"\n          - \"Rest areas\"\n          - \"\
+      Quiet atmosphere\"\n        localRecommendation: true\n      - name: \"Brooklyn\
+      \ Botanic Garden Path\"\n        description: \"A gentle walking path with rich\
+      \ natural scenery, popular among locals for casual strolls.\"\n        features:\n\
+      \          - \"Beautiful views\"\n          - \"Harmony with nature\"\n    \
+      \      - \"Easy access\"\n        localRecommendation: true"
+- workflow_id: workflow_4
+  step_id: 10
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Walking trail selected by user, departure information required'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "Here are some quiet, nature-filled walking trails in Brooklyn that locals\
+      \ recommend:\n\n1. Prospect Park Trail  \n   - Located at the heart of Brooklyn,\
+      \ this trail is surrounded by lush greenery, offering a peaceful atmosphere.\
+      \ With well-maintained paths and rest areas, it’s a great place to relax and\
+      \ enjoy nature at your own pace.\n\n2. Brooklyn Botanic Garden Path  \n   -\
+      \ A gentle walking path with rich natural scenery, perfect for casual strolls.\
+      \ Its beautiful views, harmony with nature, and easy access make it a favorite\
+      \ among local residents.\n\nBoth of these trails are popular with locals who\
+      \ want to unwind in a quiet, refreshing environment.  \n\nWhich trail would\
+      \ you like to choose? To estimate your walking time, please share your departure\
+      \ location."
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: I’d like to go for a walk on a trail with a gentle slope, like the Brooklyn
+      Botanic Garden Path. I’ll be starting from my home, and the meeting point is
+      Exit 1 of Grand Army Plaza Station.
+- workflow_id: null
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Walking time from\
+      \ Exit 1 of Grand Army Plaza Station to Brooklyn Botanic Garden Path\"\n  departureTime:\
+      \ \"15:30\"\n  transportModes: \"walk\"\n  optimizeBy: \"fastest\"\n  origin:\
+      \ \"Grand Army Plaza Station Exit 1\"\n  destination: \"Brooklyn Botanic Garden\
+      \ Path\"\ntool_call_result:\n  data:\n    refinedQuery: \"Walking time from\
+      \ Exit 1 of Grand Army Plaza Station to Brooklyn Botanic Garden Path\"\n   \
+      \ departureTime: \"15:30\"\n    transportModes: \"walk\"\n    optimizeBy: \"\
+      fastest\"\n    origin: \"Grand Army Plaza Station Exit 1\"\n    destination:\
+      \ \"Brooklyn Botanic Garden Path\"\n    status: \"Route search successful\"\n\
+      \    estimatedTime: \"About 15 minutes\"\n    directions:\n      - \"Exit Grand\
+      \ Army Plaza Station through Exit 1 and walk straight along Eastern Parkway.\"\
+      \n      - \"At the intersection, turn right to Washington Avenue.\"\n      -\
+      \ \"Continue straight for about 5 minutes to reach the entrance of the Brooklyn\
+      \ Botanic Garden Path.\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: 'Here are walking directions from Exit 1 of Grand Army Plaza Station
+      to the Brooklyn Botanic Garden Path. The optimal route takes about 15 minutes.
+
+
+      1. Exit Grand Army Plaza Station through Exit 1 and walk straight along Eastern
+      Parkway.
+
+      2. At the intersection, turn right to Washington Avenue.
+
+      3. Continue straight for about 5 minutes to reach the entrance to the Brooklyn
+      Botanic Garden Path.
+
+
+      Follow this route to enjoy a pleasant walk surrounded by nature. Have a great
+      time!'

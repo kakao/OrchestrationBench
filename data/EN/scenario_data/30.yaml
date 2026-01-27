@@ -1,0 +1,208 @@
+metadata:
+  total_steps: 13
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-09-05
+
+      Current time: 2:30 PM'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I want to change the automatic payment date for my gas bill from the
+      10th of each month to the 25th.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: personal_banking_agent\n      refined_query:\
+      \ \"Check my home gas bill auto-payment\"\n    - status: pending\n      name:\
+      \ personal_banking_agent\n      refined_query: \"Change my home gas bill auto-payment\
+      \ date from the 10th to the 25th of each month\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Withdrawal account number, withdrawal account holder''s name'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: 'Hello, to verify your automatic transfer setup, please confirm the following
+      information:
+
+
+      Account holder name for withdrawal:
+
+
+      Withdrawal account number:
+
+
+      Please make sure that the information you provide is accurate. To protect your
+      privacy, avoid sharing this with others. Thank you.'
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 'Account Holder Name: Liam Carter
+
+      Withdrawal Account Number: 123456789'
+- workflow_id: null
+  step_id: 7
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: getAutoTransferList\narguments:\n  refinedQuery: \"Check my home's\
+      \ gas bill auto-transfer\"\n  fromAccountNumber: \"123456789\"\n  accountHolderName:\
+      \ \"Liam Carter\"\n  transferDay: \"10\"\ntool_call_result:\n  data:\n    autoTransfers:\n\
+      \      - autoTransferId: \"ATF-202308150001\"\n        payeeName: \"New York\
+      \ Gas Company\"\n        serviceType: \"Gas Bill\"\n        transferSchedule:\
+      \ \"Every 10th of the month\"\n        transferDay: \"10\"\n        lastPaymentDate:\
+      \ \"2025-07-10\"\n        lastPaymentAmount: \"$42.30\"\n        status: \"\
+      Active\"\n        registeredDate: \"2023-03-15\"\n        fromAccountNumber:\
+      \ \"123456789\"\n        routingNumber: \"026009593\"\n        accountHolderName:\
+      \ \"Liam Carter\"\n        payeeBankRoutingNumber: \"026009593\"\n  status:\
+      \ \"success\"\n  message: \"Successfully retrieved auto-transfer details.\""
+- workflow_id: null
+  step_id: 8
+  agent: personal_banking_agent
+  agent_type: agent
+  data:
+    content: "tool: modifyAutoTransfer\narguments:\n  refinedQuery: \"Change my household\
+      \ gas bill auto-transfer date from the 10th of each month to the 25th\"\n  autoTransferId:\
+      \ \"ATF-202308150001\"\n  routingNumber: \"026009593\"\n  transferDay: \"25\"\
+      \ntool_call_result:\n  data:\n    autoTransferId: \"ATF-202308150001\"\n   \
+      \ previousTransferDay: \"10\"\n    updatedTransferDay: \"25\"\n    status: \"\
+      Change completed\"\n    updatedAt: \"2025-09-05T14:30:00\"\n  status: \"success\"\
+      \n  message: \"The auto-transfer date for your gas bill has been successfully\
+      \ updated to the 25th of each month.\""
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Your auto-transfer date for your household gas bill has been updated
+      successfully.
+
+
+      Details:
+
+      - Payee: New York City Gas
+
+      - Service: Gas Bill
+
+      - Previous Transfer Day: Every 10th of the month
+
+      - Updated Transfer Day: Every 25th of the month
+
+      - Last Payment: $42.30 on July 10, 2025
+
+      - Status: Active
+
+      - Auto-Transfer ID: ATF-202308150001
+
+      - Updated on: September 5, 2025, 2:30 PM
+
+
+      Please ensure that your account has sufficient funds for the new transfer date.
+      Thank you!'
+- workflow_id: null
+  step_id: 10
+  agent: user
+  agent_type: user
+  data:
+    content: And lately I’ve been hearing talk about gas prices going up... Can you
+      look up some news articles on that?
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: personal_banking_agent\n      refined_query:\
+      \ \"Check my household gas bill auto-payment\"\n    - status: completed\n  \
+      \    name: personal_banking_agent\n      refined_query: \"Change my household\
+      \ gas bill auto-payment date from the 10th of each month to the 25th\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: news_agent\n      refined_query: \"Find recent news articles about\
+      \ gas bill increases\""
+- workflow_id: workflow_2
+  step_id: 12
+  agent: news_agent
+  agent_type: agent
+  data:
+    content: "tool: searchNews\narguments:\n  refinedQuery: \"Find recent news articles\
+      \ about rising household gas prices in the US\"\n  category: \"economy\"\n \
+      \ limit: 5\ntool_call_result:\n  data:\n    articles:\n      - title: \"City\
+      \ gas rates to increase starting October… households to pay about $3 more per\
+      \ month\"\n        source: \"US Energy Daily\"\n        url: \"https://www.usenergydaily.com/view/AKR20250801012300002\"\
+      \n        publishedOn: \"2025-08-01\"\n        summary: \"The government announced\
+      \ that it would raise city gas rates by an average of 4.2% starting October\
+      \ to stabilize energy supply. For a family of four, this means an additional\
+      \ monthly cost of about $3.20.\"\n\n      - title: \"National Gas Corporation\
+      \ implements delayed rate hikes to reduce deficits\"\n        source: \"American\
+      \ Economic Daily\"\n        url: \"https://www.americanecondaily.com/newsView/29Q1GZK6Y3\"\
+      \n        publishedOn: \"2025-07-30\"\n        summary: \"The National Gas Corporation\
+      \ announced that it would adjust gas rates after a long delay. This measure\
+      \ aims to reduce accumulated deficits from previous years.\"\n\n      - title:\
+      \ \"Utility prices rising across the board… electricity, gas, and water bills\
+      \ expected to increase\"\n        source: \"Daily US News\"\n        url: \"\
+      https://www.dailyusnews.com/news/Read/A2025072812450004321\"\n        publishedOn:\
+      \ \"2025-07-28\"\n        summary: \"Following electricity rate hikes, city\
+      \ gas and water bills are also projected to rise. Local authorities cite the\
+      \ need to reflect actual costs and cover deficits.\"\n\n      - title: \"Energy\
+      \ price increases add pressure on households… what’s the plan?\"\n        source:\
+      \ \"KBS America\"\n        url: \"https://news.kbsamerica.com/news/view.do?ncd=7896543\"\
+      \n        publishedOn: \"2025-07-25\"\n        summary: \"With ongoing increases\
+      \ in energy utility rates, household living costs are rising. Critics argue\
+      \ that clear measures are needed to ease the financial burden.\"\n\n      -\
+      \ title: \"Regional gas price adjustments to take effect next month\"\n    \
+      \    source: \"US Business Times\"\n        url: \"https://www.usbusinesstimes.com/news/economy/10892321\"\
+      \n        publishedOn: \"2025-07-23\"\n        summary: \"Starting next month,\
+      \ gas rates will vary by region, potentially widening the price gap between\
+      \ metropolitan and rural households.\"\n    status: \"success\"\n    message:\
+      \ \"Successfully retrieved 5 related news articles in the US economy category.\""
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "Here are 5 recent news articles about rising household gas prices in\
+      \ the US. These cover rate increases, regional adjustments, including the impact\
+      \ on families' budgets:\n\n1. City gas rates to increase starting October… households\
+      \ to pay about \\$3 more per month\n   Source: US Energy Daily | Published:\
+      \ 2025-08-01\n   Summary: The government announced that it would raise city\
+      \ gas rates by an average of 4.2% starting October to stabilize energy supply.\
+      \ For a family of four, this means an additional monthly cost of about \\$3.20.\n\
+      \   [Read Article](https://www.usenergydaily.com/view/AKR20250801012300002)\n\
+      \n2. National Gas Corporation implements delayed rate hikes to reduce deficits\n\
+      \   Source: American Economic Daily | Published: 2025-07-30\n   Summary: The\
+      \ National Gas Corporation announced that it would adjust gas rates after a\
+      \ long delay. This measure aims to reduce accumulated deficits from previous\
+      \ years.\n   [Read Article](https://www.americanecondaily.com/newsView/29Q1GZK6Y3)\n\
+      \n3. Utility prices rising across the board… electricity, gas, and water bills\
+      \ expected to increase\n   Source: Daily US News | Published: 2025-07-28\n \
+      \  Summary: Following electricity rate hikes, city gas and water bills are also\
+      \ projected to rise. Local authorities cite the need to reflect actual costs\
+      \ and cover deficits.\n   [Read Article](https://www.dailyusnews.com/news/Read/A2025072812450004321)\n\
+      \n4. Energy price increases add pressure on households… what’s the plan?\n \
+      \  Source: KBS America | Published: 2025-07-25\n   Summary: With ongoing increases\
+      \ in energy utility rates, household living costs are rising. Critics argue\
+      \ that clear measures are needed to ease the financial burden.\n   [Read Article](https://news.kbsamerica.com/news/view.do?ncd=7896543)\n\
+      \n5. Regional gas price adjustments to take effect next month\n   Source: US\
+      \ Business Times | Published: 2025-07-23\n   Summary: Starting next month, gas\
+      \ rates will vary by region, potentially widening the price gap between metropolitan\
+      \ and rural households.\n   [Read Article](https://www.usbusinesstimes.com/news/economy/10892321)"

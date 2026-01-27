@@ -1,0 +1,98 @@
+metadata:
+  total_steps: 7
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date: 2025-08-03
+
+      contact: (202) 555-0123'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: I need to cancel the tickets I booked yesterday for the MoMA exhibit.
+      Also, could you recommend a popular getaway that couples often visit these days,
+      like Napa Valley?
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: entertainment_agent\n      refined_query: \"\
+      Check reservation details to cancel the art exhibition ticket I booked yesterday\
+      \ at MoMA\"\n    - status: pending\n      name: entertainment_agent\n      refined_query:\
+      \ \"Cancel the art exhibition ticket I booked yesterday at MoMA\"\n\nworkflow_2:\n\
+      \  status: pending\n  type: independent\n  steps:\n    - status: pending\n \
+      \     name: travel_agent\n      refined_query: \"Recommend popular getaway destinations\
+      \ that couples often visit these days, such as Napa Valley\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: getExhibitionReservationInfo\narguments:\n  refinedQuery: \"Lookup\
+      \ to cancel the exhibition reservation I made yesterday at MoMA\"\n  contactInfo:\
+      \ \"(202) 555-0123\"\ntool_call_result:\n  reservationInfo:\n    reservationId:\
+      \ \"RSV-20250802-00123\"\n    exhibitionTitle: \"MoMA Special Exhibition – Light\
+      \ and Reflection\"\n    reserverContact: \"(202) 555-0123\"\n    reservationDate:\
+      \ \"2025-08-02\"\n    exhibitionDate: \"2025-08-10\"\n    numberOfTickets: 2\n\
+      \    status: \"Reservation Confirmed\"\n    cancelAvailable: true"
+- workflow_id: workflow_2
+  step_id: 5
+  agent: travel_agent
+  agent_type: agent
+  data:
+    content: "tool: getPopularPlaceInfo\narguments:\n  refinedQuery: \"Recommend popular\
+      \ getaway destinations that couples often visit these days, such as Napa Valley\"\
+      \ \n  location: \"Napa Valley\" \n  placeType: \"travel destination\"\n  sortBy:\
+      \ \"highest_rated\"\ntool_call_result:\n  popularPlaces:\n    - name: \"Calistoga\
+      \ (Hot Springs & Old Faithful Geyser)\"\n      location: \"Calistoga, Napa Valley,\
+      \ CA\"\n      rating: \"4.8\"\n      description: \"A scenic road-trip stop\
+      \ known for geothermal spas, vineyard views, and relaxing date vibes\"\n   \
+      \   features:\n        - \"Hot spring spas\"\n        - \"Great photo spot\"\
+      \n        - \"Scenic drive route\"\n      link: \"https://maps.google.com/?q=Calistoga%20Old%20Faithful%20Geyser\"\
+      \n\n    - name: \"Yountville\"\n      location: \"Yountville, Napa Valley, CA\"\
+      \n      rating: \"4.7\"\n      description: \"A trendy small town for wine tasting,\
+      \ art walks, and cozy evenings\"\n      features:\n        - \"Wine tasting\"\
+      \n        - \"Strollable main street\"\n        - \"Date-night dining\"\n  \
+      \    link: \"https://maps.google.com/?q=Yountville%2C%20CA\"\n\n    - name:\
+      \ \"Napa Riverfront & Oxbow Public Market\"\n      location: \"Napa, Napa Valley,\
+      \ CA\"\n      rating: \"4.6\"\n      description: \"A nostalgic riverside area\
+      \ with market vendors, local eats, and charming walkways\"\n      features:\n\
+      \        - \"Riverside stroll\"\n        - \"Local food vendors\"\n        -\
+      \ \"Perfect photo spots\"\n      link: \"https://maps.google.com/?q=Oxbow%20Public%20Market\""
+- workflow_id: null
+  step_id: 6
+  agent: entertainment_agent
+  agent_type: agent
+  data:
+    content: "tool: cancelExhibitionTicket\narguments:\n  refinedQuery: \"Cancel the\
+      \ art exhibition ticket I booked yesterday at MoMA\"\n  reservationId: \"RSV-20250802-00123\"\
+      \ntool_call_result:\n  cancelResult:\n    reservationId: \"RSV-20250802-00123\"\
+      \n    status: \"Cancellation Complete\"\n    message: \"Your reservation for\
+      \ the MoMA exhibition has been successfully canceled. The refund will be processed\
+      \ within 2–3 business days.\""
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "▶ MoMA Exhibition Reservation Cancellation Notice  \nYour reservation\
+      \ for the MoMA exhibition has been successfully canceled.\n\n- Reservation Number:\
+      \ RSV-20250802-00123  \n- Status: Cancellation Complete  \n\n▶ Recommended Romantic\
+      \ Getaways in Napa Valley  \n\n1. Calistoga (Hot Springs & Old Faithful Geyser)\
+      \  \n   - Location: Calistoga, Napa Valley, CA  \n   - Highlights: Hot spring\
+      \ spas, scenic drive, great for photography  \n   - Rating: 4.8  \n   - [View\
+      \ Map](https://maps.google.com/?q=Calistoga%20Old%20Faithful%20Geyser)  \n\n\
+      2. Yountville  \n   - Location: Yountville, Napa Valley, CA  \n   - Highlights:\
+      \ Wine tasting, strollable main street, date-night dining  \n   - Rating: 4.7\
+      \  \n   - [View Map](https://maps.google.com/?q=Yountville%2C%20CA)  \n\n3.\
+      \ Napa Riverfront & Oxbow Public Market  \n   - Location: Napa, Napa Valley,\
+      \ CA  \n   - Highlights: Riverside stroll, local food vendors, perfect photo\
+      \ spots  \n   - Rating: 4.6  \n   - [View Map](https://maps.google.com/?q=Oxbow%20Public%20Market)"

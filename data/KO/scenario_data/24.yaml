@@ -1,0 +1,133 @@
+metadata:
+  total_steps: 14
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- 날짜: 2027-03-03
+
+      - 연락처: 010-8888-7777'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 동생이 알레르기가 있었네? 오늘 예약된 식당 취소하려고. 그리고 내일모레 울진역 가는 ktx 예매하려고
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"오늘 예약된 식당\
+      \ 조회\"\n    - status: pending\n      name: place_agent\n      refined_query:\
+      \ \"오늘 예약된 식당 예약 취소\"\n\nworkflow_2:\n  status: pending\n  type: independent\n\
+      \  steps:\n    - status: pending\n      name: transport_agent\n      refined_query:\
+      \ \"내일모레 울진역 가는 ktx 조회\"\n\nworkflow_3:\n  status: pending\n  type: dependent\n\
+      \  depend_on: \"workflow_2\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
+      \      refined_query: \"내일모레 울진역 가는 ktx 예매\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: getPlaceReservationInfo\narguments:\n  refinedQuery: \"오늘 예약된\
+      \ 식당 조회\"\n  contactInfo: \"010-8888-7777\"\n  date: \"2027-03-03\"\n  placeCategory:\
+      \ \"식당\"\ntool_call_result:\n  data:\n    refinedQuery: \"오늘 예약된 식당 조회\"\n \
+      \   contactInfo: \"010-8888-7777\"\n    date: \"2027-03-03\"\n    placeCategory:\
+      \ \"식당\"\n    reservations:\n      - placeName: \"바다의 속삭임 해산물 전문점\"\n      \
+      \  reservationDate: \"2027-03-03\"\n        reservationTime: \"19:00\"\n   \
+      \     partySize: 4\n        specialRequest: \"창가 자리로 부탁해요\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출발역'
+- workflow_id: workflow_1
+  step_id: 6
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: TOOL_CONSTRAINT_VIOLATION
+
+      violation_message: 당일 예약으로 취소 불가'
+- workflow_id: null
+  step_id: 7
+  agent: main
+  agent_type: main
+  data:
+    content: "동생분 알레르기 때문에 걱정 많으시겠어요.  \n오늘 예약된 '바다의 속삭임 해산물 전문점'은 당일 예약이라 취소가 불가능합니다.\
+      \  \n다른 도움 필요하시면 알려주세요.\n\n그리고 울진역 가는 KTX 예매를 도와드리려면 출발역 정보를 알려주셔야 합니다.  \n\
+      출발역을 알려주시면 바로 조회해드릴게요!"
+- workflow_id: null
+  step_id: 8
+  agent: user
+  agent_type: user
+  data:
+    content: 아 그래? 어쩔 수 없지. 동생 빼고 가야지 뭐. 서울역에서 출발할거야
+- workflow_id: workflow_2
+  step_id: 9
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getTransitSchedule\narguments:\n  refinedQuery: \"내일모레 울진역 가는\
+      \ ktx 조회\"\n  transportType: \"train\"\n  departureStation: \"서울역\"\n  arrivalStation:\
+      \ \"울진역\"\n  departureDate: \"2027-03-05\"\ntool_call_result:\n  data:\n   \
+      \ refinedQuery: \"내일모레 울진역 가는 ktx 조회\"\n    transportType: \"train\"\n    departureStation:\
+      \ \"서울역\"\n    arrivalStation: \"울진역\"\n    departureDate: \"2027-03-05\"\n\
+      \    schedules:\n      - trainNumber: \"KTX123\"\n        departureTime: \"\
+      08:30\"\n        arrivalTime: \"12:45\"\n        duration: \"4시간 15분\"\n   \
+      \     seatAvailability: \"여유 있음\"\n      - trainNumber: \"KTX456\"\n       \
+      \ departureTime: \"11:00\"\n        arrivalTime: \"15:15\"\n        duration:\
+      \ \"4시간 15분\"\n        seatAvailability: \"매진 임박\""
+- workflow_id: workflow_3
+  step_id: 10
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 출발 시간, 탑승 인원 수'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "내일모레 울진역 가는 KTX 시간표입니다.  \n- 08:30 출발, 12:45 도착 (여유 있음)  \n- 11:00 출발,\
+      \ 15:15 도착 (매진 임박)  \n\n어느 시간대 기차를 예매할까요?\n탑승 인원 수와 함께 예약할 시간대를 알려주세요."
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 8시30분, 1명
+- workflow_id: null
+  step_id: 13
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: bookTransitTicket\narguments:\n  refinedQuery: \"3월 5일 울진역 가는\
+      \ 8시 30분 ktx 1명 예매\"\n  transportType: \"train\"\n  departureStation: \"서울역\"\
+      \n  arrivalStation: \"울진역\"\n  departureDate: \"2027-03-05\"\n  departureTime:\
+      \ \"08:30\"\n  seatType: \"standard\"\n  passengerCount: 1\n  roundTrip: false\n\
+      \  contactInfo: \"010-8888-7777\"\ntool_call_result:\n  data:\n    refinedQuery:\
+      \ \"3월 5일 울진역 가는 8시 30분 ktx 1명 예매\"\n    transportType: \"train\"\n    departureStation:\
+      \ \"서울역\"\n    arrivalStation: \"울진역\"\n    departureDate: \"2027-03-05\"\n\
+      \    departureTime: \"08:30\"\n    seatType: \"standard\"\n    passengerCount:\
+      \ 1\n    contactInfo: \"010-8888-7777\"\n    bookingStatus: \"예약 완료\"\n    bookingId:\
+      \ \"KT202703050830001\"\n    ticketPrice: \"45,000원\"\n    seatNumber: \"12A\""
+- workflow_id: null
+  step_id: 14
+  agent: main
+  agent_type: main
+  data:
+    content: "아래와 같이 3월 5일 울진역 가는 KTX 예약이 완료되었습니다.\n\n[예약 정보]\n- 출발: 서울역  \n- 도착:\
+      \ 울진역  \n- 출발일시: 2027-03-05 08:30  \n- 좌석 등급: 일반석 (Standard)  \n- 탑승 인원: 1명\
+      \  \n- 좌석 번호: 12A  \n- 예약 번호: KT202703050830001  \n- 티켓 가격: 45,000원  \n\n필요한\
+      \ 추가 요청이나 변경 사항 있으면 말씀해 주세요!"

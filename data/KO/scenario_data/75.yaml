@@ -1,0 +1,299 @@
+metadata:
+  total_steps: 26
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: 'date : 2026/05/02
+
+      userId : U0DK23111'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: 친구 생일 선물로 무선 이어폰 하나 추천해줘. 마음에 들면 바로 주문할 거야.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: shopping_agent\n      refined_query: \"친구 생일\
+      \ 선물로 줄 무선 이어폰 추천\"\n\nworkflow_2:\n  status: pending\n  type: dependent\n \
+      \ depend_on: \"workflow_1\"\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"친구 생일 선물로 줄 무선 이어폰 마음에 들면 주문\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"친구 생일에 어울리는 무선 이어폰\
+      \ 선물 추천\"\n  recipientType: \"친구\"\n  occasion: \"생일\"\n  items: \"무선 이어폰\"\n\
+      tool_call_result:\n  recommendations:\n    - productId: \"ep001\"\n      productName:\
+      \ \"Apple AirPods (3세대)\"\n      description: \"공간 음향과 적응형 EQ를 제공하며, iPhone\
+      \ 사용자에게 최적화된 고급형 무선 이어폰\"\n      price: 249000\n      imageUrl: \"https://example.com/images/airpods3.jpg\"\
+      \n      purchaseLink: \"https://store.example.com/product/ep001\"\n\n    - productId:\
+      \ \"ep002\"\n      productName: \"Samsung Galaxy Buds2 Pro\"\n      description:\
+      \ \"24bit Hi-Fi 오디오와 강력한 노이즈 캔슬링, 안드로이드에 최적화된 고급 무선 이어폰\"\n      price: 219000\n\
+      \      imageUrl: \"https://example.com/images/buds2pro.jpg\"\n      purchaseLink:\
+      \ \"https://store.example.com/product/ep002\"\n\n    - productId: \"ep003\"\n\
+      \      productName: \"Sony WF-C700N\"\n      description: \"가볍고 착용감이 뛰어난 노이즈\
+      \ 캔슬링 무선 이어폰, 소니 특유의 음질 제공\"\n      price: 139000\n      imageUrl: \"https://example.com/images/wfc700n.jpg\"\
+      \n      purchaseLink: \"https://store.example.com/product/ep003\"\n\n    - productId:\
+      \ \"ep004\"\n      productName: \"Jabra Elite 5\"\n      description: \"멀티포인트\
+      \ 연결과 우수한 통화 품질을 갖춘 실용적인 중고가형 무선 이어폰\"\n      price: 179000\n      imageUrl:\
+      \ \"https://example.com/images/jabra5.jpg\"\n      purchaseLink: \"https://store.example.com/product/ep004\""
+- workflow_id: workflow_2
+  step_id: 5
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주문 상품 사용자 선택'
+- workflow_id: null
+  step_id: 6
+  agent: main
+  agent_type: main
+  data:
+    content: "친구 생일 선물로 추천하는 무선 이어폰 4가지입니다:\n\n1. Apple AirPods (3세대) – iPhone 사용자에게\
+      \ 최적, 공간 음향 지원 (₩249,000)  \n2. Samsung Galaxy Buds2 Pro – 고음질 + 강력한 노이즈 캔슬링\
+      \ (₩219,000)  \n3. Sony WF-C700N – 소니 특유의 음질과 착용감, 가성비 좋음 (₩139,000)  \n4. Jabra\
+      \ Elite 5 – 멀티 연결 가능, 통화 품질 우수 (₩179,000)  \n\n마음에 드는 제품이 있으면 알려주세요. 주문을 도와드릴게요."
+- workflow_id: null
+  step_id: 7
+  agent: user
+  agent_type: user
+  data:
+    content: 다 너무 비싸.. 10만원 이하로 추천해줘
+- workflow_id: null
+  step_id: 8
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구 생일 선물로 줄 무선 이어폰 추천\"\n\nworkflow_2:\n  status: paused\n  type: dependent\n\
+      \  depend_on: \"workflow_1-1\"\n  steps:\n    - status: paused\n      name:\
+      \ shopping_agent\n      refined_query: \"친구 생일 선물로 줄 10만원 이하 무선 이어폰 주문\"\n\n\
+      workflow_1-1:\n  status: pending\n  type: independent\n  steps:\n    - status:\
+      \ pending\n      name: shopping_agent\n      refined_query: \"친구 생일 선물로 줄 10만원\
+      \ 이하 무선 이어폰 추천\""
+- workflow_id: workflow_1
+  step_id: 9
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"10만원 이하로 친구 생일에\
+      \ 어울리는 무선 이어폰 선물 추천\"\n  recipientType: \"친구\"\n  occasion: \"생일\"\n  maxPrice:\
+      \ 100000\n  items: \"무선 이어폰\"\ntool_call_result:\n  recommendations:\n    -\
+      \ productId: \"ep101\"\n      productName: \"QCY T13 ANC\"\n      description:\
+      \ \"액티브 노이즈 캔슬링과 긴 배터리 사용 시간, 가성비 뛰어난 이어폰\"\n      price: 39900\n      imageUrl:\
+      \ \"https://example.com/images/qcy_t13_anc.jpg\"\n      purchaseLink: \"https://store.example.com/product/ep101\"\
+      \n\n    - productId: \"ep102\"\n      productName: \"SoundPEATS Free2 Classic\"\
+      \n      description: \"클래식한 디자인과 착용감, 탄탄한 기본 성능\"\n      price: 34900\n    \
+      \  imageUrl: \"https://example.com/images/soundpeats_free2.jpg\"\n      purchaseLink:\
+      \ \"https://store.example.com/product/ep102\"\n\n    - productId: \"ep103\"\n\
+      \      productName: \"Anker Soundcore Life P2 Mini\"\n      description: \"\
+      작고 가벼운 디자인, 선명한 통화 품질과 안정적인 연결\"\n      price: 49900\n      imageUrl: \"https://example.com/images/anker_p2mini.jpg\"\
+      \n      purchaseLink: \"https://store.example.com/product/ep103\""
+- workflow_id: workflow_2
+  step_id: 10
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 주문 상품 사용자 선택'
+- workflow_id: null
+  step_id: 11
+  agent: main
+  agent_type: main
+  data:
+    content: "10만원 이하의 가성비 좋은 무선 이어폰 추천드려요:\n\n1. QCY T13 ANC – 노이즈 캔슬링 탑재, 배터리 효율\
+      \ 우수 (₩39,900)  \n2. SoundPEATS Free2 Classic – 착용감 좋고 깔끔한 사운드 (₩34,900)  \n\
+      3. Anker Soundcore Life P2 Mini – 통화에 강하고 디자인도 심플 (₩49,900)  \n\n이 중 마음에 드는\
+      \ 제품이 있다면 바로 주문 도와드릴게요!"
+- workflow_id: null
+  step_id: 12
+  agent: user
+  agent_type: user
+  data:
+    content: 노이즈캔슬링이 어떤 기능이야?
+- workflow_id: null
+  step_id: 13
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구 생일 선물로 줄 무선 이어폰 추천\"\n\nworkflow_2:\n  status: paused\n  type: dependent\n\
+      \  depend_on: \"workflow_1-1\"\n  steps:\n    - status: paused\n      name:\
+      \ shopping_agent\n      refined_query: \"친구 생일 선물로 줄 10만원 이하 무선 이어폰 주문\"\n\n\
+      workflow_1-1:\n  status: completed\n  type: independent\n  steps:\n    - status:\
+      \ completed\n      name: shopping_agent\n      refined_query: \"친구 생일 선물로 줄\
+      \ 10만원 이하 무선 이어폰 추천\"\n\ninterrupted_workflow_2-1:\n  status: pending\n  type:\
+      \ independent\n  steps:\n    - status: pending\n      name: search_agent\n \
+      \     refined_query: \"노이즈캔슬링 기능 검색\""
+- workflow_id: workflow_2
+  step_id: 14
+  agent: search_agent
+  agent_type: agent
+  data:
+    content: "tool: searchInfo\narguments:\n  refinedQuery: \"노이즈캔슬링 기능의 원리와 작동 방식\"\
+      \ntool_call_result:\n  answer: \"노이즈캔슬링(Noise Cancelling)은 주변 소음을 줄이거나 제거해주는\
+      \ 기술입니다. 대표적으로 이어폰이나 헤드폰에 적용되며, 두 가지 방식이 있습니다:  \n- **패시브 노이즈 캔슬링**: 물리적인 구조(예:\
+      \ 이어팁 밀착, 헤드폰 패드)를 통해 소음을 차단합니다.  \n- **액티브 노이즈 캔슬링(ANC)**: 마이크로 외부 소음을 감지하고,\
+      \ 그 소음과 반대 위상의 소리를 발생시켜 소음을 상쇄하는 방식입니다.  \n이 기술 덕분에 시끄러운 환경에서도 음악이나 통화를 더욱 선명하게\
+      \ 들을 수 있습니다.\""
+- workflow_id: null
+  step_id: 15
+  agent: main
+  agent_type: main
+  data:
+    content: '노이즈캔슬링은 외부 소음을 줄여주는 기능이에요.
+
+      특히 액티브 노이즈 캔슬링(ANC) 기술은 외부 소음을 마이크로 감지한 뒤, 그 소리와 반대되는 파장을 발생시켜 소음을 상쇄하는 원리로
+      작동하죠.
+
+      덕분에 지하철이나 카페처럼 시끄러운 곳에서도 음악이나 통화 품질을 높일 수 있어요.
+
+      또, 단순히 귀를 막아서 소음을 줄이는 패시브 방식도 있어요.
+
+      ------
+
+
+      친구 생일 선물로 노이즈 캔슬링 기능이 있는 이어폰을 주문해드릴까요?'
+- workflow_id: null
+  step_id: 16
+  agent: user
+  agent_type: user
+  data:
+    content: 음 다 별로네. 무선 이어폰 말고 10만원 안 쪽의 다른 선물 추천해봐.
+- workflow_id: null
+  step_id: 17
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구 생일 선물로 줄 무선 이어폰 추천\"\n\nworkflow_2:\n  status: _x0008_cancelled\n  type:\
+      \ dependent\n  depend_on: \"workflow_1-1\"\n  steps:\n    - status: cancelled\n\
+      \      name: shopping_agent\n      refined_query: \"친구 생일 선물로 줄 무선 이어폰 마음에 들면\
+      \ 주문\"\n\nworkflow_1-1:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구 생일 선물로 줄 10만원 이하 무선 이어폰 추천\"\n\ninterrupted_workflow_2-1:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: search_agent\n\
+      \      refined_query: \"노이즈캔슬링 기능 검색\"\n\nworkflow_3:\n  status: pending\n \
+      \ type: independent\n  steps:\n    - status: pending\n      name: shopping_agent\n\
+      \      refined_query: \"무선 이어폰을 제외한 10만원 이하 친구 생일 선물 추천\""
+- workflow_id: workflow_3
+  step_id: 18
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: recommendGifts\narguments:\n  refinedQuery: \"무선 이어폰을 제외한 10만원\
+      \ 이하 친구 생일 선물 추천\"\n  recipientType: \"친구\"\n  occasion: \"생일\"\n  maxPrice:\
+      \ 100000\n  exclude_items: \"무선 이어폰\"\ntool_call_result:\n  recommendations:\n\
+      \    - productId: \"gf201\"\n      productName: \"샤오미 스마트 스탠딩 선풍기 2 Lite\"\n\
+      \      description: \"조용하고 강력한 바람, 미니멀 디자인으로 인테리어와 실용성을 겸비한 선물\"\n      price:\
+      \ 69900\n      imageUrl: \"https://example.com/images/xiaomi_fan.jpg\"\n   \
+      \   purchaseLink: \"https://store.example.com/product/gf201\"\n\n    - productId:\
+      \ \"gf202\"\n      productName: \"무인양품 아로마 디퓨저 세트\"\n      description: \"감성적인\
+      \ 무드등 겸용 디퓨저로 힐링과 인테리어 효과를 동시에 주는 인기 선물\"\n      price: 59900\n      imageUrl:\
+      \ \"https://example.com/images/mujir_aroma.jpg\"\n      purchaseLink: \"https://store.example.com/product/gf202\"\
+      \n\n    - productId: \"gf203\"\n      productName: \"에이솝 핸드크림 & 립밤 세트\"\n  \
+      \    description: \"고급스러운 향과 보습력으로 선물용으로 인기 많은 실속형 코스메틱 세트\"\n      price: 88000\n\
+      \      imageUrl: \"https://example.com/images/aesop_gift.jpg\"\n      purchaseLink:\
+      \ \"https://store.example.com/product/gf203\"\n\n    - productId: \"gf204\"\n\
+      \      productName: \"마샬 엠버튼 미니 블루투스 스피커\"\n      description: \"빈티지 감성과 뛰어난\
+      \ 휴대성을 겸비한 포터블 스피커\"\n      price: 99000\n      imageUrl: \"https://example.com/images/marshall_emb.jpg\"\
+      \n      purchaseLink: \"https://store.example.com/product/gf204\""
+- workflow_id: null
+  step_id: 19
+  agent: main
+  agent_type: main
+  data:
+    content: '무선 이어폰을 제외하고 10만원 이하로 친구 생일 선물로는 이런 제품들이 어울려요.
+
+
+      - 샤오미 스마트 스탠딩 선풍기 – 조용하고 인테리어에 잘 어울려요 (₩69,900)
+
+      - 무인양품 아로마 디퓨저 세트 – 감성적인 분위기 선물로 좋아요 (₩59,900)
+
+      - 에이솝 핸드크림 & 립밤 세트 – 고급스럽고 실용적인 뷰티템 (₩88,000)
+
+      - 마샬 미니 블루투스 스피커 – 감성 디자인 + 좋은 음질 (₩99,000)
+
+
+      마음에 드는 거 있으면 구매 링크도 드릴게요! 😊'
+- workflow_id: null
+  step_id: 20
+  agent: user
+  agent_type: user
+  data:
+    content: 핸드크림이랑 립밤 세트로 주문할게.
+- workflow_id: null
+  step_id: 21
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: completed\n  type: independent\n  steps:\n  \
+      \  - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구 생일 선물로 줄 무선 이어폰 추천\"\n\nworkflow_2:\n  status: _x0008_cancelled\n  type:\
+      \ dependent\n  depend_on: \"workflow_1-1\"\n  steps:\n    - status: cancelled\n\
+      \      name: shopping_agent\n      refined_query: \"친구 생일 선물로 줄 무선 이어폰 마음에 들면\
+      \ 주문\"\n\nworkflow_1-1:\n  status: completed\n  type: independent\n  steps:\n\
+      \    - status: completed\n      name: shopping_agent\n      refined_query: \"\
+      친구 생일 선물로 줄 10만원 이하 무선 이어폰 추천\"\n\ninterrupted_workflow_2-1:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: search_agent\n\
+      \      refined_query: \"노이즈캔슬링 기능 검색\"\n\nworkflow_3:\n  status: completed\n\
+      \  type: independent\n  steps:\n    - status: completed\n      name: shopping_agent\n\
+      \      refined_query: \"무선 이어폰을 제외한 10만원 이하 친구 생일 선물 추천\"\n\nworkflow_4:\n \
+      \ status: pending\n  type: independent\n  steps:\n    - status: pending\n  \
+      \    name: shopping_agent\n      refined_query: \"에이솝 핸드크림, 립밤 세트 주문\""
+- workflow_id: workflow_4
+  step_id: 22
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: 수령인 이름, 주소, 전화번호'
+- workflow_id: null
+  step_id: 23
+  agent: main
+  agent_type: main
+  data:
+    content: 네, 주문 도와드리겠습니다. 배송 받으실 분의 이름, 주소, 연락처를 말씀해주세요.
+- workflow_id: null
+  step_id: 24
+  agent: user
+  agent_type: user
+  data:
+    content: 김지훈이고 서울시 마포구 서교동 123-45 302호야. 전화번호는 010-5678-1234고.
+- workflow_id: null
+  step_id: 25
+  agent: shopping_agent
+  agent_type: agent
+  data:
+    content: "tool: orderProducts\narguments:\n  refinedQuery: \"에이솝 핸드크림 & 립밤 세트를\
+      \ 친구 생일 선물로 주문\"\n  userId: \"U0DK23111\"\n  productItems:\n    - productId:\
+      \ \"gf203\"\n      productName: \"에이솝 핸드크림 & 립밤 세트\"\n      quantity: 1\n  \
+      \    price: 88000\n  shippingAddress:\n    recipient: \"김지훈\"\n    address:\
+      \ \"서울시 마포구 서교동 123-45 302호\"\n    phone: \"010-5678-1234\"\ntool_call_result:\n\
+      \  orderId: \"ORD-20250716001\"\n  status: \"confirmed\"\n  estimatedDelivery:\
+      \ \"2026-05-05\"\n  trackingLink: \"https://store.example.com/track/ORD-20250716001\"\
+      \n  message: \"김지훈 님께 5월 5일 도착 예정입니다.\""
+- workflow_id: null
+  step_id: 26
+  agent: main
+  agent_type: main
+  data:
+    content: '선물 주문 완료했습니다!
+
+      에이솝 핸드크림 & 립밤 세트는 김지훈 님께 5월 5일 배송될 예정이에요.'

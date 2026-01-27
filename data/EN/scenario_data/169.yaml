@@ -1,0 +1,102 @@
+metadata:
+  total_steps: 9
+  note: workflow_id can be None for initial rows
+steps:
+- workflow_id: system
+  step_id: 1
+  agent: main
+  agent_type: main
+  data:
+    content: '- datetime: "2025-07-13 18:34"'
+- workflow_id: null
+  step_id: 2
+  agent: user
+  agent_type: user
+  data:
+    content: Oh no, I’ve only got one bar of gas left. Guide me to the nearest gas
+      station from where I am right now as quickly as possible using Google Maps.
+- workflow_id: null
+  step_id: 3
+  agent: main
+  agent_type: main
+  data:
+    content: "workflow_1:\n  status: pending\n  type: independent\n  steps:\n    -\
+      \ status: pending\n      name: place_agent\n      refined_query: \"Search for\
+      \ the nearest gas station from my location\"\n    - status: pending\n      name:\
+      \ transport_agent\n      refined_query: \"Get directions to the closest gas\
+      \ station I can reach quickly from my location using Google Maps\""
+- workflow_id: workflow_1
+  step_id: 4
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: 'status: AWAITING_USER_INPUT
+
+      required_info: Location information'
+- workflow_id: null
+  step_id: 5
+  agent: main
+  agent_type: main
+  data:
+    content: Please share your current location so that I can find nearby gas stations
+      for you.
+- workflow_id: null
+  step_id: 6
+  agent: user
+  agent_type: user
+  data:
+    content: 'I’m at the Evanston Lake Park Public Parking Lot #1 right now.'
+- workflow_id: null
+  step_id: 7
+  agent: place_agent
+  agent_type: agent
+  data:
+    content: "tool: searchPlaces\narguments:\n  refinedQuery: \"Gas stations near\
+      \ Evanston Lake Park Public Parking Lot #1\"\n  placeCategory: \"Gas Station\"\
+      \n  location: \"Evanston Lake Park Public Parking Lot #1\"\n  sortBy: \"distance\"\
+      \ntool_call_result:\n  data:\n    query: \"Gas stations near Evanston Lake Park\
+      \ Public Parking Lot #1\"\n    category: \"Gas Station\"\n    location: \"Evanston\
+      \ Lake Park Public Parking Lot #1\"\n    results:\n      - name: \"Shell Gas\
+      \ Station\"\n        address: \"101 Ridge Ave, Evanston, IL 60202\"\n      \
+      \  distance: \"0.4 miles\"\n        estimatedDriveTime: \"3 minutes\"\n    \
+      \    phoneNumber: \"(847) 555-0142\"\n        mapLink: \"https://maps.google.com/?q=Shell+101+Ridge+Ave+Evanston+IL\"\
+      \n      - name: \"BP Gas Station\"\n        address: \"2401 Dempster St, Evanston,\
+      \ IL 60201\"\n        distance: \"0.7 miles\"\n        estimatedDriveTime: \"\
+      5 minutes\"\n        phoneNumber: \"(847) 555-0175\"\n        mapLink: \"https://maps.google.com/?q=BP+2401+Dempster+St+Evanston+IL\"\
+      \n      - name: \"Exxon Gas Station\"\n        address: \"1950 Green Bay Rd,\
+      \ Evanston, IL 60201\"\n        distance: \"1.0 miles\"\n        estimatedDriveTime:\
+      \ \"7 minutes\"\n        phoneNumber: \"(847) 555-0190\"\n        mapLink: \"\
+      https://maps.google.com/?q=Exxon+1950+Green+Bay+Rd+Evanston+IL\""
+- workflow_id: null
+  step_id: 8
+  agent: transport_agent
+  agent_type: agent
+  data:
+    content: "tool: getDirections\narguments:\n  refinedQuery: \"Provide driving directions\
+      \ from Evanston Lake Park Public Parking Lot #1 to the Shell Gas Station using\
+      \ Google Maps\"\n  origin: \"Evanston Lake Park Public Parking Lot #1\"\n  destination:\
+      \ \"Shell Gas Station\"\n  transportModes: \"car\"\n  departureTime: \"18:34\"\
+      \n  optimizeBy: \"fastest\"\n  source: \"Google Maps\"\n  navigationMode: true\n\
+      tool_call_result:\n  directions:\n    - step: \"Depart from Evanston Lake Park\
+      \ Public Parking Lot #1\"\n    - step: \"Head south on Lake Shore Blvd toward\
+      \ Greenwood St for 0.1 miles\"\n    - step: \"Turn right to Greenwood St and\
+      \ continue for 0.2 miles\"\n    - step: \"Turn left to Ridge Ave and drive for\
+      \ 0.1 miles\"\n    - step: \"Arrive at Shell Gas Station (101 Ridge Ave, Evanston,\
+      \ IL 60202) on the right\"\n  totalDuration: \"Approx. 3 minutes\"\n  totalDistance:\
+      \ \"0.4 miles\"\n  estimatedArrivalTime: \"6:37 PM\"\n  congestionLevel: \"\
+      Light\"\n  source: \"Google Maps\"\n  navigationMode: true"
+- workflow_id: null
+  step_id: 9
+  agent: main
+  agent_type: main
+  data:
+    content: 'Starting navigation with Google Maps from Evanston Lake Park Public
+      Parking Lot #1 to the nearest gas station, “Shell (101 Ridge Ave, Evanston,
+      IL 60202)”.
+
+
+      ETA: 6:37 PM · Duration: ~3 minutes · Distance: 0.4 miles · Traffic: Light ·
+      Navigation Mode: ON
+
+
+      Open directions: [https://maps.google.com/?saddr=Evanston+Lake+Park+Public+Parking+Lot+%231\&daddr=Shell+101+Ridge+Ave+Evanston+IL](https://maps.google.com/?saddr=Evanston+Lake+Park+Public+Parking+Lot+%231&daddr=Shell+101+Ridge+Ave+Evanston+IL)'
