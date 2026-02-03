@@ -33,10 +33,10 @@ def _detect_provider(llm_config: Dict[str, Any]) -> str:
         return "opensource"
     if model_name.startswith("gemini"):
         return "gemini"
-    if "anthropic" in base_url or model_name.startswith("claude"):
-        return "claude"
-    if llm_config.get("aws_access_key_id"):
+    if llm_config.get("aws_access_key_id") or llm_config.get("AWS_ACCESS_KEY_ID"):
         return "bedrock"
+   if "anthropic" in base_url or model_name.startswith("claude"):
+        return "claude"
 
     return "openai"
 
