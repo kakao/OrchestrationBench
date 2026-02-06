@@ -47,6 +47,7 @@ OrchestrationBench/
 
 | Category | Models | Average (All) | Average (KO) | Average (EN) | Plan (KO) | Plan (EN) | Call Rejection (KO) | Call Rejection (EN) | Function Call (KO) | Function Call (EN) |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Kakao | kanana-2-30b-a3b-thinking-2601 | 66.22 | 66.46 | 65.98 | 52.21 | 50.13 | 63.58 | 64.56 | 83.60 | 83.24 |
 | K-AI | Solar-Open-100B | 67.05 | 65.09 | 69.01 | 42.01 | 47.84 | 74.83 | 78.86 | 78.43 | 80.32 |
 | K-AI | K-EXAONE-236B-A23B | 58.30 | 59.67 | 56.92 | 35.39 | 36.92 | 60.14 | 54.43 | 83.47 | 79.42 |
 | K-AI | HyperCLOVAX-SEED-Think-32B | 54.36 | 52.51 | 56.21 | 5.87 | 19.75 | 68.15 | 67.07 | 83.50 | 81.81 |
