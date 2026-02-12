@@ -1,5 +1,5 @@
 metadata:
-  total_steps: 19
+  total_steps: 18
   note: workflow_id can be None for initial rows
 steps:
 - workflow_id: system
@@ -32,42 +32,8 @@ steps:
       \ \"workflow_2\"\n  steps:\n    - status: pending\n      name: transport_agent\n\
       \      refined_query: \"4호선 용산역에서 지하철로 용산내 1990년대 중반 7~8세 아이들이 비디오로 보던 인기 만화\
       \ 비디오를 빌려주거나 판매하는 곳 가는 법 안내\""
-- workflow_id: null
-  step_id: 4
-  agent: entertainment_agent
-  agent_type: agent
-  data:
-    content: '쥬드 데이터에서 비슷한 케이스가 있었는데요
-
-      ‘쥬드 22번 시트’에서 아일린이 댓글을 남겨 주신 거 보면
-
-      “여기서는 사용자 선택을 할 것이 아니라 앞서 추천된 채식주의자 복날 음식 밀키드를 모두 검색하는 것이 맞습니다. 검색 후 주문 전에 사용자에게
-      선택을 받아야 할 것으로 보여요.”
-
-      -> 그렇다면, 지금처럼 workflow2가 workflow1에 depend on하려면, workflow1의 결과로 나온 만화들을 가지고
-      각각 툴콜을 돌려야 하는 건데
-
-      (예: 만화 드래곤볼Z 비디오 판매 및 대여점 검색 툴콜 따로 만화 슬램덩크 비디오 어쩌고 툴콜 따로 이런식)
-
-      근데 이게 발화를 보면 굳이 이런게 필요한 경우가 아닌 거 같아서
-
-      workflow1과 2는 패러럴하게 가도 될 것 같다는 생각이 있슴다 ㅎㅎ
-
-      때문에 workflow2는 independent하게 가는 게 낫지 않을까 싶은ㅎ
-
-      저렇게 하나하나 툴콜하는 경우가 아니면 workflow1에 dependent 할 필요가 없어 보임돠 ㅎㅎㅎ
-
-
-      근데 끝까지 다 보고 왔는데여 ㅎㅎ
-
-      인터럽이 되어서 길 안내는 paused됐고, 내용을 보면서 딱히 길 안내가 취소될만한 무언가는 없었던 거 같은데
-
-      그럼 인터럽 후에 자동적으로 길 안내 툴이 돌도록 해야하는데 이미 아까 재질문했었으니까 툴콜할 건 없고 다시 최종 응답에 방문할 매장과
-      출발지, 출발시간 알려달라고 해야할 거 같아요 ㅎㅎ
-
-      그게 아니면 확실히 유저가 길 안내는 취소하는 그런 내용을 담으면 알아서 cancel 되니까 그럼 툴콜할 필욘 없을 거 같고,,?'
 - workflow_id: workflow_1
-  step_id: 5
+  step_id: 4
   agent: entertainment_agent
   agent_type: agent
   data:
@@ -85,7 +51,7 @@ steps:
       \        original: \"Galaxy Express 999\"\n        year: 1978\n        description:\
       \ \"우주 열차를 타고 떠나는 철이와 메텔의 모험. VHS 비디오 대여점에서 큰 인기를 끔.\""
 - workflow_id: workflow_2
-  step_id: 6
+  step_id: 5
   agent: place_agent
   agent_type: agent
   data:
@@ -100,7 +66,7 @@ steps:
       \ true\n      description: \"비디오, CD, 레코드 등 다양한 추억의 미디어 상품을 거래하는 중고 전문점.\"\n\
       \      openingHours: \"10:00~19:00\"\n      phone: \"02‑8765‑4321\""
 - workflow_id: workflow_3
-  step_id: 7
+  step_id: 6
   agent: transport_agent
   agent_type: agent
   data:
@@ -108,7 +74,7 @@ steps:
 
       required_info: 목적지, 출발지, 출발시간'
 - workflow_id: null
-  step_id: 8
+  step_id: 7
   agent: main
   agent_type: main
   data:
@@ -129,7 +95,7 @@ steps:
       \ CD, 레코드 등 종합 미디어 취급\n  * 중고 VHS 애니메이션 포함 가능\n  * 다양한 레트로 콘텐츠 수집 및 판매\n\n길안내를\
       \ 위해 방문하실 매장과 출발지, 출발시간을 알려주세요."
 - workflow_id: null
-  step_id: 9
+  step_id: 8
   agent: user
   agent_type: user
   data:
@@ -137,7 +103,7 @@ steps:
 
       판매자한테 지금 12만원 송금좀 해줘'
 - workflow_id: null
-  step_id: 10
+  step_id: 9
   agent: main
   agent_type: main
   data:
@@ -154,7 +120,7 @@ steps:
       \ 판매자에게 12만원 송금을 위한 계좌 조회\" \n    - status: pending\n      name: personal_banking_agent\n\
       \      refined_query: \"당근마켓으로 구매 예정인 비디오 판매자에게 12만원 송금\""
 - workflow_id: workflow_3
-  step_id: 11
+  step_id: 10
   agent: personal_banking_agent
   agent_type: agent
   data:
@@ -162,19 +128,19 @@ steps:
 
       required_info: 송금인의 성함, 계좌번호, 은행명'
 - workflow_id: null
-  step_id: 12
+  step_id: 11
   agent: main
   agent_type: main
   data:
     content: 보내는분의 성함, 은행명과 계좌번호가 필요합니다.
 - workflow_id: null
-  step_id: 13
+  step_id: 12
   agent: user
   agent_type: user
   data:
     content: 김지연 신한은행 1234-5678-9876
 - workflow_id: null
-  step_id: 14
+  step_id: 13
   agent: personal_banking_agent
   agent_type: agent
   data:
@@ -185,7 +151,7 @@ steps:
       \  accountHolderName: \"김지연\"\n    sourceAccountId: \"SH-001001-01-001001\"\n\
       \    balance: 518000\n    currency: \"KRW\""
 - workflow_id: null
-  step_id: 15
+  step_id: 14
   agent: personal_banking_agent
   agent_type: agent
   data:
@@ -193,13 +159,13 @@ steps:
 
       required_info: 수취인의 성함, 계좌번호, 은행명'
 - workflow_id: null
-  step_id: 16
+  step_id: 15
   agent: main
   agent_type: main
   data:
     content: 받는분의 성함, 은행명과 계좌번호가 필요합니다.
 - workflow_id: null
-  step_id: 17
+  step_id: 16
   agent: user
   agent_type: user
   data:
@@ -207,7 +173,7 @@ steps:
 
       0110-1001-0110'
 - workflow_id: null
-  step_id: 18
+  step_id: 17
   agent: personal_banking_agent
   agent_type: agent
   data:
@@ -219,7 +185,7 @@ steps:
       \ \"SH-001001-01-001001\"\n    transferTime: \"2027-05-05T15:40:00\"\n    confirmationNumber:\
       \ \"TRX-7832610928\""
 - workflow_id: null
-  step_id: 19
+  step_id: 18
   agent: main
   agent_type: main
   data:
