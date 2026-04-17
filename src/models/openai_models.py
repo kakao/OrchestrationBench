@@ -88,10 +88,17 @@ class OpenAIModel(BaseModel):
             **kwargs,
         }
         if "gpt-5" in self.model_name:
-            params["reasoning_effort"] = "medium"
-            params.pop("max_tokens")
+            params.pop("max_tokens", None)
             params["max_completion_tokens"] = self.max_tokens
-            params.pop("temperature")
+            params.pop("temperature", None)
+            # gpt-5.4+ rejects reasoning_effort when tools are present on /chat/completions.
+            # For compatibility, only set reasoning_effort for pre-5.4 models without tools.
+            has_tools = bool(params.get("tools"))
+            is_5_4_plus = any(
+                f"gpt-5.{v}" in self.model_name for v in ("4", "5", "6", "7", "8", "9")
+            )
+            if not (is_5_4_plus and has_tools):
+                params["reasoning_effort"] = "medium"
         logger.debug(f"OpenAI input messages: {messages}")
 
         try:

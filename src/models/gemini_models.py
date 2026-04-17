@@ -96,7 +96,7 @@ class GeminiModel(BaseModel):
             def recursive_clean(schema_node):
                 if isinstance(schema_node, list):
                     return [recursive_clean(item) for item in schema_node]
-                
+
                 if not isinstance(schema_node, dict):
                     return schema_node
 
@@ -108,6 +108,16 @@ class GeminiModel(BaseModel):
                         cleaned_node[key] = value.upper()
                     else:
                         cleaned_node[key] = recursive_clean(value)
+
+                # Gemini requires `items` only on ARRAY types. If a non-array schema
+                # has `items`, coerce the outer type to ARRAY to match the intended
+                # semantics of a list of items.
+                if 'items' in cleaned_node:
+                    outer_type = cleaned_node.get('type', 'ARRAY')
+                    if outer_type != 'ARRAY':
+                        cleaned_node['type'] = 'ARRAY'
+                        cleaned_node.pop('properties', None)
+                        cleaned_node.pop('required', None)
                 return cleaned_node
 
             declarations.append(recursive_clean(function_def))
@@ -143,8 +153,8 @@ class GeminiModel(BaseModel):
             )
 
             contents = [types.Part(text=prompt)]
-             
-            response = self.client.models.generate_content(
+
+            response = await self.client.aio.models.generate_content(
                 model=self.model_name,
                 contents=contents,
                 config=config,
@@ -226,10 +236,10 @@ class GeminiModel(BaseModel):
                                                 system_instruction=system_prompt if system_prompt else None
             )
 
-            # Use generate_content with the full history as contents
-            response = self.client.models.generate_content(
+            # Use async generate_content to avoid blocking the event loop
+            response = await self.client.aio.models.generate_content(
                 model=self.model_name,
-                contents=history_contents, # Pass the entire conversation history
+                contents=history_contents,
                 config=config
             )
 
@@ -242,7 +252,10 @@ class GeminiModel(BaseModel):
 
                 return_format["tool_calls"] = tool_calls
 
-            self._update_stats(int(response.usage_metadata.prompt_token_count), int(response.usage_metadata.candidates_token_count))
+            usage_md = getattr(response, "usage_metadata", None)
+            prompt_tokens = getattr(usage_md, "prompt_token_count", None) if usage_md else None
+            candidate_tokens = getattr(usage_md, "candidates_token_count", None) if usage_md else None
+            self._update_stats(int(prompt_tokens or 0), int(candidate_tokens or 0))
             
             budget_info = self.get_budget_info()
             if budget_info.get("is_budget_warning"):
@@ -260,10 +273,9 @@ class GeminiModel(BaseModel):
             return False
         
         try:
-            response = await self.client.models.generate_content(
+            response = await self.client.aio.models.generate_content(
                 model=self.model_name,
-                contents=[types.Part(text="Hello")],
-                stream=False
+                contents=[types.Part(text="Hello")]
             )
             return response.text is not None
         except Exception as e:

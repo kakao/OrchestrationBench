@@ -70,9 +70,9 @@ def _create_model_instance(
         model = BedrockModel(
             model_name=model_name,
             temperature=temperature,
-            aws_access_key_id=llm_config.get("aws_access_key_id"),
-            aws_secret_access_key=llm_config.get("aws_secret_access_key"),
-            aws_region=llm_config.get("aws_region", "us-east-1"),
+            aws_access_key_id=llm_config.get("aws_access_key_id") or llm_config.get("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=llm_config.get("aws_secret_access_key") or llm_config.get("AWS_SECRET_ACCESS_KEY"),
+            aws_region=llm_config.get("aws_region") or llm_config.get("AWS_REGION") or "us-east-1",
             token_callback=token_callback
         )
     elif provider == "opensource":

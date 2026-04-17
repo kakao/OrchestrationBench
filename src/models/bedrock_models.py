@@ -43,7 +43,10 @@ class BedrockModel(BaseModel):
             "claude-3-opus": "us.anthropic.claude-3-opus-20240229-v1:0",
             "claude-3-5-sonnet": "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
             "claude-3-7-haiku": "us.anthropic.claude-3-7-haiku-20240307-v1:0",
-            "claude-sonnet-4": "us.anthropic.claude-sonnet-4-20250514-v1:0"
+            "claude-sonnet-4": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+            "claude-opus-4-7": "us.anthropic.claude-opus-4-7",
+            "claude-opus-4-6": "us.anthropic.claude-opus-4-6-v1",
+            "claude-opus-4-5": "us.anthropic.claude-opus-4-5-20251101-v1:0",
         }
         
         # Get the actual Bedrock model ID
@@ -123,30 +126,44 @@ class BedrockModel(BaseModel):
     @staticmethod
     def convert_to_anthropic_format(message: Dict[str, Any]) -> Dict[str, Any]:
         """Convert a message to the format expected by Anthropic Claude."""
+        import json as _json
         content = []
-        
+
         # Extract text content
         if isinstance(message.get('content'), str):
-            content.append({'text': message['content']})
+            if message['content']:
+                content.append({'text': message['content']})
         elif isinstance(message.get('content'), list):
             for item in message['content']:
                 if isinstance(item, str):
                     content.append({'text': item})
                 elif isinstance(item, dict) and 'text' in item:
                     content.append({'text': item['text']})
-        
-        # Handle tool calls if present
+
+        # Handle tool calls if present (assistant messages with tool calls)
         tool_calls = message.get('tool_calls', [])
         if tool_calls:
             for tool_call in tool_calls:
+                raw_args = tool_call['function']['arguments']
+                if isinstance(raw_args, str):
+                    try:
+                        parsed_args = _json.loads(raw_args) if raw_args else {}
+                    except Exception:
+                        parsed_args = {"_raw": raw_args}
+                else:
+                    parsed_args = raw_args if isinstance(raw_args, dict) else {}
                 content.append({
                     'toolUse': {
                         'toolUseId': tool_call['id'],
                         'name': tool_call['function']['name'],
-                        'input': tool_call['function']['arguments']
+                        'input': parsed_args
                     }
                 })
-        
+
+        # Anthropic requires assistant messages to have non-empty content
+        if message.get('role') == 'assistant' and not content:
+            content.append({'text': ' '})
+
         return {
             'role': message['role'],
             'content': content
@@ -184,10 +201,10 @@ class BedrockModel(BaseModel):
         # Convert messages to Bedrock format and extract system messages
         bedrock_messages = []
         extracted_system_prompt = system_prompt
-        
+
         for msg in messages:
             msg_role = msg.get("role")
-            
+
             # Handle system messages separately - Bedrock doesn't allow 'system' role in messages array
             if msg_role == "system":
                 system_content = msg.get("content", "")
@@ -197,17 +214,57 @@ class BedrockModel(BaseModel):
                 else:
                     extracted_system_prompt = system_content
                 continue  # Skip adding to messages array
-            
+
+            # Convert tool messages to user messages with toolResult content (Anthropic format)
+            if msg_role == "tool":
+                tool_result_content = msg.get("content", "")
+                if isinstance(tool_result_content, list):
+                    tool_result_content = " ".join(
+                        str(c.get("text", c)) if isinstance(c, dict) else str(c)
+                        for c in tool_result_content
+                    )
+                tool_call_id = msg.get("tool_call_id") or msg.get("id") or ""
+                tool_result_block = {
+                    "toolResult": {
+                        "toolUseId": tool_call_id,
+                        "content": [{"text": str(tool_result_content) if tool_result_content else " "}],
+                    }
+                }
+                # Merge consecutive tool results into a single user message
+                if bedrock_messages and bedrock_messages[-1]["role"] == "user" and all(
+                    "toolResult" in c for c in bedrock_messages[-1]["content"]
+                ):
+                    bedrock_messages[-1]["content"].append(tool_result_block)
+                else:
+                    bedrock_messages.append({
+                        "role": "user",
+                        "content": [tool_result_block],
+                    })
+                continue
+
             # Only add user and assistant messages to Bedrock messages
             if msg_role in ["user", "assistant"]:
                 bedrock_msg = self.convert_to_anthropic_format(msg)
                 bedrock_messages.append(bedrock_msg)
+
+        # Anthropic requires the conversation to end with a user message
+        # If it ends with assistant (e.g., tool-calling turn with no tool results yet),
+        # append a stub user message to prevent prefill errors on Opus 4.7+.
+        if bedrock_messages and bedrock_messages[-1]["role"] == "assistant":
+            bedrock_messages.append({
+                "role": "user",
+                "content": [{"text": "Continue."}],
+            })
         
         # Prepare inference configuration (AWS official example style)
-        inference_config = {"temperature": self.temperature}
-        
-        # Additional model fields (AWS official example style)
-        additional_model_fields = {"top_k": kwargs.get("top_k", 200)}
+        # Opus 4.7+ deprecated `temperature` and `top_k`.
+        is_opus_4_7_plus = "opus-4-7" in self.bedrock_model_id
+        if is_opus_4_7_plus:
+            inference_config = {}
+            additional_model_fields = {}
+        else:
+            inference_config = {"temperature": self.temperature}
+            additional_model_fields = {"top_k": kwargs.get("top_k", 200)}
         
         tools = kwargs.get("tools", [])
         tool_config = self.convert_openai_tools_to_anthropic(tools)
@@ -309,15 +366,26 @@ class BedrockModel(BaseModel):
             }]
             
             # Use AWS official converse pattern
-            response = await loop.run_in_executor(
-                None,
-                lambda: self.client.converse(
-                    modelId=self.bedrock_model_id,
-                    messages=test_messages,
-                    inferenceConfig={"temperature": 0.5},
-                    additionalModelRequestFields={"top_k": 200}
+            is_opus_4_7_plus = "opus-4-7" in self.bedrock_model_id
+            if is_opus_4_7_plus:
+                response = await loop.run_in_executor(
+                    None,
+                    lambda: self.client.converse(
+                        modelId=self.bedrock_model_id,
+                        messages=test_messages,
+                        inferenceConfig={"maxTokens": 32}
+                    )
                 )
-            )
+            else:
+                response = await loop.run_in_executor(
+                    None,
+                    lambda: self.client.converse(
+                        modelId=self.bedrock_model_id,
+                        messages=test_messages,
+                        inferenceConfig={"temperature": 0.5},
+                        additionalModelRequestFields={"top_k": 200}
+                    )
+                )
             return True
         except Exception as e:
             logger.warning(f"Bedrock availability check failed: {e}")
